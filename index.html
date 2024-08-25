@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Handling</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+               .number-icon:hover {
+            background-color: #4f46e5;
+            color: white;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+        }
+        @media (max-width: 640px) {
+            .responsive-table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+            }
+            .responsive-table table {
+                width: 100%;
+                min-width: 500px;
+            }
+        }
+        .truncate {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+        .wrap-text {
+            white-space: normal;
+            word-wrap: break-word;
+        }
+    </style>
+    </style>
+</head>
+
+<body class="bg-gray-100 p-4 sm:p-8">
+    <div class="container mx-auto">
+        <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center">Case Handling</h1>
+
+        <div class="flex flex-wrap gap-2 mb-4 sm:mb-8">
+            <div id="number-gallery" class="flex flex-wrap gap-2"></div>
+            <button onclick="openModal('case', 'add')" class="bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base">Add Case</button>
+        </div>
+
+        <div id="case-info" class="hidden bg-white shadow-md rounded p-4 sm:p-6 mb-4 sm:mb-8">
+            <h2 class="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">Case #<span id="case-number"></span></h2>
+            <p class="text-sm sm:text-base"><strong>Title:</strong> <span id="case-title-display"></span></p>
+                        <p class="text-sm sm:text-base"><strong>responsible:</strong> <span id="case-responsible-display"></span></p>
+            <p class="text-sm sm:text-base"><strong>Description:</strong> <span id="case-description-display"></span></p>
+            <div class="flex flex-wrap gap-2 mt-2 sm:mt-4">
+                <button onclick="openModal('case', 'update')" class="bg-blue-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-blue-600 text-sm sm:text-base">Update Case</button>
+                <button onclick="openModal('case', 'delete')" class="bg-red-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-red-600 text-sm sm:text-base">Delete Case</button>
+            </div>
+        </div>
+
+   <div id="issues-table-container" class="hidden bg-white shadow-md rounded p-4 sm:p-6">
+        <h3 class="text-lg font-semibold mb-2 sm:mb-4">Issues</h3>
+        <div class="responsive-table">
+            <table id="issues-table" class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issue</th>
+                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Challenge</th>
+                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notes</th>
+                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsible</th>
+                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="issues-tbody" class="bg-white divide-y divide-gray-200"></tbody>
+            </table>
+        </div>
+        <button onclick="openModal('issue', 'add')" class="mt-2 sm:mt-4 bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base">Add Issue</button>
+    </div>
+    </div>
+
+    <div id="dynamicModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle" class="text-lg sm:text-xl font-semibold mb-2 sm:mb-4"></h2>
+            <div id="modalContent"></div>
+            <div id="modalButtons" class="mt-2 sm:mt-4"></div>
+        </div>
+    </div>
+
+
+    <script>
+        let cases = [
+    {
+        "number": 1,
+        "title": "Case 1: Analysis of Market Trends and Strategic Recommendations",
+        "responsible": "Person dfg",
+        "description": "This case involves a comprehensive analysis of current market trends across multiple industries. The objective is to develop strategic recommendations that can guide the company in achieving sustained growth and competitive advantage.",
+        "issues": [
+            {
+                "id": 1,
+                "issue": "Issue 1: Declining Sales in Core Markets",
+                "subject": "Subject 1: Market Penetration Challenges",
+                "challenge": "Challenge 1: The primary challenge is the declining sales in the company's core markets, driven by increased competition and changing consumer preferences. A detailed analysis of market penetration strategies is required to address this issue.",
+                "notes": "Notes 1: A detailed report on competitor activities and consumer behavior patterns has been compiled for review. The report suggests a potential need for revising the marketing and sales approach.",
+                "status": "Open",
+                "responsible": "Person A"
+            },
+            {
+                "id": 2,
+                "issue": "Issue 2: Supply Chain Disruptions",
+                "subject": "Subject 2: Operational Efficiency",
+                "challenge": "Challenge 2: The global supply chain disruptions have led to delays in product deliveries and increased costs. The challenge is to optimize the supply chain and mitigate these disruptions through strategic planning.",
+                "notes": "Notes 2: A task force has been established to evaluate alternative supply chain routes and partners. Preliminary findings suggest that diversifying suppliers could reduce the risk of future disruptions.",
+                "status": "In Progress",
+                "responsible": "Person B"
+            }
+        ]
+    },
+    {
+        "number": 2,
+        "title": "Case 2: Enhancing Customer Experience in the Digital Era",
+        "description": "This case focuses on improving the customer experience by leveraging digital technologies. The goal is to create a seamless and engaging experience for customers across all digital touchpoints, thereby increasing customer loyalty and retention.",
+        "issues": [
+            {
+                "id": 1,
+                "issue": "Issue 1: Low User Engagement on Digital Platforms",
+                "subject": "Subject 3: User Interface and Experience Design",
+                "challenge": "Challenge 3: The current digital platforms have low user engagement rates, which is affecting customer satisfaction. The challenge is to redesign the user interface and experience to make it more intuitive and user-friendly.",
+                "notes": "Notes 3: User feedback surveys have been conducted, and the results indicate that users find the platform difficult to navigate. A redesign plan is in progress to address these concerns.",
+                "status": "Closed",
+                "responsible": "Person C"
+            },
+            {
+                "id": 2,
+                "issue": "Issue 2: Integration of AI in Customer Service",
+                "subject": "Subject 4: AI and Automation",
+                "challenge": "Challenge 4: The integration of AI in customer service is expected to improve response times and personalize interactions. The challenge lies in effectively training the AI models to understand and respond to a wide range of customer inquiries.",
+                "notes": "Notes 4: Initial AI training has shown promising results, but further refinement is needed to handle complex queries. A phased implementation plan is recommended.",
+                "status": "In Progress",
+                "responsible": "Person D"
+            }
+        ]
+    },
+    {
+        "number": 3,
+        "title": "Case 3: Expansion into Emerging Markets",
+        "description": "This case examines the company's strategic approach to expanding into emerging markets. The focus is on understanding the unique challenges and opportunities in these markets, and developing tailored strategies to achieve successful market entry and growth.",
+        "issues": [
+            {
+                "id": 1,
+                "issue": "Issue 1: Regulatory Compliance in Emerging Markets",
+                "subject": "Subject 5: Legal and Regulatory Framework",
+                "challenge": "Challenge 5: Navigating the complex legal and regulatory environment in emerging markets is a significant challenge. The company needs to ensure compliance with local laws and regulations while maintaining operational efficiency.",
+                "notes": "Notes 5: A legal team has been assigned to conduct a thorough review of the regulatory landscape in key target markets. Initial findings indicate the need for local partnerships to navigate these challenges.",
+                "status": "Open",
+                "responsible": "Person E"
+            },
+            {
+                "id": 2,
+                "issue": "Issue 2: Cultural Differences and Consumer Behavior",
+                "subject": "Subject 6: Market Research and Consumer Insights",
+                "challenge": "Challenge 6: Understanding and adapting to cultural differences is crucial for success in emerging markets. The company needs to conduct in-depth market research to gain insights into local consumer behavior and preferences.",
+                "notes": "Notes 6: A series of focus groups and surveys have been conducted in key markets to gather insights into consumer behavior. The findings will inform the development of localized marketing strategies.",
+                "status": "In Progress",
+                "responsible": "Person F"
+            }
+        ]
+    }
+]
+;
+
+        let selectedCase = null;
+        let selectedIssueIndex = null;
+
+        function renderNumberGallery() {
+            const numberGallery = document.getElementById('number-gallery');
+            numberGallery.innerHTML = '';
+            cases.forEach((c) => {
+                const button = document.createElement('button');
+                button.textContent = c.number;
+                button.className = 'number-icon w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200';
+                button.onclick = () => selectCase(c.number);
+                numberGallery.appendChild(button);
+            });
+        }
+
+        function selectCase(caseNumber) {
+            selectedCase = cases.find(c => c.number === caseNumber);
+            if (selectedCase) {
+                document.getElementById('case-number').textContent = selectedCase.number;
+                document.getElementById('case-title-display').textContent = selectedCase.title;
+                                document.getElementById('case-responsible-display').textContent = selectedCase.responsible;
+                document.getElementById('case-description-display').textContent = selectedCase.description;
+                document.getElementById('issues-table-container').classList.remove('hidden');
+                renderIssuesTable();
+                document.getElementById('case-info').classList.remove('hidden');
+            }
+        }
+
+       function renderIssuesTable() {
+    const issuesTableBody = document.getElementById('issues-tbody');
+    issuesTableBody.innerHTML = '';
+    if (selectedCase && selectedCase.issues) {
+        selectedCase.issues.forEach((issue, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="px-6 py-4 text-sm text-gray-500">${issue.id}</td>
+                <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.issue}</td>
+                <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.subject}</td>
+                <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
+                <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.notes}</td>
+                <td class="px-6 py-4 text-sm text-gray-500">${issue.status}</td>
+                <td class="px-6 py-4 text-sm text-gray-500">${issue.responsible}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <button onclick="openModal('issue', 'update', ${index})" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Edit</button>
+                            <button onclick="openModal('issue', 'delete', ${index})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2">Delete</button>
+                        </td>
+            `;
+            issuesTableBody.appendChild(row);
+        });
+    }
+}
+
+
+        function openModal(type, action, index = null) {
+            const modal = document.getElementById('dynamicModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const modalButtons = document.getElementById('modalButtons');
+
+            modalTitle.textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+            modalContent.innerHTML = '';
+            modalButtons.innerHTML = '';
+
+            if (type === 'case') {
+                if (action === 'add' || action === 'update') {
+                    modalContent.innerHTML = `
+                        <input type="number" id="modal-case-number" class="w-full mb-2 p-2 border rounded" placeholder="Case Number" ${action === 'update' ? 'disabled' : ''}>
+                        <input type="text" id="modal-case-title" class="w-full mb-2 p-2 border rounded" placeholder="Case Title">
+                         <input type="text" id="modal-case-responsible" class="w-full mb-2 p-2 border rounded" placeholder="Case responsible">
+                        <textarea id="modal-case-description" class="w-full mb-2 p-2 border rounded" placeholder="Case Description"></textarea>
+                    `;
+                    if (action === 'update') {
+                        document.getElementById('modal-case-number').value = selectedCase.number;
+                        document.getElementById('modal-case-title').value = selectedCase.title;
+                        document.getElementById('modal-case-responsible').value = selectedCase.responsible;
+                        document.getElementById('modal-case-description').value = selectedCase.description;
+                    }
+                    modalButtons.innerHTML = `
+                        <button onclick="handleCase('${action}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">${action.charAt(0).toUpperCase() + action.slice(1)} Case</button>
+                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancel</button>
+                    `;
+                } else if (action === 'delete') {
+                    modalContent.innerHTML = '<p>Are you sure you want to delete this case?</p>';
+                    modalButtons.innerHTML = `
+                        <button onclick="handleCase('delete')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete Case</button>
+                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancel</button>
+                    `;
+                }
+            } else if (type === 'issue') {
+                if (action === 'add' || action === 'update') {
+                    modalContent.innerHTML = `
+                        <input type="text" id="modal-issue-text" class="w-full mb-2 p-2 border rounded" placeholder="Issue">
+                        <input type="text" id="modal-issue-subject" class="w-full mb-2 p-2 border rounded" placeholder="Subject">
+                        <textarea id="modal-issue-challenge" class="w-full mb-2 p-2 border rounded" placeholder="Challenge"></textarea>
+                        <textarea id="modal-issue-notes" class="w-full mb-2 p-2 border rounded" placeholder="Notes"></textarea>
+                        <select id="modal-issue-status" class="w-full mb-2 p-2 border rounded">
+                            <option value="" disabled selected>Status</option>
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                        <input type="text" id="modal-issue-responsible" class="w-full mb-2 p-2 border rounded" placeholder="Responsible">
+                    `;
+                    if (action === 'update') {
+                        const issue = selectedCase.issues[index];
+                        document.getElementById('modal-issue-text').value = issue.issue;
+                        document.getElementById('modal-issue-subject').value = issue.subject;
+                        document.getElementById('modal-issue-challenge').value = issue.challenge;
+                        document.getElementById('modal-issue-notes').value = issue.notes;
+                        document.getElementById('modal-issue-status').value = issue.status;
+                        document.getElementById('modal-issue-responsible').value = issue.responsible;
+                    }
+                    modalButtons.innerHTML = `
+                        <button onclick="handleIssue('${action}', ${index})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">${action.charAt(0).toUpperCase() + action.slice(1)} Issue</button>
+                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancel</button>
+                    `;
+                } else if (action === 'delete') {
+                    modalContent.innerHTML = '<p>Are you sure you want to delete this issue?</p>';
+                    modalButtons.innerHTML = `
+                        <button onclick="handleIssue('delete', ${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete Issue</button>
+                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancel</button>
+                    `;
+                }
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('dynamicModal').style.display = 'none';
+        }
+
+       async function handleCase(action) {
+    let data = {
+        action: action,
+        caseNumber: action === 'add' ? null : selectedCase.number
+    };
+
+    if (action === 'add' || action === 'update') {
+        const caseNumber = parseInt(document.getElementById('modal-case-number').value, 10);
+        const caseTitle = document.getElementById('modal-case-title').value;
+        const caseresponsible = document.getElementById('modal-case-responsible').value;
+        const caseDescription = document.getElementById('modal-case-description').value;
+
+        if (!caseNumber || !caseTitle || !caseDescription || !caseresponsible) {
+            alert('Please fill out all fields.');
+            return;
+        }
+
+        data = { ...data, number: caseNumber, title: caseTitle, responsible: caseresponsible,description: caseDescription };
+    }
+
+    try {
+        const response = await fetch('https://reqres.in/api/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+
+        if (action === 'add') {
+            cases.push({ ...data, issues: [] });
+        } else if (action === 'update') {
+            const index = cases.findIndex(c => c.number === data.number);
+            if (index !== -1) {
+                cases[index] = { ...cases[index], ...data };
+            }
+        } else if (action === 'delete') {
+            cases = cases.filter(c => c.number !== selectedCase.number);
+            selectedCase = null;
+            document.getElementById('case-info').classList.add('hidden');
+            document.getElementById('issues-table-container').classList.add('hidden');
+        }
+
+        renderNumberGallery();
+        if (selectedCase) {
+            selectCase(selectedCase.number);
+        }
+        closeModal();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
+}
+
+async function handleIssue(action, index) {
+    let data = {
+        action: action,
+        caseNumber: selectedCase.number
+    };
+
+    if (action === 'add' || action === 'update') {
+        const issueText = document.getElementById('modal-issue-text').value;
+        const issueSubject = document.getElementById('modal-issue-subject').value;
+        const issueChallenge = document.getElementById('modal-issue-challenge').value;
+        const issueNotes = document.getElementById('modal-issue-notes').value;
+        const issueStatus = document.getElementById('modal-issue-status').value;
+        const issueResponsible = document.getElementById('modal-issue-responsible').value;
+
+        if (!issueText || !issueSubject || !issueChallenge || !issueNotes || !issueStatus || !issueResponsible) {
+            alert('Please fill out all fields.');
+            return;
+        }
+
+        data = {
+            ...data,
+            issue: issueText,
+            subject: issueSubject,
+            challenge: issueChallenge,
+            notes: issueNotes,
+            status: issueStatus,
+            responsible: issueResponsible
+        };
+    }
+
+    if (action !== 'add') {
+        data.issueId = selectedCase.issues[index].id;
+    }
+
+    try {
+        const response = await fetch('https://hjgkhjk.free.beeceptor.com', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+
+        if (action === 'add') {
+            selectedCase.issues.push({ ...data, id: result.id });
+        } else if (action === 'update') {
+            selectedCase.issues[index] = { ...selectedCase.issues[index], ...data };
+        } else if (action === 'delete') {
+            selectedCase.issues.splice(index, 1);
+        }
+
+        renderIssuesTable();
+        closeModal();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
+}
+
+    renderNumberGallery();
+    </script>
+</body>
+</html>
