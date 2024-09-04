@@ -114,7 +114,7 @@
         "title": "מקרה 1: ניתוח מגמות שוק והמלצות אסטרטגיות",
         "responsible": "אדם dfg",
         "description": "מקרה זה כולל ניתוח מקיף של מגמות השוק הנוכחיות ברחבי תעשיות שונות. המטרה היא לפתח המלצות אסטרטגיות שיכולות להנחות את החברה להשגת צמיחה מתמשכת ויתרון תחרותי.",
-        "color":"#fdffa3",
+        "color":"#8d1c1c",
         "issues": [
             {
                 "id": 1,
@@ -166,7 +166,7 @@
         "number": 3,
         "title": "מקרה 3: הרחבה לשווקים מתפתחים",
         "description": "מקרה זה בוחן את הגישה האסטרטגית של החברה להתרחבות לשווקים המתפתחים. המוקד הוא להבין את האתגרים וההזדמנויות הייחודיות בשווקים אלה, ולפתח אסטרטגיות מותאמות להשגת כניסה מוצלחת לשוק וצמיחה.",
-        "color":"#8d8f0f",
+        "color":"#fdffa3",
         "issues": [
             {
                 "id": 1,
@@ -195,6 +195,7 @@
 
         let selectedCase = null;
         let selectedIssueIndex = null;
+
 // Function to calculate luminance of a color
 function calculateLuminance(hex) {
     // Remove the hash at the start if it's there
@@ -210,26 +211,27 @@ function calculateLuminance(hex) {
 
     return luminance;
 }
-        function renderNumberGallery() {
-            const numberGallery = document.getElementById('number-gallery');
-            numberGallery.innerHTML = '';
-            cases.forEach(c => {
-    const div = document.createElement('div');
-    div.className = 'number-icon w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200';
-    
-    const backgroundColor = c.color || '#FFFFFF'; // Default to white if no color is provided
-    div.style.backgroundColor = backgroundColor;
+function renderNumberGallery() {
+    const numberGallery = document.getElementById('number-gallery');
+    numberGallery.innerHTML = '';
 
-    // Determine text color based on luminance
-    const luminance = calculateLuminance(backgroundColor.replace('#', ''));
-    div.style.color = luminance < 140 ? '#FFFFFF' : '#000000'; // Bright text for dark backgrounds, dark text for bright backgrounds
-    
-    div.textContent = c.number;
-    div.addEventListener('click', () => showCaseInfo(c));
-    document.getElementById('number-gallery').appendChild(div);
-});
+    cases.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'number-icon w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200';
+        
+        const backgroundColor = c.color || '#FFFFFF'; // Default to white if no color is provided
+        div.style.backgroundColor = backgroundColor;
 
-        }
+        // Determine text color based on luminance
+        const luminance = calculateLuminance(backgroundColor.replace('#', ''));
+        div.style.color = luminance < 140 ? '#FFFFFF' : '#000000'; // Bright text for dark backgrounds, dark text for bright backgrounds
+        
+        div.textContent = c.number;
+        div.addEventListener('click', () => selectCase(c.number)); // Call selectCase with the case number
+        numberGallery.appendChild(div);
+    });
+}
+
 
         function selectCase(caseNumber) {
             selectedCase = cases.find(c => c.number === caseNumber);
