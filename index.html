@@ -7,34 +7,34 @@
     <title>מעקב התקדמות טפסים</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-#number-gallery {
-    display: flex; /* Ensure flex display */
-    flex-wrap: wrap; /* Allow wrapping of elements */
-    gap: 0.5rem; /* Adjust gap as needed */
-}
+        #number-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
 
-.number-icon {
-    cursor: pointer; /* Changes the cursor to a pointer when hovering */
-    display: flex; /* Enables Flexbox layout */
-    justify-content: center; /* Centers content horizontally */
-    align-items: center; /* Centers content vertically */
-    width: 2.5rem; /* Width of the icon */
-    height: 2.5rem; /* Height of the icon */
-    border-radius: 50%; /* Make it circular */
-    border: 1px solid #ccc; /* Adds a border */
-    transition: background-color 0.3s, transform 0.3s, filter 0.3s; /* Smooth transition */
-}
+        .number-icon {
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            transition: background-color 0.3s, transform 0.3s, filter 0.3s;
+        }
 
-.number-icon:hover {
-    background-color: #e0e0e0; /* Change background color on hover */
-    transform: scale(1.1); /* Scales the element to 110% of its size */
-}
+        .number-icon:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.1);
+        }
 
-/* Apply blur to all other number-icon elements on hover */
-#number-gallery:hover .number-icon:not(:hover) {
-    filter: blur(1px); /* Apply blur effect to non-hovered elements */
-    transition: filter 0.3s; /* Smooth transition for blur effect */
-}
+        #number-gallery:hover .number-icon:not(:hover) {
+            filter: blur(1px);
+            transition: filter 0.3s;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -46,6 +46,7 @@
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
         }
+
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -54,6 +55,7 @@
             width: 90%;
             max-width: 500px;
         }
+
         @media (max-width: 640px) {
             .responsive-table {
                 display: block;
@@ -65,18 +67,21 @@
                 min-width: 500px;
             }
         }
+
         .truncate {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 200px;
         }
+
         .wrap-text {
             white-space: normal;
             word-wrap: break-word;
         }
+
         .header {
-            position:static;
+            position: static;
             top: 0;
             z-index: 1000;
             background-color: #ffffff;
@@ -117,8 +122,6 @@
             width: 100%;
         }
         
-        
-        
         .footer {
             text-align: center;
             padding: 1rem;
@@ -126,6 +129,7 @@
             border-top: 1px solid #e5e7eb;
             margin-top: 2rem;
         }
+
         .color-picker-wrapper {
             display: flex;
             align-items: center;
@@ -147,9 +151,8 @@
         
         #modal-case-color {
             position: absolute;
-            display:none;
+            display: none;
         }
-    </style>
     </style>
 </head>
 
@@ -163,22 +166,14 @@
                     </div>
                     <h1 class="text-2xl font-bold">מערכת מעקב טפסים</h1>
                 </div>
-
                 <nav class="desktop-menu">
-                    <ul class="flex space-x-6">
-
-                    </ul>
+                    <ul class="flex space-x-6"></ul>
                 </nav>
-                
-                
             </div>
-
         </div>
     </header>
     <br>
     <div class="container mx-auto">
-        
-
         <div class="flex flex-wrap gap-2 mb-4 sm:mb-8">
             <div id="number-gallery" class="flex flex-wrap gap-2"></div>
             <button onclick="openModal('case', 'add')" class="bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base">הוספת טופס</button>
@@ -187,7 +182,7 @@
         <div id="case-info" class="hidden bg-white shadow-md rounded p-4 sm:p-6 mb-4 sm:mb-8">
             <h2 class="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">טופס #<span id="case-number"></span></h2>
             <p class="text-sm sm:text-base"><strong>כותרת:</strong> <span id="case-title-display"></span></p>
-                        <p class="text-sm sm:text-base"><strong>אחראי:</strong> <span id="case-responsible-display"></span></p>
+            <p class="text-sm sm:text-base"><strong>אחראי:</strong> <span id="case-responsible-display"></span></p>
             <p class="text-sm sm:text-base"><strong>תיאור:</strong> <span id="case-description-display"></span></p>
             <div class="flex flex-wrap gap-2 mt-2 sm:mt-4">
                 <button onclick="openModal('case', 'update')" class="bg-blue-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-blue-600 text-sm sm:text-base">עדכן טופס</button>
@@ -195,27 +190,27 @@
             </div>
         </div>
 
-   <div id="issues-table-container" class="hidden bg-white shadow-md rounded p-4 sm:p-6">
-        <h3 class="text-lg font-semibold mb-2 sm:mb-4">משימות</h3>
-        <div class="responsive-table">
-            <table id="issues-table" class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מזהה</th>
-                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">משימה</th>
-                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">נושא</th>
-                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">אתגר</th>
-                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">הערות</th>
-                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מצב</th>
-                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">אחראי</th>
-                        <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">פעולה</th>
-                    </tr>
-                </thead>
-                <tbody id="issues-tbody" class="bg-white divide-y divide-gray-200"></tbody>
-            </table>
+        <div id="issues-table-container" class="hidden bg-white shadow-md rounded p-4 sm:p-6">
+            <h3 class="text-lg font-semibold mb-2 sm:mb-4">משימות</h3>
+            <div class="responsive-table">
+                <table id="issues-table" class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מזהה</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">משימה</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">נושא</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">אתגר</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">הערות</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מצב</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">אחראי</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">פעולה</th>
+                        </tr>
+                    </thead>
+                    <tbody id="issues-tbody" class="bg-white divide-y divide-gray-200"></tbody>
+                </table>
+            </div>
+            <button onclick="openModal('issue', 'add')" class="mt-2 sm:mt-4 bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base">הוספת משימה</button>
         </div>
-        <button onclick="openModal('issue', 'add')" class="mt-2 sm:mt-4 bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base">הוספת משימה</button>
-    </div>
     </div>
 
     <div id="dynamicModal" class="modal">
@@ -225,143 +220,113 @@
             <div id="modalButtons" class="mt-2 sm:mt-4"></div>
         </div>
     </div>
+
     <footer class="footer">
         <p>&copy; 2024 מערכת מעקב טפסים. כל הזכויות שמורות.</p>
     </footer>
 
     <script>
+        // Fetch data from API
+        async function fetchData() {
+            try {
+                const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'get_all' })
+                });
 
-        let cases = [
-    {
-        "number": 1,
-        "title": "מקרה 1: ניתוח מגמות שוק והמלצות אסטרטגיות",
-        "responsible": "אדם dfg",
-        "description": "מקרה זה כולל ניתוח מקיף של מגמות השוק הנוכחיות ברחבי תעשיות שונות. המטרה היא לפתח המלצות אסטרטגיות שיכולות להנחות את החברה להשגת צמיחה מתמשכת ויתרון תחרותי.",
-        "color":"#8d1c1c",
-        "issues": [
-            {
-                "id": 1,
-                "issue": "בעיה 1: ירידה במכירות בשווקים הליבה",
-                "subject": "נושא 1: אתגרי חדירה לשוק",
-                "challenge": "אתגר 1: האתגר העיקרי הוא הירידה במכירות בשווקים הליבה של החברה, המנוגדת לתחרות גוברת ושינוי העדפות הצרכנים. נדרש ניתוח מעמיק של אסטרטגיות חדירה לשוק כדי להתמודד עם בעיה זו.",
-                "notes": "הערות 1: דו\"ח מפורט על פעילויות מתחרים ודפוסי התנהגות צרכנית הוכן לסקירה. הדו\"ח מציע צורך פוטנציאלי בשינוי הגישה השיווקית והמכירתית.",
-                "status": "Open",
-                "responsible": "אדם A"
-            },
-            {
-                "id": 2,
-                "issue": "בעיה 2: בעיות בשרשרת האספקה",
-                "subject": "נושא 2: יעילות תפעולית",
-                "challenge": "אתגר 2: ההפרעות הגלובליות בשרשרת האספקה הובילו לעיכובים במשלוחי מוצרים ולעלויות מוגברות. האתגר הוא למטב את שרשרת האספקה ולהקל על ההפרעות הללו באמצעות תכנון אסטרטגי.",
-                "notes": "הערות 2: הוקמה קבוצת עבודה להעריך נתיבי ואנשי קשר חלופיים בשרשרת האספקה. הממצאים הראשוניים מצביעים על כך שגיוון הספקים יכול להפחית את הסיכון להפרעות בעתיד.",
-                "status": "In Progress",
-                "responsible": "אדם B"
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                return processApiData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
             }
-        ]
-    },
-    {
-        "number": 2,
-        "title": "מקרה 2: שיפור חווית הלקוח בעידן הדיגיטלי",
-        "description": "מקרה זה מתמקד בשיפור חווית הלקוח באמצעות ניצול טכנולוגיות דיגיטליות. המטרה היא ליצור חוויה חלקה ומרתקת עבור הלקוחות בכל נקודות המגע הדיגיטליות, ובכך להגדיל את נאמנות הלקוחות ושימורם.",
-        "color":"#2d9a4e",
-        "issues": [
-            {
-                "id": 1,
-                "issue": "בעיה 1: מעורבות נמוכה של משתמשים בפלטפורמות דיגיטליות",
-                "subject": "נושא 3: עיצוב ממשק וחווית המשתמש",
-                "challenge": "אתגר 3: הפלטפורמות הדיגיטליות הנוכחיות מציגות שיעורי מעורבות נמוכים, מה שמשפיע על שביעות רצון הלקוחות. האתגר הוא לעצב מחדש את ממשק המשתמש והחוויה כדי להפוך אותו ליותר אינטואיטיבי וידידותי למשתמש.",
-                "notes": "הערות 3: נערכו סקרים לקבלת משוב מהמשתמשים, והתוצאות מצביעות על כך שהמשתמשים מוצאים את הפלטפורמה קשה לניווט. תכנית עיצוב מחדש נמצאת בתהליך.",
-                "status": "Closed",
-                "responsible": "אדם C"
-            },
-            {
-                "id": 2,
-                "issue": "בעיה 2: שילוב של AI בשירות הלקוחות",
-                "subject": "נושא 4: AI ואוטומציה",
-                "challenge": "אתגר 4: שילוב של AI בשירות הלקוחות צפוי לשפר את זמני התגובה ולפרסונליזציה של אינטראקציות. האתגר טמון בהכשרת מודלי ה-AI בצורה אפקטיבית כדי להבין ולהגיב למגוון רחב של פניות לקוחות.",
-                "notes": "הערות 4: הכשרה ראשונית של AI הראתה תוצאות מבטיחות, אך נדרשת עדנה נוספת כדי להתמודד עם פניות מורכבות. מומלץ תכנית יישום מדורגת.",
-                "status": "In Progress",
-                "responsible": "אדם D"
-            }
-        ]
-    },
-    {
-        "number": 3,
-        "title": "מקרה 3: הרחבה לשווקים מתפתחים",
-        "description": "מקרה זה בוחן את הגישה האסטרטגית של החברה להתרחבות לשווקים המתפתחים. המוקד הוא להבין את האתגרים וההזדמנויות הייחודיות בשווקים אלה, ולפתח אסטרטגיות מותאמות להשגת כניסה מוצלחת לשוק וצמיחה.",
-        "color":"#fdffa3",
-        "issues": [
-            {
-                "id": 1,
-                "issue": "בעיה 1: ציות רגולטורי בשווקים מתפתחים",
-                "subject": "נושא 5: מסגרת חוקית ורגולטורית",
-                "challenge": "אתגר 5: ניווט בסביבה המשפטית והרגולטורית המורכבת בשווקים המתפתחים הוא אתגר משמעותי. החברה צריכה להבטיח עמידה בחוקים ובתקנות המקומיים תוך שמירה על יעילות תפעולית.",
-                "notes": "הערות 5: צוות משפטי הוקצה לערוך סקירה מעמיקה של הנוף הרגולטורי בשווקים המפתחיים המובילים. הממצאים הראשוניים מצביעים על צורך בשותפויות מקומיות כדי לנווט את האתגרים הללו.",
-                "status": "Open",
-                "responsible": "אדם E"
-            },
-            {
-                "id": 2,
-                "issue": "בעיה 2: הבדלים תרבותיים והתנהגות צרכנית",
-                "subject": "נושא 6: מחקר שוק והבנה צרכנית",
-                "challenge": "אתגר 6: הבנה והתאמה להבדלים תרבותיים הם קריטיים להצלחה בשווקים המתפתחים. החברה צריכה לערוך מחקר שוק מעמיק כדי לקבל תובנות על התנהגות והעדפות הצרכנים המקומיים.",
-                "notes": "הערות 6: סדרת קבוצות מיקוד וסקרים נערכו בשווקים המפתחיים כדי לאסוף תובנות על התנהגות הצרכנים. הממצאים יידעו את פיתוח האסטרטגיות השיווקיות המקומיות.",
-                "status": "In Progress",
-                "responsible": "אדם F"
-            }
-        ]
-    }
-]
+        }
 
-;
+        // Process API data into the required format
+        function processApiData(apiData) {
+            const cases = apiData.filter(item => !item.FatherID).map(caseItem => ({
+                number: parseInt(caseItem.FormNumber),
+                title: caseItem.Title,
+                responsible: caseItem.Responsible || '',
+                description: caseItem.Notes ? stripHtml(caseItem.Notes) : '',
+                color: caseItem.Color || '#FFFFFF',
+                issues: []
+            }));
 
+            apiData.filter(item => item.FatherID).forEach(issueItem => {
+                const parentCase = cases.find(c => c.number === parseInt(issueItem.FormNumber));
+                if (parentCase) {
+                    parentCase.issues.push({
+                        id: issueItem.ID,
+                        issue: issueItem.Title,
+                        subject: '',
+                        challenge: stripHtml(issueItem.Challenge),
+                        notes: stripHtml(issueItem.Notes),
+                        status: issueItem.Status,
+                        responsible: issueItem.Responsible
+                    });
+                }
+            });
 
+            return cases;
+        }
+
+        // Helper function to strip HTML tags
+        function stripHtml(html) {
+            const tmp = document.createElement('DIV');
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || '';
+        }
+
+        let cases = [];
         let selectedCase = null;
         let selectedIssueIndex = null;
 
-// Function to calculate luminance of a color
-function calculateLuminance(hex) {
-    // Remove the hash at the start if it's there
-    hex = hex.replace(/^#/, '');
+        async function initializeApp() {
+            cases = await fetchData();
+            renderNumberGallery();
+        }
 
-    // Parse the r, g, b values
-    let r = parseInt(hex.substring(0, 2), 16);
-    let g = parseInt(hex.substring(2, 4), 16);
-    let b = parseInt(hex.substring(4, 6), 16);
+        // Function to calculate luminance of a color
+        function calculateLuminance(hex) {
+            hex = hex.replace(/^#/, '');
+            let r = parseInt(hex.substring(0, 2), 16);
+            let g = parseInt(hex.substring(2, 4), 16);
+            let b = parseInt(hex.substring(4, 6), 16);
+            return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        }
 
-    // Calculate the relative luminance
-    let luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        function renderNumberGallery() {
+            const numberGallery = document.getElementById('number-gallery');
+            numberGallery.innerHTML = '';
 
-    return luminance;
-}
-function renderNumberGallery() {
-    const numberGallery = document.getElementById('number-gallery');
-    numberGallery.innerHTML = '';
+            cases.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'number-icon w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200';
+                
+                const backgroundColor = c.color || '#FFFFFF';
+                div.style.backgroundColor = backgroundColor;
 
-    cases.forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'number-icon w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200';
-        
-        const backgroundColor = c.color || '#FFFFFF'; // Default to white if no color is provided
-        div.style.backgroundColor = backgroundColor;
-
-        // Determine text color based on luminance
-        const luminance = calculateLuminance(backgroundColor.replace('#', ''));
-        div.style.color = luminance < 140 ? '#FFFFFF' : '#000000'; // Bright text for dark backgrounds, dark text for bright backgrounds
-        
-        div.textContent = c.number;
-        div.addEventListener('click', () => selectCase(c.number)); // Call selectCase with the case number
-        numberGallery.appendChild(div);
-    });
-}
-
+                const luminance = calculateLuminance(backgroundColor.replace('#', ''));
+                div.style.color = luminance < 140 ? '#FFFFFF' : '#000000';
+                
+                div.textContent = c.number;
+                div.addEventListener('click', () => selectCase(c.number));
+                numberGallery.appendChild(div);
+            });
+        }
 
         function selectCase(caseNumber) {
             selectedCase = cases.find(c => c.number === caseNumber);
             if (selectedCase) {
                 document.getElementById('case-number').textContent = selectedCase.number;
                 document.getElementById('case-title-display').textContent = selectedCase.title;
-                                document.getElementById('case-responsible-display').textContent = selectedCase.responsible;
+                document.getElementById('case-responsible-display').textContent = selectedCase.responsible;
                 document.getElementById('case-description-display').textContent = selectedCase.description;
                 document.getElementById('issues-table-container').classList.remove('hidden');
                 renderIssuesTable();
@@ -369,251 +334,235 @@ function renderNumberGallery() {
             }
         }
 
-       function renderIssuesTable() {
-    const issuesTableBody = document.getElementById('issues-tbody');
-    issuesTableBody.innerHTML = '';
-    if (selectedCase && selectedCase.issues) {
-        selectedCase.issues.forEach((issue, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="px-6 py-4 text-sm text-gray-500">${issue.id}</td>
-                <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.issue}</td>
-                <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.subject}</td>
-                <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
-                <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.notes}</td>
-                <td class="px-6 py-4 text-sm text-gray-500">${issue.status}</td>
-                <td class="px-6 py-4 text-sm text-gray-500">${issue.responsible}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <button onclick="openModal('issue', 'update', ${index})" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">עריכה</button>
-                            <button onclick="openModal('issue', 'delete', ${index})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2">מחיקה</button>
-                        </td>
-            `;
-            issuesTableBody.appendChild(row);
-        });
+    function renderIssuesTable() {
+        const issuesTableBody = document.getElementById('issues-tbody');
+        issuesTableBody.innerHTML = '';
+        if (selectedCase && selectedCase.issues) {
+            selectedCase.issues.forEach((issue, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 text-sm text-gray-500">${issue.id}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.issue}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.subject}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.notes}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500">${issue.status}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500">${issue.responsible}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <button onclick="openModal('issue', 'update', ${index})" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">עריכה</button>
+                        <button onclick="openModal('issue', 'delete', ${index})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2">מחיקה</button>
+                    </td>
+                `;
+                issuesTableBody.appendChild(row);
+            });
+        }
     }
-}
 
+    function openModal(type, action, index = null) {
+        const modal = document.getElementById('dynamicModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const modalButtons = document.getElementById('modalButtons');
 
-        function openModal(type, action, index = null) {
-            const modal = document.getElementById('dynamicModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalContent = document.getElementById('modalContent');
-            const modalButtons = document.getElementById('modalButtons');
+        modalTitle.textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+        modalContent.innerHTML = '';
+        modalButtons.innerHTML = '';
 
-            modalTitle.textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} ${type.charAt(0).toUpperCase() + type.slice(1)}`;
-            modalContent.innerHTML = '';
-            modalButtons.innerHTML = '';
-
-            if (type === 'case') {
-                if (action === 'add' || action === 'update') {
-                    modalContent.innerHTML = `
-<input type="number" id="modal-case-number" class="w-full mb-2 p-2 border rounded" placeholder="מספר טופס" ${action === 'update' ? 'disabled' : ''}>
-<input type="text" id="modal-case-title" class="w-full mb-2 p-2 border rounded" placeholder="כותרת טופס">
-<input type="text" id="modal-case-responsible" class="w-full mb-2 p-2 border rounded" placeholder="אחראי על הטופס">
-<textarea id="modal-case-description" class="w-full mb-2 p-2 border rounded" placeholder="תיאור טופס"></textarea>
-<div class="color-picker-wrapper">
-    <div id="color-preview" class="color-preview"></div>
-    <label for="modal-case-color" class="color-picker-label text-sm text-gray-600">בחר צבע לטופס</label>
-    <input type="color" id="modal-case-color" value="#FFFFFF">
-</div>
-                    `;
-                    if (action === 'update') {
-                        document.getElementById('modal-case-number').value = selectedCase.number;
-                        document.getElementById('modal-case-title').value = selectedCase.title;
-                        document.getElementById('modal-case-responsible').value = selectedCase.responsible;
-                        document.getElementById('modal-case-description').value = selectedCase.description;
-                        document.getElementById('modal-case-color').value = selectedCase.color || '#FFFFFF';
-                    }
-                                     // Set up color picker interaction
-                                     const colorPicker = document.getElementById('modal-case-color');
-                    const colorPreview = document.getElementById('color-preview');
-                    
-                    colorPreview.style.backgroundColor = colorPicker.value;
-                    
-                    colorPreview.addEventListener('click', () => colorPicker.click());
-                    
-                    colorPicker.addEventListener('input', (event) => {
-                        colorPreview.style.backgroundColor = event.target.value;
-                    });
-                    modalButtons.innerHTML = `
-                        <button onclick="handleCase('${action}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">${action.charAt(0).toUpperCase() + action.slice(1)} Case</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
-                    `;
-                } else if (action === 'delete') {
-                    modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את הטופס הזה?</p>';
-                    modalButtons.innerHTML = `
-                        <button onclick="handleCase('delete')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">מחק טופס סופית</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
-                    `;
+        if (type === 'case') {
+            if (action === 'add' || action === 'update') {
+                modalContent.innerHTML = `
+                    <input type="number" id="modal-case-number" class="w-full mb-2 p-2 border rounded" placeholder="מספר טופס" ${action === 'update' ? 'disabled' : ''}>
+                    <input type="text" id="modal-case-title" class="w-full mb-2 p-2 border rounded" placeholder="כותרת טופס">
+                    <input type="text" id="modal-case-responsible" class="w-full mb-2 p-2 border rounded" placeholder="אחראי על הטופס">
+                    <textarea id="modal-case-description" class="w-full mb-2 p-2 border rounded" placeholder="תיאור טופס"></textarea>
+                    <div class="color-picker-wrapper">
+                        <div id="color-preview" class="color-preview"></div>
+                        <label for="modal-case-color" class="color-picker-label text-sm text-gray-600">בחר צבע לטופס</label>
+                        <input type="color" id="modal-case-color" value="#FFFFFF">
+                    </div>
+                `;
+                if (action === 'update') {
+                    document.getElementById('modal-case-number').value = selectedCase.number;
+                    document.getElementById('modal-case-title').value = selectedCase.title;
+                    document.getElementById('modal-case-responsible').value = selectedCase.responsible;
+                    document.getElementById('modal-case-description').value = selectedCase.description;
+                    document.getElementById('modal-case-color').value = selectedCase.color || '#FFFFFF';
                 }
-            } else if (type === 'issue') {
-                if (action === 'add' || action === 'update') {
-                    modalContent.innerHTML = `
-<input type="text" id="modal-issue-text" class="w-full mb-2 p-2 border rounded" placeholder="משימה">
-<input type="text" id="modal-issue-subject" class="w-full mb-2 p-2 border rounded" placeholder="נושא">
-<textarea id="modal-issue-challenge" class="w-full mb-2 p-2 border rounded" placeholder="אתגר"></textarea>
-<textarea id="modal-issue-notes" class="w-full mb-2 p-2 border rounded" placeholder="הערות"></textarea>
-<select id="modal-issue-status" class="w-full mb-2 p-2 border rounded">
-    <option value="" disabled selected>סטטוס</option>
-    <option value="Open">פתוח</option>
-    <option value="In Progress">בתהליך</option>
-    <option value="Resolved">נפתר</option>
-    <option value="Closed">סגור</option>
-</select>
-<input type="text" id="modal-issue-responsible" class="w-full mb-2 p-2 border rounded" placeholder="אחראי">
-                    `;
-                    if (action === 'update') {
-                        const issue = selectedCase.issues[index];
-                        document.getElementById('modal-issue-text').value = issue.issue;
-                        document.getElementById('modal-issue-subject').value = issue.subject;
-                        document.getElementById('modal-issue-challenge').value = issue.challenge;
-                        document.getElementById('modal-issue-notes').value = issue.notes;
-                        document.getElementById('modal-issue-status').value = issue.status;
-                        document.getElementById('modal-issue-responsible').value = issue.responsible;
-                    }
-                    modalButtons.innerHTML = `
-                        <button onclick="handleIssue('${action}', ${index})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">${action.charAt(0).toUpperCase() + action.slice(1)} Issue</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
-                    `;
-                } else if (action === 'delete') {
-                    modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את המשימה הזו?</p>';
-                    modalButtons.innerHTML = `
-                        <button onclick="handleIssue('delete', ${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">מחק משימה</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
-                    `;
+                const colorPicker = document.getElementById('modal-case-color');
+                const colorPreview = document.getElementById('color-preview');
+                
+                colorPreview.style.backgroundColor = colorPicker.value;
+                
+                colorPreview.addEventListener('click', () => colorPicker.click());
+                
+                colorPicker.addEventListener('input', (event) => {
+                    colorPreview.style.backgroundColor = event.target.value;
+                });
+                modalButtons.innerHTML = `
+                    <button onclick="handleCase('${action}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">${action.charAt(0).toUpperCase() + action.slice(1)} Case</button>
+                    <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
+                `;
+            } else if (action === 'delete') {
+                modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את הטופס הזה?</p>';
+                modalButtons.innerHTML = `
+                    <button onclick="handleCase('delete')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">מחק טופס סופית</button>
+                    <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
+                `;
+            }
+        } else if (type === 'issue') {
+            if (action === 'add' || action === 'update') {
+                modalContent.innerHTML = `
+                    <input type="text" id="modal-issue-text" class="w-full mb-2 p-2 border rounded" placeholder="משימה">
+                    <input type="text" id="modal-issue-subject" class="w-full mb-2 p-2 border rounded" placeholder="נושא">
+                    <textarea id="modal-issue-challenge" class="w-full mb-2 p-2 border rounded" placeholder="אתגר"></textarea>
+                    <textarea id="modal-issue-notes" class="w-full mb-2 p-2 border rounded" placeholder="הערות"></textarea>
+                    <select id="modal-issue-status" class="w-full mb-2 p-2 border rounded">
+                        <option value="" disabled selected>סטטוס</option>
+                        <option value="Open">פתוח</option>
+                        <option value="In Progress">בתהליך</option>
+                        <option value="Resolved">נפתר</option>
+                        <option value="Closed">סגור</option>
+                    </select>
+                    <input type="text" id="modal-issue-responsible" class="w-full mb-2 p-2 border rounded" placeholder="אחראי">
+                `;
+                if (action === 'update') {
+                    const issue = selectedCase.issues[index];
+                    document.getElementById('modal-issue-text').value = issue.issue;
+                    document.getElementById('modal-issue-subject').value = issue.subject;
+                    document.getElementById('modal-issue-challenge').value = issue.challenge;
+                    document.getElementById('modal-issue-notes').value = issue.notes;
+                    document.getElementById('modal-issue-status').value = issue.status;
+                    document.getElementById('modal-issue-responsible').value = issue.responsible;
                 }
+                modalButtons.innerHTML = `
+                    <button onclick="handleIssue('${action}', ${index})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">${action.charAt(0).toUpperCase() + action.slice(1)} Issue</button>
+                    <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
+                `;
+            } else if (action === 'delete') {
+                modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את המשימה הזו?</p>';
+                modalButtons.innerHTML = `
+                    <button onclick="handleIssue('delete', ${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">מחק משימה</button>
+                    <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
+                `;
             }
-
-            modal.style.display = 'block';
         }
 
-        function closeModal() {
-            document.getElementById('dynamicModal').style.display = 'none';
-        }
-
-       async function handleCase(action) {
-    let data = {
-        action: action,
-        caseNumber: action === 'add' ? null : selectedCase.number
-    };
-
-    if (action === 'add' || action === 'update') {
-        const caseNumber = parseInt(document.getElementById('modal-case-number').value, 10);
-        const caseTitle = document.getElementById('modal-case-title').value;
-        const caseresponsible = document.getElementById('modal-case-responsible').value;
-        const caseDescription = document.getElementById('modal-case-description').value;
-        const caseColor = document.getElementById('modal-case-color').value;
-
-        if (!caseNumber || !caseTitle || !caseDescription || !caseresponsible) {
-            alert('Please fill out all fields.');
-            return;
-        }
-
-        data = { ...data, number: caseNumber, title: caseTitle, responsible: caseresponsible,description: caseDescription, color: caseColor};
+        modal.style.display = 'block';
     }
 
-    try {
-        const response = await fetch('https://reqres.in/api/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const result = await response.json();
-
-        if (action === 'add') {
-            cases.push({ ...data, issues: [] });
-        } else if (action === 'update') {
-            const index = cases.findIndex(c => c.number === data.number);
-            if (index !== -1) {
-                cases[index] = { ...cases[index], ...data };
-            }
-        } else if (action === 'delete') {
-            cases = cases.filter(c => c.number !== selectedCase.number);
-            selectedCase = null;
-            document.getElementById('case-info').classList.add('hidden');
-            document.getElementById('issues-table-container').classList.add('hidden');
-        }
-
-        renderNumberGallery();
-        if (selectedCase) {
-            selectCase(selectedCase.number);
-        }
-        closeModal();
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
+    function closeModal() {
+        document.getElementById('dynamicModal').style.display = 'none';
     }
-}
 
-async function handleIssue(action, index) {
-    let data = {
-        action: action,
-        caseNumber: selectedCase.number
-    };
-
-    if (action === 'add' || action === 'update') {
-        const issueText = document.getElementById('modal-issue-text').value;
-        const issueSubject = document.getElementById('modal-issue-subject').value;
-        const issueChallenge = document.getElementById('modal-issue-challenge').value;
-        const issueNotes = document.getElementById('modal-issue-notes').value;
-        const issueStatus = document.getElementById('modal-issue-status').value;
-        const issueResponsible = document.getElementById('modal-issue-responsible').value;
-
-        if (!issueText || !issueSubject || !issueChallenge || !issueNotes || !issueStatus || !issueResponsible) {
-            alert('Please fill out all fields.');
-            return;
-        }
-
-        data = {
-            ...data,
-            issue: issueText,
-            subject: issueSubject,
-            challenge: issueChallenge,
-            notes: issueNotes,
-            status: issueStatus,
-            responsible: issueResponsible
+    async function handleCase(action) {
+        let data = {
+            action: action,
+            caseNumber: action === 'add' ? null : selectedCase.number
         };
-    }
 
-    if (action !== 'add') {
-        data.issueId = selectedCase.issues[index].id;
-    }
+        if (action === 'add' || action === 'update') {
+            const caseNumber = parseInt(document.getElementById('modal-case-number').value, 10);
+            const caseTitle = document.getElementById('modal-case-title').value;
+            const caseResponsible = document.getElementById('modal-case-responsible').value;
+            const caseDescription = document.getElementById('modal-case-description').value;
+            const caseColor = document.getElementById('modal-case-color').value;
 
-    try {
-        const response = await fetch('https://reqres.in/api/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
+            if (!caseNumber || !caseTitle || !caseDescription || !caseResponsible) {
+                alert('Please fill out all fields.');
+                return;
+            }
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+            data = { ...data, number: caseNumber, title: caseTitle, responsible: caseResponsible, description: caseDescription, color: caseColor };
         }
 
-        const result = await response.json();
+        try {
+            const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
 
-        if (action === 'add') {
-            selectedCase.issues.push({ ...data, id: result.id });
-        } else if (action === 'update') {
-            selectedCase.issues[index] = { ...selectedCase.issues[index], ...data };
-        } else if (action === 'delete') {
-            selectedCase.issues.splice(index, 1);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            await response.json();
+
+            // Refresh data after update
+            cases = await fetchData();
+            renderNumberGallery();
+            if (selectedCase) {
+                selectCase(selectedCase.number);
+            }
+            closeModal();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    }
+
+    async function handleIssue(action, index) {
+        let data = {
+            action: action,
+            caseNumber: selectedCase.number
+        };
+
+        if (action === 'add' || action === 'update') {
+            const issueText = document.getElementById('modal-issue-text').value;
+            const issueSubject = document.getElementById('modal-issue-subject').value;
+            const issueChallenge = document.getElementById('modal-issue-challenge').value;
+            const issueNotes = document.getElementById('modal-issue-notes').value;
+            const issueStatus = document.getElementById('modal-issue-status').value;
+            const issueResponsible = document.getElementById('modal-issue-responsible').value;
+
+            if (!issueText || !issueSubject || !issueChallenge || !issueNotes || !issueStatus || !issueResponsible) {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            data = {
+                ...data,
+                issue: issueText,
+                subject: issueSubject,
+                challenge: issueChallenge,
+                notes: issueNotes,
+                status: issueStatus,
+                responsible: issueResponsible
+            };
         }
 
-        renderIssuesTable();
-        closeModal();
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
-    }
-}
+        if (action !== 'add') {
+            data.issueId = selectedCase.issues[index].id;
+        }
 
-    renderNumberGallery();
-    </script>
+        try {
+            const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            await response.json();
+
+            // Refresh data after update
+            cases = await fetchData();
+            if (selectedCase) {
+                selectCase(selectedCase.number);
+            }
+            renderIssuesTable();
+            closeModal();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    }
+
+    // Call initializeApp when the page loads
+    window.addEventListener('load', initializeApp);
+</script>
 </body>
 </html>
