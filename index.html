@@ -122,7 +122,7 @@
         }
 
         .header {
-            position: sticky;
+            position:static;
             top: 0;
             z-index: 1000;
             background-color: #ffffff;
@@ -212,6 +212,18 @@
         .slide-in {
             animation: slideIn 0.3s ease-out;
         }
+        .html-content {
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.html-content ol, .html-content ul {
+    padding-left: 20px;
+}
+
+.html-content li {
+    margin-bottom: 5px;
+}
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
@@ -226,8 +238,12 @@
                 </div>
                 <nav class="desktop-menu">
                     <ul class="flex space-x-6"></ul>
+                    <button id="dashboardButton" class="nav-link text-blue-600 hover:text-blue-800" aria-label="פתח דשבורד">דשבורד</button>
                 </nav>
             </div>
+        </div>
+        <div class="search">
+
         </div>
     </header>
     <br>
@@ -283,401 +299,821 @@
     </footer>
 
     <script>
-        let quillChallenge, quillNotes;
-        let cases = [];
-        let selectedCase = null;
+      // State management
+const createStore = (initialState) => {
+    let state = initialState;
+    const listeners = new Set();
 
-        async function initializeApp() {
-            cases = await fetchData();
-            renderNumberGallery();
+    const getState = () => state;
+
+    const setState = (newState) => {
+        state = { ...state, ...newState };
+        listeners.forEach(listener => listener(state));
+    };
+
+    const subscribe = (listener) => {
+        listeners.add(listener);
+        return () => listeners.delete(listener);
+    };
+
+    return { getState, setState, subscribe };
+};
+
+const store = createStore({
+    cases: [],
+    selectedCase: null,
+    searchQuery: '',
+    filterStatus: 'all'
+});
+
+// Quill instances
+let quillChallenge, quillNotes;
+
+// Fetch data from API
+async function fetchData() {
+    showLoader();
+    try {
+        const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'get_all' })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
 
-        async function fetchData() {
-            try {
-                const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'get_all' })
-                });
+        const data = await response.json();
+        const processedData = processApiData(data);
+        store.setState({ cases: processedData });
+        return processedData;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        showNotification('שגיאה בטעינת נתונים', 'error');
+        return [];
+    } finally {
+        hideLoader();
+    }
+}
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+// Process API data
+function processApiData(apiData) {
+    const cases = apiData.filter(item => !item.FatherID).map(caseItem => ({
+        id: caseItem.ID,
+        number: parseInt(caseItem.FormNumber),
+        title: caseItem.Title,
+        responsible: caseItem.Responsible || '',
+        description: caseItem.Notes ? stripHtml(caseItem.Notes) : '',
+        color: caseItem.Color || '#FFFFFF',
+        issues: []
+    }));
 
-                const data = await response.json();
-                return processApiData(data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                showNotification('שגיאה בטעינת נתונים', 'error');
-                return [];
-            }
-        }
-
-        function processApiData(apiData) {
-            const cases = apiData.filter(item => !item.FatherID).map(caseItem => ({
-                id: caseItem.ID,
-                number: parseInt(caseItem.FormNumber),
-                title: caseItem.Title,
-                responsible: caseItem.Responsible || '',
-                description: caseItem.Notes ? stripHtml(caseItem.Notes) : '',
-                color: caseItem.Color || '#FFFFFF',
-                issues: []
-            }));
-
-            apiData.filter(item => item.FatherID).forEach(issueItem => {
-                const parentCase = cases.find(c => c.number === parseInt(issueItem.FormNumber));
-                if (parentCase) {
-                    parentCase.issues.push({
-                        id: issueItem.ID,
-                        fatherId: issueItem.FatherID,
-                        issue: issueItem.Title,
-                        challenge: stripHtml(issueItem.Challenge),
-                        notes: stripHtml(issueItem.Notes),
-                        status: issueItem.Status,
-                        responsible: issueItem.Responsible
-                    });
-                }
-            });
-
-            return cases;
-        }
-
-        function stripHtml(html) {
-            const tmp = document.createElement('DIV');tmp.innerHTML = html;
-            return tmp.textContent || tmp.innerText || '';
-        }
-
-        function calculateLuminance(hex) {
-            hex = hex.replace(/^#/, '');
-            let r = parseInt(hex.substring(0, 2), 16);
-            let g = parseInt(hex.substring(2, 4), 16);
-            let b = parseInt(hex.substring(4, 6), 16);
-            return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        }
-
-        function renderNumberGallery() {
-            const numberGallery = document.getElementById('number-gallery');
-            numberGallery.innerHTML = '';
-
-            cases.forEach(c => {
-                const div = document.createElement('div');
-                div.className = 'number-icon w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200 transition-all duration-300';
-                
-                const backgroundColor = c.color || '#FFFFFF';
-                div.style.backgroundColor = backgroundColor;
-
-                const luminance = calculateLuminance(backgroundColor.replace('#', ''));
-                div.style.color = luminance < 140 ? '#FFFFFF' : '#000000';
-                
-                div.textContent = c.number;
-                div.addEventListener('click', () => selectCase(c.number));
-                numberGallery.appendChild(div);
+    apiData.filter(item => item.FatherID).forEach(issueItem => {
+        const parentCase = cases.find(c => c.number === parseInt(issueItem.FormNumber));
+        if (parentCase) {
+            parentCase.issues.push({
+                id: issueItem.ID,
+                fatherId: issueItem.FatherID,
+                issue: issueItem.Title,
+                challenge: stripHtml(issueItem.Challenge),
+                notes: stripHtml(issueItem.Notes),
+                status: issueItem.Status,
+                responsible: issueItem.Responsible
             });
         }
+    });
 
-        function selectCase(caseNumber) {
-            selectedCase = cases.find(c => c.number === caseNumber);
-            if (selectedCase) {
-                document.getElementById('case-number').textContent = selectedCase.number;
-                document.getElementById('case-title-display').textContent = selectedCase.title;
-                document.getElementById('case-responsible-display').textContent = selectedCase.responsible;
-                document.getElementById('case-description-display').textContent = selectedCase.description;
-                document.getElementById('issues-table-container').classList.remove('hidden');
-                renderIssuesTable();
-                document.getElementById('case-info').classList.remove('hidden');
+    return cases;
+}
+
+// Helper function to strip HTML tags
+function stripHtml(html) {
+    const tmp = document.createElement('DIV');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+}
+
+// Calculate luminance of a color
+function calculateLuminance(hex) {
+    hex = hex.replace(/^#/, '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+// Render number gallery
+function renderNumberGallery(cases) {
+    const numberGallery = document.getElementById('number-gallery');
+    numberGallery.innerHTML = '';
+
+    cases.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'number-icon w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200 transition-all duration-300';
+        
+        const backgroundColor = c.color || '#FFFFFF';
+        div.style.backgroundColor = backgroundColor;
+
+        const luminance = calculateLuminance(backgroundColor.replace('#', ''));
+        div.style.color = luminance < 140 ? '#FFFFFF' : '#000000';
+        
+        div.textContent = c.number;
+        div.setAttribute('aria-label', `בחר טופס מספר ${c.number}`);
+        div.addEventListener('click', () => selectCase(c.number));
+        numberGallery.appendChild(div);
+    });
+}
+
+// Select a case
+function selectCase(caseNumber) {
+    const selectedCase = store.getState().cases.find(c => c.number === caseNumber);
+    if (selectedCase) {
+        store.setState({ selectedCase });
+        announceContentChange(`טופס מספר ${caseNumber} נבחר. מציג פרטים ומשימות.`);
+    }
+}
+
+// Render case info
+function renderCaseInfo(selectedCase) {
+    document.getElementById('case-number').textContent = selectedCase.number;
+    document.getElementById('case-title-display').textContent = selectedCase.title;
+    document.getElementById('case-responsible-display').textContent = selectedCase.responsible;
+    document.getElementById('case-description-display').textContent = selectedCase.description;
+    document.getElementById('issues-table-container').classList.remove('hidden');
+    document.getElementById('case-info').classList.remove('hidden');
+}
+
+// Render issues table
+function renderIssuesTable(issues) {
+    const issuesTableBody = document.getElementById('issues-tbody');
+    issuesTableBody.innerHTML = '';
+    issues.forEach((issue, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="px-6 py-4 text-sm text-gray-500">${issue.id}</td>
+            <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.issue}</td>
+            <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
+            <td class="px-6 py-4 text-sm text-gray-500 wrap-text html-content">${issue.notes}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">${issue.status}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">${issue.responsible}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <button onclick="openModal('issue', 'update', ${index})" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition duration-300" aria-label="ערוך משימה">עריכה</button>
+                <button onclick="openModal('issue', 'delete', ${index})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2 transition duration-300" aria-label="מחק משימה">מחיקה</button>
+            </td>
+        `;
+        issuesTableBody.appendChild(row);
+    });
+    announceContentChange(`טבלת המשימות עודכנה עם ${issues.length} משימות.`);
+}
+
+// Open modal
+function openModal(type, action, index = null) {
+    const modal = document.getElementById('dynamicModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalContent = document.getElementById('modalContent');
+    const modalButtons = document.getElementById('modalButtons');
+
+    modalTitle.textContent = `${action === 'add' ? 'הוספת' : action === 'update' ? 'עדכון' : 'מחיקת'} ${type === 'case' ? 'טופס' : 'משימה'}`;
+    modalContent.innerHTML = '';
+    modalButtons.innerHTML = '';
+
+    if (type === 'case') {
+        if (action === 'add' || action === 'update') {
+            modalContent.innerHTML = `
+                <input type="number" id="modal-case-number" class="w-full mb-2 p-2 border rounded" placeholder="מספר טופס" ${action === 'update' ? 'disabled' : ''}>
+                <input type="text" id="modal-case-title" class="w-full mb-2 p-2 border rounded" placeholder="כותרת טופס">
+                <input type="text" id="modal-case-responsible" class="w-full mb-2 p-2 border rounded" placeholder="אחראי על הטופס">
+                <textarea id="modal-case-description" class="w-full mb-2 p-2 border rounded" placeholder="תיאור טופס"></textarea>
+                <div class="color-picker-wrapper">
+                    <div id="color-preview" class="color-preview"></div>
+                    <label for="modal-case-color" class="color-picker-label text-sm text-gray-600">בחר צבע לטופס</label>
+                    <input type="color" id="modal-case-color" value="#FFFFFF">
+                </div>
+            `;
+            if (action === 'update') {
+                const selectedCase = store.getState().selectedCase;
+                document.getElementById('modal-case-number').value = selectedCase.number;
+                document.getElementById('modal-case-title').value = selectedCase.title;
+                document.getElementById('modal-case-responsible').value = selectedCase.responsible;
+                document.getElementById('modal-case-description').value = selectedCase.description;
+                document.getElementById('modal-case-color').value = selectedCase.color || '#FFFFFF';
             }
-        }
-
-        function renderIssuesTable() {
-            const issuesTableBody = document.getElementById('issues-tbody');
-            issuesTableBody.innerHTML = '';
-            if (selectedCase && selectedCase.issues) {
-                selectedCase.issues.forEach((issue, index) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td class="px-6 py-4 text-sm text-gray-500">${issue.id}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.issue}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.notes}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">${issue.status}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">${issue.responsible}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <button onclick="openModal('issue', 'update', ${index})" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition duration-300">עריכה</button>
-                            <button onclick="openModal('issue', 'delete', ${index})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2 transition duration-300">מחיקה</button>
-                        </td>
-                    `;
-                    issuesTableBody.appendChild(row);
-                });
-            }
-        }
-
-        function openModal(type, action, index = null) {
-            const modal = document.getElementById('dynamicModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalContent = document.getElementById('modalContent');
-            const modalButtons = document.getElementById('modalButtons');
-
-            modalTitle.textContent = `${action === 'add' ? 'הוספת' : action === 'update' ? 'עדכון' : 'מחיקת'} ${type === 'case' ? 'טופס' : 'משימה'}`;
-            modalContent.innerHTML = '';
-            modalButtons.innerHTML = '';
-
-            if (type === 'case') {
-                if (action === 'add' || action === 'update') {
-                    modalContent.innerHTML = `
-                        <input type="number" id="modal-case-number" class="w-full mb-2 p-2 border rounded" placeholder="מספר טופס" ${action === 'update' ? 'disabled' : ''}>
-                        <input type="text" id="modal-case-title" class="w-full mb-2 p-2 border rounded" placeholder="כותרת טופס">
-                        <input type="text" id="modal-case-responsible" class="w-full mb-2 p-2 border rounded" placeholder="אחראי על הטופס">
-                        <textarea id="modal-case-description" class="w-full mb-2 p-2 border rounded" placeholder="תיאור טופס"></textarea>
-                        <div class="color-picker-wrapper">
-                            <div id="color-preview" class="color-preview"></div>
-                            <label for="modal-case-color" class="color-picker-label text-sm text-gray-600">בחר צבע לטופס</label>
-                            <input type="color" id="modal-case-color" value="#FFFFFF">
-                        </div>
-                    `;
-                    if (action === 'update') {
-                        document.getElementById('modal-case-number').value = selectedCase.number;
-                        document.getElementById('modal-case-title').value = selectedCase.title;
-                        document.getElementById('modal-case-responsible').value = selectedCase.responsible;
-                        document.getElementById('modal-case-description').value = selectedCase.description;
-                        document.getElementById('modal-case-color').value = selectedCase.color || '#FFFFFF';
-                    }
-                    const colorPicker = document.getElementById('modal-case-color');
-                    const colorPreview = document.getElementById('color-preview');
-                    
-                    colorPreview.style.backgroundColor = colorPicker.value;
-                    
-                    colorPreview.addEventListener('click', () => colorPicker.click());
-                    
-                    colorPicker.addEventListener('input', (event) => {
-                        colorPreview.style.backgroundColor = event.target.value;
-                    });
-                    modalButtons.innerHTML = `
-                        <button onclick="handleCase('${action}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">${action === 'add' ? 'הוסף' : 'עדכן'} טופס</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2 transition duration-300">ביטול</button>
-                    `;
-                } else if (action === 'delete') {
-                    modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את הטופס הזה?</p>';
-                    modalButtons.innerHTML = `
-                        <button onclick="handleCase('delete')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">מחק טופס</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2 transition duration-300">ביטול</button>
-                    `;
-                }
-            } else if (type === 'issue') {
-                if (action === 'add' || action === 'update') {
-                    modalContent.innerHTML = `
-                        <div class="modal-field">
-                            <label for="modal-issue-text">משימה:</label>
-                            <input type="text" id="modal-issue-text" class="w-full p-2 border rounded" placeholder="הזן את המשימה">
-                        </div>
-                        <div class="modal-field">
-                            <label for="modal-issue-challenge">אתגר:</label>
-                            <div id="modal-issue-challenge" class="w-full border rounded"></div>
-                        </div>
-                        <div class="modal-field">
-                            <label for="modal-issue-notes">הערות:</label>
-                            <div id="modal-issue-notes" class="w-full border rounded"></div>
-                        </div>
-                        <div class="modal-field">
-                            <label for="modal-issue-status">סטטוס:</label>
-                            <select id="modal-issue-status" class="w-full p-2 border rounded">
-                                <option value="" disabled selected>בחר סטטוס</option>
-                                <option value="פתוח">פתוח</option>
-                                <option value="בתהליך">בתהליך</option>
-                                <option value="נפתר">נפתר</option>
-                                <option value="סגור">סגור</option>
-                            </select>
-                        </div>
-                        <div class="modal-field">
-                            <label for="modal-issue-responsible">אחראי:</label>
-                            <input type="text" id="modal-issue-responsible" class="w-full p-2 border rounded" placeholder="הזן את שם האחראי">
-                        </div>
-                    `;
-
-                    setTimeout(() => {
-                        const quillOptions = {
-                            theme: 'snow',
-                            modules: {
-                                toolbar: [
-                                    [{ 'header': [1, 2, 3, false] }],
-                                    ['bold', 'italic', 'underline', 'strike'],
-                                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                                    [{ 'align': [] }],
-                                    ['clean']
-                                ]
-                            },
-                            formats: [
-                                'header', 'bold', 'italic', 'underline', 'strike',
-                                'list', 'bullet', 'align'
-                            ],
-                            direction: 'rtl'
-                        };
-
-                        quillChallenge = new Quill('#modal-issue-challenge', quillOptions);
-                        quillNotes = new Quill('#modal-issue-notes', quillOptions);
-
-                        if (action === 'update') {
-                            const issue = selectedCase.issues[index];
-                            document.getElementById('modal-issue-text').value = issue.issue;
-                            quillChallenge.clipboard.dangerouslyPasteHTML(issue.challenge);
-                            quillNotes.clipboard.dangerouslyPasteHTML(issue.notes);
-                            document.getElementById('modal-issue-status').value = issue.status;
-                            document.getElementById('modal-issue-responsible').value = issue.responsible;
-                        }
-                    }, 0);
-
-                    modalButtons.innerHTML = `
-                        <button onclick="handleIssue('${action}', ${index})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">${action === 'add' ? 'הוסף' : 'עדכן'} משימה</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mr-2 transition duration-300">ביטול</button>
-                    `;
-                } else if (action === 'delete') {
-                    modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את המשימה הזו?</p>';
-                    modalButtons.innerHTML = `
-                        <button onclick="handleIssue('delete', ${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">מחק משימה</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mr-2 transition duration-300">ביטול</button>
-                    `;
-                }
-            }
-
-            modal.style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('dynamicModal').style.display = 'none';
-        }
-
-        async function handleCase(action) {
-            let data = {
-                action: action,
-                id: action === 'add' ? null : selectedCase.id,
-                caseNumber: action === 'add' ? null : selectedCase.number,
-                title: '',
-                responsible: '',
-                description: '',
-                color: '#FFFFFF'
-            };
-
-            if (action === 'add' || action === 'update') {
-                data.caseNumber = parseInt(document.getElementById('modal-case-number').value, 10);
-                data.title = document.getElementById('modal-case-title').value;
-                data.responsible = document.getElementById('modal-case-responsible').value;
-                data.description = document.getElementById('modal-case-description').value;
-                data.color = document.getElementById('modal-case-color').value;
-
-                if (!data.caseNumber || !data.title || !data.description || !data.responsible) {
-                    showNotification('נא למלא את כל השדות', 'error');
-                    return;
-                }
-            }
-
-            try {
-                const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                await response.json();
-
-                cases = await fetchData();
-                renderNumberGallery();
-                if (selectedCase) {
-                    selectCase(selectedCase.number);
-                }
-                closeModal();
-                showNotification(`הטופס ${action === 'add' ? 'נוסף' : action === 'update' ? 'עודכן' : 'נמחק'} בהצלחה`, 'success');
-            } catch (error) {
-                console.error('Error:', error);
-                showNotification('אירעה שגיאה. נא לנסות שוב', 'error');
-            }
-        }
-
-        async function handleIssue(action, index) {
-            let data = {
-                action: action,
-                id: action === 'add' ? null : selectedCase.issues[index].id,
-                caseNumber: selectedCase.number,
-                fatherId: selectedCase.id,
-                issue: '',
-                challenge: '',
-                notes: '',
-                status: '',responsible: ''
-            };
-
-            if (action === 'add' || action === 'update') {
-                data.issue = document.getElementById('modal-issue-text').value;
-                data.challenge = quillChallenge.root.innerHTML;
-                data.notes = quillNotes.root.innerHTML;
-                data.status = document.getElementById('modal-issue-status').value;
-                data.responsible = document.getElementById('modal-issue-responsible').value;
-
-                if (!data.issue || !data.challenge || !data.notes || !data.status || !data.responsible) {
-                    showNotification('נא למלא את כל השדות', 'error');
-                    return;
-                }
-            }
-
-            try {
-                const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                await response.json();
-
-                cases = await fetchData();
-                if (selectedCase) {
-                    selectCase(selectedCase.number);
-                }
-                renderIssuesTable();
-                closeModal();
-                showNotification(`המשימה ${action === 'add' ? 'נוספה' : action === 'update' ? 'עודכנה' : 'נמחקה'} בהצלחה`, 'success');
-            } catch (error) {
-                console.error('Error:', error);
-                showNotification('אירעה שגיאה. נא לנסות שוב', 'error');
-            }
-        }
-
-        function showNotification(message, type) {
-            Swal.fire({
-                text: message,
-                icon: type,
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
+            const colorPicker = document.getElementById('modal-case-color');
+            const colorPreview = document.getElementById('color-preview');
+            
+            colorPreview.style.backgroundColor = colorPicker.value;
+            
+            colorPreview.addEventListener('click', () => colorPicker.click());
+            
+            colorPicker.addEventListener('input', (event) => {
+                colorPreview.style.backgroundColor = event.target.value;
             });
+            modalButtons.innerHTML = `
+                <button onclick="handleCase('${action}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">${action === 'add' ? 'הוסף' : 'עדכן'} טופס</button>
+                <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2 transition duration-300">ביטול</button>
+            `;
+        } else if (action === 'delete') {
+            modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את הטופס הזה?</p>';
+            modalButtons.innerHTML = `
+                <button onclick="handleCase('delete')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">מחק טופס</button>
+                <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2 transition duration-300">ביטול</button>
+            `;
+        }
+    } else  if (type === 'issue') {
+        if (action === 'add' || action === 'update') {
+            modalContent.innerHTML = `
+                <div class="modal-field">
+                    <label for="modal-issue-text">משימה:</label>
+                    <input type="text" id="modal-issue-text" class="w-full p-2 border rounded" placeholder="הזן את המשימה">
+                </div>
+                <div class="modal-field">
+                    <label for="modal-issue-challenge">אתגר:</label>
+                    <textarea id="modal-issue-challenge" class="w-full p-2 border rounded" rows="4"></textarea>
+                </div>
+                <div class="modal-field">
+                    <label for="modal-issue-notes">הערות:</label>
+                    <textarea id="modal-issue-notes" class="w-full p-2 border rounded" rows="6"></textarea>
+                </div>
+                <div class="modal-field">
+                    <label for="modal-issue-status">סטטוס:</label>
+                    <select id="modal-issue-status" class="w-full p-2 border rounded">
+                        <option value="" disabled selected>בחר סטטוס</option>
+                        <option value="פתוח">פתוח</option>
+                        <option value="בתהליך">בתהליך</option>
+                        <option value="נפתר">נפתר</option>
+                        <option value="סגור">סגור</option>
+                    </select>
+                </div>
+                <div class="modal-field">
+                    <label for="modal-issue-responsible">אחראי:</label>
+                    <input type="text" id="modal-issue-responsible" class="w-full p-2 border rounded" placeholder="הזן את שם האחראי">
+                </div>
+            `;
+
+            if (action === 'update') {
+                const selectedCase = store.getState().selectedCase;
+                const issue = selectedCase.issues[index];
+                document.getElementById('modal-issue-text').value = issue.issue;
+                document.getElementById('modal-issue-challenge').value = issue.challenge;
+                document.getElementById('modal-issue-notes').value = issue.notes; // Preserve HTML
+                document.getElementById('modal-issue-status').value = issue.status;
+                document.getElementById('modal-issue-responsible').value = issue.responsible;
+            }
+            ;
+
+            modalButtons.innerHTML = `
+                <button onclick="handleIssue('${action}', ${index})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">${action === 'add' ? 'הוסף' : 'עדכן'} משימה</button>
+                <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-600 mr-2 transition duration-300">ביטול</button>
+            `;
+        } else if (action === 'delete') {
+            modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את המשימה הזו?</p>';
+            modalButtons.innerHTML = `
+                <button onclick="handleIssue('delete', ${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">מחק משימה</button>
+                <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mr-2 transition duration-300">ביטול</button>
+            `;
+        }
+    }
+
+    modal.style.display = 'block';
+    setupModalAccessibility();
+}
+
+// Close modal
+function closeModal() {
+    const modal = document.getElementById('dynamicModal');
+    modal.style.display = 'none';
+    cleanupModalAccessibility();
+}
+
+// Handle case operations
+async function handleCase(action) {
+    let data = {
+        action: action,
+        id: action === 'add' ? null : store.getState().selectedCase.id,
+        caseNumber: action === 'add' ? null : store.getState().selectedCase.number,
+        title: '',
+        responsible: '',
+        description: '',
+        color: '#FFFFFF'
+    };
+
+    if (action === 'add' || action === 'update') {
+        data.caseNumber = parseInt(document.getElementById('modal-case-number').value, 10);
+        data.title = document.getElementById('modal-case-title').value;
+        data.responsible = document.getElementById('modal-case-responsible').value;
+        data.description = document.getElementById('modal-case-description').value;
+        data.color = document.getElementById('modal-case-color').value;
+
+        const errors = validateCaseData(data);
+        if (errors.length > 0) {
+            showNotification(errors.join('\n'), 'error');
+            return;
+        }
+    }
+
+    try {
+        const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
 
-        window.addEventListener('load', initializeApp);
+        await response.json();
 
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById('dynamicModal');
-            if (event.target == modal) {
-                closeModal();
+        const cases = await fetchData();
+        store.setState({ cases });
+        if (store.getState().selectedCase) {
+            selectCase(store.getState().selectedCase.number);
+        }
+        closeModal();
+        showNotification(`הטופס ${action === 'add' ? 'נוסף' : action === 'update' ? 'עודכן' : 'נמחק'} בהצלחה`, 'success');
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('אירעה שגיאה. נא לנסות שוב', 'error');
+    }
+}
+
+// Handle issue operations
+async function handleIssue(action, index) {
+    const selectedCase = store.getState().selectedCase;
+    let data = {
+        action: action,
+        id: action === 'add' ? null : selectedCase.issues[index].id,
+        caseNumber: selectedCase.number,
+        fatherId: selectedCase.id,
+        issue: '',
+        challenge: '',
+        notes: '',
+        status: '',
+        responsible: ''
+    };
+
+    if (action === 'add' || action === 'update') {
+        data.issue = document.getElementById('modal-issue-text').value;
+        data.challenge = document.getElementById('modal-issue-challenge').value;
+        data.notes = document.getElementById('modal-issue-notes').value; // Preserve HTML
+        data.status = document.getElementById('modal-issue-status').value;
+        data.responsible = document.getElementById('modal-issue-responsible').value;
+
+        const errors = validateIssueData(data);
+        if (errors.length > 0) {
+            showNotification(errors.join('\n'), 'error');
+            return;
+        }
+    }
+
+    try {
+        const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        await response.json();
+
+        const cases = await fetchData();
+        store.setState({ cases });
+        if (selectedCase) {
+            selectCase(selectedCase.number);
+        }
+        closeModal();
+        showNotification(`המשימה ${action === 'add' ? 'נוספה' : action === 'update' ? 'עודכנה' : 'נמחקה'} בהצלחה`, 'success');
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('אירעה שגיאה. נא לנסות שוב', 'error');
+    }
+}
+
+// Data validation
+function validateCaseData(data) {
+    const errors = [];
+
+    if (!data.caseNumber || isNaN(data.caseNumber)) {
+        errors.push('מספר הטופס חייב להיות מספר תקין');
+    }
+
+    if (!data.title || data.title.trim().length === 0) {
+        errors.push('כותרת הטופס היא שדה חובה');
+    }
+
+    if (!data.responsible || data.responsible.trim().length === 0) {
+        errors.push('שם האחראי הוא שדה חובה');
+    }
+
+    if (!data.description || data.description.trim().length === 0) {
+        errors.push('תיאור הטופס הוא שדה חובה');
+    }
+
+    return errors;
+}
+
+function validateIssueData(data) {
+    const errors = [];
+
+    if (!data.issue || data.issue.trim().length === 0) {
+        errors.push('תיאור המשימה הוא שדה חובה');
+    }
+
+    if (!data.challenge || data.challenge.trim().length === 0) {
+        errors.push('תיאור האתגר הוא שדה חובה');
+    }
+
+    if (!data.status || data.status.trim().length === 0) {
+        errors.push('יש לבחור סטטוס למשימה');
+    }
+
+    if (!data.responsible || data.responsible.trim().length === 0) {
+        errors.push('שם האחראי למשימה הוא שדה חובה');
+    }
+
+    return errors;
+}
+
+// Search and filter functionality
+function searchAndFilterCases(cases, query, status) {
+    const lowercaseQuery = query.toLowerCase();
+    return cases.filter(c => 
+        (c.number.toString().includes(lowercaseQuery) ||
+        c.title.toLowerCase().includes(lowercaseQuery) ||
+        c.responsible.toLowerCase().includes(lowercaseQuery)) &&
+        (status === 'all' || c.issues.some(issue => issue.status === status))
+    );
+}
+
+function renderSearchAndFilterBar() {
+    const container = document.querySelector('.search');
+    const searchAndFilterBar = document.createElement('div');
+    searchAndFilterBar.className = 'flex flex-wrap gap-2 mb-4';
+    searchAndFilterBar.innerHTML = `
+        <input type="text" id="searchInput" placeholder="חיפוש טפסים..." class="flex-grow p-2 border rounded" aria-label="חיפוש טפסים">
+        <select id="statusFilter" class="p-2 border rounded" aria-label="סינון לפי סטטוס">
+            <option value="all">כל הסטטוסים</option>
+            <option value="פתוח">פתוח</option>
+            <option value="בתהליך">בתהליך</option>
+            <option value="נפתר">נפתר</option>
+            <option value="סגור">סגור</option>
+        </select>
+    `;
+    container.insertBefore(searchAndFilterBar, container.firstChild);
+
+    const searchInput = document.getElementById('searchInput');
+    const statusFilter = document.getElementById('statusFilter');
+
+    searchInput.addEventListener('input', updateSearchAndFilter);
+    statusFilter.addEventListener('change', updateSearchAndFilter);
+}
+
+function updateSearchAndFilter() {
+    const searchQuery = document.getElementById('searchInput').value;
+    const filterStatus = document.getElementById('statusFilter').value;
+    store.setState({ searchQuery, filterStatus });
+    
+    const { cases } = store.getState();
+    const filteredCases = searchAndFilterCases(cases, searchQuery, filterStatus);
+    renderNumberGallery(filteredCases);
+}
+
+// Accessibility improvements
+function setupModalAccessibility() {
+    const modal = document.getElementById('dynamicModal');
+    const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    firstElement.focus();
+
+    modal.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+            if (e.shiftKey && document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement.focus();
+            } else if (!e.shiftKey && document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement.focus();
             }
         }
+    });
+}
 
-        // Add keyboard accessibility
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
+function cleanupModalAccessibility() {
+    const modal = document.getElementById('dynamicModal');
+    modal.removeEventListener('keydown', null);
+}
+
+function announceContentChange(message) {
+    let announcer = document.getElementById('content-announcer');
+    if (!announcer) {
+        announcer = document.createElement('div');
+        announcer.id = 'content-announcer';
+        announcer.setAttribute('aria-live', 'polite');
+        announcer.setAttribute('aria-atomic', 'true');
+        announcer.classList.add('sr-only'); // visually hidden
+        document.body.appendChild(announcer);
+    }
+    announcer.textContent = message;
+}
+
+// Notification function
+function showNotification(message, type) {
+    Swal.fire({
+        text: message,
+        icon: type,
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+}
+
+// Loader functions
+function createLoader() {
+    let loader = document.getElementById('loader');
+    if (!loader) {
+        loader = document.createElement('div');
+        loader.id = 'loader';
+        loader.innerHTML = `
+            <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+                <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        `;
+        document.body.appendChild(loader);
+    }
+    return loader;
+}
+
+function showLoader() {
+    const loader = createLoader();
+    loader.style.display = 'flex';
+}
+
+function hideLoader() {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.display = 'none';
+    }
+}
+
+function hideLoader() {
+    document.getElementById('loader').style.display = 'none';
+}
+
+// Initialize app
+async function initializeApp() {
+    await fetchData();
+    renderSearchAndFilterBar();
+    renderNumberGallery(store.getState().cases);
+}
+
+// Event listeners
+window.addEventListener('load', initializeApp);
+
+window.onclick = function(event) {
+    const modal = document.getElementById('dynamicModal');
+    if (event.target == modal) {
+        closeModal();
+    }
+};
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+
+// Subscribe to state changes
+store.subscribe(() => {
+    const { cases, selectedCase, searchQuery, filterStatus } = store.getState();
+    const filteredCases = searchAndFilterCases(cases, searchQuery, filterStatus);
+    renderNumberGallery(filteredCases);
+    if (selectedCase) {
+        renderCaseInfo(selectedCase);
+        renderIssuesTable(selectedCase.issues);
+    }
+});
+
+
+
+// Dashboard functionality
+// Dashboard functionality
+let dashboardCharts = {};
+
+function initializeDashboard() {
+    console.log("Initializing dashboard...");
+    const dashboardButton = document.getElementById('dashboardButton');
+    const closeDashboardButton = document.getElementById('closeDashboard');
+    const dashboardPanel = document.getElementById('dashboardPanel');
+    
+    if (dashboardButton && closeDashboardButton && dashboardPanel) {
+        dashboardButton.addEventListener('click', openDashboard);
+        closeDashboardButton.addEventListener('click', closeDashboard);
+        console.log("Dashboard initialized successfully");
+    } else {
+        console.error("Some dashboard elements are missing:", 
+            {dashboardButton, closeDashboardButton, dashboardPanel});
+    }
+}
+
+function openDashboard() {
+    console.log("Opening dashboard...");
+    const dashboardPanel = document.getElementById('dashboardPanel');
+    if (dashboardPanel) {
+        dashboardPanel.style.display = 'block';
+        document.body.classList.add('overflow-hidden');
+        updateDashboard();
+    } else {
+        console.error("Dashboard panel not found");
+    }
+}
+
+function closeDashboard() {
+    console.log("Closing dashboard...");
+    const dashboardPanel = document.getElementById('dashboardPanel');
+    if (dashboardPanel) {
+        dashboardPanel.style.display = 'none';
+        document.body.classList.remove('overflow-hidden');
+    } else {
+        console.error("Dashboard panel not found");
+    }
+}
+
+function updateDashboard() {
+    console.log("Updating dashboard...");
+    const { cases } = store.getState();
+    updateStatusChart(cases);
+    updateResponsibleChart(cases);
+    updateFormChart(cases);
+    updateRecentIssuesChart(cases);
+}
+
+function updateStatusChart(cases) {
+    const statusCounts = {};
+    cases.forEach(caseItem => {
+        caseItem.issues.forEach(issue => {
+            statusCounts[issue.status] = (statusCounts[issue.status] || 0) + 1;
+        });
+    });
+
+    const data = {
+        labels: Object.keys(statusCounts),
+        datasets: [{
+            data: Object.values(statusCounts),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+        }]
+    };
+
+    updateOrCreateChart('statusChart', 'pie', data, {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: 'סטטוס משימות' }
+        }
+    });
+}
+
+function updateResponsibleChart(cases) {
+    const responsibleCounts = {};
+    cases.forEach(caseItem => {
+        caseItem.issues.forEach(issue => {
+            if (issue.status !== 'סגור') {
+                responsibleCounts[issue.responsible] = (responsibleCounts[issue.responsible] || 0) + 1;
             }
         });
+    });
+
+    const data = {
+        labels: Object.keys(responsibleCounts),
+        datasets: [{
+            label: 'משימות פתוחות',
+            data: Object.values(responsibleCounts),
+            backgroundColor: '#36A2EB',
+        }]
+    };
+
+    updateOrCreateChart('responsibleChart', 'bar', data, {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'משימות פתוחות לפי אחראי' }
+        },
+        scales: { y: { beginAtZero: true } }
+    });
+}
+
+function updateFormChart(cases) {
+    const formCounts = cases.map(caseItem => ({
+        form: caseItem.number,
+        count: caseItem.issues.length
+    })).sort((a, b) => b.count - a.count);
+
+    const data = {
+        labels: formCounts.map(item => `טופס ${item.form}`),
+        datasets: [{
+            label: 'מספר משימות',
+            data: formCounts.map(item => item.count),
+            backgroundColor: '#4BC0C0',
+        }]
+    };
+
+    updateOrCreateChart('formChart', 'bar', data, {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'משימות לפי טופס' }
+        },
+        scales: { y: { beginAtZero: true } }
+    });
+}
+
+function updateRecentIssuesChart(cases) {
+    const recentIssues = cases.flatMap(caseItem => 
+        caseItem.issues.map(issue => ({
+            date: new Date(issue.createdAt), // Assuming there's a createdAt field
+            status: issue.status
+        }))
+    ).sort((a, b) => b.date - a.date).slice(0, 7);
+
+    const statusCounts = {};
+    recentIssues.forEach(issue => {
+        statusCounts[issue.status] = (statusCounts[issue.status] || 0) + 1;
+    });
+
+    const data = {
+        labels: Object.keys(statusCounts),
+        datasets: [{
+            data: Object.values(statusCounts),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+        }]
+    };
+
+    updateOrCreateChart('recentIssuesChart', 'doughnut', data, {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: 'סטטוס משימות שנוספו לאחרונה' }
+        }
+    });
+}
+
+function updateOrCreateChart(chartId, type, data, options) {
+    const ctx = document.getElementById(chartId).getContext('2d');
+    if (dashboardCharts[chartId]) {
+        dashboardCharts[chartId].data = data;
+        dashboardCharts[chartId].update();
+    } else {
+        dashboardCharts[chartId] = new Chart(ctx, { type, data, options });
+    }
+}
+
+// Initialize dashboard when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initializeDashboard);
+
+// Update dashboard when state changes
+store.subscribe(updateDashboard);
+
+// Expose functions to global scope for debugging
+window.openDashboard = openDashboard;
+window.closeDashboard = closeDashboard;
+window.updateDashboard = updateDashboard;
     </script>
+    <div id="dashboardPanel" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" style="display:none;">
+        <div class="bg-white p-8 mx-auto my-10 rounded-lg shadow-lg max-w-4xl">
+            <h2 class="text-2xl font-bold mb-6">דשבורד</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">סטטוס משימות</h3>
+                    <canvas id="statusChart"></canvas>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">משימות פתוחות לפי אחראי</h3>
+                    <canvas id="responsibleChart"></canvas>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">משימות לפי טופס</h3>
+                    <canvas id="formChart"></canvas>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">משימות שנוספו לאחרונה</h3>
+                    <canvas id="recentIssuesChart"></canvas>
+                </div>
+            </div>
+            <button id="closeDashboard" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">סגור דשבורד</button>
+        </div>
+    </div>
+    
+    <!-- Add Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
