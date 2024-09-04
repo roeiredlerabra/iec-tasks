@@ -70,8 +70,8 @@
                         <p class="text-sm sm:text-base"><strong>אחראי:</strong> <span id="case-responsible-display"></span></p>
             <p class="text-sm sm:text-base"><strong>תיאור:</strong> <span id="case-description-display"></span></p>
             <div class="flex flex-wrap gap-2 mt-2 sm:mt-4">
-                <button onclick="openModal('case', 'update')" class="bg-blue-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-blue-600 text-sm sm:text-base">Update Case</button>
-                <button onclick="openModal('case', 'delete')" class="bg-red-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-red-600 text-sm sm:text-base">Delete Case</button>
+                <button onclick="openModal('case', 'update')" class="bg-blue-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-blue-600 text-sm sm:text-base">עדכן טופס</button>
+                <button onclick="openModal('case', 'delete')" class="bg-red-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-red-600 text-sm sm:text-base">מחק טופס</button>
             </div>
         </div>
 
@@ -94,7 +94,7 @@
                 <tbody id="issues-tbody" class="bg-white divide-y divide-gray-200"></tbody>
             </table>
         </div>
-        <button onclick="openModal('issue', 'add')" class="mt-2 sm:mt-4 bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base">Add Issue</button>
+        <button onclick="openModal('issue', 'add')" class="mt-2 sm:mt-4 bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base">הוספת משימה</button>
     </div>
     </div>
 
@@ -233,8 +233,8 @@
                 <td class="px-6 py-4 text-sm text-gray-500">${issue.status}</td>
                 <td class="px-6 py-4 text-sm text-gray-500">${issue.responsible}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <button onclick="openModal('issue', 'update', ${index})" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Edit</button>
-                            <button onclick="openModal('issue', 'delete', ${index})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2">Delete</button>
+                            <button onclick="openModal('issue', 'update', ${index})" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">עריכה</button>
+                            <button onclick="openModal('issue', 'delete', ${index})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2">מחיקה</button>
                         </td>
             `;
             issuesTableBody.appendChild(row);
@@ -269,13 +269,13 @@
                     }
                     modalButtons.innerHTML = `
                         <button onclick="handleCase('${action}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">${action.charAt(0).toUpperCase() + action.slice(1)} Case</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancel</button>
+                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
                     `;
                 } else if (action === 'delete') {
-                    modalContent.innerHTML = '<p>Are you sure you want to delete this case?</p>';
+                    modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את הטופס הזה?</p>';
                     modalButtons.innerHTML = `
-                        <button onclick="handleCase('delete')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete Case</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancel</button>
+                        <button onclick="handleCase('delete')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">מחק טופס סופית</button>
+                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
                     `;
                 }
             } else if (type === 'issue') {
@@ -305,13 +305,13 @@
                     }
                     modalButtons.innerHTML = `
                         <button onclick="handleIssue('${action}', ${index})" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">${action.charAt(0).toUpperCase() + action.slice(1)} Issue</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancel</button>
+                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
                     `;
                 } else if (action === 'delete') {
-                    modalContent.innerHTML = '<p>Are you sure you want to delete this issue?</p>';
+                    modalContent.innerHTML = '<p>האם אתה בטוח שברצונך למחוק את המשימה הזו?</p>';
                     modalButtons.innerHTML = `
-                        <button onclick="handleIssue('delete', ${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete Issue</button>
-                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancel</button>
+                        <button onclick="handleIssue('delete', ${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">מחק משימה</button>
+                        <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
                     `;
                 }
             }
