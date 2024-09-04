@@ -129,18 +129,26 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
         }
-        
+        .header .container > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
         .logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            width: 48px; /* Adjust if needed */
+            height: 48px; /* Adjust if needed */
             overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         }
         
         .logo img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit:contain;
         }
         
         .nav-link {
@@ -232,18 +240,23 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <div class="logo mr-4">
-                        <img src="https://i.pinimg.com/736x/fa/99/69/fa99695d46c1e28ef267519904f8dcb5.jpg" alt="Logo">
+                        <img src="https://www.abra-it.com/wp-content/uploads/2021/12/logo-big.svg" alt="Logo" class="w-12 h-12 rounded-full">
                     </div>
                     <h1 class="text-2xl font-bold">מערכת מעקב טפסים</h1>
                 </div>
-                <nav class="desktop-menu">
-                    <ul class="flex space-x-6"></ul>
+                <nav class="desktop-menu flex items-center">
+                    <ul class="flex space-x-6 mr-4">
+                        <!-- Add menu items here if needed -->
+                    </ul>
                     <button id="dashboardButton" class="nav-link text-blue-600 hover:text-blue-800" aria-label="פתח דשבורד">דשבורד</button>
                 </nav>
+                <div class="power-platform-logo">
+                    <img src="https://www.360-consulting.de/Bilder/microsoft-power-platform.png" alt="Microsoft Power Platform" class="h-20 object-contain">
+                </div>
             </div>
         </div>
         <div class="search">
-
+            <!-- Add search functionality here if needed -->
         </div>
     </header>
     <br>
