@@ -7,10 +7,34 @@
     <title>מעקב התקדמות טפסים</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-               .number-icon:hover {
-            background-color: #4f46e5;
-            color: white;
-        }
+#number-gallery {
+    display: flex; /* Ensure flex display */
+    flex-wrap: wrap; /* Allow wrapping of elements */
+    gap: 0.5rem; /* Adjust gap as needed */
+}
+
+.number-icon {
+    cursor: pointer; /* Changes the cursor to a pointer when hovering */
+    display: flex; /* Enables Flexbox layout */
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    width: 2.5rem; /* Width of the icon */
+    height: 2.5rem; /* Height of the icon */
+    border-radius: 50%; /* Make it circular */
+    border: 1px solid #ccc; /* Adds a border */
+    transition: background-color 0.3s, transform 0.3s, filter 0.3s; /* Smooth transition */
+}
+
+.number-icon:hover {
+    background-color: #e0e0e0; /* Change background color on hover */
+    transform: scale(1.1); /* Scales the element to 110% of its size */
+}
+
+/* Apply blur to all other number-icon elements on hover */
+#number-gallery:hover .number-icon:not(:hover) {
+    filter: blur(1px); /* Apply blur effect to non-hovered elements */
+    transition: filter 0.3s; /* Smooth transition for blur effect */
+}
         .modal {
             display: none;
             position: fixed;
@@ -108,6 +132,7 @@
 
 
     <script>
+
         let cases = [
     {
         "number": 1,
