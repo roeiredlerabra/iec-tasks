@@ -75,13 +75,109 @@
             white-space: normal;
             word-wrap: break-word;
         }
+        .header {
+            position:static;
+            top: 0;
+            z-index: 1000;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        
+        
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #f3f4f6;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 2rem;
+        }
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .color-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        
+        .color-picker-label {
+            flex-grow: 1;
+        }
+        
+        #modal-case-color {
+            position: absolute;
+            display:none;
+        }
     </style>
     </style>
 </head>
 
 <body class="bg-gray-100 p-4 sm:p-8">
+    <header class="header">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="logo mr-4">
+                        <img src="https://i.pinimg.com/736x/fa/99/69/fa99695d46c1e28ef267519904f8dcb5.jpg" alt="Logo">
+                    </div>
+                    <h1 class="text-2xl font-bold">מערכת מעקב טפסים</h1>
+                </div>
+
+                <nav class="desktop-menu">
+                    <ul class="flex space-x-6">
+
+                    </ul>
+                </nav>
+                
+                
+            </div>
+
+        </div>
+    </header>
+    <br>
     <div class="container mx-auto">
-        <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-center">מעקב התקדמות טפסים</h1>
+        
 
         <div class="flex flex-wrap gap-2 mb-4 sm:mb-8">
             <div id="number-gallery" class="flex flex-wrap gap-2"></div>
@@ -129,7 +225,9 @@
             <div id="modalButtons" class="mt-2 sm:mt-4"></div>
         </div>
     </div>
-
+    <footer class="footer">
+        <p>&copy; 2024 מערכת מעקב טפסים. כל הזכויות שמורות.</p>
+    </footer>
 
     <script>
 
@@ -313,13 +411,30 @@ function renderNumberGallery() {
 <input type="text" id="modal-case-title" class="w-full mb-2 p-2 border rounded" placeholder="כותרת טופס">
 <input type="text" id="modal-case-responsible" class="w-full mb-2 p-2 border rounded" placeholder="אחראי על הטופס">
 <textarea id="modal-case-description" class="w-full mb-2 p-2 border rounded" placeholder="תיאור טופס"></textarea>
+<div class="color-picker-wrapper">
+    <div id="color-preview" class="color-preview"></div>
+    <label for="modal-case-color" class="color-picker-label text-sm text-gray-600">בחר צבע לטופס</label>
+    <input type="color" id="modal-case-color" value="#FFFFFF">
+</div>
                     `;
                     if (action === 'update') {
                         document.getElementById('modal-case-number').value = selectedCase.number;
                         document.getElementById('modal-case-title').value = selectedCase.title;
                         document.getElementById('modal-case-responsible').value = selectedCase.responsible;
                         document.getElementById('modal-case-description').value = selectedCase.description;
+                        document.getElementById('modal-case-color').value = selectedCase.color || '#FFFFFF';
                     }
+                                     // Set up color picker interaction
+                                     const colorPicker = document.getElementById('modal-case-color');
+                    const colorPreview = document.getElementById('color-preview');
+                    
+                    colorPreview.style.backgroundColor = colorPicker.value;
+                    
+                    colorPreview.addEventListener('click', () => colorPicker.click());
+                    
+                    colorPicker.addEventListener('input', (event) => {
+                        colorPreview.style.backgroundColor = event.target.value;
+                    });
                     modalButtons.innerHTML = `
                         <button onclick="handleCase('${action}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">${action.charAt(0).toUpperCase() + action.slice(1)} Case</button>
                         <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">ביטול</button>
@@ -387,13 +502,14 @@ function renderNumberGallery() {
         const caseTitle = document.getElementById('modal-case-title').value;
         const caseresponsible = document.getElementById('modal-case-responsible').value;
         const caseDescription = document.getElementById('modal-case-description').value;
+        const caseColor = document.getElementById('modal-case-color').value;
 
         if (!caseNumber || !caseTitle || !caseDescription || !caseresponsible) {
             alert('Please fill out all fields.');
             return;
         }
 
-        data = { ...data, number: caseNumber, title: caseTitle, responsible: caseresponsible,description: caseDescription };
+        data = { ...data, number: caseNumber, title: caseTitle, responsible: caseresponsible,description: caseDescription, color: caseColor};
     }
 
     try {
