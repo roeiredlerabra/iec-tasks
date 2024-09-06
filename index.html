@@ -232,6 +232,62 @@
 .html-content li {
     margin-bottom: 5px;
 }
+.monday-field {
+        background-color: #f6f7fb;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .monday-field-label {
+        background-color: #e6e9ef;
+        color: #676879;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 4px 8px;
+        text-transform: uppercase;
+    }
+    .monday-field-value {
+        color: #323338;
+        font-size: 0.875rem;
+        padding: 8px;
+        min-height: 2.5rem;
+        display: flex;
+        align-items: center;
+    }
+    .monday-status {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 20px;
+        padding: 2px 8px;
+        font-weight: 500;
+    }
+    .monday-status::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-left: 6px;
+    }
+    .monday-status-completed {
+        background-color: #e2f7f2;
+        color: #037f4c;
+    }
+    .monday-status-completed::before {
+        background-color: #00c875;
+    }
+    .monday-status-in-progress {
+        background-color: #fff7d8;
+        color: #cab641;
+    }
+    .monday-status-in-progress::before {
+        background-color: #fdab3d;
+    }
+    .monday-status-not-started {
+        background-color: #ffebeb;
+        color: #e44258;
+    }
+    .monday-status-not-started::before {
+        background-color: #e2445c;
+    }
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
@@ -266,14 +322,97 @@
             <button onclick="openModal('case', 'add')" class="bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base transition duration-300 ease-in-out transform hover:scale-105">הוספת טופס</button>
         </div>
 
-        <div id="case-info" class="hidden bg-white shadow-md rounded p-4 sm:p-6 mb-4 sm:mb-8">
-            <h2 class="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">טופס #<span id="case-number"></span></h2>
-            <p class="text-sm sm:text-base"><strong>כותרת:</strong> <span id="case-title-display"></span></p>
-            <p class="text-sm sm:text-base"><strong>אחראי:</strong> <span id="case-responsible-display"></span></p>
-            <p class="text-sm sm:text-base"><strong>תיאור:</strong> <span id="case-description-display"></span></p>
-            <div class="flex flex-wrap gap-2 mt-2 sm:mt-4">
-                <button onclick="openModal('case', 'update')" class="bg-blue-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-blue-600 text-sm sm:text-base transition duration-300 ease-in-out transform hover:scale-105">עדכן טופס</button>
-                <button onclick="openModal('case', 'delete')" class="bg-red-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-red-600 text-sm sm:text-base transition duration-300 ease-in-out transform hover:scale-105">מחק טופס</button>
+        <div id="case-info" class="hidden bg-white shadow-md rounded-lg overflow-hidden">
+            <div class="bg-blue-600 px-6 py-4 text-white">
+                <h2 class="text-xl font-semibold">טופס #<span id="case-number"></span></h2>
+            </div>
+            <div class="p-6 bg-gray-50">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- General Information -->
+                    <div class="monday-group">
+                        <h3 class="monday-group-title">מידע כללי</h3>
+                        <div class="monday-field">
+                            <div class="monday-field-label">כותרת</div>
+                            <div id="case-title-display" class="monday-field-value"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">אחראי</div>
+                            <div id="case-responsible-display" class="monday-field-value"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">תיאור</div>
+                            <div id="case-description-display" class="monday-field-value"></div>
+                        </div>
+                    </div>
+        
+                    <!-- Dates -->
+                    <div class="monday-group">
+                        <h3 class="monday-group-title">תאריכים</h3>
+                        <div class="monday-field">
+                            <div class="monday-field-label">תאריך התחלת פיתוח</div>
+                            <div id="case-dev-start-date-display" class="monday-field-value"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">תאריך העברה לטסט</div>
+                            <div id="case-test-transfer-date-display" class="monday-field-value"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">תאריך העברה לייצור</div>
+                            <div id="case-production-transfer-date-display" class="monday-field-value"></div>
+                        </div>
+                    </div>
+        
+                    <!-- Development Status -->
+                    <div class="monday-group">
+                        <h3 class="monday-group-title">סטטוס פיתוח</h3>
+                        <div class="monday-field">
+                            <div class="monday-field-label">פיתוח ל-HD</div>
+                            <div id="case-hd-status-display" class="monday-field-value monday-status"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">פיתוח לפטופ</div>
+                            <div id="case-laptop-status-display" class="monday-field-value monday-status"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">מסך מאשרים</div>
+                            <div id="case-approvers-status-display" class="monday-field-value monday-status"></div>
+                        </div>
+                    </div>
+        
+                    <!-- Additional Features -->
+                    <div class="monday-group">
+                        <h3 class="monday-group-title">תכונות נוספות</h3>
+                        <div class="monday-field">
+                            <div class="monday-field-label">התייחסות ב-ACTION CENTER</div>
+                            <div id="case-action-center-status-display" class="monday-field-value monday-status"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">חיווי על כשלון אוטומציה</div>
+                            <div id="case-automation-failure-status-display" class="monday-field-value monday-status"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">מייל תזכורות</div>
+                            <div id="case-reminder-email-status-display" class="monday-field-value monday-status"></div>
+                        </div>
+                    </div>
+        
+                    <!-- Security and Open Issues -->
+                    <div class="monday-group md:col-span-2">
+                        <h3 class="monday-group-title">אבטחה ונושאים פתוחים</h3>
+                        <div class="monday-field">
+                            <div class="monday-field-label">עדכון תפקידי אבטחה</div>
+                            <div id="case-security-roles-status-display" class="monday-field-value monday-status"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">נושאים פתוחים באפיון</div>
+                            <div id="case-open-issues-display" class="monday-field-value"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-100 px-6 py-4 border-t border-gray-200">
+                <button onclick="openModal('case', 'update')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mr-2">עדכן טופס</button>
+                <button onclick="openModal('case', 'delete')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">מחק טופס</button>
             </div>
         </div>
 
@@ -390,6 +529,17 @@ function processApiData(apiData) {
         responsible: caseItem.Responsible || '',
         description: caseItem.Notes ? stripHtml(caseItem.Notes) : '',
         color: caseItem.Color || '#FFFFFF',
+        developmentStartDate: caseItem.DevelopmentStartDate || '',
+        openIssuesAtStart: caseItem.OpenIssuesAtStart || '',
+        hdDevelopmentStatus: caseItem.HDDevelopmentStatus || '',
+        laptopDevelopmentStatus: caseItem.LaptopDevelopmentStatus || '',
+        approversScreenStatus: caseItem.ApproversScreenStatus || '',
+        actionCenterStatus: caseItem.ActionCenterStatus || '',
+        automationFailureIndicatorStatus: caseItem.AutomationFailureIndicatorStatus || '',
+        reminderEmailStatus: caseItem.ReminderEmailStatus || '',
+        testTransferDate: caseItem.TestTransferDate || '',
+        productionTransferDate: caseItem.ProductionTransferDate || '',
+        securityRolesUpdateStatus: caseItem.SecurityRolesUpdateStatus || '',
         issues: []
     }));
 
@@ -461,11 +611,57 @@ function selectCase(caseNumber) {
 // Render case info
 function renderCaseInfo(selectedCase) {
     document.getElementById('case-number').textContent = selectedCase.number;
-    document.getElementById('case-title-display').textContent = selectedCase.title;
-    document.getElementById('case-responsible-display').textContent = selectedCase.responsible;
-    document.getElementById('case-description-display').textContent = selectedCase.description;
+    setFieldValue('case-title-display', selectedCase.title);
+    setFieldValue('case-responsible-display', selectedCase.responsible);
+    setFieldValue('case-description-display', selectedCase.description);
+    setFieldValue('case-dev-start-date-display', formatDate(selectedCase.developmentStartDate));
+    setFieldValue('case-test-transfer-date-display', formatDate(selectedCase.testTransferDate));
+    setFieldValue('case-production-transfer-date-display', formatDate(selectedCase.productionTransferDate));
+    setStatusField('case-hd-status-display', selectedCase.hdDevelopmentStatus);
+    setStatusField('case-laptop-status-display', selectedCase.laptopDevelopmentStatus);
+    setStatusField('case-approvers-status-display', selectedCase.approversScreenStatus);
+    setStatusField('case-action-center-status-display', selectedCase.actionCenterStatus);
+    setStatusField('case-automation-failure-status-display', selectedCase.automationFailureIndicatorStatus);
+    setStatusField('case-reminder-email-status-display', selectedCase.reminderEmailStatus);
+    setStatusField('case-security-roles-status-display', selectedCase.securityRolesUpdateStatus);
+    setFieldValue('case-open-issues-display', selectedCase.openIssuesAtStart || 'אין נושאים פתוחים');
+
     document.getElementById('issues-table-container').classList.remove('hidden');
     document.getElementById('case-info').classList.remove('hidden');
+}
+
+function setFieldValue(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = value || 'לא הוגדר';
+    }
+}
+
+function setStatusField(elementId, status) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = status || 'לא הוגדר';
+        element.className = 'monday-field-value monday-status ' + getStatusClass(status);
+    }
+}
+
+function getStatusClass(status) {
+    switch (status) {
+        case 'הושלם':
+            return 'monday-status-completed';
+        case 'בפיתוח':
+            return 'monday-status-in-progress';
+        case 'טרם החל':
+            return 'monday-status-not-started';
+        default:
+            return '';
+    }
+}
+
+function formatDate(dateString) {
+    if (!dateString) return 'לא הוגדר';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 // Render issues table
@@ -514,6 +710,52 @@ function openModal(type, action, index = null) {
                     <label for="modal-case-color" class="color-picker-label text-sm text-gray-600">בחר צבע לטופס</label>
                     <input type="color" id="modal-case-color" value="#FFFFFF">
                 </div>
+                <input type="date" id="modal-case-dev-start-date" class="w-full mb-2 p-2 border rounded" placeholder="תאריך התחלת פיתוח">
+                <textarea id="modal-case-open-issues" class="w-full mb-2 p-2 border rounded" placeholder="נושאים פתוחים באפיון נכון לתחילת פיתוח"></textarea>
+                <select id="modal-case-hd-status" class="w-full mb-2 p-2 border rounded">
+                    <option value="">בחר סטטוס פיתוח ל-HD</option>
+                    <option value="טרם החל">טרם החל</option>
+                    <option value="בפיתוח">בפיתוח</option>
+                    <option value="הושלם">הושלם</option>
+                </select>
+                <select id="modal-case-laptop-status" class="w-full mb-2 p-2 border rounded">
+                    <option value="">בחר סטטוס פיתוח לפטופ</option>
+                    <option value="טרם החל">טרם החל</option>
+                    <option value="בפיתוח">בפיתוח</option>
+                    <option value="הושלם">הושלם</option>
+                </select>
+                <select id="modal-case-approvers-status" class="w-full mb-2 p-2 border rounded">
+                    <option value="">בחר סטטוס מסך מאשרים</option>
+                    <option value="טרם החל">טרם החל</option>
+                    <option value="בפיתוח">בפיתוח</option>
+                    <option value="הושלם">הושלם</option>
+                </select>
+                <select id="modal-case-action-center-status" class="w-full mb-2 p-2 border rounded">
+                    <option value="">בחר סטטוס התייחסות ב-ACTION CENTER</option>
+                    <option value="טרם החל">טרם החל</option>
+                    <option value="בפיתוח">בפיתוח</option>
+                    <option value="הושלם">הושלם</option>
+                </select>
+                <select id="modal-case-automation-failure-status" class="w-full mb-2 p-2 border rounded">
+                    <option value="">בחר סטטוס חיווי על כשלון אוטומציה</option>
+                    <option value="טרם החל">טרם החל</option>
+                    <option value="בפיתוח">בפיתוח</option>
+                    <option value="הושלם">הושלם</option>
+                </select>
+                <select id="modal-case-reminder-email-status" class="w-full mb-2 p-2 border rounded">
+                    <option value="">בחר סטטוס מייל תזכורות</option>
+                    <option value="טרם החל">טרם החל</option>
+                    <option value="בפיתוח">בפיתוח</option>
+                    <option value="הושלם">הושלם</option>
+                </select>
+                <input type="date" id="modal-case-test-transfer-date" class="w-full mb-2 p-2 border rounded" placeholder="תאריך העברה לטסט">
+                <input type="date" id="modal-case-production-transfer-date" class="w-full mb-2 p-2 border rounded" placeholder="תאריך העברה לייצור">
+                <select id="modal-case-security-roles-status" class="w-full mb-2 p-2 border rounded">
+                    <option value="">בחר סטטוס עדכון תפקידי אבטחה</option>
+                    <option value="טרם החל">טרם החל</option>
+                    <option value="בפיתוח">בפיתוח</option>
+                    <option value="הושלם">הושלם</option>
+                </select>
             `;
             if (action === 'update') {
                 const selectedCase = store.getState().selectedCase;
@@ -522,6 +764,17 @@ function openModal(type, action, index = null) {
                 document.getElementById('modal-case-responsible').value = selectedCase.responsible;
                 document.getElementById('modal-case-description').value = selectedCase.description;
                 document.getElementById('modal-case-color').value = selectedCase.color || '#FFFFFF';
+                document.getElementById('modal-case-dev-start-date').value = selectedCase.developmentStartDate;
+                document.getElementById('modal-case-open-issues').value = selectedCase.openIssuesAtStart;
+                document.getElementById('modal-case-hd-status').value = selectedCase.hdDevelopmentStatus;
+                document.getElementById('modal-case-laptop-status').value = selectedCase.laptopDevelopmentStatus;
+                document.getElementById('modal-case-approvers-status').value = selectedCase.approversScreenStatus;
+                document.getElementById('modal-case-action-center-status').value = selectedCase.actionCenterStatus;
+                document.getElementById('modal-case-automation-failure-status').value = selectedCase.automationFailureIndicatorStatus;
+                document.getElementById('modal-case-reminder-email-status').value = selectedCase.reminderEmailStatus;
+                document.getElementById('modal-case-test-transfer-date').value = selectedCase.testTransferDate;
+                document.getElementById('modal-case-production-transfer-date').value = selectedCase.productionTransferDate;
+                document.getElementById('modal-case-security-roles-status').value = selectedCase.securityRolesUpdateStatus;
             }
             const colorPicker = document.getElementById('modal-case-color');
             const colorPreview = document.getElementById('color-preview');
@@ -619,7 +872,18 @@ async function handleCase(action) {
         title: '',
         responsible: '',
         description: '',
-        color: '#FFFFFF'
+        color: '#FFFFFF',
+        developmentStartDate: '',
+        openIssuesAtStart: '',
+        hdDevelopmentStatus: '',
+        laptopDevelopmentStatus: '',
+        approversScreenStatus: '',
+        actionCenterStatus: '',
+        automationFailureIndicatorStatus: '',
+        reminderEmailStatus: '',
+        testTransferDate: '',
+        productionTransferDate: '',
+        securityRolesUpdateStatus: ''
     };
 
     if (action === 'add' || action === 'update') {
@@ -628,6 +892,17 @@ async function handleCase(action) {
         data.responsible = document.getElementById('modal-case-responsible').value;
         data.description = document.getElementById('modal-case-description').value;
         data.color = document.getElementById('modal-case-color').value;
+        data.developmentStartDate = document.getElementById('modal-case-dev-start-date').value;
+        data.openIssuesAtStart = document.getElementById('modal-case-open-issues').value;
+        data.hdDevelopmentStatus = document.getElementById('modal-case-hd-status').value;
+        data.laptopDevelopmentStatus = document.getElementById('modal-case-laptop-status').value;
+        data.approversScreenStatus = document.getElementById('modal-case-approvers-status').value;
+        data.actionCenterStatus = document.getElementById('modal-case-action-center-status').value;
+        data.automationFailureIndicatorStatus = document.getElementById('modal-case-automation-failure-status').value;
+        data.reminderEmailStatus = document.getElementById('modal-case-reminder-email-status').value;
+        data.testTransferDate = document.getElementById('modal-case-test-transfer-date').value;
+        data.productionTransferDate = document.getElementById('modal-case-production-transfer-date').value;
+        data.securityRolesUpdateStatus = document.getElementById('modal-case-security-roles-status').value;
 
         const errors = validateCaseData(data);
         if (errors.length > 0) {
@@ -721,6 +996,7 @@ async function handleIssue(action, index) {
 function validateCaseData(data) {
     const errors = [];
 
+    
     if (!data.caseNumber || isNaN(data.caseNumber)) {
         errors.push('מספר הטופס חייב להיות מספר תקין');
     }
@@ -735,6 +1011,35 @@ function validateCaseData(data) {
 
     if (!data.description || data.description.trim().length === 0) {
         errors.push('תיאור הטופס הוא שדה חובה');
+    }
+
+    // Add validation for new fields if necessary
+    if (!data.hdDevelopmentStatus) {
+        errors.push('יש לבחור סטטוס פיתוח ל-HD');
+    }
+
+    if (!data.laptopDevelopmentStatus) {
+        errors.push('יש לבחור סטטוס פיתוח לפטופ');
+    }
+
+    if (!data.approversScreenStatus) {
+        errors.push('יש לבחור סטטוס מסך מאשרים');
+    }
+
+    if (!data.actionCenterStatus) {
+        errors.push('יש לבחור סטטוס התייחסות ב-ACTION CENTER');
+    }
+
+    if (!data.automationFailureIndicatorStatus) {
+        errors.push('יש לבחור סטטוס חיווי על כשלון אוטומציה');
+    }
+
+    if (!data.reminderEmailStatus) {
+        errors.push('יש לבחור סטטוס מייל תזכורות');
+    }
+
+    if (!data.securityRolesUpdateStatus) {
+        errors.push('יש לבחור סטטוס עדכון תפקידי אבטחה');
     }
 
     return errors;
