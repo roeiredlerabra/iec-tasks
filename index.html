@@ -1290,13 +1290,42 @@ function closeDashboard() {
 function updateDashboard() {
     console.log("Updating dashboard...");
     const { cases } = store.getState();
-    updateStatusChart(cases);
+    updateCaseStatusChart(cases);
+    updateIssueStatusChart(cases);
     updateResponsibleChart(cases);
     updateFormChart(cases);
-    updateRecentIssuesChart(cases);
 }
 
-function updateStatusChart(cases) {
+
+function updateCaseStatusChart(cases) {
+    const statusCounts = {
+        'טרם החל': 0,
+        'בפיתוח': 0,
+        'הושלם': 0
+    };
+
+    cases.forEach(caseItem => {
+        const overallStatus = determineOverallStatus(caseItem);
+        statusCounts[overallStatus]++;
+    });
+
+    const data = {
+        labels: Object.keys(statusCounts),
+        datasets: [{
+            data: Object.values(statusCounts),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+        }]
+    };
+
+    updateOrCreateChart('caseStatusChart', 'doughnut', data, {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: 'סיכום סטטוס טפסים' }
+        }
+    });
+}
+function updateIssueStatusChart(cases) {
     const statusCounts = {};
     cases.forEach(caseItem => {
         caseItem.issues.forEach(issue => {
@@ -1320,7 +1349,25 @@ function updateStatusChart(cases) {
         }
     });
 }
+function determineOverallStatus(caseItem) {
+    const statuses = [
+        caseItem.hdDevelopmentStatus,
+        caseItem.laptopDevelopmentStatus,
+        caseItem.approversScreenStatus,
+        caseItem.actionCenterStatus,
+        caseItem.automationFailureIndicatorStatus,
+        caseItem.reminderEmailStatus,
+        caseItem.securityRolesUpdateStatus
+    ];
 
+    if (statuses.every(status => status === 'הושלם')) {
+        return 'הושלם';
+    } else if (statuses.some(status => status === 'בפיתוח')) {
+        return 'בפיתוח';
+    } else {
+        return 'טרם החל';
+    }
+}
 function updateResponsibleChart(cases) {
     const responsibleCounts = {};
     cases.forEach(caseItem => {
@@ -1409,6 +1456,7 @@ function updateOrCreateChart(chartId, type, data, options) {
     const ctx = document.getElementById(chartId).getContext('2d');
     if (dashboardCharts[chartId]) {
         dashboardCharts[chartId].data = data;
+        dashboardCharts[chartId].options = options;
         dashboardCharts[chartId].update();
     } else {
         dashboardCharts[chartId] = new Chart(ctx, { type, data, options });
@@ -1426,30 +1474,31 @@ window.openDashboard = openDashboard;
 window.closeDashboard = closeDashboard;
 window.updateDashboard = updateDashboard;
     </script>
-    <div id="dashboardPanel" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" style="display:none;">
-        <div class="bg-white p-8 mx-auto my-10 rounded-lg shadow-lg max-w-4xl">
-            <h2 class="text-2xl font-bold mb-6">דשבורד</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">סטטוס משימות</h3>
-                    <canvas id="statusChart"></canvas>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">משימות פתוחות לפי אחראי</h3>
-                    <canvas id="responsibleChart"></canvas>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">משימות לפי טופס</h3>
-                    <canvas id="formChart"></canvas>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">משימות שנוספו לאחרונה</h3>
-                    <canvas id="recentIssuesChart"></canvas>
-                </div>
+<div id="dashboardPanel" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" style="display:none;">
+    <div class="bg-white p-8 mx-auto my-10 rounded-lg shadow-lg max-w-4xl">
+        <h2 class="text-2xl font-bold mb-6">דשבורד</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- New Case Status Summary Section -->
+            <div>
+                <h3 class="text-lg font-semibold mb-2">סיכום סטטוס טפסים</h3>
+                <canvas id="caseStatusChart"></canvas>
             </div>
-            <button id="closeDashboard" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">סגור דשבורד</button>
+            <div>
+                <h3 class="text-lg font-semibold mb-2">סטטוס משימות</h3>
+                <canvas id="statusChart"></canvas>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-2">משימות פתוחות לפי אחראי</h3>
+                <canvas id="responsibleChart"></canvas>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-2">משימות לפי טופס</h3>
+                <canvas id="formChart"></canvas>
+            </div>
         </div>
+        <button id="closeDashboard" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">סגור דשבורד</button>
     </div>
+</div>
     
     <!-- Add Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
