@@ -429,11 +429,11 @@
                 <table id="issues-table" class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">תאריך</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">תאריך יצירה</th>
                             <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">משימה</th>
                             <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">אתגר</th>
                             <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">הערות</th>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מצב</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">סטאטוס</th>
                             <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">אחראי</th>
                             <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">פעולה</th>
                         </tr>
@@ -559,7 +559,7 @@ function processApiData(apiData) {
                 issue: issueItem.Title,
                 challenge: stripHtml(issueItem.Challenge),
                 notes: stripHtml(issueItem.Notes),
-                status: issueItem.Status,
+                status: mapStatus(issueItem.Status),
                 responsible: issueItem.Responsible,
                 createdDate: issueItem.Created // Add this line to include the creation date
             });
@@ -568,7 +568,19 @@ function processApiData(apiData) {
 
     return cases;
 }
-
+function mapStatus(oldStatus) {
+    // Map the old status to new status options
+    switch (oldStatus.toLowerCase()) {
+        case 'בעבודה':
+        case 'בתהליך':
+            return 'בעבודה';
+        case 'הושלם':
+        case 'סגור':
+            return 'הושלם';
+        default:
+            return 'בהמתנה';
+    }
+}
 // Helper function to strip HTML tags
 function stripHtml(html) {
     const tmp = document.createElement('DIV');
@@ -683,7 +695,11 @@ function renderIssuesTable(issues) {
             <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.issue}</td>
             <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
             <td class="px-6 py-4 text-sm text-gray-500 wrap-text html-content">${issue.notes}</td>
-            <td class="px-6 py-4 text-sm text-gray-500">${issue.status}</td>
+            <td class="px-6 py-4 text-sm">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusStyle(issue.status)}">
+                    ${issue.status}
+                </span>
+            </td>
             <td class="px-6 py-4 text-sm text-gray-500">${issue.responsible}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <button onclick="openModal('issue', 'update', ${index})" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition duration-300" aria-label="ערוך משימה">עריכה</button>
@@ -694,7 +710,18 @@ function renderIssuesTable(issues) {
     });
     announceContentChange(`טבלת המשימות עודכנה עם ${issues.length} משימות.`);
 }
-
+function getStatusStyle(status) {
+    switch (status) {
+        case 'בעבודה':
+            return 'bg-yellow-100 text-yellow-800';
+        case 'הושלם':
+            return 'bg-green-100 text-green-800';
+        case 'בהמתנה':
+            return 'bg-gray-100 text-gray-800';
+        default:
+            return 'bg-gray-100 text-gray-800';
+    }
+}
 // Open modal
 function openModal(type, action, index = null) {
     const modal = document.getElementById('dynamicModal');
@@ -796,10 +823,9 @@ function openModal(type, action, index = null) {
                     <label for="modal-issue-status">סטטוס:</label>
                     <select id="modal-issue-status" class="w-full p-2 border rounded">
                         <option value="" disabled selected>בחר סטטוס</option>
-                        <option value="פתוח">פתוח</option>
-                        <option value="בתהליך">בתהליך</option>
-                        <option value="נפתר">נפתר</option>
-                        <option value="סגור">סגור</option>
+                        <option value="בעבודה">בעבודה</option>
+                        <option value="הושלם">הושלם</option>
+                        <option value="בהמתנה">בהמתנה</option>
                     </select>
                 </div>
                 <div class="modal-field">
