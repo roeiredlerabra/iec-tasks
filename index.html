@@ -701,62 +701,34 @@ function openModal(type, action, index = null) {
     if (type === 'case') {
         if (action === 'add' || action === 'update') {
             modalContent.innerHTML = `
-                <input type="number" id="modal-case-number" class="w-full mb-2 p-2 border rounded" placeholder="מספר טופס" ${action === 'update' ? 'disabled' : ''}>
-                <input type="text" id="modal-case-title" class="w-full mb-2 p-2 border rounded" placeholder="כותרת טופס">
-                <input type="text" id="modal-case-responsible" class="w-full mb-2 p-2 border rounded" placeholder="אחראי על הטופס">
-                <textarea id="modal-case-description" class="w-full mb-2 p-2 border rounded" placeholder="תיאור טופס"></textarea>
-                <div class="color-picker-wrapper">
-                    <div id="color-preview" class="color-preview"></div>
-                    <label for="modal-case-color" class="color-picker-label text-sm text-gray-600">בחר צבע לטופס</label>
-                    <input type="color" id="modal-case-color" value="#FFFFFF">
+                <div class="space-y-4">
+                    ${createFormField('מספר טופס', 'number', 'modal-case-number', true, action === 'update')}
+                    ${createFormField('כותרת טופס', 'text', 'modal-case-title', true)}
+                    ${createFormField('אחראי על הטופס', 'text', 'modal-case-responsible', true)}
+                    ${createFormField('תיאור טופס', 'textarea', 'modal-case-description', true)}
+                    
+                    <div class="form-field">
+                        <label for="modal-case-color" class="block text-sm font-medium text-gray-700">צבע טופס</label>
+                        <div class="mt-1 flex items-center">
+                            <div id="color-preview" class="w-8 h-8 rounded-full border border-gray-300 mr-2"></div>
+                            <input type="color" id="modal-case-color" value="#FFFFFF" class="h-8">
+                        </div>
+                    </div>
+                    
+                    ${createFormField('תאריך התחלת פיתוח', 'date', 'modal-case-dev-start-date', false)}
+                    ${createFormField('נושאים פתוחים באפיון', 'textarea', 'modal-case-open-issues', false)}
+                    ${createFormField('פיתוח ל-HD', 'select', 'modal-case-hd-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
+                    ${createFormField('פיתוח לפטופ', 'select', 'modal-case-laptop-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
+                    ${createFormField('מסך מאשרים', 'select', 'modal-case-approvers-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
+                    ${createFormField('התייחסות ב-ACTION CENTER', 'select', 'modal-case-action-center-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
+                    ${createFormField('חיווי על כשלון אוטומציה', 'select', 'modal-case-automation-failure-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
+                    ${createFormField('מייל תזכורות', 'select', 'modal-case-reminder-email-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
+                    ${createFormField('תאריך העברה לטסט', 'date', 'modal-case-test-transfer-date', false)}
+                    ${createFormField('תאריך העברה לייצור', 'date', 'modal-case-production-transfer-date', false)}
+                    ${createFormField('עדכון תפקידי אבטחה', 'select', 'modal-case-security-roles-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
                 </div>
-                <input type="date" id="modal-case-dev-start-date" class="w-full mb-2 p-2 border rounded" placeholder="תאריך התחלת פיתוח">
-                <textarea id="modal-case-open-issues" class="w-full mb-2 p-2 border rounded" placeholder="נושאים פתוחים באפיון נכון לתחילת פיתוח"></textarea>
-                <select id="modal-case-hd-status" class="w-full mb-2 p-2 border rounded">
-                    <option value="">בחר סטטוס פיתוח ל-HD</option>
-                    <option value="טרם החל">טרם החל</option>
-                    <option value="בפיתוח">בפיתוח</option>
-                    <option value="הושלם">הושלם</option>
-                </select>
-                <select id="modal-case-laptop-status" class="w-full mb-2 p-2 border rounded">
-                    <option value="">בחר סטטוס פיתוח לפטופ</option>
-                    <option value="טרם החל">טרם החל</option>
-                    <option value="בפיתוח">בפיתוח</option>
-                    <option value="הושלם">הושלם</option>
-                </select>
-                <select id="modal-case-approvers-status" class="w-full mb-2 p-2 border rounded">
-                    <option value="">בחר סטטוס מסך מאשרים</option>
-                    <option value="טרם החל">טרם החל</option>
-                    <option value="בפיתוח">בפיתוח</option>
-                    <option value="הושלם">הושלם</option>
-                </select>
-                <select id="modal-case-action-center-status" class="w-full mb-2 p-2 border rounded">
-                    <option value="">בחר סטטוס התייחסות ב-ACTION CENTER</option>
-                    <option value="טרם החל">טרם החל</option>
-                    <option value="בפיתוח">בפיתוח</option>
-                    <option value="הושלם">הושלם</option>
-                </select>
-                <select id="modal-case-automation-failure-status" class="w-full mb-2 p-2 border rounded">
-                    <option value="">בחר סטטוס חיווי על כשלון אוטומציה</option>
-                    <option value="טרם החל">טרם החל</option>
-                    <option value="בפיתוח">בפיתוח</option>
-                    <option value="הושלם">הושלם</option>
-                </select>
-                <select id="modal-case-reminder-email-status" class="w-full mb-2 p-2 border rounded">
-                    <option value="">בחר סטטוס מייל תזכורות</option>
-                    <option value="טרם החל">טרם החל</option>
-                    <option value="בפיתוח">בפיתוח</option>
-                    <option value="הושלם">הושלם</option>
-                </select>
-                <input type="date" id="modal-case-test-transfer-date" class="w-full mb-2 p-2 border rounded" placeholder="תאריך העברה לטסט">
-                <input type="date" id="modal-case-production-transfer-date" class="w-full mb-2 p-2 border rounded" placeholder="תאריך העברה לייצור">
-                <select id="modal-case-security-roles-status" class="w-full mb-2 p-2 border rounded">
-                    <option value="">בחר סטטוס עדכון תפקידי אבטחה</option>
-                    <option value="טרם החל">טרם החל</option>
-                    <option value="בפיתוח">בפיתוח</option>
-                    <option value="הושלם">הושלם</option>
-                </select>
             `;
+            
             if (action === 'update') {
                 const selectedCase = store.getState().selectedCase;
                 document.getElementById('modal-case-number').value = selectedCase.number;
@@ -764,17 +736,17 @@ function openModal(type, action, index = null) {
                 document.getElementById('modal-case-responsible').value = selectedCase.responsible;
                 document.getElementById('modal-case-description').value = selectedCase.description;
                 document.getElementById('modal-case-color').value = selectedCase.color || '#FFFFFF';
-                document.getElementById('modal-case-dev-start-date').value = selectedCase.developmentStartDate;
-                document.getElementById('modal-case-open-issues').value = selectedCase.openIssuesAtStart;
-                document.getElementById('modal-case-hd-status').value = selectedCase.hdDevelopmentStatus;
-                document.getElementById('modal-case-laptop-status').value = selectedCase.laptopDevelopmentStatus;
-                document.getElementById('modal-case-approvers-status').value = selectedCase.approversScreenStatus;
-                document.getElementById('modal-case-action-center-status').value = selectedCase.actionCenterStatus;
-                document.getElementById('modal-case-automation-failure-status').value = selectedCase.automationFailureIndicatorStatus;
-                document.getElementById('modal-case-reminder-email-status').value = selectedCase.reminderEmailStatus;
-                document.getElementById('modal-case-test-transfer-date').value = selectedCase.testTransferDate;
-                document.getElementById('modal-case-production-transfer-date').value = selectedCase.productionTransferDate;
-                document.getElementById('modal-case-security-roles-status').value = selectedCase.securityRolesUpdateStatus;
+                document.getElementById('modal-case-dev-start-date').value = selectedCase.developmentStartDate || '';
+                document.getElementById('modal-case-open-issues').value = selectedCase.openIssuesAtStart || '';
+                document.getElementById('modal-case-hd-status').value = selectedCase.hdDevelopmentStatus || '';
+                document.getElementById('modal-case-laptop-status').value = selectedCase.laptopDevelopmentStatus || '';
+                document.getElementById('modal-case-approvers-status').value = selectedCase.approversScreenStatus || '';
+                document.getElementById('modal-case-action-center-status').value = selectedCase.actionCenterStatus || '';
+                document.getElementById('modal-case-automation-failure-status').value = selectedCase.automationFailureIndicatorStatus || '';
+                document.getElementById('modal-case-reminder-email-status').value = selectedCase.reminderEmailStatus || '';
+                document.getElementById('modal-case-test-transfer-date').value = selectedCase.testTransferDate || '';
+                document.getElementById('modal-case-production-transfer-date').value = selectedCase.productionTransferDate || '';
+                document.getElementById('modal-case-security-roles-status').value = selectedCase.securityRolesUpdateStatus || '';
             }
             const colorPicker = document.getElementById('modal-case-color');
             const colorPreview = document.getElementById('color-preview');
@@ -855,7 +827,36 @@ function openModal(type, action, index = null) {
     modal.style.display = 'block';
     setupModalAccessibility();
 }
+function createFormField(label, type, id, required, disabled = false, options = []) {
+    let field = `
+        <div class="form-field">
+            <label for="${id}" class="block text-sm font-medium text-gray-700">
+                ${label}
+                ${required ? '<span class="text-red-500">*</span>' : ''}
+            </label>
+            <div class="mt-1">
+    `;
 
+    if (type === 'textarea') {
+        field += `<textarea id="${id}" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" rows="3"${required ? ' required' : ''}${disabled ? ' disabled' : ''}></textarea>`;
+    } else if (type === 'select') {
+        field += `
+            <select id="${id}" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"${required ? ' required' : ''}${disabled ? ' disabled' : ''}>
+                <option value="">בחר אפשרות</option>
+                ${options.map(option => `<option value="${option}">${option}</option>`).join('')}
+            </select>
+        `;
+    } else {
+        field += `<input type="${type}" id="${id}" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"${required ? ' required' : ''}${disabled ? ' disabled' : ''}>`;
+    }
+
+    field += `
+            </div>
+        </div>
+    `;
+
+    return field;
+}
 // Close modal
 function closeModal() {
     const modal = document.getElementById('dynamicModal');
