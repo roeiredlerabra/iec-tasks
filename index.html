@@ -429,7 +429,7 @@
                 <table id="issues-table" class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מזהה</th>
+                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">תאריך</th>
                             <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">משימה</th>
                             <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">אתגר</th>
                             <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">הערות</th>
@@ -560,7 +560,8 @@ function processApiData(apiData) {
                 challenge: stripHtml(issueItem.Challenge),
                 notes: stripHtml(issueItem.Notes),
                 status: issueItem.Status,
-                responsible: issueItem.Responsible
+                responsible: issueItem.Responsible,
+                createdDate: issueItem.Created // Add this line to include the creation date
             });
         }
     });
@@ -666,9 +667,9 @@ function getStatusClass(status) {
 }
 
 function formatDate(dateString) {
-    if (!dateString) return 'לא הוגדר';
+    if (!dateString) return 'לא זמין';
     const date = new Date(dateString);
-    return date.toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' });
+    return date.toLocaleDateString('he-IL', { year: 'numeric', month: '2-digit', day: '2-digit' });
 }
 
 // Render issues table
@@ -678,7 +679,7 @@ function renderIssuesTable(issues) {
     issues.forEach((issue, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td class="px-6 py-4 text-sm text-gray-500">${issue.id}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">${formatDate(issue.createdDate)}</td>
             <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.issue}</td>
             <td class="px-6 py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
             <td class="px-6 py-4 text-sm text-gray-500 wrap-text html-content">${issue.notes}</td>
