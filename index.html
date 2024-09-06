@@ -536,17 +536,21 @@ function processApiData(apiData) {
         responsible: caseItem.Responsible || '',
         description: caseItem.Notes ? stripHtml(caseItem.Notes) : '',
         color: caseItem.Color || '#FFFFFF',
-        developmentStartDate: caseItem.DevelopmentStartDate || '',
-        openIssuesAtStart: caseItem.OpenIssuesAtStart || '',
-        hdDevelopmentStatus: caseItem.HDDevelopmentStatus || '',
-        laptopDevelopmentStatus: caseItem.LaptopDevelopmentStatus || '',
-        approversScreenStatus: caseItem.ApproversScreenStatus || '',
-        actionCenterStatus: caseItem.ActionCenterStatus || '',
-        automationFailureIndicatorStatus: caseItem.AutomationFailureIndicatorStatus || '',
-        reminderEmailStatus: caseItem.ReminderEmailStatus || '',
-        testTransferDate: caseItem.TestTransferDate || '',
-        productionTransferDate: caseItem.ProductionTransferDate || '',
-        securityRolesUpdateStatus: caseItem.SecurityRolesUpdateStatus || '',
+        developmentStartDate: caseItem.developmentStartDate || '',
+        openIssuesAtStart: caseItem.openIssuesAtStart ? stripHtml(caseItem.openIssuesAtStart) : '',
+        hdDevelopmentStatus: caseItem.hdDevelopmentStatus || '',
+        laptopDevelopmentStatus: caseItem.laptopDevelopmentStatus || '',
+        approversScreenStatus: caseItem.approversScreenStatus || '',
+        actionCenterStatus: caseItem.actionCenterStatus || '',
+        automationFailureIndicatorStatus: caseItem.automationFailureIndicatorStatus || '',
+        reminderEmailStatus: caseItem.reminderEmailStatus || '',
+        testTransferDate: caseItem.testTransferDate || '',
+        productionTransferDate: caseItem.productionTransferDate || '',
+        securityRolesUpdateStatus: caseItem.securityRolesUpdateStatus || '',
+        createdDate: caseItem.Created,
+        modifiedDate: caseItem.Modified,
+        author: caseItem.Author ? caseItem.Author.DisplayName : '',
+        editor: caseItem.Editor ? caseItem.Editor.DisplayName : '',
         issues: []
     }));
 
@@ -561,7 +565,7 @@ function processApiData(apiData) {
                 notes: stripHtml(issueItem.Notes),
                 status: mapStatus(issueItem.Status),
                 responsible: issueItem.Responsible,
-                createdDate: issueItem.Created // Add this line to include the creation date
+                createdDate: issueItem.Created
             });
         }
     });
@@ -635,16 +639,16 @@ function renderCaseInfo(selectedCase) {
     setFieldValue('case-responsible-display', selectedCase.responsible);
     setFieldValue('case-description-display', selectedCase.description);
     setFieldValue('case-dev-start-date-display', formatDate(selectedCase.developmentStartDate));
-    setFieldValue('case-test-transfer-date-display', formatDate(selectedCase.testTransferDate));
-    setFieldValue('case-production-transfer-date-display', formatDate(selectedCase.productionTransferDate));
+    setFieldValue('case-open-issues-display', selectedCase.openIssuesAtStart);
     setStatusField('case-hd-status-display', selectedCase.hdDevelopmentStatus);
     setStatusField('case-laptop-status-display', selectedCase.laptopDevelopmentStatus);
     setStatusField('case-approvers-status-display', selectedCase.approversScreenStatus);
     setStatusField('case-action-center-status-display', selectedCase.actionCenterStatus);
     setStatusField('case-automation-failure-status-display', selectedCase.automationFailureIndicatorStatus);
     setStatusField('case-reminder-email-status-display', selectedCase.reminderEmailStatus);
+    setFieldValue('case-test-transfer-date-display', formatDate(selectedCase.testTransferDate));
+    setFieldValue('case-production-transfer-date-display', formatDate(selectedCase.productionTransferDate));
     setStatusField('case-security-roles-status-display', selectedCase.securityRolesUpdateStatus);
-    setFieldValue('case-open-issues-display', selectedCase.openIssuesAtStart || 'אין נושאים פתוחים');
 
     document.getElementById('issues-table-container').classList.remove('hidden');
     document.getElementById('case-info').classList.remove('hidden');
@@ -664,7 +668,12 @@ function setStatusField(elementId, status) {
         element.className = 'monday-field-value monday-status ' + getStatusClass(status);
     }
 }
-
+function setFieldValue(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.textContent = value || 'לא הוגדר';
+    }
+}
 function getStatusClass(status) {
     switch (status) {
         case 'הושלם':
