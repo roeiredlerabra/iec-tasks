@@ -296,6 +296,35 @@
     border-radius: 5px;
     background-color: #f9f9f9;
     }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        50% { transform: translateX(10px); }
+        75% { transform: translateX(-10px); }
+        100% { transform: translateX(0); }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .fade-out {
+        animation: fadeOut 0.5s ease-out;
+    }
+
+    .shake {
+        animation: shake 0.5s ease-in-out;
+    }
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
@@ -322,13 +351,50 @@
         <div class="search">
             <!-- Add search functionality here if needed -->
         </div>
+        <button id="logoutButton" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">התנתק</button>
     </header>
     <br>
-    <div class="container mx-auto">
-        <div class="flex flex-wrap gap-2 mb-4 sm:mb-8">
-            <div id="number-gallery" class="flex flex-wrap gap-2"></div>
-            <button onclick="openModal('case', 'add')" class="bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base transition duration-300 ease-in-out transform hover:scale-105">הוספת טופס</button>
+    <div id="loginContainer" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center">התחברות למערכת</h2>
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">אימייל</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                        </div>
+                        <input type="email" name="email" id="email" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" placeholder="you@example.com">
+                    </div>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">סיסמה</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <input type="password" name="password" id="password" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md" placeholder="••••••••">
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        התחבר
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
+    <div id="mainContentContainer" class="hidden">
+        <div class="container mx-auto">
+            <div class="flex flex-wrap gap-2 mb-4 sm:mb-8">
+                <div id="number-gallery" class="flex flex-wrap gap-2"></div>
+                <button onclick="openModal('case', 'add')" class="bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base transition duration-300 ease-in-out transform hover:scale-105">הוספת טופס</button>
+            </div>
 
         <div id="case-info" class="hidden bg-white shadow-md rounded-lg overflow-hidden">
             <div class="bg-blue-600 px-6 py-4 text-white">
@@ -659,6 +725,7 @@ function renderCaseInfo(selectedCase) {
 
     document.getElementById('issues-table-container').classList.remove('hidden');
     document.getElementById('case-info').classList.remove('hidden');
+    applyPermissions();
 }
 
 function setFieldValue(elementId, value) {
@@ -725,6 +792,7 @@ function renderIssuesTable(issues) {
         issuesTableBody.appendChild(row);
     });
     announceContentChange(`טבלת המשימות עודכנה עם ${issues.length} משימות.`);
+    applyPermissions();
 }
 function getStatusStyle(status) {
     switch (status) {
@@ -748,7 +816,18 @@ function openModal(type, action, index = null) {
     modalTitle.textContent = `${action === 'add' ? 'הוספת' : action === 'update' ? 'עדכון' : 'מחיקת'} ${type === 'case' ? 'טופס' : 'משימה'}`;
     modalContent.innerHTML = '';
     modalButtons.innerHTML = '';
-
+    if (action === 'add' && !checkPermission('create')) {
+        showNotification('אין לך הרשאות ליצור', 'error');
+        return;
+    }
+    if (action === 'update' && !checkPermission('update')) {
+        showNotification('אין לך הרשאות לעדכן', 'error');
+        return;
+    }
+    if (action === 'delete' && !checkPermission('delete')) {
+        showNotification('אין לך הרשאות למחוק', 'error');
+        return;
+    }
     if (type === 'case') {
         if (action === 'add' || action === 'update') {
             modalContent.innerHTML = `
@@ -936,7 +1015,18 @@ async function handleCase(action) {
         productionTransferDate: '',
         securityRolesUpdateStatus: ''
     };
-
+    if (action === 'add' && !checkPermission('create')) {
+        showNotification('אין לך הרשאות ליצור', 'error');
+        return;
+    }
+    if (action === 'update' && !checkPermission('update')) {
+        showNotification('אין לך הרשאות לעדכן', 'error');
+        return;
+    }
+    if (action === 'delete' && !checkPermission('delete')) {
+        showNotification('אין לך הרשאות למחוק', 'error');
+        return;
+    }
     if (action === 'add' || action === 'update') {
         data.caseNumber = parseInt(document.getElementById('modal-case-number').value, 10);
         data.title = document.getElementById('modal-case-title').value;
@@ -1002,7 +1092,18 @@ async function handleIssue(action, index) {
         status: '',
         responsible: ''
     };
-
+    if (action === 'add' && !checkPermission('create')) {
+        showNotification('אין לך הרשאות ליצור', 'error');
+        return;
+    }
+    if (action === 'update' && !checkPermission('update')) {
+        showNotification('אין לך הרשאות לעדכן', 'error');
+        return;
+    }
+    if (action === 'delete' && !checkPermission('delete')) {
+        showNotification('אין לך הרשאות למחוק', 'error');
+        return;
+    }
     if (action === 'add' || action === 'update') {
         data.issue = document.getElementById('modal-issue-text').value;
         data.challenge = document.getElementById('modal-issue-challenge').value;
@@ -1131,6 +1232,12 @@ function searchAndFilterCases(cases, query, status) {
 
 function renderSearchAndFilterBar() {
     const container = document.querySelector('.search');
+    
+    // Check if the search bar already exists
+    if (container.querySelector('#searchInput')) {
+        return; // Exit the function if the search bar already exists
+    }
+
     const searchAndFilterBar = document.createElement('div');
     searchAndFilterBar.className = 'flex flex-wrap gap-2 mb-4';
     searchAndFilterBar.innerHTML = `
@@ -1251,13 +1358,64 @@ function hideLoader() {
     document.getElementById('loader').style.display = 'none';
 }
 
-// Initialize app
-async function initializeApp() {
-    await fetchData();
-    renderSearchAndFilterBar();
-    renderNumberGallery(store.getState().cases);
-}
+let appInitialized = false;
 
+
+
+async function initializeApp() {
+    if (appInitialized) return;
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        // If no token, show login form and hide main content
+        document.getElementById('loginContainer').style.display = 'flex';
+        document.getElementById('mainContentContainer').classList.add('hidden');
+        return;
+    }
+
+    // Check read permission
+    if (!checkPermission('read')) {
+        showNotification('אין לך הרשאות לצפות בנתונים', 'error');
+        logout(); // Force logout if no read permission
+        return;
+    }
+
+    // If token exists and has read permission, hide login form and show main content
+    document.getElementById('loginContainer').style.display = 'none';
+    document.getElementById('mainContentContainer').classList.remove('hidden');
+
+    try {
+        await fetchData();
+        renderSearchAndFilterBar();
+        renderNumberGallery(store.getState().cases);
+        applyPermissions();
+
+        appInitialized = true;
+    } catch (error) {
+        console.error('Error initializing app:', error);
+        showNotification('אירעה שגיאה בטעינת הנתונים', 'error');
+    }
+}
+function applyPermissions() {
+    const canCreate = checkPermission('create');
+    const canUpdate = checkPermission('update');
+    const canDelete = checkPermission('delete');
+
+    // Handle create permission
+    document.querySelectorAll('.create-button').forEach(button => {
+        button.style.display = canCreate ? '' : 'none';
+    });
+
+    // Handle update permission
+    document.querySelectorAll('.update-button').forEach(button => {
+        button.style.display = canUpdate ? '' : 'none';
+    });
+
+    // Handle delete permission
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.style.display = canDelete ? '' : 'none';
+    });
+}
 // Event listeners
 window.addEventListener('load', initializeApp);
 
@@ -1616,6 +1774,116 @@ function formatDate(dateString) {
 
     showNotification('הקובץ הורד בהצלחה', 'success');
 }
+// Login functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    const loginContainer = document.getElementById('loginContainer');
+    const mainContent = document.querySelector('.container.mx-auto');
+
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Simple validation
+        if (!email || !password) {
+            showNotification('נא למלא את כל השדות', 'error');
+            shakeForm();
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            showNotification('אנא הזן כתובת אימייל תקינה', 'error');
+            shakeForm();
+            return;
+        }
+
+        // Show loading state
+        const submitButton = loginForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> מתחבר...';
+
+        // Send login request
+        fetch('https://prod-127.westeurope.logic.azure.com:443/workflows/c9fe1de68a0148e2b007abf488c3a43d/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=cW9L_qcacT9itVeyZZgTnjnJBtYTS3LZjcFT_MCrjWg', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        })
+        .then(response => response.json())
+        .then(data => {
+    if (data.status === 'success') {
+        showNotification('התחברת בהצלחה', 'success');
+        // Store user data, token, and permissions
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('permissions', JSON.stringify(data.user.permissions));
+        // Hide login form and show main content
+        loginContainer.classList.add('fade-out');
+        setTimeout(() => {
+            loginContainer.style.display = 'none';
+            document.getElementById('mainContentContainer').classList.remove('hidden');
+            document.getElementById('mainContentContainer').classList.add('fade-in');
+        }, 500);
+        // Initialize the app
+        initializeApp();
+    } else {
+        throw new Error(data.message || 'Login failed');
+    }
+})
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification(error.message || 'שגיאה בהתחברות', 'error');
+            shakeForm();
+        })
+        .finally(() => {
+            // Reset button state
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+        });
+    });
+
+    function isValidEmail(email) {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    function shakeForm() {
+        loginForm.classList.add('shake');
+        setTimeout(() => loginForm.classList.remove('shake'), 500);
+    }
+});
+function checkPermission(permission) {
+    const permissions = JSON.parse(localStorage.getItem('permissions'));
+    return permissions && permissions[permission] === "true";
+}
+// Check for existing login
+function checkExistingLogin() {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (token && user) {
+        // User is already logged in
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('mainContentContainer').classList.remove('hidden');
+        initializeApp();
+    }
+}
+
+// Call this function when the page loads
+document.addEventListener('DOMContentLoaded', checkExistingLogin);
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    document.getElementById('mainContentContainer').classList.add('hidden');
+    document.getElementById('loginContainer').style.display = 'flex';
+    document.getElementById('loginContainer').classList.remove('fade-out');
+    document.getElementById('loginContainer').classList.add('fade-in');
+}
+
+document.getElementById('logoutButton').addEventListener('click', logout);
     </script>
 <div id="dashboardPanel" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" style="display:none;">
     <div class="bg-white p-8 mx-auto my-10 rounded-lg shadow-lg max-w-4xl">
