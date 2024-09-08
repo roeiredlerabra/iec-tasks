@@ -335,6 +335,21 @@
     animation: spin 1s ease-in-out infinite;
     margin-left: 0.5em;
 }
+.group:hover .group-hover\:opacity-100 {
+    opacity: 1;
+}
+
+.group:hover .group-hover\:visible {
+    visibility: visible;
+}
+
+/* Ensure the info bubble doesn't get cut off at the edge of the screen */
+@media (max-width: 640px) {
+    .group .absolute {
+        right: auto;
+        left: 0;
+    }
+}
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
@@ -360,7 +375,60 @@
                             </svg>
                             דשבורד
                         </button>
-                        <div class="mx-4 h-6 w-px bg-gray-300"></div> <!-- This is the divider -->
+                        <div class="mx-4 h-6 w-px bg-gray-300"></div>
+                        <div class="relative group">
+                            <button id="infoButton" class="nav-link text-gray-600 hover:text-blue-600 transition duration-300 flex items-center" aria-label="מידע על הטכנולוגיה">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </button>
+                            <div class="absolute right-0 w-80 p-4 mt-2 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                                <h3 class="text-lg font-semibold mb-3 text-blue-600">טכנולוגיות באתר</h3>
+                                <ul class="text-sm space-y-3" dir="ltr">
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 mr-2 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold">HTML5 & CSS3:</span> Modern web standards for structure and styling, ensuring responsive and accessible design.
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 mr-2 text-yellow-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold">JavaScript (ES6+):</span> Advanced scripting for dynamic and interactive user experiences, leveraging modern language features.
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 mr-2 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold">Tailwind CSS:</span> Utility-first CSS framework for rapid UI development with highly customizable components.
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 mr-2 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold">Microsoft Power Automate:</span> Workflow automation tool used for integrating various services and streamlining business processes.
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 mr-2 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                        </svg>
+                                        <div>
+                                            <span class="font-semibold">SharePoint List:</span> Flexible data storage solution used as a backend for managing and organizing site content efficiently.
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mx-4 h-6 w-px bg-gray-300"></div>
                         <button id="logoutButton" class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300 flex items-center">
                             <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
@@ -1970,6 +2038,27 @@ function logout() {
 }
 
 document.getElementById('logoutButton').addEventListener('click', logout);
+document.addEventListener('DOMContentLoaded', () => {
+    const infoButton = document.getElementById('infoButton');
+    const infoBubble = infoButton.nextElementSibling;
+
+    infoButton.addEventListener('mouseenter', () => {
+        infoBubble.classList.remove('opacity-0', 'invisible');
+        infoBubble.classList.add('opacity-100', 'visible');
+    });
+
+    infoButton.addEventListener('mouseleave', (event) => {
+        if (!infoBubble.contains(event.relatedTarget)) {
+            infoBubble.classList.add('opacity-0', 'invisible');
+            infoBubble.classList.remove('opacity-100', 'visible');
+        }
+    });
+
+    infoBubble.addEventListener('mouseleave', () => {
+        infoBubble.classList.add('opacity-0', 'invisible');
+        infoBubble.classList.remove('opacity-100', 'visible');
+    });
+});
     </script>
 <div id="dashboardPanel" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" style="display:none;">
     <div class="bg-white p-8 mx-auto my-10 rounded-lg shadow-lg max-w-4xl">
