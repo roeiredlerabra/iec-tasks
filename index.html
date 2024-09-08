@@ -1255,10 +1255,13 @@ function renderSearchAndFilterBar() {
         <input type="text" id="searchInput" placeholder="חיפוש טפסים..." class="flex-grow p-2 border rounded" aria-label="חיפוש טפסים">
         <select id="statusFilter" class="p-2 border rounded" aria-label="סינון לפי סטטוס">
             <option value="all">כל הסטטוסים</option>
-            <option value="פתוח">פתוח</option>
-            <option value="בתהליך">בתהליך</option>
-            <option value="נפתר">נפתר</option>
-            <option value="סגור">סגור</option>
+            <option value="פיתוח">פיתוח</option>
+            <option value="בדיקות DEV">בדיקות DEV</option>
+            <option value="בדיקות TEST">בדיקות TEST</option>
+            <option value="ייצור HD">ייצור HD</option>
+            <option value="ייצור LAPTOP">ייצור LAPTOP</option>
+            <option value="ייצור HD+LAPTOP">ייצור HD+LAPTOP</option>
+            <option value="בהמתנה">בהמתנה</option>
         </select>
     `;
     container.insertBefore(searchAndFilterBar, container.firstChild);
@@ -1271,12 +1274,17 @@ function renderSearchAndFilterBar() {
 }
 
 function updateSearchAndFilter() {
-    const searchQuery = document.getElementById('searchInput').value;
+    const searchQuery = document.getElementById('searchInput').value.toLowerCase();
     const filterStatus = document.getElementById('statusFilter').value;
     store.setState({ searchQuery, filterStatus });
     
     const { cases } = store.getState();
-    const filteredCases = searchAndFilterCases(cases, searchQuery, filterStatus);
+    const filteredCases = cases.filter(caseItem => 
+        (caseItem.number.toString().includes(searchQuery) ||
+        caseItem.title.toLowerCase().includes(searchQuery) ||
+        caseItem.responsible.toLowerCase().includes(searchQuery)) &&
+        (filterStatus === 'all' || caseItem.generalStatus === filterStatus)
+    );
     renderNumberGallery(filteredCases);
 }
 
