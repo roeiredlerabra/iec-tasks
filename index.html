@@ -320,6 +320,21 @@
 .cursor-not-allowed {
     cursor: not-allowed;
 }
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.button-spinner {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin-left: 0.5em;
+}
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
@@ -975,6 +990,15 @@ function disableButtons() {
     buttons.forEach(button => {
         button.disabled = true;
         button.classList.add('opacity-50', 'cursor-not-allowed');
+        
+        // Add spinner
+        const spinner = document.createElement('span');
+        spinner.className = 'button-spinner';
+        button.appendChild(spinner);
+        
+        // Store original text
+        button.dataset.originalText = button.textContent;
+        button.textContent = 'מעבד '; // "Processing" in Hebrew
     });
 }
 
@@ -983,6 +1007,18 @@ function enableButtons() {
     buttons.forEach(button => {
         button.disabled = false;
         button.classList.remove('opacity-50', 'cursor-not-allowed');
+        
+        // Remove spinner
+        const spinner = button.querySelector('.button-spinner');
+        if (spinner) {
+            spinner.remove();
+        }
+        
+        // Restore original text
+        if (button.dataset.originalText) {
+            button.textContent = button.dataset.originalText;
+            delete button.dataset.originalText;
+        }
     });
 }
 function createFormField(label, type, id, required, disabled = false, options = []) {
