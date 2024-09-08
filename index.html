@@ -123,34 +123,22 @@
         }
 
         .header {
-            position:static;
-            top: 0;
-            z-index: 1000;
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        .header .container > div {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+}
 
-        .logo {
-            width: 48px; /* Adjust if needed */
-            height: 48px; /* Adjust if needed */
-            overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        }
-        
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit:contain;
-        }
+@media (max-width: 1024px) {
+    .header .container > div {
+        flex-wrap: wrap;
+    }
+    #searchFilterContainer {
+        order: 1;
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
         
         .nav-link {
             position: relative;
@@ -335,30 +323,42 @@
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
-    <header class="header">
-        <div class="container mx-auto px-4 py-4">
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="logo mr-4">
-                        <img src="https://www.abra-it.com/wp-content/uploads/2021/12/logo-big.svg" alt="Logo" class="w-12 h-12 rounded-full">
+                <div class="flex items-center space-x-4">
+                    <div class="logo">
+                        <img src="https://www.abra-it.com/wp-content/uploads/2021/12/logo-big.svg" alt="Logo" class="w-16 h-16 object-contain">
                     </div>
-                    <h1 class="text-2xl font-bold">מערכת מעקב טפסים</h1>
+                    <h1 class="text-2xl font-bold text-gray-800">מערכת מעקב טפסים</h1>
                 </div>
-                <nav class="desktop-menu flex items-center">
-                    <ul class="flex space-x-6 mr-4">
-                        <!-- Add menu items here if needed -->
-                    </ul>
-                    <button id="dashboardButton" class="nav-link text-blue-600 hover:text-blue-800" aria-label="פתח דשבורד">דשבורד</button>
-                </nav>
-                <div class="power-platform-logo">
-                    <img src="https://www.360-consulting.de/Bilder/microsoft-power-platform.png" alt="Microsoft Power Platform" class="h-20 object-contain">
+                
+                <div class="flex items-center space-x-6">
+                    <div id="searchFilterContainer" class="search">
+                        <!-- This is where your renderSearchAndFilterBar function will insert content -->
+                    </div>
+                    
+                    <nav class="flex items-center space-x-4">
+                        <button id="dashboardButton" class="nav-link text-gray-600 hover:text-blue-600 transition duration-300 flex items-center" aria-label="פתח דשבורד">
+                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                            </svg>
+                            דשבורד
+                        </button>
+                        <button id="logoutButton" class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300 flex items-center">
+                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            התנתק
+                        </button>
+                    </nav>
+                    
+                    <div class="power-platform-logo">
+                        <img src="https://www.360-consulting.de/Bilder/microsoft-power-platform.png" alt="Microsoft Power Platform" class="h-12 object-contain">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="search">
-            <!-- Add search functionality here if needed -->
-        </div>
-        <button id="logoutButton" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">התנתק</button>
     </header>
     <br>
     <div id="loginContainer" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
@@ -1278,7 +1278,7 @@ function searchAndFilterCases(cases, query, status) {
 }
 
 function renderSearchAndFilterBar() {
-    const container = document.querySelector('.search');
+    const container = document.querySelector('#searchFilterContainer');
     
     // Check if the search bar already exists
     if (container.querySelector('#searchInput')) {
@@ -1286,10 +1286,15 @@ function renderSearchAndFilterBar() {
     }
 
     const searchAndFilterBar = document.createElement('div');
-    searchAndFilterBar.className = 'flex flex-wrap gap-2 mb-4';
+    searchAndFilterBar.className = 'flex items-center space-x-2';
     searchAndFilterBar.innerHTML = `
-        <input type="text" id="searchInput" placeholder="חיפוש טפסים..." class="flex-grow p-2 border rounded" aria-label="חיפוש טפסים">
-        <select id="statusFilter" class="p-2 border rounded" aria-label="סינון לפי סטטוס">
+        <div class="relative">
+            <input type="text" id="searchInput" placeholder="חיפוש טפסים..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" aria-label="חיפוש טפסים">
+            <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+        </div>
+        <select id="statusFilter" class="p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" aria-label="סינון לפי סטטוס">
             <option value="all">כל הסטטוסים</option>
             <option value="פיתוח">פיתוח</option>
             <option value="בדיקות DEV">בדיקות DEV</option>
@@ -1300,7 +1305,7 @@ function renderSearchAndFilterBar() {
             <option value="בהמתנה">בהמתנה</option>
         </select>
     `;
-    container.insertBefore(searchAndFilterBar, container.firstChild);
+    container.appendChild(searchAndFilterBar);
 
     const searchInput = document.getElementById('searchInput');
     const statusFilter = document.getElementById('statusFilter');
