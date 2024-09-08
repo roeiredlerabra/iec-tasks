@@ -417,6 +417,10 @@
                             <div class="monday-field-label">תיאור</div>
                             <div id="case-description-display" class="monday-field-value"></div>
                         </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">סטטוס טופס כללי</div>
+                            <div id="case-general-status-display" class="monday-field-value"></div>
+                        </div>
                     </div>
         
                     <!-- Dates -->
@@ -624,6 +628,7 @@ function processApiData(apiData) {
         modifiedDate: caseItem.Modified,
         author: caseItem.Author ? caseItem.Author.DisplayName : '',
         editor: caseItem.Editor ? caseItem.Editor.DisplayName : '',
+        generalStatus: caseItem.Status || '',
         issues: []
     }));
 
@@ -722,7 +727,7 @@ function renderCaseInfo(selectedCase) {
     setFieldValue('case-test-transfer-date-display', formatDate(selectedCase.testTransferDate));
     setFieldValue('case-production-transfer-date-display', formatDate(selectedCase.productionTransferDate));
     setStatusField('case-security-roles-status-display', selectedCase.securityRolesUpdateStatus);
-
+    setFieldValue('case-general-status-display', selectedCase.generalStatus);
     document.getElementById('issues-table-container').classList.remove('hidden');
     document.getElementById('case-info').classList.remove('hidden');
     applyPermissions();
@@ -836,6 +841,7 @@ function openModal(type, action, index = null) {
                     ${createFormField('כותרת טופס', 'text', 'modal-case-title', true)}
                     ${createFormField('אחראי על הטופס', 'text', 'modal-case-responsible', true)}
                     ${createFormField('תיאור טופס', 'textarea', 'modal-case-description', true)}
+                    ${createFormField('סטטוס טופס כללי', 'select', 'modal-case-general-status', true, false, ['פיתוח', 'בדיקות DEV', 'בדיקות TEST', 'ייצור HD', 'ייצור LAPTOP', 'ייצור HD+LAPTOP', 'בהמתנה'])}
                     
                     <div class="form-field">
                         <label for="modal-case-color" class="block text-sm font-medium text-gray-700">צבע טופס</label>
@@ -877,6 +883,7 @@ function openModal(type, action, index = null) {
                 document.getElementById('modal-case-test-transfer-date').value = selectedCase.testTransferDate || '';
                 document.getElementById('modal-case-production-transfer-date').value = selectedCase.productionTransferDate || '';
                 document.getElementById('modal-case-security-roles-status').value = selectedCase.securityRolesUpdateStatus || '';
+                document.getElementById('modal-case-general-status').value = selectedCase.generalStatus || '';
             }
             const colorPicker = document.getElementById('modal-case-color');
             const colorPreview = document.getElementById('color-preview');
@@ -1013,7 +1020,8 @@ async function handleCase(action) {
         reminderEmailStatus: '',
         testTransferDate: '',
         productionTransferDate: '',
-        securityRolesUpdateStatus: ''
+        securityRolesUpdateStatus: '',
+        generalStatus: ''
     };
     if (action === 'add' && !checkPermission('create')) {
         showNotification('אין לך הרשאות ליצור', 'error');
@@ -1044,6 +1052,7 @@ async function handleCase(action) {
         data.testTransferDate = document.getElementById('modal-case-test-transfer-date').value;
         data.productionTransferDate = document.getElementById('modal-case-production-transfer-date').value;
         data.securityRolesUpdateStatus = document.getElementById('modal-case-security-roles-status').value;
+        data.generalStatus = document.getElementById('modal-case-general-status').value;
 
         const errors = validateCaseData(data);
         if (errors.length > 0) {
@@ -1193,7 +1202,9 @@ function validateCaseData(data) {
     if (!data.securityRolesUpdateStatus) {
         errors.push('יש לבחור סטטוס עדכון תפקידי אבטחה');
     }
-
+    if (!data.generalStatus) {
+        errors.push('יש לבחור סטטוס טופס כללי');
+    }
     return errors;
 }
 
@@ -1712,6 +1723,7 @@ function formatDate(dateString) {
         ['כותרת', selectedCase.title],
         ['אחראי', selectedCase.responsible],
         ['תיאור', selectedCase.description],
+        ['סטטוס טופס כללי', selectedCase.generalStatus],
         ['צבע', selectedCase.color],
         ['תאריך התחלת פיתוח', formatDate(selectedCase.developmentStartDate)],
         ['נושאים פתוחים באפיון', selectedCase.openIssuesAtStart],
