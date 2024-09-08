@@ -34,7 +34,19 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
+        @media (max-width: 640px) {
+    .modal-content {
+        width: 95%;
+        padding: 1rem;
+    }
+    .modal-field {
+        margin-bottom: 0.5rem;
+    }
+    .modal-buttons button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
         .ql-editor {
             min-height: 150px;
             max-height: 300px;
@@ -75,22 +87,25 @@
         }
 
         #number-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
 
-        .number-icon {
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            border: 1px solid #ccc;
-            transition: all 0.3s ease;
-        }
+.number-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+    .number-icon {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.8rem;
+    }
+}
 
         .number-icon:hover {
             transform: scale(1.1);
@@ -128,7 +143,22 @@
     z-index: 1000;
     background-color: white;
 }
-
+@media (max-width: 768px) {
+    .header .container > div {
+        flex-direction: column;
+        align-items: center;
+    }
+    .header .logo {
+        margin-bottom: 1rem;
+    }
+    #searchFilterContainer {
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .nav {
+        margin-top: 1rem;
+    }
+}
 @media (max-width: 1024px) {
     .header .container > div {
         flex-wrap: wrap;
@@ -384,6 +414,14 @@
         border-top: 1px solid #e5e7eb;
         margin-top: 0.5rem;
         padding-top: 0.5rem;
+    }
+}
+@media (max-width: 768px) {
+    #case-info .grid {
+        grid-template-columns: 1fr;
+    }
+    .monday-group {
+        margin-bottom: 1rem;
     }
 }
     </style>
@@ -911,27 +949,27 @@ function renderIssuesTable(issues) {
             <td data-label="אתגר" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
             <td data-label="הערות" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500 wrap-text html-content">${issue.notes}</td>
             <td data-label="סטאטוס" class="px-3 py-2 sm:px-6 sm:py-4 text-sm">
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusStyle(issue.status)}">
+                <span class="${getStatusStyle(issue.status)} px-2 py-1 rounded-full text-xs font-semibold">
                     ${issue.status}
                 </span>
             </td>
             <td data-label="אחראי" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500">${issue.responsible}</td>
-<td data-label="פעולות" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500">
-    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:space-x-reverse">
-        <button onclick="openModal('issue', 'update', ${index})" class="flex items-center justify-center bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 transition duration-300" aria-label="ערוך משימה">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-            </svg>
-            עריכה
-        </button>
-        <button onclick="openModal('issue', 'delete', ${index})" class="flex items-center justify-center bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition duration-300" aria-label="מחק משימה">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-            </svg>
-            מחיקה
-        </button>
-    </div>
-</td>
+            <td data-label="פעולות" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500">
+                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:space-x-reverse">
+                    <button onclick="openModal('issue', 'update', ${index})" class="flex items-center justify-center bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 transition duration-300" aria-label="ערוך משימה">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        עריכה
+                    </button>
+                    <button onclick="openModal('issue', 'delete', ${index})" class="flex items-center justify-center bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition duration-300" aria-label="מחק משימה">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        מחיקה
+                    </button>
+                </div>
+            </td>
         `;
         issuesTableBody.appendChild(row);
     });
@@ -1433,21 +1471,20 @@ function searchAndFilterCases(cases, query, status) {
 function renderSearchAndFilterBar() {
     const container = document.querySelector('#searchFilterContainer');
     
-    // Check if the search bar already exists
     if (container.querySelector('#searchInput')) {
-        return; // Exit the function if the search bar already exists
+        return;
     }
 
     const searchAndFilterBar = document.createElement('div');
-    searchAndFilterBar.className = 'flex items-center space-x-2';
+    searchAndFilterBar.className = 'flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2';
     searchAndFilterBar.innerHTML = `
-        <div class="relative">
-            <input type="text" id="searchInput" placeholder="חיפוש טפסים..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" aria-label="חיפוש טפסים">
+        <div class="relative w-full sm:w-auto">
+            <input type="text" id="searchInput" placeholder="חיפוש טפסים..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" aria-label="חיפוש טפסים">
             <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
         </div>
-        <select id="statusFilter" class="p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" aria-label="סינון לפי סטטוס">
+        <select id="statusFilter" class="w-full sm:w-auto p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" aria-label="סינון לפי סטטוס">
             <option value="all">כל הסטטוסים</option>
             <option value="פיתוח">פיתוח</option>
             <option value="בדיקות DEV">בדיקות DEV</option>
