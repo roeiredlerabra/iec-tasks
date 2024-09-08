@@ -325,6 +325,13 @@
     .shake {
         animation: shake 0.5s ease-in-out;
     }
+    .opacity-50 {
+    opacity: 0.5;
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed;
+}
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
@@ -963,6 +970,21 @@ function openModal(type, action, index = null) {
     modal.style.display = 'block';
     setupModalAccessibility();
 }
+function disableButtons() {
+    const buttons = document.querySelectorAll('button[onclick^="handleCase"], button[onclick^="handleIssue"]');
+    buttons.forEach(button => {
+        button.disabled = true;
+        button.classList.add('opacity-50', 'cursor-not-allowed');
+    });
+}
+
+function enableButtons() {
+    const buttons = document.querySelectorAll('button[onclick^="handleCase"], button[onclick^="handleIssue"]');
+    buttons.forEach(button => {
+        button.disabled = false;
+        button.classList.remove('opacity-50', 'cursor-not-allowed');
+    });
+}
 function createFormField(label, type, id, required, disabled = false, options = []) {
     let field = `
         <div class="form-field">
@@ -1002,6 +1024,7 @@ function closeModal() {
 
 // Handle case operations
 async function handleCase(action) {
+    disableButtons();
     let data = {
         action: action,
         id: action === 'add' ? null : store.getState().selectedCase.id,
@@ -1025,14 +1048,17 @@ async function handleCase(action) {
     };
     if (action === 'add' && !checkPermission('create')) {
         showNotification('אין לך הרשאות ליצור', 'error');
+       enableButtons();
         return;
     }
     if (action === 'update' && !checkPermission('update')) {
         showNotification('אין לך הרשאות לעדכן', 'error');
+       enableButtons();
         return;
     }
     if (action === 'delete' && !checkPermission('delete')) {
         showNotification('אין לך הרשאות למחוק', 'error');
+       enableButtons();
         return;
     }
     if (action === 'add' || action === 'update') {
@@ -1057,6 +1083,7 @@ async function handleCase(action) {
         const errors = validateCaseData(data);
         if (errors.length > 0) {
             showNotification(errors.join('\n'), 'error');
+           enableButtons();
             return;
         }
     }
@@ -1084,12 +1111,15 @@ async function handleCase(action) {
     } catch (error) {
         console.error('Error:', error);
         showNotification('אירעה שגיאה. נא לנסות שוב', 'error');
+    } finally {
+       enableButtons();
     }
 }
 
 // Handle issue operations
 async function handleIssue(action, index) {
     const selectedCase = store.getState().selectedCase;
+    disableButtons();
     let data = {
         action: action,
         id: action === 'add' ? null : selectedCase.issues[index].id,
@@ -1103,14 +1133,17 @@ async function handleIssue(action, index) {
     };
     if (action === 'add' && !checkPermission('create')) {
         showNotification('אין לך הרשאות ליצור', 'error');
+       enableButtons();
         return;
     }
     if (action === 'update' && !checkPermission('update')) {
         showNotification('אין לך הרשאות לעדכן', 'error');
+       enableButtons();
         return;
     }
     if (action === 'delete' && !checkPermission('delete')) {
         showNotification('אין לך הרשאות למחוק', 'error');
+       enableButtons();
         return;
     }
     if (action === 'add' || action === 'update') {
@@ -1123,6 +1156,7 @@ async function handleIssue(action, index) {
         const errors = validateIssueData(data);
         if (errors.length > 0) {
             showNotification(errors.join('\n'), 'error');
+           enableButtons();
             return;
         }
     }
@@ -1150,6 +1184,8 @@ async function handleIssue(action, index) {
     } catch (error) {
         console.error('Error:', error);
         showNotification('אירעה שגיאה. נא לנסות שוב', 'error');
+    } finally {
+       enableButtons();
     }
 }
 
