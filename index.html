@@ -1480,9 +1480,9 @@ function openDashboard() {
     console.log("Opening dashboard...");
     const dashboardPanel = document.getElementById('dashboardPanel');
     if (dashboardPanel) {
-        dashboardPanel.style.display = 'block';
-        document.body.classList.add('overflow-hidden');
         updateDashboard();
+        dashboardPanel.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     } else {
         console.error("Dashboard panel not found");
     }
@@ -1493,7 +1493,7 @@ function closeDashboard() {
     const dashboardPanel = document.getElementById('dashboardPanel');
     if (dashboardPanel) {
         dashboardPanel.style.display = 'none';
-        document.body.classList.remove('overflow-hidden');
+        document.body.style.overflow = 'auto';
     } else {
         console.error("Dashboard panel not found");
     }
@@ -1502,65 +1502,12 @@ function closeDashboard() {
 function updateDashboard() {
     console.log("Updating dashboard...");
     const { cases } = store.getState();
-    updateCaseStatusChart(cases);
-    updateIssueStatusChart(cases);
-    updateResponsibleChart(cases);
-    updateFormChart(cases);
+    createProcessStageVisualization(cases);
 }
 
 
-function updateCaseStatusChart(cases) {
-    const statusCounts = {
-        'טרם החל': 0,
-        'בפיתוח': 0,
-        'הושלם': 0
-    };
 
-    cases.forEach(caseItem => {
-        const overallStatus = determineOverallStatus(caseItem);
-        statusCounts[overallStatus]++;
-    });
 
-    const data = {
-        labels: Object.keys(statusCounts),
-        datasets: [{
-            data: Object.values(statusCounts),
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-        }]
-    };
-
-    updateOrCreateChart('caseStatusChart', 'doughnut', data, {
-        responsive: true,
-        plugins: {
-            legend: { position: 'bottom' },
-            title: { display: true, text: 'סיכום סטטוס טפסים' }
-        }
-    });
-}
-function updateIssueStatusChart(cases) {
-    const statusCounts = {};
-    cases.forEach(caseItem => {
-        caseItem.issues.forEach(issue => {
-            statusCounts[issue.status] = (statusCounts[issue.status] || 0) + 1;
-        });
-    });
-
-    const data = {
-        labels: Object.keys(statusCounts),
-        datasets: [{
-            data: Object.values(statusCounts),
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
-        }]
-    };
-
-    updateOrCreateChart('statusChart', 'pie', data, {
-        responsive: true,
-        plugins: {
-            legend: { position: 'bottom' },
-            title: { display: true, text: 'סטטוס משימות' }
-        }
-    });
-}
 function determineOverallStatus(caseItem) {
     const statuses = [
         caseItem.hdDevelopmentStatus,
@@ -1580,89 +1527,130 @@ function determineOverallStatus(caseItem) {
         return 'טרם החל';
     }
 }
-function updateResponsibleChart(cases) {
-    const responsibleCounts = {};
-    cases.forEach(caseItem => {
-        caseItem.issues.forEach(issue => {
-            if (issue.status !== 'סגור') {
-                responsibleCounts[issue.responsible] = (responsibleCounts[issue.responsible] || 0) + 1;
-            }
-        });
-    });
+const statusColors = {
+    'פיתוח': 'bg-blue-100 text-blue-800',
+    'בדיקות DEV': 'bg-yellow-100 text-yellow-800',
+    'בדיקות TEST': 'bg-orange-100 text-orange-800',
+    'ייצור HD': 'bg-green-100 text-green-800',
+    'ייצור LAPTOP': 'bg-indigo-100 text-indigo-800',
+    'ייצור HD+LAPTOP': 'bg-purple-100 text-purple-800',
+    'בהמתנה': 'bg-gray-100 text-gray-800'
+};
 
-    const data = {
-        labels: Object.keys(responsibleCounts),
-        datasets: [{
-            label: 'משימות פתוחות',
-            data: Object.values(responsibleCounts),
-            backgroundColor: '#36A2EB',
-        }]
-    };
+const processSteps = [
+    { name: 'פיתוח', icon: 'M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z' },
+    { name: 'בדיקות DEV', icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z' },
+    { name: 'בדיקות TEST', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' },
+    { name: 'ייצור HD', icon: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
+    { name: 'ייצור LAPTOP', icon: 'M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z' },
+    { name: 'ייצור HD+LAPTOP', icon: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z' }
+];
+function createProcessStageVisualization(cases) {
+    const dashboardPanel = document.getElementById('dashboardPanel');
+    dashboardPanel.innerHTML = '';
+    dashboardPanel.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
 
-    updateOrCreateChart('responsibleChart', 'bar', data, {
-        responsive: true,
-        plugins: {
-            legend: { display: false },
-            title: { display: true, text: 'משימות פתוחות לפי אחראי' }
-        },
-        scales: { y: { beginAtZero: true } }
-    });
-}
+    const contentContainer = document.createElement('div');
+    contentContainer.className = 'bg-white p-8 rounded-lg shadow-xl w-full max-h-[80vh] overflow-y-auto';
 
-function updateFormChart(cases) {
-    const formCounts = cases.map(caseItem => ({
-        form: caseItem.number,
-        count: caseItem.issues.length
-    })).sort((a, b) => b.count - a.count);
+    // Close button
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '&times;';
+    closeButton.className = 'float-right text-3xl font-semibold hover:text-gray-700 focus:outline-none';
+    closeButton.onclick = closeDashboard;
+    contentContainer.appendChild(closeButton);
 
-    const data = {
-        labels: formCounts.map(item => `טופס ${item.form}`),
-        datasets: [{
-            label: 'מספר משימות',
-            data: formCounts.map(item => item.count),
-            backgroundColor: '#4BC0C0',
-        }]
-    };
+    const title = document.createElement('h2');
+    title.className = 'text-2xl font-bold mb-6';
+    title.textContent = 'סטטוס תהליך הטפסים';
+    contentContainer.appendChild(title);
 
-    updateOrCreateChart('formChart', 'bar', data, {
-        responsive: true,
-        plugins: {
-            legend: { display: false },
-            title: { display: true, text: 'משימות לפי טופס' }
-        },
-        scales: { y: { beginAtZero: true } }
-    });
-}
+    const table = document.createElement('table');
+    table.className = 'min-w-full divide-y divide-gray-200';
+    
+    const thead = document.createElement('thead');
+    thead.className = 'bg-gray-50';
+    thead.innerHTML = `
+        <tr>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מספר טופס</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">כותרת</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">סטטוס</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">תהליך</th>
+        </tr>
+    `;
+    table.appendChild(thead);
 
-function updateRecentIssuesChart(cases) {
-    const recentIssues = cases.flatMap(caseItem => 
-        caseItem.issues.map(issue => ({
-            date: new Date(issue.createdAt), // Assuming there's a createdAt field
-            status: issue.status
-        }))
-    ).sort((a, b) => b.date - a.date).slice(0, 7);
+    const tbody = document.createElement('tbody');
+    tbody.className = 'bg-white divide-y divide-gray-200';
 
     const statusCounts = {};
-    recentIssues.forEach(issue => {
-        statusCounts[issue.status] = (statusCounts[issue.status] || 0) + 1;
+
+    cases.forEach(caseItem => {
+        const row = document.createElement('tr');
+        const currentStage = processSteps.findIndex(step => step.name === caseItem.generalStatus);
+        
+        row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${caseItem.number}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${caseItem.title}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="${statusColors[caseItem.generalStatus] || 'bg-gray-100 text-gray-800'} px-2 py-1 rounded-full text-xs font-semibold">
+                    ${caseItem.generalStatus}
+                </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex justify-between items-center">
+                    ${processSteps.map((step, index) => `
+                        <div class="flex flex-col items-center mx-1">
+                            <svg class="w-4 h-4 ${index <= currentStage ? 'text-blue-500' : 'text-gray-300'}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="${step.icon}" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-xs mt-1 ${index <= currentStage ? 'font-semibold' : 'text-gray-500'}">${step.name}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </td>
+        `;
+        
+        tbody.appendChild(row);
+
+        // Count statuses for summary
+        statusCounts[caseItem.generalStatus] = (statusCounts[caseItem.generalStatus] || 0) + 1;
     });
 
-    const data = {
-        labels: Object.keys(statusCounts),
-        datasets: [{
-            data: Object.values(statusCounts),
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
-        }]
-    };
+    table.appendChild(tbody);
+    contentContainer.appendChild(table);
 
-    updateOrCreateChart('recentIssuesChart', 'doughnut', data, {
-        responsive: true,
-        plugins: {
-            legend: { position: 'bottom' },
-            title: { display: true, text: 'סטטוס משימות שנוספו לאחרונה' }
-        }
-    });
+    // Create summary table
+    const summaryTable = document.createElement('table');
+    summaryTable.className = 'min-w-full divide-y divide-gray-200 mt-8';
+    summaryTable.innerHTML = `
+        <thead class="bg-gray-50">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">סטטוס</th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">מספר טפסים</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            ${Object.entries(statusCounts).map(([status, count]) => `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="${statusColors[status] || 'bg-gray-100 text-gray-800'} px-2 py-1 rounded-full text-xs font-semibold">
+                            ${status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${count}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    `;
+    contentContainer.appendChild(summaryTable);
+
+    dashboardPanel.appendChild(contentContainer);
 }
+
+
+
+
 
 function updateOrCreateChart(chartId, type, data, options) {
     const ctx = document.getElementById(chartId).getContext('2d');
@@ -1902,22 +1890,7 @@ document.getElementById('logoutButton').addEventListener('click', logout);
         <h2 class="text-2xl font-bold mb-6">דשבורד</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- New Case Status Summary Section -->
-            <div>
-                <h3 class="text-lg font-semibold mb-2">סיכום סטטוס טפסים</h3>
-                <canvas id="caseStatusChart"></canvas>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold mb-2">סטטוס משימות</h3>
-                <canvas id="statusChart"></canvas>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold mb-2">משימות פתוחות לפי אחראי</h3>
-                <canvas id="responsibleChart"></canvas>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold mb-2">משימות לפי טופס</h3>
-                <canvas id="formChart"></canvas>
-            </div>
+            
         </div>
         <button id="closeDashboard" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">סגור דשבורד</button>
     </div>
