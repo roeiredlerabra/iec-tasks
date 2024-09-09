@@ -252,61 +252,101 @@
     margin-bottom: 5px;
 }
 .monday-field {
-        background-color: #f6f7fb;
-        border-radius: 8px;
-        overflow: hidden;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.monday-field-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.25rem;
+}
+
+.monday-field-value {
+    font-size: 0.875rem;
+    color: #1a202c;
+}
+
+.monday-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    font-size: 0.75rem;
+}
+
+#case-description-display, #case-open-issues-display {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+/* Style for date fields */
+#case-dev-start-date-display,
+#case-test-transfer-date-display,
+#case-production-transfer-date-display {
+    font-weight: 600;
+    color: #2b6cb0;
+}
+
+.monday-status::before {
+    content: '';
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    margin-left: 0.25rem;
+}
+
+.monday-status-completed {
+    background-color: #e6fffa;
+    color: #047857;
+}
+
+.monday-status-completed::before {
+    background-color: #10b981;
+}
+
+.monday-status-in-progress {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.monday-status-in-progress::before {
+    background-color: #f59e0b;
+}
+
+.monday-status-not-started {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.monday-status-not-started::before {
+    background-color: #ef4444;
+}
+@media (max-width: 640px) {
+    .monday-field {
+        padding: 0.5rem;
     }
+
     .monday-field-label {
-        background-color: #e6e9ef;
-        color: #676879;
         font-size: 0.75rem;
-        font-weight: 600;
-        padding: 4px 8px;
-        text-transform: uppercase;
     }
+
     .monday-field-value {
-        color: #323338;
         font-size: 0.875rem;
-        padding: 8px;
-        min-height: 2.5rem;
-        display: flex;
-        align-items: center;
     }
+
     .monday-status {
-        display: inline-flex;
-        align-items: center;
-        border-radius: 20px;
-        padding: 2px 8px;
-        font-weight: 500;
+        padding: 0.125rem 0.5rem;
+        font-size: 0.75rem;
     }
-    .monday-status::before {
-        content: '';
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        margin-left: 6px;
-    }
-    .monday-status-completed {
-        background-color: #e2f7f2;
-        color: #037f4c;
-    }
-    .monday-status-completed::before {
-        background-color: #00c875;
-    }
-    .monday-status-in-progress {
-        background-color: #fff7d8;
-        color: #cab641;
-    }
-    .monday-status-in-progress::before {
-        background-color: #fdab3d;
-    }
-    .monday-status-not-started {
-        background-color: #ffebeb;
-        color: #e44258;
-    }
-    .monday-status-not-started::before {
-        background-color: #e2445c;
-    }
+}
     .monday-group{
         border: 1px solid #ccc;
     padding: 5px;
@@ -610,53 +650,33 @@
                 <button onclick="openModal('case', 'add')" class="bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base transition duration-300 ease-in-out transform hover:scale-105">הוספת טופס</button>
             </div>
 
-        <div id="case-info" class="hidden bg-white shadow-md rounded-lg overflow-hidden">
-            <div class="bg-blue-600 px-6 py-4 text-white">
-                <h2 class="text-xl font-semibold">טופס #<span id="case-number"></span></h2>
-            </div>
-            <div class="p-6 bg-gray-50">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- General Information -->
-                    <div class="monday-group">
-                        <h3 class="monday-group-title">מידע כללי</h3>
-                        <div class="monday-field">
-                            <div class="monday-field-label">כותרת</div>
-                            <div id="case-title-display" class="monday-field-value"></div>
+            <div id="case-info" class="hidden bg-white shadow-md rounded-lg overflow-hidden text-sm">
+                <!-- Case Header -->
+                <div class="bg-blue-600 px-4 py-3 text-white">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                            <h2 class="text-lg font-semibold">טופס #<span id="case-number"></span></h2>
+                            <div class="h-5 w-px bg-blue-300"></div>
+                            <div>
+                                <span class="text-sm font-medium">כותרת: </span>
+                                <span id="case-title-display" class="font-semibold"></span>
+                            </div>
+                            <div class="h-5 w-px bg-blue-300"></div>
+                            <div>
+                                <span class="text-sm font-medium">אחראי: </span>
+                                <span id="case-responsible-display"></span>
+                            </div>
                         </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">אחראי</div>
-                            <div id="case-responsible-display" class="monday-field-value"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">תיאור</div>
-                            <div id="case-description-display" class="monday-field-value"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">סטטוס טופס כללי</div>
-                            <div id="case-general-status-display" class="monday-field-value"></div>
+                        <div>
+                            <span id="case-general-status-display" class="px-2 py-1 rounded-full text-xs font-semibold bg-white text-blue-600"></span>
                         </div>
                     </div>
-        
-                    <!-- Dates -->
-                    <div class="monday-group">
-                        <h3 class="monday-group-title">תאריכים</h3>
-                        <div class="monday-field">
-                            <div class="monday-field-label">תאריך התחלת פיתוח</div>
-                            <div id="case-dev-start-date-display" class="monday-field-value"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">תאריך העברה לטסט</div>
-                            <div id="case-test-transfer-date-display" class="monday-field-value"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">תאריך העברה לייצור</div>
-                            <div id="case-production-transfer-date-display" class="monday-field-value"></div>
-                        </div>
-                    </div>
-        
-                    <!-- Development Status -->
-                    <div class="monday-group">
-                        <h3 class="monday-group-title">סטטוס פיתוח</h3>
+                </div>
+                
+                <!-- Case Details Grid -->
+                <div class="p-4 bg-gray-50 space-y-3">
+                    <!-- First Row: 7 Status Fields -->
+                    <div class="grid grid-cols-7 gap-3">
                         <div class="monday-field">
                             <div class="monday-field-label">פיתוח ל-HD</div>
                             <div id="case-hd-status-display" class="monday-field-value monday-status"></div>
@@ -669,50 +689,66 @@
                             <div class="monday-field-label">מסך מאשרים</div>
                             <div id="case-approvers-status-display" class="monday-field-value monday-status"></div>
                         </div>
-                    </div>
-        
-                    <!-- Additional Features -->
-                    <div class="monday-group">
-                        <h3 class="monday-group-title">תכונות נוספות</h3>
                         <div class="monday-field">
-                            <div class="monday-field-label">התייחסות ב-ACTION CENTER</div>
+                            <div class="monday-field-label">ACTION CENTER</div>
                             <div id="case-action-center-status-display" class="monday-field-value monday-status"></div>
                         </div>
                         <div class="monday-field">
-                            <div class="monday-field-label">חיווי על כשלון אוטומציה</div>
+                            <div class="monday-field-label">חיווי אוטומציה</div>
                             <div id="case-automation-failure-status-display" class="monday-field-value monday-status"></div>
                         </div>
                         <div class="monday-field">
                             <div class="monday-field-label">מייל תזכורות</div>
                             <div id="case-reminder-email-status-display" class="monday-field-value monday-status"></div>
                         </div>
-                    </div>
-        
-                    <!-- Security and Open Issues -->
-                    <div class="monday-group md:col-span-2">
-                        <h3 class="monday-group-title">אבטחה ונושאים פתוחים</h3>
                         <div class="monday-field">
-                            <div class="monday-field-label">עדכון תפקידי אבטחה</div>
+                            <div class="monday-field-label">תפקידי אבטחה</div>
                             <div id="case-security-roles-status-display" class="monday-field-value monday-status"></div>
                         </div>
-                        <div class="monday-field">
+                    </div>
+                    
+                    <!-- Second Row: Description, Open Issues, and Dates -->
+                    <div class="grid grid-cols-5 gap-3">
+                        <div class="monday-field col-span-1">
+                            <div class="monday-field-label">תיאור</div>
+                            <div id="case-description-display" class="monday-field-value text-xs h-24 overflow-auto"></div>
+                        </div>
+                        <div class="monday-field col-span-1">
                             <div class="monday-field-label">נושאים פתוחים באפיון</div>
-                            <div id="case-open-issues-display" class="monday-field-value"></div>
+                            <div id="case-open-issues-display" class="monday-field-value text-xs h-24 overflow-auto"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">תאריך התחלת פיתוח</div>
+                            <div id="case-dev-start-date-display" class="monday-field-value"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">העברה לטסט</div>
+                            <div id="case-test-transfer-date-display" class="monday-field-value"></div>
+                        </div>
+                        <div class="monday-field">
+                            <div class="monday-field-label">העברה לייצור</div>
+                            <div id="case-production-transfer-date-display" class="monday-field-value"></div>
                         </div>
                     </div>
                 </div>
+            
+                <!-- Footer with Actions -->
+                <div class="bg-gray-100 px-4 py-3 border-t border-gray-200 flex justify-between items-center">
+                    <div class="flex space-x-2 rtl:space-x-reverse">
+                        <button onclick="openModal('case', 'update')" class="bg-blue-500 text-white px-4 py-2 rounded text-sm hover:bg-blue-600 transition duration-300">עדכן טופס</button>
+                        <button onclick="openModal('case', 'delete')" class="bg-red-500 text-white px-4 py-2 rounded text-sm hover:bg-red-600 transition duration-300">מחק טופס</button>
+                    </div>
+                    <button onclick="downloadCaseToExcel()" class="bg-green-500 text-white px-4 py-2 rounded text-sm hover:bg-green-600 transition duration-300 flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        הורד לאקסל
+                    </button>
+                </div>
             </div>
-            <div class="bg-gray-100 px-6 py-4 border-t border-gray-200">
-                <button onclick="openModal('case', 'update')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 mr-2">עדכן טופס</button>
-                <button onclick="openModal('case', 'delete')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300">מחק טופס</button>
-                <button onclick="downloadCaseToExcel()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">
-                    <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                    הורד לאקסל
-                </button>
-            </div>
-        </div>
+            
+            
+            <br>
 
         <div id="issues-table-container" class="hidden bg-white shadow-md rounded p-4 sm:p-6">
             <h3 class="text-lg font-semibold mb-2 sm:mb-4">משימות</h3>
