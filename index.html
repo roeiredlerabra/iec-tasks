@@ -2200,16 +2200,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             showNotification(error.message || 'שגיאה בהתחברות', 'error');
             shakeForm();
-            // Reset button state
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalButtonText;
-        });
-    });
-});
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification(error.message || 'שגיאה בהתחברות', 'error');
-            shakeForm();
         })
         .finally(() => {
             // Reset button state
@@ -2217,6 +2207,7 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.innerHTML = originalButtonText;
         });
     });
+
 
     function isValidEmail(email) {
         const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
