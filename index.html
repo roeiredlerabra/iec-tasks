@@ -513,6 +513,33 @@
     border: none;
     border-radius: 50%;
 }
+.dashboard-table-container {
+    max-height: calc(7 * 2.5rem + 3rem); /* Adjust 2.5rem if your row height differs */
+    overflow-y: auto;
+}
+
+.dashboard-table-container table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.dashboard-table-container thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #f9fafb; /* Matches Tailwind's bg-gray-50 */
+}
+
+.dashboard-table-container th,
+.dashboard-table-container td {
+    white-space: nowrap;
+    padding: 0.75rem 1rem; /* Adjust as needed */
+}
+
+.dashboard-table-container tbody tr:last-child td {
+    border-bottom: none;
+}
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
@@ -1901,7 +1928,7 @@ function createProcessStageVisualization(cases) {
     dashboardPanel.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
 
     const contentContainer = document.createElement('div');
-    contentContainer.className = 'bg-white p-8 rounded-lg shadow-xl w-full max-h-[80vh] overflow-y-auto';
+    contentContainer.className = 'bg-white p-8 rounded-lg shadow-xl w-full max-w-4xl';
 
     // Close button
     const closeButton = document.createElement('button');
@@ -1914,6 +1941,12 @@ function createProcessStageVisualization(cases) {
     title.className = 'text-2xl font-bold mb-6';
     title.textContent = 'סטטוס תהליך הטפסים';
     contentContainer.appendChild(title);
+
+    const tableContainer = document.createElement('div');
+    tableContainer.className = 'overflow-x-auto';
+    
+    const tableWrapper = document.createElement('div');
+    tableWrapper.className = 'dashboard-table-container';
 
     const table = document.createElement('table');
     table.className = 'min-w-full divide-y divide-gray-200';
@@ -1968,7 +2001,9 @@ function createProcessStageVisualization(cases) {
     });
 
     table.appendChild(tbody);
-    contentContainer.appendChild(table);
+    tableWrapper.appendChild(table);
+    tableContainer.appendChild(tableWrapper);
+    contentContainer.appendChild(tableContainer);
 
     // Create summary table
     const summaryTable = document.createElement('table');
@@ -2306,11 +2341,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
     </script>
 <div id="dashboardPanel" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" style="display:none;">
-    <div class="bg-white p-8 mx-auto my-10 rounded-lg shadow-lg max-w-4xl">
+    <div class="bg-white p-1 mx-auto my-15 rounded-lg shadow-lg max-w-8xl">
         <h2 class="text-2xl font-bold mb-6">דשבורד</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- New Case Status Summary Section -->
-            
+            <div class="col-span-1 md:col-span-2">
+                <div class="overflow-x-auto">
+                    <div class="dashboard-table-container">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <!-- Add your table headers here -->
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Header 1</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Header 2</th>
+                                    <!-- Add more headers as needed -->
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Your table rows will be dynamically inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
         <button id="closeDashboard" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">סגור דשבורד</button>
     </div>
