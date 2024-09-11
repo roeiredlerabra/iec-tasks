@@ -779,26 +779,69 @@
             
             <br>
 
-        <div id="issues-table-container" class="hidden bg-white shadow-md rounded p-4 sm:p-6">
-            <h3 class="text-lg font-semibold mb-2 sm:mb-4">משימות</h3>
-            <div class="responsive-table overflow-x-auto sm:overflow-x-visible">
-                <table id="issues-table" class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50 hidden sm:table-header-group">
-                        <tr>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">תאריך יצירה</th>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">משימה</th>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">אתגר</th>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">הערות</th>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">סטאטוס</th>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">אחראי</th>
-                            <th class="px-3 py-2 sm:px-6 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">פעולה</th>
-                        </tr>
-                    </thead>
-                    <tbody id="issues-tbody" class="bg-white divide-y divide-gray-200"></tbody>
-                </table>
+            <div id="issues-table-container" class="hidden bg-white shadow-md rounded p-4 sm:p-6">
+                <h3 class="text-lg font-semibold mb-4">משימות</h3>
+                <div class="responsive-table overflow-x-auto sm:overflow-x-visible">
+                    <table id="issues-table" class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">תאריך יצירה</span>
+                                        <select class="column-filter text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" data-column="createdDate">
+                                            <option value="">הכל</option>
+                                        </select>
+                                    </div>
+                                </th>
+                                <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">משימה</span>
+                                        <input type="text" class="column-filter text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" data-column="issue" placeholder="סנן משימות">
+                                    </div>
+                                </th>
+                                <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">אתגר</span>
+                                        <input type="text" class="column-filter text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" data-column="challenge" placeholder="סנן אתגרים">
+                                    </div>
+                                </th>
+                                <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">הערות</span>
+                                        <input type="text" class="column-filter text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" data-column="notes" placeholder="סנן הערות">
+                                    </div>
+                                </th>
+                                <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">סטאטוס</span>
+                                        <select class="column-filter text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" data-column="status">
+                                            <option value="">הכל</option>
+                                            <option value="בעבודה">בעבודה</option>
+                                            <option value="הושלם">הושלם</option>
+                                            <option value="בהמתנה">בהמתנה</option>
+                                        </select>
+                                    </div>
+                                </th>
+                                <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">אחראי</span>
+                                        <select class="column-filter text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" data-column="responsible">
+                                            <option value="">הכל</option>
+                                        </select>
+                                    </div>
+                                </th>
+                                <th class="px-3 py-3 sm:px-6 sm:py-4 text-right">
+                                    <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">פעולה</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="issues-tbody" class="bg-white divide-y divide-gray-200"></tbody>
+                    </table>
+                </div>
+                <button onclick="openModal('issue', 'add')" class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                    הוספת משימה
+                </button>
             </div>
-            <button onclick="openModal('issue', 'add')" class="mt-2 sm:mt-4 bg-green-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded hover:bg-green-600 text-sm sm:text-base transition duration-300 ease-in-out transform hover:scale-105">הוספת משימה</button>
-        </div>
     </div>
 
     <div id="dynamicModal" class="modal">
@@ -1109,6 +1152,10 @@ function renderIssuesTable(issues) {
     });
     announceContentChange(`טבלת המשימות עודכנה עם ${issues.length} משימות.`);
     applyPermissions();
+    
+    // Update filter options based on the current issues
+    updateFilterOptions(issues);
+    initializeIssuesTableFilters();
 }
 function getStatusStyle(status) {
     switch (status) {
@@ -1532,7 +1579,82 @@ async function handleIssue(action, index) {
        enableButtons();
     }
 }
+// Call this function when initializing the table or loading a new case
+function initializeIssuesTable(issues) {
+    renderIssuesTable(issues);
+    initializeIssuesTableFilters();
+}
+function initializeIssuesTableFilters() {
+    const filters = document.querySelectorAll('.column-filter');
+    filters.forEach(filter => {
+        filter.addEventListener('change', filterIssuesTable);
+        filter.addEventListener('keyup', filterIssuesTable);
+    });
+}
 
+function filterIssuesTable() {
+    const issues = store.getState().selectedCase.issues;
+    const filteredIssues = issues.filter(issue => {
+        return Array.from(document.querySelectorAll('.column-filter')).every(filter => {
+            const column = filter.dataset.column;
+            const filterValue = filter.value.toLowerCase();
+            if (!filterValue) return true; // If no filter value, include all rows
+            if (column === 'createdDate') {
+                return formatDate(issue[column]).includes(filterValue);
+            }
+            return issue[column].toString().toLowerCase().includes(filterValue);
+        });
+    });
+    renderIssuesTable(filteredIssues);
+    updateFilterOptions(filteredIssues);
+}
+
+function updateFilterOptions(issues) {
+    const columns = ['createdDate', 'status', 'responsible'];
+    columns.forEach(column => {
+        const filter = document.querySelector(`.column-filter[data-column="${column}"]`);
+        const currentValue = filter.value;
+        const uniqueValues = getUniqueValues(issues, column);
+        
+        // Clear existing options
+        filter.innerHTML = '<option value="">הכל</option>';
+        
+        // Add new options
+        uniqueValues.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            filter.appendChild(option);
+        });
+        
+        // Restore selected value if it still exists in the new options
+        if (uniqueValues.includes(currentValue)) {
+            filter.value = currentValue;
+        }
+    });
+}
+
+function getUniqueValues(issues, column) {
+    const values = issues.map(issue => 
+        column === 'createdDate' ? formatDate(issue[column]) : issue[column]
+    );
+    return [...new Set(values)].filter(Boolean).sort();
+}
+
+function populateFilterOptions(issues) {
+    const columns = ['createdDate', 'status', 'responsible'];
+    columns.forEach(column => {
+        const filter = document.querySelector(`.column-filter[data-column="${column}"]`);
+        const uniqueValues = getUniqueValues(issues, column);
+        
+        uniqueValues.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            filter.appendChild(option);
+        });
+    });
+}
 // Data validation
 function validateCaseData(data) {
     const errors = [];
