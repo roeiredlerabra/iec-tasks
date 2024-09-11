@@ -963,7 +963,10 @@ function renderNumberGallery(cases) {
     const numberGallery = document.getElementById('number-gallery');
     numberGallery.innerHTML = '';
 
-    cases.forEach(c => {
+    // Sort cases by number
+    const sortedCases = cases.sort((a, b) => a.number - b.number);
+
+    sortedCases.forEach(c => {
         const div = document.createElement('div');
         div.className = 'number-icon w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200 transition-all duration-300';
         
