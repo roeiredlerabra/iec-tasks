@@ -217,10 +217,7 @@
             flex-grow: 1;
         }
         
-        #modal-case-color {
-            position: absolute;
-            opacity: 0;
-        }
+
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -973,8 +970,10 @@ function renderNumberGallery(cases) {
         const backgroundColor = c.color || '#FFFFFF';
         div.style.backgroundColor = backgroundColor;
 
-        const luminance = calculateLuminance(backgroundColor.replace('#', ''));
-        div.style.color = luminance < 140 ? '#FFFFFF' : '#000000';
+        // Determine text color based on background color
+        const rgb = hexToRgb(backgroundColor);
+        const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+        div.style.color = brightness > 128 ? 'black' : 'white';
         
         div.textContent = c.number;
         div.setAttribute('aria-label', `בחר טופס מספר ${c.number}`);
@@ -982,7 +981,15 @@ function renderNumberGallery(cases) {
         numberGallery.appendChild(div);
     });
 }
-
+// Add this helper function to convert hex to RGB
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
 // Select a case
 function selectCase(caseNumber) {
     const selectedCase = store.getState().cases.find(c => c.number === caseNumber);
@@ -1148,13 +1155,16 @@ function openModal(type, action, index = null) {
                         <div class="form-field col-span-1 md:col-span-2">
                             ${createFormField('תיאור טופס', 'textarea', 'modal-case-description', true)}
                         </div>
-                        <div class="form-field">
-                            <label for="modal-case-color" class="block text-sm font-medium text-gray-700 mb-1">צבע טופס</label>
-                            <div class="flex items-center">
-                                <div id="color-preview" class="w-8 h-8 rounded-full border border-gray-300 mr-2 shadow-inner"></div>
-                                <input type="color" id="modal-case-color" value="#FFFFFF" class="h-8 w-8 rounded cursor-pointer">
-                            </div>
-                        </div>
+<div class="form-field">
+    <label for="modal-case-color" class="block text-sm font-medium text-gray-700 mb-1">צבע טופס</label>
+    <select id="modal-case-color" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        <option value="#4CAF50">ירוק</option>
+        <option value="#FFEB3B">צהוב</option>
+        <option value="#FFA500">כתום</option>
+        <option value="#F2DCDB">אדום</option>
+        <option value="#9E9E9E">אפור</option>
+    </select>
+</div>
                     </div>
                 </section>
 
@@ -1211,16 +1221,7 @@ function openModal(type, action, index = null) {
             document.getElementById('modal-case-security-roles-status').value = selectedCase.securityRolesUpdateStatus || '';
             document.getElementById('modal-case-general-status').value = selectedCase.generalStatus || '';
         }
-            const colorPicker = document.getElementById('modal-case-color');
-            const colorPreview = document.getElementById('color-preview');
-            
-            colorPreview.style.backgroundColor = colorPicker.value;
-            
-            colorPreview.addEventListener('click', () => colorPicker.click());
-            
-            colorPicker.addEventListener('input', (event) => {
-                colorPreview.style.backgroundColor = event.target.value;
-            });
+
             modalButtons.innerHTML = `
                 <button onclick="handleCase('${action}')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">${action === 'add' ? 'הוסף' : 'עדכן'} טופס</button>
                 <button onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2 transition duration-300">ביטול</button>
