@@ -1994,7 +1994,6 @@ function initializeDashboard() {
 }
 
 function openDashboard() {
-    console.log("Opening dashboard...");
     const dashboardPanel = document.getElementById('dashboardPanel');
     if (dashboardPanel) {
         updateDashboard();
@@ -2017,12 +2016,83 @@ function closeDashboard() {
 }
 
 function updateDashboard() {
-    console.log("Updating dashboard...");
     const { cases } = store.getState();
-    createProcessStageVisualization(cases);
+    createStatusPieChart(cases);
+    updateStatusSummaryTable(cases);
 }
+function createStatusPieChart(cases) {
+    const statusCounts = cases.reduce((acc, caseItem) => {
+        acc[caseItem.generalStatus] = (acc[caseItem.generalStatus] || 0) + 1;
+        return acc;
+    }, {});
 
+    const labels = Object.keys(statusCounts);
+    const data = Object.values(statusCounts);
 
+    const ctx = document.getElementById('statusPieChart').getContext('2d');
+    
+    // Check if the chart instance already exists
+    if (window.statusPieChart instanceof Chart) {
+        window.statusPieChart.destroy();
+    }
+
+    window.statusPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#4CAF50', '#FFC107', '#2196F3', '#F44336', '#9C27B0', '#FF9800', '#795548'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += context.parsed;
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+function updateStatusSummaryTable(cases) {
+    const statusCounts = cases.reduce((acc, caseItem) => {
+        acc[caseItem.generalStatus] = (acc[caseItem.generalStatus] || 0) + 1;
+        return acc;
+    }, {});
+
+    const tableBody = document.getElementById('statusSummaryBody');
+    tableBody.innerHTML = '';
+
+    Object.entries(statusCounts).forEach(([status, count]) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${status}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${count}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
 
 
 function determineOverallStatus(caseItem) {
@@ -2481,31 +2551,38 @@ document.addEventListener('DOMContentLoaded', () => {
 });
     </script>
 <div id="dashboardPanel" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" style="display:none;">
-    <div class="bg-white p-1 mx-auto my-15 rounded-lg shadow-lg max-w-8xl">
-        <h2 class="text-2xl font-bold mb-6">דשבורד</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- New Case Status Summary Section -->
-            <div class="col-span-1 md:col-span-2">
-                <div class="overflow-x-auto">
+    <div class="bg-white p-8 mx-auto my-10 rounded-lg shadow-lg w-11/12 max-w-7xl">
+        <h2 class="text-3xl font-bold mb-8">דשבורד</h2>
+        <div class="flex flex-row space-x-8">
+            <!-- Pie Chart Section -->
+            <div class="bg-white p-6 rounded-lg shadow flex-1">
+                <h3 class="text-xl font-semibold mb-6">התפלגות סטטוס טפסים</h3>
+                <div class="w-full h-[600px]">
+                    <canvas id="statusPieChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Case Status Summary Section -->
+            <div class="bg-white p-6 rounded-lg shadow flex-1">
+                <h3 class="text-xl font-semibold mb-6">סיכום סטטוס טפסים</h3>
+                <div class="overflow-y-auto h-[600px]">
                     <div class="dashboard-table-container">
                         <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                            <thead class="bg-gray-50 sticky top-0">
                                 <tr>
-                                    <!-- Add your table headers here -->
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Header 1</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Header 2</th>
-                                    <!-- Add more headers as needed -->
+                                    <th class="px-6 py-4 text-right text-sm font-medium text-gray-500 uppercase tracking-wider">סטטוס</th>
+                                    <th class="px-6 py-4 text-right text-sm font-medium text-gray-500 uppercase tracking-wider">מספר טפסים</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- Your table rows will be dynamically inserted here -->
+                            <tbody id="statusSummaryBody" class="bg-white divide-y divide-gray-200">
+                                <!-- Status summary rows will be inserted here -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <button id="closeDashboard" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">סגור דשבורד</button>
+        <button id="closeDashboard" class="mt-8 bg-blue-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-600 transition duration-300">סגור דשבורד</button>
     </div>
 </div>
     
