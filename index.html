@@ -770,8 +770,9 @@
             
                 <!-- Footer with Actions -->
                 <div class="bg-gray-100 px-4 py-3 border-t border-gray-200 flex justify-between items-center">
-                    <div class="flex space-x-2 rtl:space-x-reverse">
+                    <div class="flex space-x-4 rtl:space-x-reverse" style="white-space: nowrap;">
                         <button onclick="openModal('case', 'update')" class="bg-blue-500 text-white px-4 py-2 rounded text-sm hover:bg-blue-600 transition duration-300">עדכן טופס</button>
+                        <div class="w-1"></div> <!-- This adds extra space between the buttons -->
                         <button onclick="openModal('case', 'delete')" class="bg-red-500 text-white px-4 py-2 rounded text-sm hover:bg-red-600 transition duration-300">מחק טופס</button>
                     </div>
                     <button onclick="downloadCaseToExcel()" class="bg-green-500 text-white px-4 py-2 rounded text-sm hover:bg-green-600 transition duration-300 flex items-center">
