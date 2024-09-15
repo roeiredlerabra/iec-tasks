@@ -705,39 +705,43 @@
                     </div>
                 </div>
                 
-                <!-- Case Details Grid -->
-                <div class="p-4 bg-gray-50 space-y-3">
-                    <!-- First Row: 7 Status Fields -->
-                    <div class="grid grid-cols-7 gap-3">
-                        <div class="monday-field">
-                            <div class="monday-field-label">פיתוח ל-HD</div>
-                            <div id="case-hd-status-display" class="monday-field-value monday-status"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">פיתוח לפטופ</div>
-                            <div id="case-laptop-status-display" class="monday-field-value monday-status"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">מסך מאשרים</div>
-                            <div id="case-approvers-status-display" class="monday-field-value monday-status"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">ACTION CENTER</div>
-                            <div id="case-action-center-status-display" class="monday-field-value monday-status"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">חיווי אוטומציה</div>
-                            <div id="case-automation-failure-status-display" class="monday-field-value monday-status"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">מייל תזכורות</div>
-                            <div id="case-reminder-email-status-display" class="monday-field-value monday-status"></div>
-                        </div>
-                        <div class="monday-field">
-                            <div class="monday-field-label">תפקידי אבטחה</div>
-                            <div id="case-security-roles-status-display" class="monday-field-value monday-status"></div>
-                        </div>
-                    </div>
+                 <!-- Case Details Grid -->
+    <div class="p-4 bg-gray-50 space-y-3">
+        <!-- First Row: 8 Status Fields (now including Mobile Development) -->
+        <div class="grid grid-cols-8 gap-3">
+            <div class="monday-field">
+                <div class="monday-field-label">פיתוח ל-HD</div>
+                <div id="case-hd-status-display" class="monday-field-value monday-status"></div>
+            </div>
+            <div class="monday-field">
+                <div class="monday-field-label">פיתוח לפטופ</div>
+                <div id="case-laptop-status-display" class="monday-field-value monday-status"></div>
+            </div>
+            <div class="monday-field">
+                <div class="monday-field-label">פיתוח מובייל</div>
+                <div id="case-mobile-status-display" class="monday-field-value monday-status"></div>
+            </div>
+            <div class="monday-field">
+                <div class="monday-field-label">מסך מאשרים</div>
+                <div id="case-approvers-status-display" class="monday-field-value monday-status"></div>
+            </div>
+            <div class="monday-field">
+                <div class="monday-field-label">ACTION CENTER</div>
+                <div id="case-action-center-status-display" class="monday-field-value monday-status"></div>
+            </div>
+            <div class="monday-field">
+                <div class="monday-field-label">חיווי אוטומציה</div>
+                <div id="case-automation-failure-status-display" class="monday-field-value monday-status"></div>
+            </div>
+            <div class="monday-field">
+                <div class="monday-field-label">מייל תזכורות</div>
+                <div id="case-reminder-email-status-display" class="monday-field-value monday-status"></div>
+            </div>
+            <div class="monday-field">
+                <div class="monday-field-label">תפקידי אבטחה</div>
+                <div id="case-security-roles-status-display" class="monday-field-value monday-status"></div>
+            </div>
+        </div>
                     
                     <!-- Second Row: Description, Open Issues, and Dates -->
                     <div class="grid grid-cols-5 gap-3">
@@ -942,6 +946,7 @@ function processApiData(apiData) {
         openIssuesAtStart: caseItem.openIssuesAtStart ? stripHtml(caseItem.openIssuesAtStart) : '',
         hdDevelopmentStatus: caseItem.hdDevelopmentStatus || '',
         laptopDevelopmentStatus: caseItem.laptopDevelopmentStatus || '',
+        mobileDevelopmentStatus: caseItem.mobileDevelopmentStatus || '',
         approversScreenStatus: caseItem.approversScreenStatus || '',
         actionCenterStatus: caseItem.actionCenterStatus || '',
         automationFailureIndicatorStatus: caseItem.automationFailureIndicatorStatus || '',
@@ -1058,6 +1063,7 @@ function renderCaseInfo(selectedCase) {
     setFieldValue('case-open-issues-display', selectedCase.openIssuesAtStart);
     setStatusField('case-hd-status-display', selectedCase.hdDevelopmentStatus);
     setStatusField('case-laptop-status-display', selectedCase.laptopDevelopmentStatus);
+    setStatusField('case-mobile-status-display', selectedCase.mobileDevelopmentStatus);
     setStatusField('case-approvers-status-display', selectedCase.approversScreenStatus);
     setStatusField('case-action-center-status-display', selectedCase.actionCenterStatus);
     setStatusField('case-automation-failure-status-display', selectedCase.automationFailureIndicatorStatus);
@@ -1238,6 +1244,7 @@ function openModal(type, action, index = null) {
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         ${createFormField('פיתוח ל-HD', 'select', 'modal-case-hd-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
                         ${createFormField('פיתוח לפטופ', 'select', 'modal-case-laptop-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
+                        ${createFormField('פיתוח מובייל', 'select', 'modal-case-mobile-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
                         ${createFormField('מסך מאשרים', 'select', 'modal-case-approvers-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
                     </div>
                 </section>
@@ -1265,6 +1272,7 @@ function openModal(type, action, index = null) {
             document.getElementById('modal-case-open-issues').value = selectedCase.openIssuesAtStart || '';
             document.getElementById('modal-case-hd-status').value = selectedCase.hdDevelopmentStatus || '';
             document.getElementById('modal-case-laptop-status').value = selectedCase.laptopDevelopmentStatus || '';
+            document.getElementById('modal-case-mobile-status').value = selectedCase.mobileDevelopmentStatus || '';
             document.getElementById('modal-case-approvers-status').value = selectedCase.approversScreenStatus || '';
             document.getElementById('modal-case-action-center-status').value = selectedCase.actionCenterStatus || '';
             document.getElementById('modal-case-automation-failure-status').value = selectedCase.automationFailureIndicatorStatus || '';
@@ -1431,6 +1439,7 @@ async function handleCase(action) {
         openIssuesAtStart: '',
         hdDevelopmentStatus: '',
         laptopDevelopmentStatus: '',
+        mobileDevelopmentStatus: '',
         approversScreenStatus: '',
         actionCenterStatus: '',
         automationFailureIndicatorStatus: '',
@@ -1465,6 +1474,7 @@ async function handleCase(action) {
         data.openIssuesAtStart = document.getElementById('modal-case-open-issues').value;
         data.hdDevelopmentStatus = document.getElementById('modal-case-hd-status').value;
         data.laptopDevelopmentStatus = document.getElementById('modal-case-laptop-status').value;
+        data.mobileDevelopmentStatus = document.getElementById('modal-case-mobile-status').value;
         data.approversScreenStatus = document.getElementById('modal-case-approvers-status').value;
         data.actionCenterStatus = document.getElementById('modal-case-action-center-status').value;
         data.automationFailureIndicatorStatus = document.getElementById('modal-case-automation-failure-status').value;
@@ -1687,7 +1697,9 @@ function validateCaseData(data) {
     if (!data.laptopDevelopmentStatus) {
         errors.push('יש לבחור סטטוס פיתוח לפטופ');
     }
-
+    if (!data.mobileDevelopmentStatus) {
+        errors.push('יש לבחור סטטוס פיתוח מובייל');
+    }
     if (!data.approversScreenStatus) {
         errors.push('יש לבחור סטטוס מסך מאשרים');
     }
@@ -2275,17 +2287,15 @@ function downloadCaseToExcel() {
         return;
     }
 
-
-// Helper function to format dates
-function formatDate(dateString) {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth is zero-indexed
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-}
-
+    // Helper function to format dates
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
 
     // Helper function to convert string to ArrayBuffer
     function s2ab(s) {
@@ -2298,6 +2308,11 @@ function formatDate(dateString) {
     // Create workbook and worksheet
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet([]);
+
+    // Set RTL direction for the worksheet
+    if(!ws['!sheetPr']) ws['!sheetPr'] = {};
+    if(!ws['!sheetPr']['pageSetUpPr']) ws['!sheetPr']['pageSetUpPr'] = {};
+    ws['!sheetPr']['pageSetUpPr']['rightToLeft'] = 1;
 
     // Add case details
     XLSX.utils.sheet_add_aoa(ws, [
@@ -2312,6 +2327,7 @@ function formatDate(dateString) {
         ['נושאים פתוחים באפיון', selectedCase.openIssuesAtStart],
         ['פיתוח ל-HD', selectedCase.hdDevelopmentStatus],
         ['פיתוח לפטופ', selectedCase.laptopDevelopmentStatus],
+        ['פיתוח מובייל', selectedCase.mobileDevelopmentStatus],
         ['מסך מאשרים', selectedCase.approversScreenStatus],
         ['התייחסות ב-ACTION CENTER', selectedCase.actionCenterStatus],
         ['חיווי על כשלון אוטומציה', selectedCase.automationFailureIndicatorStatus],
@@ -2336,7 +2352,7 @@ function formatDate(dateString) {
             issue.status,
             issue.responsible
         ];
-        XLSX.utils.sheet_add_aoa(ws, [row], { origin: `A${24 + index}` });
+        XLSX.utils.sheet_add_aoa(ws, [row], { origin: `A${25 + index}` });
     });
 
     // Set column widths
@@ -2351,10 +2367,10 @@ function formatDate(dateString) {
     ws['!cols'] = columnWidths;
 
     // Add the worksheet to the workbook
-    XLSX.utils.book_append_sheet(wb, ws, 'Case Details');
+    XLSX.utils.book_append_sheet(wb, ws, 'פרטי הטופס');
 
     // Generate Excel file
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary', bookSST: false });
 
     // Convert to Blob
     const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
@@ -2362,7 +2378,7 @@ function formatDate(dateString) {
     // Create download link
     const downloadLink = document.createElement('a');
     downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = `Case_${selectedCase.number}.xlsx`;
+    downloadLink.download = `טופס_${selectedCase.number}.xlsx`;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
