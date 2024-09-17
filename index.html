@@ -326,6 +326,14 @@
 .monday-status-not-started::before {
     background-color: #ef4444;
 }
+.monday-status-not-required {
+    background-color: #595151;
+    color: #f7f7f7;
+}
+
+.monday-status-not-required::before {
+    background-color: #ef4444;
+}
 @media (max-width: 640px) {
     .monday-field {
         padding: 0.5rem;
@@ -1106,6 +1114,8 @@ function getStatusClass(status) {
             return 'monday-status-in-progress';
         case 'טרם החל':
             return 'monday-status-not-started';
+            case 'לא נדרש':
+            return 'monday-status-not-required';
         default:
             return '';
     }
@@ -1243,20 +1253,20 @@ function openModal(type, action, index = null) {
                 <section class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">סטטוס פיתוח</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        ${createFormField('פיתוח ל-HD', 'select', 'modal-case-hd-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
-                        ${createFormField('פיתוח לפטופ', 'select', 'modal-case-laptop-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
-                        ${createFormField('פיתוח מובייל', 'select', 'modal-case-mobile-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
-                        ${createFormField('מסך מאשרים', 'select', 'modal-case-approvers-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
+                        ${createFormField('פיתוח ל-HD', 'select', 'modal-case-hd-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
+                        ${createFormField('פיתוח לפטופ', 'select', 'modal-case-laptop-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
+                        ${createFormField('פיתוח מובייל', 'select', 'modal-case-mobile-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
+                        ${createFormField('מסך מאשרים', 'select', 'modal-case-approvers-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
                     </div>
                 </section>
 
                 <section class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">תכונות נוספות</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        ${createFormField('התייחסות ב-ACTION CENTER', 'select', 'modal-case-action-center-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
-                        ${createFormField('חיווי על כשלון אוטומציה', 'select', 'modal-case-automation-failure-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
-                        ${createFormField('מייל תזכורות', 'select', 'modal-case-reminder-email-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
-                        ${createFormField('עדכון תפקידי אבטחה', 'select', 'modal-case-security-roles-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם'])}
+                        ${createFormField('התייחסות ב-ACTION CENTER', 'select', 'modal-case-action-center-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
+                        ${createFormField('חיווי על כשלון אוטומציה', 'select', 'modal-case-automation-failure-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
+                        ${createFormField('מייל תזכורות', 'select', 'modal-case-reminder-email-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
+                        ${createFormField('עדכון תפקידי אבטחה', 'select', 'modal-case-security-roles-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
                     </div>
                 </section>
             </div>
