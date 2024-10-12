@@ -1082,7 +1082,11 @@ function populateEnvironmentLinks(selectedCase) {
         linkElement.href = link.url;
         linkElement.className = 'text-white hover:text-blue-200 p-1';
         linkElement.title = link.title;
-
+        // Add target and rel attributes for opening in a new tab
+        if (link.url !== '#') {
+            linkElement.target = '_blank';
+            linkElement.rel = 'noopener noreferrer';
+        }
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('class', 'w-6 h-6');
         svg.setAttribute('fill', 'none');
