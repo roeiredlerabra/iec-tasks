@@ -1284,7 +1284,14 @@ function openModal(type, action, index = null) {
 </div>
                     </div>
                 </section>
-
+                <section class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">כתובות URL</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        ${createFormField('כתובת URL לפיתוח', 'url', 'modal-case-dev-url', false)}
+                        ${createFormField('כתובת URL לבדיקות', 'url', 'modal-case-test-url', false)}
+                        ${createFormField('כתובת URL לייצור', 'url', 'modal-case-prod-url', false)}
+                    </div>
+                </section>
                 <section class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">תאריכים ואפיון</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1339,6 +1346,9 @@ function openModal(type, action, index = null) {
             document.getElementById('modal-case-production-transfer-date').value = selectedCase.productionTransferDate || '';
             document.getElementById('modal-case-security-roles-status').value = selectedCase.securityRolesUpdateStatus || '';
             document.getElementById('modal-case-general-status').value = selectedCase.generalStatus || '';
+            document.getElementById('modal-case-dev-url').value = selectedCase.devUrl || '';
+            document.getElementById('modal-case-test-url').value = selectedCase.testUrl || '';
+            document.getElementById('modal-case-prod-url').value = selectedCase.prodUrl || '';
         }
 
             modalButtons.innerHTML = `
@@ -1505,7 +1515,10 @@ async function handleCase(action) {
         testTransferDate: '',
         productionTransferDate: '',
         securityRolesUpdateStatus: '',
-        generalStatus: ''
+        generalStatus: '',
+        devUrl: '',
+        testUrl: '',
+        prodUrl: ''
     };
     if (action === 'add' && !checkPermission('create')) {
         showNotification('אין לך הרשאות ליצור', 'error');
@@ -1541,6 +1554,9 @@ async function handleCase(action) {
         data.productionTransferDate = document.getElementById('modal-case-production-transfer-date').value;
         data.securityRolesUpdateStatus = document.getElementById('modal-case-security-roles-status').value;
         data.generalStatus = document.getElementById('modal-case-general-status').value;
+        data.devUrl = document.getElementById('modal-case-dev-url').value;
+        data.testUrl = document.getElementById('modal-case-test-url').value;
+        data.prodUrl = document.getElementById('modal-case-prod-url').value;
 
         const errors = validateCaseData(data);
         if (errors.length > 0) {
@@ -1779,6 +1795,17 @@ function validateCaseData(data) {
     }
     if (!data.generalStatus) {
         errors.push('יש לבחור סטטוס טופס כללי');
+    }
+    const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+    
+    if (data.devUrl && !urlRegex.test(data.devUrl)) {
+        errors.push('כתובת URL לפיתוח אינה תקינה');
+    }
+    if (data.testUrl && !urlRegex.test(data.testUrl)) {
+        errors.push('כתובת URL לבדיקות אינה תקינה');
+    }
+    if (data.prodUrl && !urlRegex.test(data.prodUrl)) {
+        errors.push('כתובת URL לייצור אינה תקינה');
     }
     return errors;
 }
@@ -2395,6 +2422,9 @@ function downloadCaseToExcel() {
         ['עדכון תפקידי אבטחה', selectedCase.securityRolesUpdateStatus],
         ['תאריך יצירה', formatDate(selectedCase.createdDate)],
         ['תאריך עדכון', formatDate(selectedCase.modifiedDate)],
+        ['כתובת URL לפיתוח', selectedCase.devUrl || ''],
+        ['כתובת URL לבדיקות', selectedCase.testUrl || ''],
+        ['כתובת URL לייצור', selectedCase.prodUrl || ''],
         [],
         ['משימות'],
         ['תאריך יצירה', 'משימה', 'אתגר', 'הערות', 'סטטוס', 'אחראי']
