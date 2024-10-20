@@ -548,6 +548,57 @@
 .max-w-4xl {
     max-width: 75rem!important;
 }
+#issues-table td[data-label="הערות"] {
+    max-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 1024px) {
+    #issues-table, #issues-table tbody, #issues-table tr, #issues-table td {
+        display: block;
+        width: 100%;
+    }
+
+    #issues-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    #issues-table td {
+        text-align: right;
+        padding: 0.5rem 0;
+        position: relative;
+        padding-right: 50%;
+    }
+
+    #issues-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        right: 0;
+        width: 50%;
+        padding-right: 0.5rem;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    #issues-table td[data-label="הערות"] {
+        max-width: none;
+        padding-right: 0;
+    }
+
+    #issues-table td[data-label="הערות"]::before {
+        position: static;
+        width: auto;
+        padding-right: 0;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+}
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
