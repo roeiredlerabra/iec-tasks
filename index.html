@@ -1233,13 +1233,32 @@ function formatDate(dateString) {
 function renderIssuesTable(issues) {
     const issuesTableBody = document.getElementById('issues-tbody');
     issuesTableBody.innerHTML = '';
+
+    // Helper function to check if string is only a URL
+    function isOnlyURL(str) {
+        // Trim the string to remove whitespace
+        str = str.trim();
+        // Basic URL validation regex
+        const urlRegex = /^https?:\/\/[^\s]+$/;
+        return urlRegex.test(str);
+    }
+
+    // Helper function to format notes content
+    function formatNotes(notes) {
+        if (!notes) return '';
+        if (isOnlyURL(notes)) {
+            return `<a href="${notes}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">${notes}</a>`;
+        }
+        return notes;
+    }
+
     issues.forEach((issue, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td data-label="תאריך יצירה" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500">${formatDate(issue.createdDate)}</td>
             <td data-label="משימה" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500 wrap-text">${issue.issue}</td>
             <td data-label="אתגר" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
-            <td data-label="הערות" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500 wrap-text html-content">${issue.notes}</td>
+            <td data-label="הערות" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500 wrap-text html-content">${formatNotes(issue.notes)}</td>
             <td data-label="סטאטוס" class="px-3 py-2 sm:px-6 sm:py-4 text-sm">
                 <span class="${getStatusStyle(issue.status)} px-2 py-1 rounded-full text-xs font-semibold">
                     ${issue.status}
