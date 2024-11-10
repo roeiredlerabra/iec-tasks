@@ -1999,7 +1999,6 @@ function populateFilterOptions(issues) {
 function validateCaseData(data) {
     const errors = [];
 
-    
     if (!data.caseNumber || isNaN(data.caseNumber)) {
         errors.push('מספר הטופס חייב להיות מספר תקין');
     }
@@ -2049,17 +2048,28 @@ function validateCaseData(data) {
     if (!data.generalStatus) {
         errors.push('יש לבחור סטטוס טופס כללי');
     }
-    const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-    
-    if (data.devUrl && !urlRegex.test(data.devUrl)) {
+
+    // New URL validation using URL constructor
+    const validateUrl = (url) => {
+        if (!url) return true; // Empty URL is considered valid
+        try {
+            new URL(url.startsWith('http') ? url : `https://${url}`);
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
+    if (data.devUrl && !validateUrl(data.devUrl)) {
         errors.push('כתובת URL לפיתוח אינה תקינה');
     }
-    if (data.testUrl && !urlRegex.test(data.testUrl)) {
+    if (data.testUrl && !validateUrl(data.testUrl)) {
         errors.push('כתובת URL לבדיקות אינה תקינה');
     }
-    if (data.prodUrl && !urlRegex.test(data.prodUrl)) {
+    if (data.prodUrl && !validateUrl(data.prodUrl)) {
         errors.push('כתובת URL לייצור אינה תקינה');
     }
+
     return errors;
 }
 
