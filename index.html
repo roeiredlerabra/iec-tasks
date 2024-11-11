@@ -1996,78 +1996,23 @@ function populateFilterOptions(issues) {
     });
 }
 // Data validation
-function validateCaseData(data) {
+function validateIssueData(data) {
     const errors = [];
 
-    if (!data.caseNumber || isNaN(data.caseNumber)) {
-        errors.push('מספר הטופס חייב להיות מספר תקין');
+    if (!data.issue || data.issue.trim().length === 0) {
+        errors.push('תיאור המשימה הוא שדה חובה');
     }
 
-    if (!data.title || data.title.trim().length === 0) {
-        errors.push('כותרת הטופס היא שדה חובה');
+    if (!data.challenge || data.challenge.trim().length === 0) {
+        errors.push('תיאור האתגר הוא שדה חובה');
+    }
+
+    if (!data.status || data.status.trim().length === 0) {
+        errors.push('יש לבחור סטטוס למשימה');
     }
 
     if (!data.responsible || data.responsible.trim().length === 0) {
-        errors.push('שם האחראי הוא שדה חובה');
-    }
-
-    if (!data.description || data.description.trim().length === 0) {
-        errors.push('תיאור הטופס הוא שדה חובה');
-    }
-
-    // Add validation for new fields if necessary
-    if (!data.hdDevelopmentStatus) {
-        errors.push('יש לבחור סטטוס פיתוח ל-HD');
-    }
-
-    if (!data.laptopDevelopmentStatus) {
-        errors.push('יש לבחור סטטוס פיתוח לפטופ');
-    }
-    if (!data.mobileDevelopmentStatus) {
-        errors.push('יש לבחור סטטוס פיתוח מובייל');
-    }
-    if (!data.approversScreenStatus) {
-        errors.push('יש לבחור סטטוס מסך מאשרים');
-    }
-
-    if (!data.actionCenterStatus) {
-        errors.push('יש לבחור סטטוס התייחסות ב-ACTION CENTER');
-    }
-
-    if (!data.automationFailureIndicatorStatus) {
-        errors.push('יש לבחור סטטוס חיווי על כשלון אוטומציה');
-    }
-
-    if (!data.reminderEmailStatus) {
-        errors.push('יש לבחור סטטוס מייל תזכורות');
-    }
-
-    if (!data.securityRolesUpdateStatus) {
-        errors.push('יש לבחור סטטוס עדכון תפקידי אבטחה');
-    }
-    if (!data.generalStatus) {
-        errors.push('יש לבחור סטטוס טופס כללי');
-    }
-
-    // New URL validation using URL constructor
-    const validateUrl = (url) => {
-        if (!url) return true; // Empty URL is considered valid
-        try {
-            new URL(url.startsWith('http') ? url : `https://${url}`);
-            return true;
-        } catch {
-            return false;
-        }
-    };
-
-    if (data.devUrl && !validateUrl(data.devUrl)) {
-        errors.push('כתובת URL לפיתוח אינה תקינה');
-    }
-    if (data.testUrl && !validateUrl(data.testUrl)) {
-        errors.push('כתובת URL לבדיקות אינה תקינה');
-    }
-    if (data.prodUrl && !validateUrl(data.prodUrl)) {
-        errors.push('כתובת URL לייצור אינה תקינה');
+        errors.push('שם האחראי למשימה הוא שדה חובה');
     }
 
     return errors;
