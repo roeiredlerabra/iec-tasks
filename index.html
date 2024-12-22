@@ -710,8 +710,7 @@
  <!-- Before the logout button, after the info button's div separator -->
  <div class="mx-4 h-6 w-px bg-gray-300"></div>
 
-<!-- Enhanced user display with dropdown -->
-<div id="userDisplay" class="relative group">
+ <div id="userDisplay" class="relative group">
     <div class="flex items-center bg-gradient-to-r from-blue-500 to-blue-600 rounded-full px-3 py-1 cursor-pointer hover:shadow-lg transition duration-300 transform hover:scale-105">
         <!-- User Avatar -->
         <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center">
@@ -720,9 +719,9 @@
             </svg>
         </div>
         <!-- User Email -->
-        <span id="userEmail" class="ml-2 text-white font-medium text-xs"></span>
+        <span id="userEmail" class="mx-2 text-white font-medium text-xs"></span>
         <!-- Dropdown Arrow -->
-        <svg class="w-3 h-3 ml-1 text-white transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-3 h-3 text-white transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
     </div>
@@ -740,9 +739,8 @@
             התנתק מהמערכת
         </button>
     </div>
+</div>
 
-
- </div>
                     </nav>
                     
                     <div class="power-platform-logo">
@@ -2942,6 +2940,7 @@ function downloadCaseToExcel() {
         ['התייחסות ב-ACTION CENTER', selectedCase.actionCenterStatus],
         ['חיווי על כשלון אוטומציה', selectedCase.automationFailureIndicatorStatus],
         ['מייל תזכורות', selectedCase.reminderEmailStatus],
+        ['הלבנת קבצים', selectedCase.CDR],
         ['תאריך העברה לטסט', formatDate(selectedCase.testTransferDate)],
         ['תאריך העברה לייצור', formatDate(selectedCase.productionTransferDate)],
         ['עדכון תפקידי אבטחה', selectedCase.securityRolesUpdateStatus],
