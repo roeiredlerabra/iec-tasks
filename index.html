@@ -910,6 +910,10 @@
                 <div class="monday-field-label">תפקידי אבטחה</div>
                 <div id="case-security-roles-status-display" class="monday-field-value monday-status"></div>
             </div>
+            <div class="monday-field">
+                <div class="monday-field-label">הלבנת קבצים</div>
+                <div id="case-CDR-display" class="monday-field-value monday-status"></div>
+            </div>
         </div>
                     
                     <!-- Second Row: Description, Open Issues, and Dates -->
@@ -1166,6 +1170,7 @@ function processApiData(apiData) {
         devUrl: caseItem.devUrl || '',
         testUrl:caseItem.testUrl ||'',
         prodUrl:caseItem.prodUrl ||'',
+        CDR: caseItem.CDR || '',
         issues: []
     }));
 
@@ -1365,6 +1370,7 @@ function renderCaseInfo(selectedCase) {
     setFieldValue('case-test-transfer-date-display', formatDate(selectedCase.testTransferDate));
     setFieldValue('case-production-transfer-date-display', formatDate(selectedCase.productionTransferDate));
     setStatusField('case-security-roles-status-display', selectedCase.securityRolesUpdateStatus);
+    setStatusField('case-CDR-display', selectedCase.CDR);
     setFieldValue('case-general-status-display', selectedCase.generalStatus);
     document.getElementById('issues-table-container').classList.remove('hidden');
     document.getElementById('case-info').classList.remove('hidden');
@@ -1585,7 +1591,7 @@ function openModal(type, action, index = null) {
                         ${createFormField('חיווי על כשלון אוטומציה', 'select', 'modal-case-automation-failure-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
                         ${createFormField('מייל תזכורות', 'select', 'modal-case-reminder-email-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
                         ${createFormField('עדכון תפקידי אבטחה', 'select', 'modal-case-security-roles-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
-                    </div>
+                          ${createFormField('הלבנת קבצים', 'select', 'modal-case-CDR', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}                    </div>
                 </section>
             </div>
         `;
@@ -1609,6 +1615,7 @@ function openModal(type, action, index = null) {
             document.getElementById('modal-case-test-transfer-date').value = selectedCase.testTransferDate || '';
             document.getElementById('modal-case-production-transfer-date').value = selectedCase.productionTransferDate || '';
             document.getElementById('modal-case-security-roles-status').value = selectedCase.securityRolesUpdateStatus || '';
+            document.getElementById('modal-case-CDR').value = selectedCase.CDR || '';
             document.getElementById('modal-case-general-status').value = selectedCase.generalStatus || '';
             document.getElementById('modal-case-dev-url').value = selectedCase.devUrl || '';
             document.getElementById('modal-case-test-url').value = selectedCase.testUrl || '';
@@ -1779,6 +1786,7 @@ async function handleCase(action) {
         testTransferDate: '',
         productionTransferDate: '',
         securityRolesUpdateStatus: '',
+        CDR: '',
         generalStatus: '',
         devUrl: '',
         testUrl: '',
@@ -1817,6 +1825,7 @@ async function handleCase(action) {
         data.testTransferDate = document.getElementById('modal-case-test-transfer-date').value;
         data.productionTransferDate = document.getElementById('modal-case-production-transfer-date').value;
         data.securityRolesUpdateStatus = document.getElementById('modal-case-security-roles-status').value;
+        data.CDR = document.getElementById('modal-case-CDR').value;
         data.generalStatus = document.getElementById('modal-case-general-status').value;
         data.devUrl = document.getElementById('modal-case-dev-url').value;
         data.testUrl = document.getElementById('modal-case-test-url').value;
@@ -2715,7 +2724,8 @@ function determineOverallStatus(caseItem) {
         caseItem.actionCenterStatus,
         caseItem.automationFailureIndicatorStatus,
         caseItem.reminderEmailStatus,
-        caseItem.securityRolesUpdateStatus
+        caseItem.securityRolesUpdateStatus,
+        caseItem.CDR
     ];
 
     if (statuses.every(status => status === 'הושלם')) {
