@@ -1391,18 +1391,25 @@ function renderCaseInfo(selectedCase) {
     applyPermissions();
 }
 async function updateCounter(action) {
+    // Check permissions first
+    const canCreate = checkPermission('create');
+    const canUpdate = checkPermission('update');
+    
+    if (!canCreate && !canUpdate) {
+        showNotification('אין לך הרשאות לשנות את המונה', 'error');
+        return;
+    }
+
     const selectedCase = store.getState().selectedCase;
     if (!selectedCase) {
         showNotification('אין טופס נבחר', 'error');
         return;
     }
 
-    // Disable both buttons and add loading state
     const decreaseBtn = document.getElementById('counter-decrease');
     const increaseBtn = document.getElementById('counter-increase');
     const counterValue = document.getElementById('counter-value');
     
-    // Disable buttons and add opacity
     decreaseBtn.disabled = true;
     increaseBtn.disabled = true;
     decreaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
@@ -1413,7 +1420,6 @@ async function updateCounter(action) {
 
     if (newCount < 0) {
         showNotification('לא ניתן להוריד מתחת ל-0', 'error');
-        // Re-enable buttons
         decreaseBtn.disabled = false;
         increaseBtn.disabled = false;
         decreaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -1438,8 +1444,6 @@ async function updateCounter(action) {
 
         await response.json();
         counterValue.textContent = newCount;
-        
-        // Update local state
         selectedCase.counter = newCount;
         store.setState({ selectedCase: { ...selectedCase } });
         
@@ -1447,10 +1451,8 @@ async function updateCounter(action) {
     } catch (error) {
         console.error('Error updating counter:', error);
         showNotification('שגיאה בעדכון המונה', 'error');
-        // Revert counter value on error
         counterValue.textContent = currentCount;
     } finally {
-        // Re-enable buttons
         decreaseBtn.disabled = false;
         increaseBtn.disabled = false;
         decreaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
