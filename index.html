@@ -946,6 +946,19 @@
                         <div class="w-1"></div> <!-- This adds extra space between the buttons -->
                         <button onclick="openModal('case', 'delete')" class="bg-red-500 text-white px-4 py-2 rounded text-sm hover:bg-red-600 transition duration-300">מחק טופס</button>
                     </div>
+<!-- Counter Controls -->
+<div class="flex items-center bg-white/80 backdrop-blur-md shadow-lg px-8 py-1 w-40 justify-between border border-gray-300 gap-x-5">
+    <button id="counter-decrease" onclick="updateCounter('decrease')" class="w-12 h-7 flex items-center justify-center bg-red-500 text-white text-2xl font-bold rounded-full shadow-md transition-all duration-300 transform hover:scale-110 hover:bg-red-600 leading-none">
+        &minus;
+    </button>
+    <span id="counter-value" class="text-gray-900 text-2xl font-semibold">0</span>
+    <button id="counter-increase" onclick="updateCounter('increase')" class="w-12 h-7 flex items-center justify-center bg-green-500 text-white text-2xl font-bold rounded-full shadow-md transition-all duration-300 transform hover:scale-110 hover:bg-green-600 leading-none">
+        +
+    </button>
+</div>
+
+
+
                     <button onclick="downloadCaseToExcel()" class="bg-green-500 text-white px-4 py-2 rounded text-sm hover:bg-green-600 transition duration-300 flex items-center">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -1148,6 +1161,7 @@ function processApiData(apiData) {
         responsible: caseItem.Responsible || '',
         description: caseItem.Notes ? stripHtml(caseItem.Notes) : '',
         color: caseItem.Color || '#FFFFFF',
+        counter: caseItem.counter || 0,
         developmentStartDate: caseItem.developmentStartDate || '',
         openIssuesAtStart: caseItem.openIssuesAtStart ? stripHtml(caseItem.openIssuesAtStart) : '',
         hdDevelopmentStatus: caseItem.hdDevelopmentStatus || '',
@@ -1369,12 +1383,81 @@ function renderCaseInfo(selectedCase) {
     setFieldValue('case-production-transfer-date-display', formatDate(selectedCase.productionTransferDate));
     setStatusField('case-security-roles-status-display', selectedCase.securityRolesUpdateStatus);
     setStatusField('case-CDR-display', selectedCase.CDR);
+    document.getElementById('counter-value').textContent = selectedCase.counter || 0;
     setFieldValue('case-general-status-display', selectedCase.generalStatus);
     document.getElementById('issues-table-container').classList.remove('hidden');
     document.getElementById('case-info').classList.remove('hidden');
     populateEnvironmentLinks(selectedCase);
     applyPermissions();
 }
+async function updateCounter(action) {
+    const selectedCase = store.getState().selectedCase;
+    if (!selectedCase) {
+        showNotification('אין טופס נבחר', 'error');
+        return;
+    }
+
+    // Disable both buttons and add loading state
+    const decreaseBtn = document.getElementById('counter-decrease');
+    const increaseBtn = document.getElementById('counter-increase');
+    const counterValue = document.getElementById('counter-value');
+    
+    // Disable buttons and add opacity
+    decreaseBtn.disabled = true;
+    increaseBtn.disabled = true;
+    decreaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
+    increaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
+    
+    const currentCount = parseInt(counterValue.textContent);
+    const newCount = action === 'increase' ? currentCount + 1 : currentCount - 1;
+
+    if (newCount < 0) {
+        showNotification('לא ניתן להוריד מתחת ל-0', 'error');
+        // Re-enable buttons
+        decreaseBtn.disabled = false;
+        increaseBtn.disabled = false;
+        decreaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        increaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        return;
+    }
+
+    try {
+        const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'counter',
+                id: selectedCase.id,
+                counter: newCount
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        await response.json();
+        counterValue.textContent = newCount;
+        
+        // Update local state
+        selectedCase.counter = newCount;
+        store.setState({ selectedCase: { ...selectedCase } });
+        
+        showNotification('מונה עודכן בהצלחה', 'success');
+    } catch (error) {
+        console.error('Error updating counter:', error);
+        showNotification('שגיאה בעדכון המונה', 'error');
+        // Revert counter value on error
+        counterValue.textContent = currentCount;
+    } finally {
+        // Re-enable buttons
+        decreaseBtn.disabled = false;
+        increaseBtn.disabled = false;
+        decreaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        increaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+}
+
 
 function setFieldValue(elementId, value) {
     const element = document.getElementById(elementId);
