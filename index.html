@@ -257,6 +257,47 @@
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
+
+.truncated-issue.has-fade::before {
+    content: "...";
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(to right, transparent, white 20%);
+    padding-left: 1rem;
+}
+
+.truncated-issue-container {
+    position: relative;
+}
+
+.issue-full-text {
+    display: none;
+    position: relative;
+
+    top: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    z-index: 100;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.truncated-issue-container:hover .issue-full-text {
+    display: block;
+}
+
+/* Add responsive handling for smaller screens */
+@media (max-width: 1024px) {
+    .issue-full-text {
+        right: 0;  /* On smaller screens, show it over the content */
+        top: 100%; /* Below the content */
+    }
+}
 .monday-field-label {
     font-size: 0.75rem;
     font-weight: 600;
@@ -1522,14 +1563,33 @@ function renderIssuesTable(issues) {
         if (isOnlyURL(notes)) {
             return `<a href="${notes}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">${notes}</a>`;
         }
-        return notes;
+        return createTruncatedIssue(notes);
     }
+
+    function createTruncatedIssue(text) {
+    const maxLength = 250;
+    const shouldTruncate = text.length > maxLength;
+    const displayText = shouldTruncate ? `...${text.slice(-maxLength)}` : text;
+    
+    return `
+        <div class="truncated-issue-container">
+            <div class="truncated-issue">
+                ${displayText}
+            </div>
+            ${shouldTruncate ? `
+                <div class="issue-full-text">
+                    ${text}
+                </div>
+            ` : ''}
+        </div>
+    `;
+}
 
     issues.forEach((issue, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td data-label="תאריך יצירה" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500">${formatDate(issue.createdDate)}</td>
-            <td data-label="משימה" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500 wrap-text">${issue.issue}</td>
+            <td data-label="משימה" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500">${issue.issue}</td>
             <td data-label="אתגר" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500 wrap-text">${issue.challenge}</td>
             <td data-label="הערות" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500 wrap-text html-content">${formatNotes(issue.notes)}</td>
             <td data-label="סטאטוס" class="px-3 py-2 sm:px-6 sm:py-4 text-sm">
@@ -1537,7 +1597,7 @@ function renderIssuesTable(issues) {
                     ${issue.status}
                 </span>
             </td>
-<td data-label="אחראי" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500">
+            <td data-label="אחראי" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500">
                 <div class="flex items-center">
                     <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -1547,14 +1607,14 @@ function renderIssuesTable(issues) {
             </td>
             <td data-label="פעולות" class="px-3 py-2 sm:px-6 sm:py-4 text-sm text-gray-500">
                 <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 sm:space-x-reverse">
-                    <button onclick="openModal('issue', 'update', ${index})" class="flex items-center justify-center bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 transition duration-300" aria-label="ערוך משימה">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <button onclick="openModal('issue', 'update', ${index})" class="flex items-center justify-center bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 transition duration-300">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                         </svg>
                         עריכה
                     </button>
-                    <button onclick="openModal('issue', 'delete', ${index})" class="flex items-center justify-center bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition duration-300" aria-label="מחק משימה">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <button onclick="openModal('issue', 'delete', ${index})" class="flex items-center justify-center bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition duration-300">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
                         מחיקה
@@ -1564,13 +1624,14 @@ function renderIssuesTable(issues) {
         `;
         issuesTableBody.appendChild(row);
     });
+
     announceContentChange(`טבלת המשימות עודכנה עם ${issues.length} משימות.`);
     applyPermissions();
-    
-    // Update filter options based on the current issues
     updateFilterOptions(issues);
     initializeIssuesTableFilters();
 }
+
+
 function getStatusStyle(status) {
     switch (status) {
         case 'בעבודה':
