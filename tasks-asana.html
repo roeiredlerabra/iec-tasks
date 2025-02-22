@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול משימות</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0ea5e9;
+            --hover-color: #f0f9ff;
+            --header-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --success-bg: #dcfce7;
+            --success-color: #166534;
+            --warning-bg: #fef9c3;
+            --warning-color: #854d0e;
+            --group-bg: #f1f5f9;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .dashboard-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1800px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            color: #0f172a;
+        }
+
+        .page-header i {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.total {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .stat-icon.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stat-icon.progress {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        .stat-icon.projects {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .filter-container {
+            background: var(--header-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-group {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3px;
+        }
+
+        .btn-group .btn {
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-radius: 6px;
+            color: #64748b;
+        }
+
+        .btn-group .btn i {
+            font-size: 1rem;
+        }
+
+        .btn-group .btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 2.75rem 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: white;
+        }
+
+        .search-container i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: var(--header-bg);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem;
+            font-weight: 600;
+            color: #475569;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .group-header {
+            background: var(--group-bg) !important;
+            font-weight: 600;
+            color: #334155;
+            padding: 1rem !important;
+        }
+
+        .group-header i {
+            margin-left: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .task-title {
+            color: #0f172a;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .task-title i {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-completed {
+            background: var(--success-bg);
+            color: var(--success-color);
+        }
+
+        .status-in-progress {
+            background: var(--warning-bg);
+            color: var(--warning-color);
+        }
+
+        .task-notes {
+            max-height: 80px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.5;
+            white-space: pre-line;
+            padding-right: 0.5rem;
+        }
+
+        .task-meta {
+            font-size: 0.9rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .task-meta i {
+            font-size: 0.85rem;
+        }
+
+        .asana-link {
+            color: var(--primary-color);
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .asana-link:hover {
+            background-color: var(--hover-color);
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .loading-text {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .task-notes::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .task-notes::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 2px;
+        }
+
+        .task-notes::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="dashboard-container">
+            <div class="page-header">
+                <i class="fas fa-tasks"></i>
+                <h2 class="mb-0">ניהול משימות</h2>
+            </div>
+            
+            <div id="statsContainer" class="stats-container">
+                <!-- Stats will be inserted here -->
+            </div>
+
+            <div class="filter-container">
+                <div class="btn-group" role="group">
+                    <button class="btn" onclick="groupBy('none')">
+                        <i class="fas fa-list"></i>
+                        הכל
+                    </button>
+                    <button class="btn active" onclick="groupBy('project')">
+                        <i class="fas fa-project-diagram"></i>
+                        פרויקטים
+                    </button>
+                    <button class="btn" onclick="groupBy('assignee')">
+                        <i class="fas fa-users"></i>
+                        אחראים
+                    </button>
+                </div>
+
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" 
+                           class="search-input" 
+                           placeholder="חיפוש משימות..." 
+                           onkeyup="filterTasks(this.value)">
+                </div>
+            </div>
+            
+            <div id="loading" class="loading">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">טוען...</span>
+                </div>
+                <div class="loading-text">טוען משימות...</div>
+            </div>
+
+            <div id="taskContainer" style="display: none;">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%">שם משימה</th>
+                                <th style="width: 15%">פרויקט</th>
+                                <th style="width: 15%">אחראי</th>
+                                <th style="width: 10%">סטטוס</th>
+                                <th style="width: 25%">הערות</th>
+                                <th style="width: 10%">עדכון אחרון</th>
+                                <th style="width: 5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="taskTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+        let tasksData = [];
+        let currentGrouping = 'project';
+        const baseUrl = 'https://app.asana.com/api/1.0';
+        const workspaceId = '1200243741655086';
+        const authToken = '2/1208107765037174/1209472289288151:0f456401e065a1241cba7ff22bd5cc6a';
+
+        async function fetchTasks() {
+            try {
+                const response = await fetch(
+                    `${baseUrl}/workspaces/${workspaceId}/tasks/search?resource_subtype=default_task&sort_by=modified_at&sort_ascending=true`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`,
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+                const data = await response.json();
+                return data.data;
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+                return [];
+            }
+        }
+
+        async function fetchTaskDetails(taskId) {
+            try {
+                const response = await fetch(`${baseUrl}/tasks/${taskId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Accept': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                return data.data;
+            } catch (error) {
+                console.error(`Error fetching task ${taskId} details:`, error);
+                return null;
+            }
+        }
+
+        function updateStats(tasks) {
+            const stats = {
+                total: tasks.length,
+                completed: tasks.filter(t => t.completed).length,
+                inProgress: tasks.filter(t => !t.completed).length,
+                projects: new Set(tasks.map(t => t.projects[0]?.name).filter(Boolean)).size
+            };
+
+            document.getElementById('statsContainer').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon total">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div>
+                        <div class="h3 mb-0">${stats.total}</div>
+                        <div class="text-muted">סה"כ משימות</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon completed">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <div class="h3 mb-0">${stats.completed}</div>
+                        <div class="text-muted">הושלמו</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon progress">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <div class="h3 mb-0">${stats.inProgress}</div>
+                        <div class="text-muted">בתהליך</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon projects">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <div>
+                        <div class="h3 mb-0">${stats.projects}</div>
+                        <div class="text-muted">פרויקטים</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return new Intl.DateTimeFormat('he-IL', {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric'
+            }).format(date);
+        }
+
+        function getStatusBadge(completed) {
+            return completed ? 
+                '<span class="status-badge status-completed"><i class="fas fa-check-circle"></i>הושלם</span>' :
+                '<span class="status-badge status-in-progress"><i class="fas fa-clock"></i>בתהליך</span>';
+        }
+
+        function groupTasksBy(tasks, groupingKey) {
+            if (groupingKey === 'none') return { 'כל המשימות': tasks };
+            
+            return tasks.reduce((groups, task) => {
+                let key;
+                if (groupingKey === 'project') {
+                    key = task.projects[0]?.name || 'ללא פרויקט';
+                } else if (groupingKey === 'assignee') {
+                    key = task.assignee?.name || 'לא הוקצה';
+                }
+                
+                if (!groups[key]) {
+                    groups[key] = [];
+                }
+                groups[key].push(task);
+                return groups;
+            }, {});
+        }
+
+        function filterTasks(searchTerm) {
+            const filteredTasks = tasksData.filter(task => {
+                const searchString = searchTerm.toLowerCase();
+                return (
+                    task.name.toLowerCase().includes(searchString) ||
+                    (task.notes && task.notes.toLowerCase().includes(searchString)) ||
+                    (task.projects[0]?.name || '').toLowerCase().includes(searchString) ||
+                    (task.assignee?.name || '').toLowerCase().includes(searchString)
+                );
+            });
+            
+            renderTasks(groupTasksBy(filteredTasks, currentGrouping));
+        }
+
+        function renderTasks(groupedTasks) {
+            const tableBody = document.getElementById('taskTableBody');
+            tableBody.innerHTML = '';
+
+            Object.entries(groupedTasks).forEach(([groupName, tasks]) => {
+                const groupHeader = document.createElement('tr');
+                groupHeader.innerHTML = `
+                    <td colspan="7" class="group-header">
+                        <i class="fas ${currentGrouping === 'project' ? 'fa-folder' : 'fa-users'}"></i>
+                        ${groupName} (${tasks.length})
+                    </td>
+                `;
+                tableBody.appendChild(groupHeader);
+
+                tasks.forEach(task => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="task-title">
+                                <i class="fas fa-thumbtack"></i>
+                                ${task.name}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="task-meta">
+                                <i class="fas fa-folder"></i>
+                                ${task.projects[0]?.name || 'ללא פרויקט'}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="task-meta">
+                                <i class="fas fa-user"></i>
+                                ${task.assignee?.name || 'לא הוקצה'}
+                            </div>
+                        </td>
+                        <td>${getStatusBadge(task.completed)}</td>
+                        <td>
+                            <div class="task-notes">
+                                ${task.notes || ''}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="task-meta">
+                                <i class="fas fa-clock"></i>
+                                ${formatDate(task.modified_at)}
+                            </div>
+                        </td>
+                        <td>
+                            <a href="${task.permalink_url}" 
+                               target="_blank" 
+                               class="asana-link" 
+                               title="פתח ב-Asana">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            });
+        }
+
+        async function loadAllTasks() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('taskContainer').style.display = 'none';
+
+            const tasks = await fetchTasks();
+            tasksData = await Promise.all(
+                tasks.map(task => fetchTaskDetails(task.gid))
+            );
+
+            updateStats(tasksData);
+            
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('taskContainer').style.display = 'block';
+            
+            groupBy('project');
+        }
+
+        function groupBy(groupingKey) {
+            currentGrouping = groupingKey;
+            const groupedTasks = groupTasksBy(tasksData, groupingKey);
+            
+            // Update active button state
+            document.querySelectorAll('.btn-group .btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderTasks(groupedTasks);
+        }
+
+        // Initialize the page
+        loadAllTasks();
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
