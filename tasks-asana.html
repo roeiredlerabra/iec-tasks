@@ -310,15 +310,15 @@
 
             <div class="filter-container">
 <div class="btn-group" role="group">
-    <button class="btn" data-group="none" onclick="groupBy('none')">
+    <button class="btn" data-group="none" onclick="groupBy('none', event)">
         <i class="fas fa-list"></i>
         הכל
     </button>
-    <button class="btn active" data-group="project" onclick="groupBy('project')">
+    <button class="btn active" data-group="project" onclick="groupBy('project', event)">
         <i class="fas fa-project-diagram"></i>
         פרויקטים
     </button>
-    <button class="btn" data-group="assignee" onclick="groupBy('assignee')">
+    <button class="btn" data-group="assignee" onclick="groupBy('assignee', event)">
         <i class="fas fa-users"></i>
         אחראים
     </button>
@@ -563,31 +563,31 @@
             });
         }
 
-        async function loadAllTasks() {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('taskContainer').style.display = 'none';
+async function loadAllTasks() {
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('taskContainer').style.display = 'none';
 
-            const tasks = await fetchTasks();
-            tasksData = await Promise.all(
-                tasks.map(task => fetchTaskDetails(task.gid))
-            );
+    const tasks = await fetchTasks();
+    tasksData = await Promise.all(
+        tasks.map(task => fetchTaskDetails(task.gid))
+    );
 
-            updateStats(tasksData);
-            
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('taskContainer').style.display = 'block';
-            
-            groupBy('project');
-        }
+    updateStats(tasksData);
+    
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('taskContainer').style.display = 'block';
+    
+    groupBy('project'); // Without event parameter
+}
 
-function groupBy(groupingKey) {
+function groupBy(groupingKey, event) {  // Add event parameter
     currentGrouping = groupingKey;
     const groupedTasks = groupTasksBy(tasksData, groupingKey);
     
     // Update active button state
     document.querySelectorAll('.btn-group .btn').forEach(btn => {
         btn.classList.remove('active');
-        if(btn.getAttribute('data-group') === groupingKey) {
+        if (btn.getAttribute('data-group') === groupingKey) {
             btn.classList.add('active');
         }
     });
