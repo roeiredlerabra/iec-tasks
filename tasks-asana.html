@@ -309,20 +309,20 @@
             </div>
 
             <div class="filter-container">
-                <div class="btn-group" role="group">
-                    <button class="btn" onclick="groupBy('none')">
-                        <i class="fas fa-list"></i>
-                        הכל
-                    </button>
-                    <button class="btn active" onclick="groupBy('project')">
-                        <i class="fas fa-project-diagram"></i>
-                        פרויקטים
-                    </button>
-                    <button class="btn" onclick="groupBy('assignee')">
-                        <i class="fas fa-users"></i>
-                        אחראים
-                    </button>
-                </div>
+<div class="btn-group" role="group">
+    <button class="btn" data-group="none" onclick="groupBy('none')">
+        <i class="fas fa-list"></i>
+        הכל
+    </button>
+    <button class="btn active" data-group="project" onclick="groupBy('project')">
+        <i class="fas fa-project-diagram"></i>
+        פרויקטים
+    </button>
+    <button class="btn" data-group="assignee" onclick="groupBy('assignee')">
+        <i class="fas fa-users"></i>
+        אחראים
+    </button>
+</div>
 
                 <div class="search-container">
                     <i class="fas fa-search"></i>
@@ -580,18 +580,20 @@
             groupBy('project');
         }
 
-        function groupBy(groupingKey) {
-            currentGrouping = groupingKey;
-            const groupedTasks = groupTasksBy(tasksData, groupingKey);
-            
-            // Update active button state
-            document.querySelectorAll('.btn-group .btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            renderTasks(groupedTasks);
+function groupBy(groupingKey) {
+    currentGrouping = groupingKey;
+    const groupedTasks = groupTasksBy(tasksData, groupingKey);
+    
+    // Update active button state
+    document.querySelectorAll('.btn-group .btn').forEach(btn => {
+        btn.classList.remove('active');
+        if(btn.getAttribute('data-group') === groupingKey) {
+            btn.classList.add('active');
         }
+    });
+    
+    renderTasks(groupedTasks);
+}
 
         // Initialize the page
         loadAllTasks();
