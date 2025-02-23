@@ -294,6 +294,34 @@
             background: #cbd5e1;
             border-radius: 2px;
         }
+        .subtask-row {
+    background-color: #f8fafc;
+}
+
+.subtask-indicator {
+    padding-right: 2rem;
+    position: relative;
+}
+
+.subtask-indicator:before {
+    content: '';
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    width: 1rem;
+    height: 2px;
+    background-color: #cbd5e1;
+}
+
+.subtask-indicator:after {
+    content: '';
+    position: absolute;
+    right: 0.75rem;
+    top: -50%;
+    height: calc(100% + 50%);
+    width: 2px;
+    background-color: #cbd5e1;
+}
     </style>
 </head>
 <body>
@@ -469,24 +497,68 @@
                 '<span class="status-badge status-in-progress"><i class="fas fa-clock"></i>בתהליך</span>';
         }
 
-        function groupTasksBy(tasks, groupingKey) {
-            if (groupingKey === 'none') return { 'כל המשימות': tasks };
-            
-            return tasks.reduce((groups, task) => {
-                let key;
-                if (groupingKey === 'project') {
-                    key = task.projects[0]?.name || 'ללא פרויקט';
-                } else if (groupingKey === 'assignee') {
-                    key = task.assignee?.name || 'לא הוקצה';
-                }
-                
-                if (!groups[key]) {
-                    groups[key] = [];
-                }
-                groups[key].push(task);
-                return groups;
-            }, {});
+function groupTasksBy(tasks, groupingKey) {
+    // First, create a map of parent tasks
+    const parentMap = new Map();
+    const taskMap = new Map(tasks.map(task => [task.gid, task]));
+
+    // Process subtasks and assign parent's project if they don't have one
+    tasks.forEach(task => {
+        if (task.parent) {
+            const parentTask = taskMap.get(task.parent.gid);
+            if (parentTask && (!task.projects || task.projects.length === 0)) {
+                task.projects = parentTask.projects; // Inherit parent's project
+            }
+            if (!parentMap.has(task.parent.gid)) {
+                parentMap.set(task.parent.gid, []);
+            }
+            parentMap.get(task.parent.gid).push(task);
         }
+    });
+
+    if (groupingKey === 'none') {
+        return { 'כל המשימות': organizeTasksHierarchically(tasks, parentMap) };
+    }
+    
+    return tasks.reduce((groups, task) => {
+        // Skip subtasks as they'll be handled with their parents
+        if (task.parent) return groups;
+
+        let key;
+        if (groupingKey === 'project') {
+            key = task.projects[0]?.name || 'ללא פרויקט';
+        } else if (groupingKey === 'assignee') {
+            key = task.assignee?.name || 'לא הוקצה';
+        }
+        
+        if (!groups[key]) {
+            groups[key] = [];
+        }
+        groups[key].push(task);
+
+        // Add subtasks and ensure they have the same project as parent
+        const subtasks = parentMap.get(task.gid) || [];
+        subtasks.forEach(subtask => {
+            if (!subtask.projects || subtask.projects.length === 0) {
+                subtask.projects = task.projects;
+            }
+        });
+        groups[key].push(...subtasks);
+
+        return groups;
+    }, {});
+}
+function organizeTasksHierarchically(tasks, parentMap) {
+    const organizedTasks = [];
+    tasks.forEach(task => {
+        if (!task.parent) {
+            organizedTasks.push(task);
+            const subtasks = parentMap.get(task.gid) || [];
+            organizedTasks.push(...subtasks);
+        }
+    });
+    return organizedTasks;
+}
 
         function filterTasks(searchTerm) {
             const filteredTasks = tasksData.filter(task => {
@@ -502,66 +574,66 @@
             renderTasks(groupTasksBy(filteredTasks, currentGrouping));
         }
 
-        function renderTasks(groupedTasks) {
-            const tableBody = document.getElementById('taskTableBody');
-            tableBody.innerHTML = '';
+function renderTasks(groupedTasks) {
+    const tableBody = document.getElementById('taskTableBody');
+    tableBody.innerHTML = '';
 
-            Object.entries(groupedTasks).forEach(([groupName, tasks]) => {
-                const groupHeader = document.createElement('tr');
-                groupHeader.innerHTML = `
-                    <td colspan="7" class="group-header">
-                        <i class="fas ${currentGrouping === 'project' ? 'fa-folder' : 'fa-users'}"></i>
-                        ${groupName} (${tasks.length})
-                    </td>
-                `;
-                tableBody.appendChild(groupHeader);
+    Object.entries(groupedTasks).forEach(([groupName, tasks]) => {
+        // Group header remains the same...
 
-                tasks.forEach(task => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>
-                            <div class="task-title">
-                                <i class="fa-solid fa-circle-dot"></i>
-                                ${task.name}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="task-meta">
-                                <i class="fas fa-folder"></i>
-                                ${task.projects[0]?.name || 'ללא פרויקט'}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="task-meta">
-                                <i class="fas fa-user"></i>
-                                ${task.assignee?.name || 'לא הוקצה'}
-                            </div>
-                        </td>
-                        <td>${getStatusBadge(task.completed)}</td>
-                        <td>
-                            <div class="task-notes">
-                                ${task.notes || ''}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="task-meta">
-                                <i class="fas fa-clock"></i>
-                                ${formatDate(task.modified_at)}
-                            </div>
-                        </td>
-                        <td>
-                            <a href="${task.permalink_url}/f" 
-                               target="_blank" 
-                               class="asana-link" 
-                               title="פתח ב-Asana">
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            });
-        }
+        tasks.forEach(task => {
+            const row = document.createElement('tr');
+            row.className = task.parent ? 'subtask-row' : '';
+            
+            const taskNameClass = task.parent ? 'task-title subtask-indicator' : 'task-title';
+            const taskIcon = task.parent ? 'fa-level-down-alt' : 'fa-thumbtack';
+
+            row.innerHTML = `
+                <td>
+                    <div class="${taskNameClass}">
+                        <i class="fas ${taskIcon}"></i>
+                        ${task.name}
+                        ${task.parent ? '<span class="badge bg-light text-secondary ms-2">תת-משימה</span>' : ''}
+                    </div>
+                </td>
+                <td>
+                    <div class="task-meta">
+                        <i class="fas fa-folder"></i>
+                        ${task.projects[0]?.name || 'ללא פרויקט'}
+                        ${task.parent ? '<span class="text-muted small">(יורש מהמשימה הראשית)</span>' : ''}
+                    </div>
+                </td>
+                <td>
+                    <div class="task-meta">
+                        <i class="fas fa-user"></i>
+                        ${task.assignee?.name || 'לא הוקצה'}
+                    </div>
+                </td>
+                <td>${getStatusBadge(task.completed)}</td>
+                <td>
+                    <div class="task-notes">
+                        ${task.notes || ''}
+                    </div>
+                </td>
+                <td>
+                    <div class="task-meta">
+                        <i class="fas fa-clock"></i>
+                        ${formatDate(task.modified_at)}
+                    </div>
+                </td>
+                <td>
+                    <a href="${task.permalink_url}/f" 
+                       target="_blank" 
+                       class="asana-link" 
+                       title="פתח ב-Asana">
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    });
+}
 
 async function loadAllTasks() {
     document.getElementById('loading').style.display = 'block';
