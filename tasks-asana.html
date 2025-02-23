@@ -510,55 +510,48 @@ function groupTasksBy(tasks, groupingKey) {
                 parentMap.set(parentId, []);
             }
             parentMap.get(parentId).push(task);
+
+            // Inherit project from parent if not assigned
+            const parentTask = taskMap.get(parentId);
+            if (parentTask && (!task.memberships || task.memberships.length === 0)) {
+                task.memberships = parentTask.memberships;
+            }
         }
     });
 
     if (groupingKey === 'none') {
-        return { 'כל המשימות': organizeTasksHierarchically(tasks, parentMap) };
+        return { 'כל המשימות': tasks };
     }
 
     // Create groups based on the grouping key
     const groups = {};
-    
-    // First, handle parent tasks
+
     tasks.forEach(task => {
-        if (!task.parent) {  // Only process parent tasks first
-            let key;
-            if (groupingKey === 'project') {
-                key = task.projects && task.projects.length > 0 ? 
-                    task.projects[0].name : 'ללא פרויקט';
-            } else if (groupingKey === 'assignee') {
-                key = task.assignee ? task.assignee.name : 'לא הוקצה';
+        let key;
+        if (groupingKey === 'project') {
+            // Use memberships for project grouping
+            if (task.memberships && task.memberships.length > 0) {
+                key = task.memberships[0].project.name;
+            } else if (task.projects && task.projects.length > 0) {
+                key = task.projects[0].name;
+            } else {
+                key = 'ללא פרויקט';
             }
+        } else if (groupingKey === 'assignee') {
+            key = task.assignee ? task.assignee.name : 'לא הוקצה';
+        }
 
-            if (!groups[key]) {
-                groups[key] = [];
-            }
+        if (!groups[key]) {
+            groups[key] = [];
+        }
+
+        // Add the task if it's either a parent task or an orphaned subtask
+        if (!task.parent || !taskMap.has(task.parent.gid)) {
             groups[key].push(task);
-
+            
             // Add any subtasks right after their parent
             const subtasks = parentMap.get(task.gid) || [];
             groups[key].push(...subtasks);
-        }
-    });
-
-    // Handle orphaned subtasks (in case their parent wasn't in the list)
-    tasks.forEach(task => {
-        if (task.parent && !taskMap.has(task.parent.gid)) {
-            let key;
-            if (groupingKey === 'project') {
-                key = task.projects && task.projects.length > 0 ? 
-                    task.projects[0].name : 'ללא פרויקט';
-            } else if (groupingKey === 'assignee') {
-                key = task.assignee ? task.assignee.name : 'לא הוקצה';
-            }
-
-            if (!groups[key]) {
-                groups[key] = [];
-            }
-            if (!groups[key].includes(task)) {
-                groups[key].push(task);
-            }
         }
     });
 
@@ -614,14 +607,27 @@ function renderTasks(groupedTasks) {
     tableBody.innerHTML = '';
 
     Object.entries(groupedTasks).forEach(([groupName, tasks]) => {
-        // Group header remains the same...
+        // Add group header
+        const groupHeader = document.createElement('tr');
+        groupHeader.innerHTML = `
+            <td colspan="7" class="group-header">
+                <i class="fas ${currentGrouping === 'project' ? 'fa-folder' : 'fa-users'}"></i>
+                ${groupName} (${tasks.length})
+            </td>
+        `;
+        tableBody.appendChild(groupHeader);
 
+        // Add tasks
         tasks.forEach(task => {
             const row = document.createElement('tr');
             row.className = task.parent ? 'subtask-row' : '';
             
             const taskNameClass = task.parent ? 'task-title subtask-indicator' : 'task-title';
             const taskIcon = task.parent ? 'fa-level-down-alt' : 'fa-thumbtack';
+
+            const projectName = task.memberships && task.memberships.length > 0 
+                ? task.memberships[0].project.name 
+                : (task.projects && task.projects.length > 0 ? task.projects[0].name : 'ללא פרויקט');
 
             row.innerHTML = `
                 <td>
@@ -634,7 +640,7 @@ function renderTasks(groupedTasks) {
                 <td>
                     <div class="task-meta">
                         <i class="fas fa-folder"></i>
-                        ${task.projects[0]?.name || 'ללא פרויקט'}
+                        ${projectName}
                         ${task.parent ? '<span class="text-muted small">(יורש מהמשימה הראשית)</span>' : ''}
                     </div>
                 </td>
