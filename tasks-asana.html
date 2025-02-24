@@ -180,11 +180,12 @@
         }
 
         .group-header {
-            background: var(--group-bg) !important;
-            font-weight: 600;
-            color: #334155;
-            padding: 1rem !important;
-        }
+    background: var(--group-bg) !important;
+    font-weight: 600;
+    color: #334155;
+    padding: 1rem !important;
+    width: 100%;
+}
 
         .group-header i {
             margin-left: 0.5rem;
@@ -653,15 +654,16 @@ function renderTasks(groupedTasks) {
     tableBody.innerHTML = '';
 
     Object.entries(groupedTasks).forEach(([groupName, tasks]) => {
-        // Add group header
-        const groupHeader = document.createElement('tr');
-        groupHeader.innerHTML = `
-            <td colspan="7" class="group-header">
-                <i class="fas ${currentGrouping === 'project' ? 'fa-folder' : 'fa-users'}"></i>
-                ${groupName} (${tasks.length})
-            </td>
-        `;
-        tableBody.appendChild(groupHeader);
+
+// Add group header
+const groupHeader = document.createElement('tr');
+groupHeader.innerHTML = `
+    <td colspan="7" class="group-header">
+        <i class="fas ${currentGrouping === 'project' ? 'fa-folder' : 'fa-users'}"></i>
+        ${groupName} (${tasks.length})
+    </td>
+`;
+tableBody.appendChild(groupHeader);
 
         // Add tasks
         tasks.forEach(task => {
@@ -675,48 +677,48 @@ function renderTasks(groupedTasks) {
                 ? task.memberships[0].project.name 
                 : (task.projects && task.projects.length > 0 ? task.projects[0].name : 'ללא פרויקט');
 
-            row.innerHTML = `
-                <td>
-                    <div class="${taskNameClass}">
-                        <i class="fas ${taskIcon}"></i>
-                        ${task.name}
-                        ${task.parent ? '<span class="badge bg-light text-secondary ms-2">תת-משימה</span>' : ''}
-                    </div>
-                </td>
-                <td>
-                    <div class="task-meta">
-                        <i class="fas fa-folder"></i>
-                        ${projectName}
-                        ${task.parent ? '<span class="text-muted small">(יורש מהמשימה הראשית)</span>' : ''}
-                    </div>
-                </td>
-                <td>
-                    <div class="task-meta">
-                        <i class="fas fa-user"></i>
-                        ${task.assignee?.name || 'לא הוקצה'}
-                    </div>
-                </td>
-                <td>${getStatusBadge(task.completed)}</td>
-                <td>
-                    <div class="task-notes">
-                        ${task.notes || ''}
-                    </div>
-                </td>
-                <td>
-                    <div class="task-meta">
-                        <i class="fas fa-clock"></i>
-                        ${formatDate(task.modified_at)}
-                    </div>
-                </td>
-                <td>
-                    <a href="${task.permalink_url}/f" 
-                       target="_blank" 
-                       class="asana-link" 
-                       title="פתח ב-Asana">
-                        <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </td>
-            `;
+                row.innerHTML = `
+    <td>
+        <div class="${taskNameClass}">
+            <i class="fas ${taskIcon}"></i>
+            ${task.name}
+            ${task.parent ? '<span class="badge bg-light text-secondary ms-2">תת-משימה</span>' : ''}
+        </div>
+    </td>
+    <td>
+        <div class="task-meta">
+            <i class="fas fa-folder"></i>
+            ${projectName}
+            ${task.parent ? '<span class="text-muted small">(יורש מהמשימה הראשית)</span>' : ''}
+        </div>
+    </td>
+    <td>
+        <div class="task-meta">
+            <i class="fas fa-user"></i>
+            ${task.assignee?.name || 'לא הוקצה'}
+        </div>
+    </td>
+    <td>${getStatusBadge(task.completed)}</td>
+    <td>
+        <div class="task-notes">
+            ${task.notes || ''}
+        </div>
+    </td>
+    <td>
+        <div class="task-meta">
+            <i class="fas fa-clock"></i>
+            ${formatDate(task.modified_at)}
+        </div>
+    </td>
+    <td>
+        <a href="${task.permalink_url}/f" 
+           target="_blank" 
+           class="asana-link" 
+           title="פתח ב-Asana">
+            <i class="fas fa-external-link-alt"></i>
+        </a>
+    </td>
+`;
             tableBody.appendChild(row);
         });
     });
