@@ -1509,33 +1509,52 @@ if (closeSearchResults && searchResults && content) {
             
             // Highlight active section based on scroll position
             window.addEventListener('scroll', function() {
-                const scrollPosition = window.scrollY;
-                const sections = document.querySelectorAll('.section');
-                const navLinks = document.querySelectorAll('.nav-link:not(.has-submenu)');
-                
-                sections.forEach((section, index) => {
-                    const sectionTop = section.offsetTop - 100;
-                    const sectionBottom = sectionTop + section.offsetHeight;
-                    
-                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                        });
-                        
-                        const activeLink = document.querySelector(`a[href="#${section.id}"]`);
-                        if (activeLink) {
-                            activeLink.classList.add('active');
-                            
-                            // Expand parent submenu if exists
-                            const parentSubmenu = activeLink.closest('.sub-nav');
-                            if (parentSubmenu && !parentSubmenu.classList.contains('show')) {
-                                parentSubmenu.classList.add('show');
-                                parentSubmenu.previousElementSibling.classList.add('active');
-                            }
-                        }
-                    }
-                });
+    const scrollPosition = window.scrollY;
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.nav-link:not(.has-submenu)');
+    
+    sections.forEach((section) => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
             });
+            
+            const activeLink = document.querySelector(`a[href="#${section.id}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+                
+                // פתיחת תת-תפריט במידת הצורך
+                const parentSubmenu = activeLink.closest('.sub-nav');
+                if (parentSubmenu && !parentSubmenu.classList.contains('show')) {
+                    parentSubmenu.classList.add('show');
+                    parentSubmenu.previousElementSibling.classList.add('active');
+                }
+                
+                // גלילת סרגל הניווט כך שהפריט הפעיל יהיה נראה
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar) {
+                    // חישוב המיקום של הפריט הפעיל בתוך הסיידבר
+                    const activeLinkTop = activeLink.offsetTop;
+                    const activeLinkHeight = activeLink.offsetHeight;
+                    const sidebarScrollTop = sidebar.scrollTop;
+                    const sidebarHeight = sidebar.offsetHeight;
+                    
+                    // בדיקה אם הפריט הפעיל נמצא מחוץ לאזור הנראה
+                    if (activeLinkTop < sidebarScrollTop || activeLinkTop + activeLinkHeight > sidebarScrollTop + sidebarHeight) {
+                        // גלילה אל הפריט הפעיל עם מרווח קטן מעל
+                        sidebar.scrollTo({
+                            top: activeLinkTop - sidebarHeight / 4,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            }
+        }
+    });
+});
         });
     </script>
 </body>
