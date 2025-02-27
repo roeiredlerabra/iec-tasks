@@ -9,9 +9,11 @@
             --main-color: #0056b3;
             --secondary-color: #003a75;
             --highlight-color: #e9f0f7;
+            --highlight-search: #ffeb3b;
             --border-color: #ccc;
             --text-color: #333;
             --sidebar-width: 280px;
+            --search-results-width: 300px;
         }
         
         * {
@@ -44,6 +46,7 @@
             right: 0;
             padding: 1rem 0;
             transition: all 0.3s;
+            z-index: 100;
         }
         
         .sidebar-toggle {
@@ -65,6 +68,12 @@
             padding: 2rem;
             margin-right: var(--sidebar-width);
             width: calc(100% - var(--sidebar-width));
+            transition: all 0.3s;
+        }
+        
+        .content.with-results {
+            margin-left: var(--search-results-width);
+            width: calc(100% - var(--sidebar-width) - var(--search-results-width));
         }
         
         .sidebar-header {
@@ -179,53 +188,6 @@
             background-color: #f8f9fa;
         }
         
-        code, pre {
-            background-color: #f5f5f5;
-            border-radius: 3px;
-            padding: 0.2em 0.4em;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        
-        pre {
-            padding: 1rem;
-            overflow-x: auto;
-            margin-bottom: 1rem;
-        }
-        
-        blockquote {
-            border-right: 4px solid var(--main-color);
-            padding: 0.5rem 1rem;
-            margin-bottom: 1rem;
-            background-color: var(--highlight-color);
-        }
-        
-        hr {
-            border: 0;
-            border-top: 1px solid var(--border-color);
-            margin: 2rem 0;
-        }
-        
-        .note {
-            background-color: #fff3cd;
-            border-right: 4px solid #ffc107;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .warning {
-            background-color: #f8d7da;
-            border-right: 4px solid #dc3545;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .tip {
-            background-color: #d1e7dd;
-            border-right: 4px solid #198754;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
         .section {
             margin-bottom: 2rem;
         }
@@ -237,7 +199,6 @@
             visibility: hidden;
         }
         
-        /* Search Bar */
         .search-container {
             padding: 1rem;
             position: sticky;
@@ -254,11 +215,78 @@
             border-radius: 4px;
         }
         
-        /* Responsiveness */
+        .search-results {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: var(--search-results-width);
+            height: 100vh;
+            background-color: #f8f9fa;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 1rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            z-index: 99;
+        }
+        
+        .search-results.show {
+            transform: translateX(0);
+        }
+        
+        .search-results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .search-results-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: color 0.2s;
+        }
+        
+        .search-results-close:hover {
+            color: var(--main-color);
+        }
+        
+        .search-results-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .search-result-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .search-result-item:hover {
+            background-color: var(--highlight-color);
+        }
+        
+        .search-result-item strong {
+            color: var(--main-color);
+        }
+        
+        .highlight {
+            background-color: var(--highlight-search);
+            padding: 2px;
+            border-radius: 2px;
+            transition: background-color 0.5s;
+        }
+        
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(100%);
-                z-index: 999;
             }
             
             .sidebar.show {
@@ -270,19 +298,28 @@
                 width: 100%;
             }
             
+            .content.with-results {
+                margin-left: 0;
+                width: 100%;
+            }
+            
             .sidebar-toggle {
                 display: block;
             }
+            
+            .search-results {
+                width: 100%;
+            }
         }
 
-        /* Print styles */
         @media print {
-            .sidebar, .sidebar-toggle, .search-container {
+            .sidebar, .sidebar-toggle, .search-container, .search-results {
                 display: none;
             }
             
-            .content {
+            .content, .content.with-results {
                 margin-right: 0;
+                margin-left: 0;
                 width: 100%;
                 padding: 0;
             }
@@ -387,7 +424,15 @@
                 </li>
             </ul>
         </aside>
-        
+        <div class="search-results" id="searchResults">
+            <div class="search-results-header">
+                <h3>תוצאות חיפוש</h3>
+                <button class="search-results-close" id="closeSearchResults">&times;</button>
+            </div>
+            <ul class="search-results-list" id="searchResultsList">
+                <!-- תוצאות החיפוש יוצגו כאן -->
+            </ul>
+        </div>
         <main class="content">
             <h1>מתודולוגיה חחי - Power Apps ניהול ידע פיתוח</h1>
             
@@ -1222,7 +1267,6 @@
     </div>
     
     <script>
-        // Toggle submenu visibility
         document.addEventListener('DOMContentLoaded', function() {
             // Handle submenu toggling
             const hasSubmenuLinks = document.querySelectorAll('.has-submenu');
@@ -1244,27 +1288,224 @@
                 });
             }
             
-            // Handle search functionality
+            // Variables for search
             const searchInput = document.getElementById('search');
-            if (searchInput) {
-                searchInput.addEventListener('input', function() {
-                    const query = this.value.toLowerCase();
-                    const sections = document.querySelectorAll('.section');
+const searchResults = document.getElementById('searchResults');
+const searchResultsList = document.getElementById('searchResultsList');
+const closeSearchResults = document.getElementById('closeSearchResults');
+const content = document.querySelector('.content');
+            
+            // Debounce function for search
+            function debounce(func, wait) {
+                let timeout;
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        func.apply(context, args);
+                    }, wait);
+                };
+            }
+            
+            // Function to extract text nodes from the content
+            function getTextNodesIn(element) {
+                const textNodes = [];
+                
+                function getTextNodes(node) {
+                    if (node.nodeType === 3) {
+                        // Text node
+                        if (node.textContent.trim() !== '') {
+                            textNodes.push(node);
+                        }
+                    } else if (node.nodeType === 1 && !['SCRIPT', 'STYLE'].includes(node.tagName)) {
+                        // Element node, recursively get text nodes
+                        for (let i = 0; i < node.childNodes.length; i++) {
+                            getTextNodes(node.childNodes[i]);
+                        }
+                    }
+                }
+                
+                getTextNodes(element);
+                return textNodes;
+            }
+            
+            // Function to highlight search term in text
+            function highlightText(node, term) {
+                const text = node.textContent;
+                const index = text.toLowerCase().indexOf(term.toLowerCase());
+                if (index >= 0) {
+                    // Split the text node into parts
+                    const beforeMatch = text.substring(0, index);
+                    const match = text.substring(index, index + term.length);
+                    const afterMatch = text.substring(index + term.length);
                     
-                    if (query.length < 2) {
-                        sections.forEach(section => {
-                            section.style.display = 'block';
-                        });
-                        return;
+                    // Create elements to replace the text node
+                    const fragment = document.createDocumentFragment();
+                    
+                    if (beforeMatch) {
+                        fragment.appendChild(document.createTextNode(beforeMatch));
                     }
                     
-                    sections.forEach(section => {
-                        const text = section.textContent.toLowerCase();
-                        const match = text.includes(query);
-                        section.style.display = match ? 'block' : 'none';
-                    });
+                    const spanElement = document.createElement('span');
+                    spanElement.className = 'highlight';
+                    spanElement.textContent = match;
+                    fragment.appendChild(spanElement);
+                    
+                    if (afterMatch) {
+                        fragment.appendChild(document.createTextNode(afterMatch));
+                    }
+                    
+                    // Replace the original text node with our fragment
+                    node.parentNode.replaceChild(fragment, node);
+                    
+                    return true;
+                }
+                return false;
+            }
+            
+            // Function to remove highlights
+            function removeHighlights() {
+                const highlights = document.querySelectorAll('.highlight');
+                highlights.forEach(highlight => {
+                    const parent = highlight.parentNode;
+                    const textNode = document.createTextNode(highlight.textContent);
+                    parent.replaceChild(textNode, highlight);
+                    // Normalize to merge adjacent text nodes
+                    parent.normalize();
                 });
             }
+            
+            // Function to search content and display results
+            function searchContent(query) {
+    // בדיקה אם האלמנטים קיימים
+    if (!searchResults || !content) {
+        console.error('Required DOM elements not found');
+        return;
+    }
+
+    if (!query || query.length < 2) {
+        searchResults.classList.remove('show');
+        content.classList.remove('with-results');
+        return;
+    }
+                
+                // Get all text nodes in the content
+                const textNodes = getTextNodesIn(content);
+                const matches = [];
+                
+                // Find matches
+                textNodes.forEach(node => {
+                    const text = node.textContent;
+                    const index = text.toLowerCase().indexOf(query.toLowerCase());
+                    if (index >= 0) {
+                        // Get the containing paragraph or element
+                        let container = node.parentNode;
+                        while (container && !['P', 'LI', 'TD', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(container.tagName)) {
+                            container = container.parentNode;
+                        }
+                        
+                        if (container) {
+                            // Get surrounding text for context
+                            let fullText = text;
+                            const contextStart = Math.max(0, index - 30);
+                            const contextEnd = Math.min(fullText.length, index + query.length + 30);
+                            let contextText = fullText.substring(contextStart, contextEnd);
+                            
+                            // Add ellipsis if needed
+                            if (contextStart > 0) {
+                                contextText = '...' + contextText;
+                            }
+                            if (contextEnd < fullText.length) {
+                                contextText += '...';
+                            }
+                            
+                            // Create highlighted version for search results
+                            const highlightedText = contextText.replace(
+                                new RegExp(query, 'gi'),
+                                match => `<strong>${match}</strong>`
+                            );
+                            
+                            // Add match to the list
+                            matches.push({
+                                node: node,
+                                container: container,
+                                text: contextText,
+                                highlightedText: highlightedText
+                            });
+                        }
+                    }
+                });
+                
+                // Display matches in the search results panel
+                searchResultsList.innerHTML = '';
+                if (matches.length > 0) {
+                    matches.forEach((match, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'search-result-item';
+                        li.innerHTML = match.highlightedText;
+                        li.setAttribute('data-index', index);
+                        
+                        li.addEventListener('click', function() {
+                            // Scroll to the element
+                            const matchData = matches[this.getAttribute('data-index')];
+                            
+                            // Remove any existing highlights
+                            removeHighlights();
+                            
+                            // Highlight the search term in the text node
+                            highlightText(matchData.node, query);
+                            
+                            // Scroll the element into view
+                            matchData.container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            // On mobile, hide the search results after clicking
+                            if (window.innerWidth <= 768) {
+                                searchResults.classList.remove('show');
+                                content .classList.remove('with-results');
+                            }
+                            
+                            // Remove highlight after 10 seconds
+                            setTimeout(removeHighlights, 10000);
+                        });
+                        
+                        searchResultsList.appendChild(li);
+                    });
+                    
+                    // Show search results panel
+                    searchResults.classList.add('show');
+                    content .classList.add('with-results');
+                } else {
+                    const li = document.createElement('li');
+                    li.className = 'search-result-item';
+                    li.textContent = 'לא נמצאו תוצאות';
+                    searchResultsList.appendChild(li);
+                    
+                    // Show search results panel
+                    searchResults.classList.add('show');
+                    content .classList.add('with-results');
+                }
+            }
+            
+            // Debounced search function
+            const debouncedSearch = debounce(function() {
+    if (!searchInput) return;
+    const query = searchInput.value.trim();
+    searchContent(query);
+}, 300);
+
+// Set up search input event listener
+if (searchInput) {
+    searchInput.addEventListener('input', debouncedSearch);
+}
+
+// Close search results panel
+if (closeSearchResults && searchResults && content) {
+    closeSearchResults.addEventListener('click', function() {
+        searchResults.classList.remove('show');
+        content.classList.remove('with-results');
+    });
+}
             
             // Highlight active section based on scroll position
             window.addEventListener('scroll', function() {
