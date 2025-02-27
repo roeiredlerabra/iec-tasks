@@ -3,20 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ניהול משימות</title>
+    <title>ניהול משימות - גרסה משופרת</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #0ea5e9;
-            --hover-color: #f0f9ff;
-            --header-bg: #f8fafc;
+            --primary-color: #3b82f6;
+            --primary-light: #eff6ff;
+            --primary-dark: #1d4ed8;
+            --hover-color: #dbeafe;
+            --header-bg: #f1f5f9;
             --border-color: #e2e8f0;
             --success-bg: #dcfce7;
             --success-color: #166534;
             --warning-bg: #fef9c3;
             --warning-color: #854d0e;
-            --group-bg: #f1f5f9;
+            --danger-bg: #fee2e2;
+            --danger-color: #b91c1c;
+            --group-bg: #f8fafc;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease-in-out;
         }
         
         body {
@@ -28,7 +34,7 @@
         .dashboard-container {
             background: white;
             border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
             padding: 2rem;
             margin: 2rem auto;
             max-width: 1800px;
@@ -39,12 +45,21 @@
             align-items: center;
             gap: 0.75rem;
             margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
             color: #0f172a;
         }
 
         .page-header i {
             font-size: 1.75rem;
             color: var(--primary-color);
+            background: var(--primary-light);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
         }
 
         .stats-container {
@@ -62,16 +77,18 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            transition: transform 0.2s;
+            transition: var(--transition);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .stat-card:hover {
             transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
         }
 
         .stat-icon {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -99,10 +116,15 @@
             color: #6b21a8;
         }
 
+        .stat-icon.urgent {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
         .filter-container {
             background: var(--header-bg);
             border-radius: 12px;
-            padding: 1rem;
+            padding: 1.25rem;
             margin-bottom: 2rem;
             display: flex;
             gap: 1rem;
@@ -114,18 +136,19 @@
             background: white;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 3px;
+            padding: 4px;
         }
 
         .btn-group .btn {
             border: none;
             font-size: 0.9rem;
-            padding: 0.5rem 1rem;
+            padding: 0.625rem 1.25rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             border-radius: 6px;
             color: #64748b;
+            transition: var(--transition);
         }
 
         .btn-group .btn i {
@@ -135,6 +158,11 @@
         .btn-group .btn.active {
             background: var(--primary-color);
             color: white;
+        }
+
+        .btn-group .btn:not(.active):hover {
+            background: var(--hover-color);
+            color: var(--primary-dark);
         }
 
         .search-container {
@@ -150,6 +178,13 @@
             border-radius: 8px;
             font-size: 0.95rem;
             background: white;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            border-color: var(--primary-color);
+            outline: none;
         }
 
         .search-container i {
@@ -158,6 +193,14 @@
             top: 50%;
             transform: translateY(-50%);
             color: #94a3b8;
+        }
+
+        .table-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
         }
 
         .table {
@@ -177,19 +220,34 @@
             padding: 1rem;
             vertical-align: middle;
             border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .table tbody tr:hover td {
+            background-color: var(--primary-light);
         }
 
         .group-header {
-    background: var(--group-bg) !important;
-    font-weight: 600;
-    color: #334155;
-    padding: 1rem !important;
-    width: 100%;
-}
+            background: var(--group-bg) !important;
+            font-weight: 600;
+            color: #334155;
+            padding: 1rem !important;
+            width: 100%;
+        }
 
         .group-header i {
             margin-left: 0.5rem;
             color: var(--primary-color);
+        }
+
+        .group-header .task-count {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            margin-right: 0.75rem;
+            font-weight: 500;
         }
 
         .task-title {
@@ -225,6 +283,11 @@
             color: var(--warning-color);
         }
 
+        .status-urgent {
+            background: var(--danger-bg);
+            color: var(--danger-color);
+        }
+
         .task-notes {
             max-height: 80px;
             overflow-y: auto;
@@ -247,19 +310,32 @@
             font-size: 0.85rem;
         }
 
-        .asana-link {
+        .task-meta.assignee {
+            padding: 0.3rem 0.8rem;
+            background-color: #f1f5f9;
+            border-radius: 999px;
+            transition: var(--transition);
+        }
+
+        .task-meta.assignee:hover {
+            background-color: var(--hover-color);
+        }
+
+        .task-link {
             color: var(--primary-color);
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.2s;
+            transition: var(--transition);
+            background-color: var(--primary-light);
         }
 
-        .asana-link:hover {
-            background-color: var(--hover-color);
+        .task-link:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
 
         .loading {
@@ -267,14 +343,15 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 2rem;
             border-radius: 16px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1rem;
+            z-index: 1000;
         }
 
         .loading-text {
@@ -295,54 +372,202 @@
             background: #cbd5e1;
             border-radius: 2px;
         }
+
         .subtask-row {
-    background-color: #f8fafc;
-}
+            background-color: #f8fafc;
+        }
 
-.subtask-indicator {
-    padding-right: 2rem;
-    position: relative;
-}
+        .subtask-indicator {
+            padding-right: 2rem;
+            position: relative;
+        }
 
-.subtask-indicator:before {
-    content: '';
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    width: 1rem;
-    height: 2px;
-    background-color: #cbd5e1;
-}
+        .subtask-indicator:before {
+            content: '';
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            width: 1rem;
+            height: 2px;
+            background-color: #cbd5e1;
+        }
 
-.subtask-indicator:after {
-    content: '';
-    position: absolute;
-    right: 0.75rem;
-    top: -50%;
-    height: calc(100% + 50%);
-    width: 2px;
-    background-color: #cbd5e1;
-}
-.status-filter {
-    position: relative;
-}
+        .subtask-indicator:after {
+            content: '';
+            position: absolute;
+            right: 0.75rem;
+            top: -50%;
+            height: calc(100% + 50%);
+            width: 2px;
+            background-color: #cbd5e1;
+        }
 
-.status-filter .dropdown-toggle {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-}
+        .subtask-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background-color: #e2e8f0;
+            color: #475569;
+            margin-right: 0.5rem;
+        }
 
-.status-filter .dropdown-toggle::after {
-    display: none;
-}
+        .priority-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+        }
 
-.status-filter .dropdown-menu {
-    min-width: 120px;
-}
+        .priority-high {
+            background-color: #ef4444;
+        }
 
-.active-filter {
-    background-color: var(--hover-color);
-}
+        .priority-medium {
+            background-color: #f59e0b;
+        }
+
+        .priority-low {
+            background-color: #22c55e;
+        }
+
+        .status-filter {
+            position: relative;
+        }
+
+        .status-filter .dropdown-toggle {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .status-filter .dropdown-toggle::after {
+            display: none;
+        }
+
+        .status-filter .dropdown-menu {
+            min-width: 120px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+        }
+
+        .active-filter {
+            background-color: var(--hover-color);
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--hover-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .task-progress {
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .task-progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border-radius: 999px;
+            font-size: 0.875rem;
+            margin-right: 0.5rem;
+        }
+
+        .filter-tag i {
+            cursor: pointer;
+        }
+
+        .filters-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .date-badge {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+
+        .date-overdue {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .date-today {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+
+        .date-upcoming {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        /* וידוא שהעמודות תמיד מוצגות */
+        .update-column,
+        .link-column {
+            display: table-cell !important;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .btn-group {
+                width: 100%;
+                display: flex;
+            }
+            
+            .btn-group .btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -358,20 +583,24 @@
             </div>
 
             <div class="filter-container">
-<div class="btn-group" role="group">
-    <button class="btn" data-group="none" onclick="groupBy('none', event)">
-        <i class="fas fa-list"></i>
-        הכל
-    </button>
-    <button class="btn active" data-group="project" onclick="groupBy('project', event)">
-        <i class="fas fa-project-diagram"></i>
-        פרויקטים
-    </button>
-    <button class="btn" data-group="assignee" onclick="groupBy('assignee', event)">
-        <i class="fas fa-users"></i>
-        אחראים
-    </button>
-</div>
+                <div class="btn-group" role="group">
+                    <button class="btn" data-group="none" onclick="groupBy('none', event)">
+                        <i class="fas fa-list"></i>
+                        הכל
+                    </button>
+                    <button class="btn active" data-group="project" onclick="groupBy('project', event)">
+                        <i class="fas fa-project-diagram"></i>
+                        פרויקטים
+                    </button>
+                    <button class="btn" data-group="assignee" onclick="groupBy('assignee', event)">
+                        <i class="fas fa-users"></i>
+                        אחראים
+                    </button>
+                    <button class="btn" data-group="status" onclick="groupBy('status', event)">
+                        <i class="fas fa-clipboard-check"></i>
+                        סטטוס
+                    </button>
+                </div>
 
                 <div class="search-container">
                     <i class="fas fa-search"></i>
@@ -382,6 +611,10 @@
                 </div>
             </div>
             
+            <div id="activeFilters" class="filters-bar" style="display: none;">
+                <!-- Active filters will be shown here -->
+            </div>
+            
             <div id="loading" class="loading">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">טוען...</span>
@@ -390,45 +623,63 @@
             </div>
 
             <div id="taskContainer" style="display: none;">
-                <div class="table-responsive">
-                    <table class="table">
-<thead>
-    <tr>
-        <th style="width: 20%">שם משימה</th>
-        <th style="width: 15%">פרויקט</th>
-        <th style="width: 15%">אחראי</th>
-        <th style="width: 10%" class="status-filter">
-            סטטוס
-            <div class="dropdown d-inline-block ms-2">
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-filter"></i>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" onclick="filterByStatus('all')">הכל</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="filterByStatus('completed')">הושלם</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="filterByStatus('in-progress')">בתהליך</a></li>
-                </ul>
-            </div>
-        </th>
-        <th style="width: 25%">הערות</th>
-        <th style="width: 10%">עדכון אחרון</th>
-        <th style="width: 5%"></th>
-    </tr>
-</thead>
-                        <tbody id="taskTableBody"></tbody>
-                    </table>
+                <div class="table-card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%">שם משימה</th>
+                                    <th style="width: 15%">פרויקט</th>
+                                    <th style="width: 12%">אחראי</th>
+                                    <th style="width: 10%" class="status-filter">
+                                        סטטוס
+                                        <div class="dropdown d-inline-block ms-2">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                <i class="fas fa-filter"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item active" href="#" onclick="filterByStatus('all')">הכל</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="filterByStatus('completed')">הושלם</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="filterByStatus('in-progress')">בתהליך</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="filterByStatus('urgent')">דחוף</a></li>
+                                            </ul>
+                                        </div>
+                                    </th>
+                                    <th style="width: 10%">תאריך יעד</th>
+                                    <th style="width: 20%">הערות</th>
+                                    <th style="width: 8%" class="update-column">עדכון אחרון</th>
+                                    <th style="width: 5%" class="link-column">קישור</th>
+                                </tr>
+                            </thead>
+                            <tbody id="taskTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <h4>לא נמצאו משימות</h4>
+                    <p>נסה לשנות את הסינון או חיפוש אחר</p>
                 </div>
             </div>
         </div>
     </div>
 
-<script>
+    <script>
+        // לקיחת הנתונים מה-API
         let tasksData = [];
         let currentGrouping = 'project';
+        let currentStatusFilter = 'all';
+        let activeFilters = new Map();
+        
+        // נתוני התחברות ל-API של Asana
         const baseUrl = 'https://app.asana.com/api/1.0';
         const workspaceId = '1200243741655086';
         const authToken = '2/1208107765037174/1209472289288151:0f456401e065a1241cba7ff22bd5cc6a';
 
+        /**
+         * הבאת רשימת המשימות מ-Asana
+         */
         async function fetchTasks() {
             try {
                 const response = await fetch(
@@ -448,6 +699,9 @@
             }
         }
 
+        /**
+         * הבאת פרטי משימה מ-Asana
+         */
         async function fetchTaskDetails(taskId) {
             try {
                 const response = await fetch(`${baseUrl}/tasks/${taskId}`, {
@@ -464,12 +718,45 @@
             }
         }
 
+        /**
+         * יצירת URL למשימה גם אם permalink לא זמין
+         */
+        function getTaskUrl(task) {
+            if (task.permalink_url) {
+                return task.permalink_url;
+            }
+            
+            // בניית URL ברירת מחדל על בסיס מזהה המשימה ומזהה הפרויקט
+            let projectId = '';
+            if (task.memberships && task.memberships.length > 0 && task.memberships[0].project) {
+                projectId = task.memberships[0].project.gid;
+            }
+            
+            return `https://app.asana.com/0/${projectId || '0'}/${task.gid}`;
+        }
+
+        /**
+         * עדכון סטטיסטיקות המשימות
+         */
         function updateStats(tasks) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
             const stats = {
                 total: tasks.length,
                 completed: tasks.filter(t => t.completed).length,
                 inProgress: tasks.filter(t => !t.completed).length,
-                projects: new Set(tasks.map(t => t.projects[0]?.name).filter(Boolean)).size
+                projects: new Set(tasks.map(t => 
+                    t.memberships && t.memberships.length > 0 ? t.memberships[0]?.project?.name : null)
+                    .filter(Boolean)).size,
+                urgent: tasks.filter(t => {
+                    if (t.due_on && !t.completed) {
+                        const dueDate = new Date(t.due_on);
+                        dueDate.setHours(0, 0, 0, 0);
+                        return dueDate < today;
+                    }
+                    return false;
+                }).length
             };
 
             document.getElementById('statsContainer').innerHTML = `
@@ -509,9 +796,21 @@
                         <div class="text-muted">פרויקטים</div>
                     </div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-icon urgent">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <div class="h3 mb-0">${stats.urgent}</div>
+                        <div class="text-muted">משימות דחופות</div>
+                    </div>
+                </div>
             `;
         }
 
+        /**
+         * פורמט תאריך לתצוגה
+         */
         function formatDate(dateString) {
             if (!dateString) return '';
             const date = new Date(dateString);
@@ -519,288 +818,508 @@
                 year: 'numeric',
                 month: 'numeric',
                 day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric'
+                hour: '2-digit', 
+                minute: '2-digit'
             }).format(date);
         }
 
-        function getStatusBadge(completed) {
-            return completed ? 
-                '<span class="status-badge status-completed"><i class="fas fa-check-circle"></i>הושלם</span>' :
-                '<span class="status-badge status-in-progress"><i class="fas fa-clock"></i>בתהליך</span>';
-        }
-
-function groupTasksBy(tasks, groupingKey) {
-    // First, create a map of parent tasks
-    const parentMap = new Map();
-    const taskMap = new Map(tasks.map(task => [task.gid, task]));
-
-    // Process all tasks first to identify parent-child relationships
-    tasks.forEach(task => {
-        if (task.parent) {
-            const parentId = task.parent.gid;
-            if (!parentMap.has(parentId)) {
-                parentMap.set(parentId, []);
-            }
-            parentMap.get(parentId).push(task);
-
-            // Inherit project from parent if not assigned
-            const parentTask = taskMap.get(parentId);
-            if (parentTask && (!task.memberships || task.memberships.length === 0)) {
-                task.memberships = parentTask.memberships;
-            }
-        }
-    });
-
-    if (groupingKey === 'none') {
-        return { 'כל המשימות': tasks };
-    }
-
-    // Create groups based on the grouping key
-    const groups = {};
-
-    tasks.forEach(task => {
-        let key;
-        if (groupingKey === 'project') {
-            // Use memberships for project grouping
-            if (task.memberships && task.memberships.length > 0) {
-                key = task.memberships[0].project.name;
-            } else if (task.projects && task.projects.length > 0) {
-                key = task.projects[0].name;
-            } else {
-                key = 'ללא פרויקט';
-            }
-        } else if (groupingKey === 'assignee') {
-            key = task.assignee ? task.assignee.name : 'לא הוקצה';
-        }
-
-        if (!groups[key]) {
-            groups[key] = [];
-        }
-
-        // Add the task if it's either a parent task or an orphaned subtask
-        if (!task.parent || !taskMap.has(task.parent.gid)) {
-            groups[key].push(task);
+        /**
+         * פורמט תאריך יעד עם סטטוס ויזואלי
+         */
+        function formatDueDate(dateString) {
+            if (!dateString) return '<span class="text-muted">לא נקבע</span>';
             
-            // Add any subtasks right after their parent
-            const subtasks = parentMap.get(task.gid) || [];
-            groups[key].push(...subtasks);
+            const dueDate = new Date(dateString);
+            dueDate.setHours(0, 0, 0, 0);
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            
+            const inOneWeek = new Date(today);
+            inOneWeek.setDate(today.getDate() + 7);
+            
+            let className = 'date-badge';
+            if (dueDate < today) {
+                className += ' date-overdue';
+            } else if (dueDate.getTime() === today.getTime()) {
+                className += ' date-today';
+            } else if (dueDate < inOneWeek) {
+                className += ' date-upcoming';
+            }
+            
+            const formattedDate = new Intl.DateTimeFormat('he-IL', {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric'
+            }).format(dueDate);
+            
+            return `<span class="${className}">${formattedDate}</span>`;
         }
-    });
 
-    return groups;
-}
+        /**
+         * קבלת תגית סטטוס משימה
+         */
+        function getStatusBadge(task) {
+            if (task.completed) {
+                return '<span class="status-badge status-completed"><i class="fas fa-check-circle"></i>הושלם</span>';
+            } else if (isOverdue(task.due_on)) {
+                return '<span class="status-badge status-urgent"><i class="fas fa-exclamation-circle"></i>דחוף</span>';
+            } else {
+                return '<span class="status-badge status-in-progress"><i class="fas fa-clock"></i>בתהליך</span>';
+            }
+        }
+        
+        /**
+         * בדיקה אם משימה עברה את תאריך היעד
+         */
+        function isOverdue(dateString) {
+            if (!dateString) return false;
+            
+            const dueDate = new Date(dateString);
+            dueDate.setHours(0, 0, 0, 0);
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            return dueDate < today;
+        }
+        
+        /**
+         * קבלת מחוון עדיפות
+         */
+        function getPriorityIndicator(task) {
+            // בדיקת עדיפות לפי שם המשימה או תגיות
+            let priority = 'medium';
+            
+            if (task.name) {
+                const lowercaseName = task.name.toLowerCase();
+                if (lowercaseName.includes('דחוף') || lowercaseName.includes('urgent') || isOverdue(task.due_on)) {
+                    priority = 'high';
+                } else if (lowercaseName.includes('נמוך') || lowercaseName.includes('low')) {
+                    priority = 'low';
+                }
+            }
+            
+            // מיפוי עדיפות למחוון ויזואלי
+            const priorityText = 
+                priority === 'high' ? 'גבוהה' : 
+                priority === 'low' ? 'נמוכה' : 'בינונית';
+                
+            return `<span class="priority-indicator priority-${priority}" title="עדיפות: ${priorityText}"></span>`;
+        }
 
-function organizeTasksHierarchically(tasks, parentMap) {
-    const organizedTasks = [];
-    const processedTasks = new Set();
+        /**
+         * קיבוץ משימות לפי מפתח
+         */
+        function groupTasksBy(tasks, groupingKey) {
+            // יצירת מפה של משימות אב
+            const parentMap = new Map();
+            const taskMap = new Map(tasks.map(task => [task.gid, task]));
 
-    tasks.forEach(task => {
-        if (!task.parent && !processedTasks.has(task.gid)) {
-            organizedTasks.push(task);
-            processedTasks.add(task.gid);
+            // עיבוד כל המשימות לזיהוי קשרי הורה-ילד
+            tasks.forEach(task => {
+                if (task.parent) {
+                    const parentId = task.parent.gid;
+                    if (!parentMap.has(parentId)) {
+                        parentMap.set(parentId, []);
+                    }
+                    parentMap.get(parentId).push(task);
 
-            // Add subtasks
-            const subtasks = parentMap.get(task.gid) || [];
-            subtasks.forEach(subtask => {
-                if (!processedTasks.has(subtask.gid)) {
-                    organizedTasks.push(subtask);
-                    processedTasks.add(subtask.gid);
+                    // ירושת פרויקט מההורה אם לא מוקצה
+                    const parentTask = taskMap.get(parentId);
+                    if (parentTask && (!task.memberships || task.memberships.length === 0)) {
+                        task.memberships = parentTask.memberships;
+                    }
                 }
             });
-        }
-    });
 
-    // Add any remaining tasks that weren't processed
-    tasks.forEach(task => {
-        if (!processedTasks.has(task.gid)) {
-            organizedTasks.push(task);
-        }
-    });
-
-    return organizedTasks;
-}
-
-function filterTasks(searchTerm) {
-    let filteredTasks = tasksData;
-
-    // Apply status filter if not 'all'
-    if(currentStatusFilter !== 'all') {
-        filteredTasks = filteredTasks.filter(task => {
-            if(currentStatusFilter === 'completed') {
-                return task.completed;
-            } else {
-                return !task.completed;
+            if (groupingKey === 'none') {
+                return { 'כל המשימות': tasks };
             }
-        });
-    }
 
-    // Apply search filter
-    filteredTasks = filteredTasks.filter(task => {
-        const searchString = searchTerm.toLowerCase();
-        return (
-            task.name.toLowerCase().includes(searchString) ||
-            (task.notes && task.notes.toLowerCase().includes(searchString)) ||
-            (task.projects[0]?.name || '').toLowerCase().includes(searchString) ||
-            (task.assignee?.name || '').toLowerCase().includes(searchString)
-        );
-    });
-    
-    renderTasks(groupTasksBy(filteredTasks, currentGrouping));
-}
+            // יצירת קבוצות לפי המפתח הנבחר
+            const groups = {};
 
-function renderTasks(groupedTasks) {
-    const tableBody = document.getElementById('taskTableBody');
-    tableBody.innerHTML = '';
+            tasks.forEach(task => {
+                let key;
+                if (groupingKey === 'project') {
+                    // שימוש ב-memberships לקיבוץ פרויקטים
+                    if (task.memberships && task.memberships.length > 0 && task.memberships[0].project) {
+                        key = task.memberships[0].project.name;
+                    } else {
+                        key = 'ללא פרויקט';
+                    }
+                } else if (groupingKey === 'assignee') {
+                    key = task.assignee ? task.assignee.name : 'לא הוקצה';
+                } else if (groupingKey === 'status') {
+                    if (task.completed) {
+                        key = 'הושלם';
+                    } else if (isOverdue(task.due_on)) {
+                        key = 'דחוף';
+                    } else {
+                        key = 'בתהליך';
+                    }
+                }
 
-    Object.entries(groupedTasks).forEach(([groupName, tasks]) => {
+                if (!groups[key]) {
+                    groups[key] = [];
+                }
 
-// Add group header
-const groupHeader = document.createElement('tr');
-groupHeader.innerHTML = `
-    <td colspan="7" class="group-header">
-        <i class="fas ${currentGrouping === 'project' ? 'fa-folder' : 'fa-users'}"></i>
-        ${groupName} (${tasks.length})
-    </td>
-`;
-tableBody.appendChild(groupHeader);
+                // הוספת המשימה אם היא משימת אב או תת-משימה יתומה
+                if (!task.parent || !taskMap.has(task.parent.gid)) {
+                    groups[key].push(task);
+                    
+                    // הוספת תת-משימות מיד אחרי ההורה שלהן
+                    const subtasks = parentMap.get(task.gid) || [];
+                    groups[key].push(...subtasks);
+                }
+            });
 
-        // Add tasks
-        tasks.forEach(task => {
-            const row = document.createElement('tr');
-            row.className = task.parent ? 'subtask-row' : '';
+            return groups;
+        }
+
+        /**
+         * סינון משימות לפי טקסט חיפוש ומסננים פעילים
+         */
+        function filterTasks(searchTerm) {
+            let filteredTasks = tasksData;
+
+            // החלת מסנן סטטוס אם לא 'הכל'
+            if (currentStatusFilter !== 'all') {
+                filteredTasks = filteredTasks.filter(task => {
+                    if (currentStatusFilter === 'completed') {
+                        return task.completed;
+                    } else if (currentStatusFilter === 'urgent') {
+                        return !task.completed && isOverdue(task.due_on);
+                    } else {
+                        return !task.completed && !isOverdue(task.due_on);
+                    }
+                });
+            }
+
+            // החלת מסנן חיפוש
+            if (searchTerm) {
+                filteredTasks = filteredTasks.filter(task => {
+                    const searchString = searchTerm.toLowerCase();
+                    return (
+                        (task.name && task.name.toLowerCase().includes(searchString)) ||
+                        (task.notes && task.notes.toLowerCase().includes(searchString)) ||
+                        (task.memberships && task.memberships.length > 0 && 
+                         task.memberships[0].project && 
+                         task.memberships[0].project.name.toLowerCase().includes(searchString)) ||
+                        (task.assignee && task.assignee.name && 
+                         task.assignee.name.toLowerCase().includes(searchString))
+                    );
+                });
+                
+                // הוספה למסננים פעילים
+                if (searchTerm.trim() !== '') {
+                    activeFilters.set('search', {
+                        type: 'search',
+                        value: searchTerm,
+                        label: `חיפוש: "${searchTerm}"`
+                    });
+                } else {
+                    activeFilters.delete('search');
+                }
+            } else {
+                activeFilters.delete('search');
+            }
             
-            const taskNameClass = task.parent ? 'task-title subtask-indicator' : 'task-title';
-            const taskIcon = task.parent ? 'fa-level-down-alt' : 'fa-thumbtack';
-
-            const projectName = task.memberships && task.memberships.length > 0 
-                ? task.memberships[0].project.name 
-                : (task.projects && task.projects.length > 0 ? task.projects[0].name : 'ללא פרויקט');
-
-                row.innerHTML = `
-    <td>
-        <div class="${taskNameClass}">
-            <i class="fas ${taskIcon}"></i>
-            ${task.name || ''}
-            ${task.parent ? '<span class="badge bg-light text-secondary ms-2">תת-משימה</span>' : ''}
-        </div>
-    </td>
-    <td>
-        <div class="task-meta">
-            <i class="fas fa-folder"></i>
-            ${projectName}
-            ${task.parent ? '<span class="text-muted small">(יורש מהמשימה הראשית)</span>' : ''}
-        </div>
-    </td>
-    <td>
-        <div class="task-meta">
-            <i class="fas fa-user"></i>
-            ${task.assignee?.name || 'לא הוקצה'}
-        </div>
-    </td>
-    <td>${getStatusBadge(task.completed)}</td>
-    <td>
-        <div class="task-notes">
-            ${task.notes || ''}
-        </div>
-    </td>
-    <td>
-        <div class="task-meta">
-            <i class="fas fa-clock"></i>
-            ${task.modified_at ? formatDate(task.modified_at) : 'לא זמין'}
-        </div>
-    </td>
-    <td>
-        <a href="${task.permalink_url ? task.permalink_url + '/f' : '#'}" 
-           target="_blank" 
-           class="asana-link" 
-           title="פתח ב-Asana"
-           ${!task.permalink_url ? 'style="pointer-events: none; opacity: 0.5;"' : ''}>
-            <i class="fas fa-external-link-alt"></i>
-        </a>
-    </td>
-`;
-            tableBody.appendChild(row);
-        });
-    });
-}
-
-async function loadAllTasks() {
-    document.getElementById('loading').style.display = 'block';
-    document.getElementById('taskContainer').style.display = 'none';
-
-    const tasks = await fetchTasks();
-    tasksData = await Promise.all(
-        tasks.map(task => fetchTaskDetails(task.gid))
-    );
-
-    updateStats(tasksData);
-    
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('taskContainer').style.display = 'block';
-    
-    groupBy('project'); // Without event parameter
-}
-
-function groupBy(groupingKey, event) {  // Add event parameter
-    currentGrouping = groupingKey;
-    const groupedTasks = groupTasksBy(tasksData, groupingKey);
-    
-    // Update active button state
-    document.querySelectorAll('.btn-group .btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-group') === groupingKey) {
-            btn.classList.add('active');
+            updateActiveFilters();
+            renderTasks(groupTasksBy(filteredTasks, currentGrouping));
         }
-    });
-    
-    renderTasks(groupedTasks);
-}
-let currentStatusFilter = 'all';
 
-function filterByStatus(status) {
-    currentStatusFilter = status;
-    
-    // Update active state in dropdown
-    document.querySelectorAll('.status-filter .dropdown-item').forEach(item => {
-        if(item.getAttribute('onclick').includes(status)) {
-            item.classList.add('active-filter');
-        } else {
-            item.classList.remove('active-filter');
-        }
-    });
-
-    // Apply all current filters
-    const searchTerm = document.querySelector('.search-input').value;
-    let filteredTasks = tasksData;
-
-    // Apply status filter
-    if(status !== 'all') {
-        filteredTasks = filteredTasks.filter(task => {
-            if(status === 'completed') {
-                return task.completed;
+        /**
+         * עדכון תצוגת המסננים הפעילים
+         */
+        function updateActiveFilters() {
+            const filtersContainer = document.getElementById('activeFilters');
+            
+            if (activeFilters.size > 0) {
+                filtersContainer.style.display = 'flex';
+                filtersContainer.innerHTML = '';
+                
+                activeFilters.forEach(filter => {
+                    const filterTag = document.createElement('div');
+                    filterTag.className = 'filter-tag';
+                    filterTag.innerHTML = `
+                        ${filter.label}
+                        <i class="fas fa-times" onclick="removeFilter('${filter.type}')"></i>
+                    `;
+                    filtersContainer.appendChild(filterTag);
+                });
+                
+                // הוספת כפתור ניקוי הכל אם יש מספר מסננים
+                if (activeFilters.size > 1) {
+                    const clearButton = document.createElement('div');
+                    clearButton.className = 'filter-tag';
+                    clearButton.innerHTML = `
+                        נקה הכל
+                        <i class="fas fa-times" onclick="clearAllFilters()"></i>
+                    `;
+                    filtersContainer.appendChild(clearButton);
+                }
             } else {
-                return !task.completed;
+                filtersContainer.style.display = 'none';
             }
-        });
-    }
+        }
+        
+        /**
+         * הסרת מסנן ספציפי
+         */
+        function removeFilter(filterType) {
+            activeFilters.delete(filterType);
+            
+            if (filterType === 'status') {
+                currentStatusFilter = 'all';
+                document.querySelectorAll('.status-filter .dropdown-item').forEach(item => {
+                    if (item.getAttribute('onclick').includes('all')) {
+                        item.classList.add('active-filter');
+                    } else {
+                        item.classList.remove('active-filter');
+                    }
+                });
+            } else if (filterType === 'search') {
+                document.querySelector('.search-input').value = '';
+            }
+            
+            updateActiveFilters();
+            applyFilters();
+        }
+        
+        /**
+         * ניקוי כל המסננים הפעילים
+         */
+        function clearAllFilters() {
+            activeFilters.clear();
+            currentStatusFilter = 'all';
+            document.querySelector('.search-input').value = '';
+            
+            document.querySelectorAll('.status-filter .dropdown-item').forEach(item => {
+                if (item.getAttribute('onclick').includes('all')) {
+                    item.classList.add('active-filter');
+                } else {
+                    item.classList.remove('active-filter');
+                }
+            });
+            
+            updateActiveFilters();
+            applyFilters();
+        }
+        
+        /**
+         * החלת כל המסננים הפעילים
+         */
+        function applyFilters() {
+            const searchTerm = document.querySelector('.search-input').value;
+            filterTasks(searchTerm);
+        }
 
-    // Apply search filter if exists
-    if(searchTerm) {
-        filteredTasks = filteredTasks.filter(task => {
-            const searchString = searchTerm.toLowerCase();
-            return (
-                task.name.toLowerCase().includes(searchString) ||
-                (task.notes && task.notes.toLowerCase().includes(searchString)) ||
-                (task.projects[0]?.name || '').toLowerCase().includes(searchString) ||
-                (task.assignee?.name || '').toLowerCase().includes(searchString)
-            );
-        });
-    }
+        /**
+         * הצגת המשימות בטבלה
+         */
+        function renderTasks(groupedTasks) {
+            const tableBody = document.getElementById('taskTableBody');
+            const emptyState = document.getElementById('emptyState');
+            tableBody.innerHTML = '';
+            
+            let totalTasksShown = 0;
 
-    renderTasks(groupTasksBy(filteredTasks, currentGrouping));
-}
-        // Initialize the page
+            Object.entries(groupedTasks).forEach(([groupName, tasks]) => {
+                if (tasks.length === 0) return;
+                
+                totalTasksShown += tasks.length;
+
+                // הוספת כותרת קבוצה
+                const groupHeader = document.createElement('tr');
+                let groupIcon = 'fa-folder';
+                
+                if (currentGrouping === 'assignee') {
+                    groupIcon = 'fa-user';
+                } else if (currentGrouping === 'status') {
+                    if (groupName === 'הושלם') {
+                        groupIcon = 'fa-check-circle';
+                    } else if (groupName === 'דחוף') {
+                        groupIcon = 'fa-exclamation-circle';
+                    } else {
+                        groupIcon = 'fa-clock';
+                    }
+                }
+                
+                groupHeader.innerHTML = `
+                    <td colspan="8" class="group-header">
+                        <i class="fas ${groupIcon}"></i>
+                        ${groupName} <span class="task-count">${tasks.length}</span>
+                    </td>
+                `;
+                tableBody.appendChild(groupHeader);
+
+                // הוספת משימות
+                tasks.forEach(task => {
+                    const row = document.createElement('tr');
+                    row.className = task.parent ? 'subtask-row' : '';
+                    
+                    const taskNameClass = task.parent ? 'task-title subtask-indicator' : 'task-title';
+                    const taskIcon = task.parent ? 'fa-level-down-alt' : 'fa-thumbtack';
+                    
+                    // קביעת שם הפרויקט
+                    let projectName = 'ללא פרויקט';
+                    if (task.memberships && task.memberships.length > 0 && task.memberships[0].project) {
+                        projectName = task.memberships[0].project.name;
+                    }
+
+                    // יצירת URL למשימה
+                    const taskUrl = getTaskUrl(task);
+
+                    row.innerHTML = `
+                        <td>
+                            <div class="${taskNameClass}">
+                                <i class="fas ${taskIcon}"></i>
+                                ${task.name || ''}
+                                ${getPriorityIndicator(task)}
+                                ${task.parent ? '<span class="subtask-badge">תת-משימה</span>' : ''}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="task-meta">
+                                <i class="fas fa-folder"></i>
+                                ${projectName}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="task-meta assignee">
+                                <i class="fas fa-user"></i>
+                                ${task.assignee?.name || 'לא הוקצה'}
+                            </div>
+                        </td>
+                        <td>${getStatusBadge(task)}</td>
+                        <td>${formatDueDate(task.due_on)}</td>
+                        <td>
+                            <div class="task-notes">
+                                ${task.notes || ''}
+                            </div>
+                        </td>
+                        <td class="update-column">
+                            <div class="task-meta">
+                                <i class="fas fa-clock"></i>
+                                ${task.modified_at ? formatDate(task.modified_at) : 'לא זמין'}
+                            </div>
+                        </td>
+                        <td class="link-column">
+                            <a href="${taskUrl}" 
+                               target="_blank" 
+                               class="task-link" 
+                               title="צפה במשימה">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            });
+            
+            // הצגת מצב ריק אם לא נמצאו משימות
+            if (totalTasksShown === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+
+        /**
+         * סינון משימות לפי סטטוס
+         */
+        function filterByStatus(status) {
+            currentStatusFilter = status;
+            
+            // עדכון מצב פעיל בתפריט הנפתח
+            document.querySelectorAll('.status-filter .dropdown-item').forEach(item => {
+                if (item.getAttribute('onclick').includes(status)) {
+                    item.classList.add('active-filter');
+                } else {
+                    item.classList.remove('active-filter');
+                }
+            });
+            
+            // עדכון מסננים פעילים
+            if (status === 'all') {
+                activeFilters.delete('status');
+            } else {
+                const statusLabel = 
+                    status === 'completed' ? 'הושלם' : 
+                    status === 'urgent' ? 'דחוף' : 'בתהליך';
+                    
+                activeFilters.set('status', {
+                    type: 'status',
+                    value: status,
+                    label: `סטטוס: ${statusLabel}`
+                });
+            }
+            
+            updateActiveFilters();
+            applyFilters();
+        }
+
+        /**
+         * שינוי קיבוץ משימות
+         */
+        function groupBy(groupingKey, event) {
+            currentGrouping = groupingKey;
+            
+            // עדכון מצב כפתור פעיל
+            document.querySelectorAll('.btn-group .btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-group') === groupingKey) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // החלת כל המסננים הפעילים
+            applyFilters();
+        }
+
+        /**
+         * טעינת כל המשימות
+         */
+        async function loadAllTasks() {
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('taskContainer').style.display = 'none';
+
+            try {
+                // טעינת רשימת משימות מ-Asana
+                const tasks = await fetchTasks();
+                
+                // טעינת פרטי כל משימה
+                tasksData = await Promise.all(
+                    tasks.map(task => fetchTaskDetails(task.gid))
+                );
+                
+                // סינון משימות שלא נטענו בהצלחה
+                tasksData = tasksData.filter(task => task !== null);
+
+                // עדכון סטטיסטיקות והצגת משימות
+                updateStats(tasksData);
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('taskContainer').style.display = 'block';
+                
+                // אתחול עם קיבוץ לפי פרויקט
+                groupBy('project');
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                document.getElementById('loading').innerHTML = `
+                    <i class="fas fa-exclamation-circle text-danger fa-2x mb-3"></i>
+                    <div class="loading-text text-danger">שגיאה בטעינת המשימות</div>
+                    <button class="btn btn-primary mt-2" onclick="loadAllTasks()">נסה שוב</button>
+                `;
+            }
+        }
+
+        // אתחול הדף
         loadAllTasks();
     </script>
 
