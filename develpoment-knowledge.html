@@ -232,11 +232,22 @@
         
         .search-results.show {
             transform: translateX(0);
-        }.img {
-    width: 100%;
-    height: auto;
-}
+        }
         
+        img {
+            width: 100%;
+            height: auto;
+            max-width: 600px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.5);
+        }
         .search-results-header {
             display: flex;
             justify-content: space-between;
@@ -450,7 +461,7 @@
             <div class="section" id="intro">
                 <span class="anchor" id="intro-anchor"></span>
                 <h2>1. מבנה הפרויקט</h2>
-                
+                <img src="img/architect.png" alt="מבנה הפרויקט" class="img">
                 <div class="section" id="environments">
                     <span class="anchor" id="environments-anchor"></span>
                     <h3>1.1 סביבות עבודה</h3>
@@ -1036,20 +1047,23 @@
                     <li>Height - 936</li>
                 </ul>
                 <p>*לאחר כל שינוי נצטרך לאשר את השינוי בחלון שיקפוץ</p>
-                
+                <img src="img/8.png" alt="החלון של DISPLAY">
                 <h3>2. בנוסף נצטרך לבטל את האפשרויות הבאות:</h3>
+                <img src="img/9.png" alt="החלון של DISPLAY">
                 <ul>
                     <li>Lock aspect ratio</li>
                     <li>Lock orientation</li>
                 </ul>
                 
                 <h3>3. בנוסף נצטרך להפעיל / להדליק את האפשרות הבאה ואשר נמצאת בכרטיסיית "Retired":</h3>
+                <img src="img/10.png" alt="החלון של DISPLAY">
                 <ul>
-                    <li>Enable deprecated themes</li>
+                    <li>Allow automatic field assignment for component input</li>
                 </ul>
                 
                 <h3>4. יש להתאים את הנקודות בהן העיצוב ישתנה מעיצוב HD לעיצוב Laptop לעיצוב Mobile.</h3>
                 <p>לצורך זה נבחר את ה-APP אשר נמצא בראש הרשימה מצד שמאל</p>
+                <img src="img/11.png" alt="החלון של DISPLAY">
                 <p>מצד ימין בהגדרות / Advanced</p>
                 <p>נחפש שורה בשם SizeBreakpoints</p>
                 
