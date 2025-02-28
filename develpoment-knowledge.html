@@ -232,7 +232,10 @@
         
         .search-results.show {
             transform: translateX(0);
-        }
+        }.img {
+    width: 100%;
+    height: auto;
+}
         
         .search-results-header {
             display: flex;
@@ -376,7 +379,7 @@
                     <a href="#processes" class="nav-link has-submenu">4. תהליכי עבודה</a>
                     <ul class="sub-nav">
                         <li><a href="#task-management" class="nav-link">4.1 ניהול משימות</a></li>
-                        <li><a href="#communication" class="nav-link">4.4 תקשורת</a></li>
+                        <li><a href="#communication" class="nav-link">4.2 תקשורת</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -720,13 +723,18 @@
                     <span class="anchor" id="task-management-anchor"></span>
                     <h3>4.1 ניהול משימות</h3>
                     <ul>
-                        <li>השתמשו בכלי לניהול משימות כמו Azure DevOps</li>
+                        <li>השתמשו בכלי לניהול משימות כמו Asana או Azure DevOps בהתאם לצורך.</li>
+                        <li>Asana משמשת לניהול משימות פנימיות ודיונים בתוך הצוות, ללא חשש מהלקוח.</li>
+                        <li>Azure DevOps הוא הכלי הרשמי לפתיחת באגים ותקלות טכניות הדורשות התערבות של הלקוח, במיוחד בתוך סביבת CITRIX.</li>
+                        <li>ניתן להצטרף למערכת Asana דרך הזימון שנשלח לכלל המשתמשים ולנהל משימות בצורה קלה ונגישה מכל מכשיר.</li>
+                        <li>חשוב להשתמש במערכת המתאימה לכל סוג משימה כדי לייעל את העבודה ולמנוע בלבול.</li>
                     </ul>
                 </div>
                 
+                
                 <div class="section" id="communication">
                     <span class="anchor" id="communication-anchor"></span>
-                    <h3>4.4 תקשורת</h3>
+                    <h3>4.2 תקשורת</h3>
                     <ul>
                         <li>קיימו פגישות צוות קבועות לעדכון סטטוס</li>
                         <li>השתמשו בכלי כמו Microsoft Teams לתקשורת שוטפת</li>
@@ -765,6 +773,7 @@
                     <li>הסרת אובייקטים שלא בשימוש / לצורכי בדיקות על מנת למזער בלבול של מפתחים אחרים אשר נכנסים לטופס אחרינו ושיפור ביצועים</li>
                     <li>לוודא שאין אזהרות / בעיות ב appChecker ותיקונם במידת הצורך.</li>
                     <li>שימוש במטאטא בלשונית DATA על מנת לנקות / להסיר בסיסי נתונים שלא בשימוש</li>
+                    <img src="img/1.png" alt="מסך ראשי של appChecker">
                     <li>שימוש בלשונית "ביצועים" תחת appChecker ולתקן את ההערות</li>
                 </ul>
             </div>
@@ -783,7 +792,7 @@
                 <p>שם משתמש: abra-iec@outlook.com</p>
                 <p>בעיצובים בפיגמה, גודל הטקסט מופיע ב- px. במערכת ה-PA יש להמיר אותם ל-pt. מצורף לינק להמרה.<br>
                 בטימס של היוזר של חברת החשמל, יש קבוצה בשם power apps. כל המסמכים הרלוונטים נמצאים בfiles בקבוצה.</p>
-                
+                <img src="img/2.png" alt="המסמכים הרלוונטים בקבוצת power apps">
                 <p>מסמכי האיפיון שאנו עובדים עליהם נמצאים במסמכי איפיון- מסמכים בעבודה</p>
                 <p>בקובץ "שדות עבוד תהליכים דיגיטליים" יש רשימת שמית של השדות אותם אנו מקבלים מה- apim</p>
                 <p>יש 3 enviroments לחח"י- dev, test,prod. לכל סביבה יש משתמש אפליקטיבי.</p>
@@ -875,6 +884,7 @@
                 <p>בסקשיין "שדות מקושרים" אנו נכניס את השמות של העמודות מהטבלה המשנית (related-entity)<br>
                 וליצור קשר עם מפתח שמכיר כיצד להתאים את האפליקציה לתהליך החדש.</p>
                 <p>ה- orderID הוא השדה המקשר בין טבלת Aprovers לטבלה של התהליך.</p>
+                <img src="img/3.png" alt="טבלת קונפיגורציה">
             </div>
             
             <div class="section" id="security-roles">
@@ -882,7 +892,7 @@
                 <h2>תפקידי אבטחה</h2>
                 <p>לכל תהליך יש להגדיר תפקידי אבטחה. מדובר במתן גישה לטבלת הנתונים ולא לאפליקציית POWER APPS.</p>
                 <p>יש להגדיר את תפקידי האבטחה בפתרון IEC FORM - SECURITY RULES</p>
-                
+                <img src="img/4.png" alt="תפקידי אבטחה">
                 <p>תפקידי האבטחה שיש לערוך:</p>
                 <ul>
                     <li>min priv apps use users</li>
@@ -891,7 +901,7 @@
                 <p>יש לחפש את שם הטבלה החדשה ולהיכנס אליה</p>
                 
                 <p>אנו לרוב נבחר לתת הרשאה ל-user או לא לתת הרשאה בכלל. זה תלוי בצורך הפרטני של כל תהליך.</p>
-                
+                <img src="img/5.png" alt="תפקידי אבטחה">
                 <h3>הסבר קצר:</h3>
                 <p>user: הרשאה לרשומות שהבעלות שלהם היא אותו יוזר</p>
                 <p>Organization: הרשאה לכל הרשומות בטבלה ללא הגבלה</p>
@@ -910,6 +920,7 @@
                 <p>Associated_Car_Permit_UploadCarLicense</p>
                 <p>יש לשמור עותק של הפלו MyStoryAttachments_14S - OPSWAT<br>
                 ולשייך אותו לפתרון הרלוונטי. יש לשנות את הטריגר שלו שיכיל את הטבלה של הפתרון ששומר את הקובץ-</p>
+                <p style="font-weight: bold; color: red; background-color: yellow;">גדי יוסיף עוד מידע</p>
             </div>
             
             <div class="section" id="ad-groups">
@@ -940,7 +951,7 @@
                 <span class="anchor" id="new-solution-anchor"></span>
                 <h2>הקמת פתרון חדש</h2>
                 <p>בהקמת פתרון חדש יש לבחור את IEC כ- Publisher</p>
-                
+                <img src="img/6.png" alt="בחירת IEC כ- Publisher">
                 <h3>טבלה חדשה - עמודות בסיס</h3>
                 <p>בכל טבלה חדשה, יש לוודא כי עמודות הבסיס הבאות מוקמות:</p>
                 
@@ -1017,7 +1028,7 @@
                 <h3>1. שינוי גודל המסך</h3>
                 <p><strong>יש לשנות את גודל המסך לתצוגות HD ו-LAPTOP לפי העיצובים שמקבלים מהמעצבים של חח"י.</strong></p>
                 <p>לאחר לחיצה על SETTINGS יפתח החלון הבא, נלחץ על DISPLAY:</p>
-                
+                <img src="img/7.png" alt="החלון של DISPLAY">
                 <p>נגלול מעט למטה ונשנה את הערכים הבאים:</p>
                 <ul>
                     <li>Size - Custom</li>
