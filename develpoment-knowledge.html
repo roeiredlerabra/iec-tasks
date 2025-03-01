@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="he">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,13 +16,13 @@
             --sidebar-width: 280px;
             --search-results-width: 300px;
         }
-        
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        
+
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             line-height: 1.6;
@@ -30,11 +31,11 @@
             padding: 0;
             direction: rtl;
         }
-        
+
         .container {
             display: flex;
         }
-        
+
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
@@ -48,7 +49,7 @@
             transition: all 0.3s;
             z-index: 100;
         }
-        
+
         .sidebar-toggle {
             display: none;
             position: fixed;
@@ -62,7 +63,7 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
         .content {
             flex: 1;
             padding: 2rem;
@@ -70,31 +71,31 @@
             width: calc(100% - var(--sidebar-width));
             transition: all 0.3s;
         }
-        
+
         .content.with-results {
             margin-left: var(--search-results-width);
             width: calc(100% - var(--sidebar-width) - var(--search-results-width));
         }
-        
+
         .sidebar-header {
             padding: 0 1rem 1rem;
             border-bottom: 1px solid var(--border-color);
         }
-        
+
         .sidebar-header h2 {
             color: var(--main-color);
             font-size: 1.5rem;
         }
-        
+
         .nav-list {
             list-style: none;
             padding: 0;
         }
-        
+
         .nav-item {
             padding: 0;
         }
-        
+
         .nav-link {
             display: block;
             padding: 0.5rem 1rem;
@@ -102,103 +103,110 @@
             color: var(--text-color);
             transition: all 0.2s;
         }
-        
+
         .nav-link:hover {
             background-color: var(--highlight-color);
         }
-        
+
         .nav-link.active {
             background-color: var(--main-color);
             color: white;
         }
-        
+
         .sub-nav {
             list-style: none;
             padding-right: 1.5rem;
             display: none;
         }
-        
+
         .sub-nav.show {
             display: block;
         }
-        
+
         .has-submenu::after {
             content: '▼';
             float: left;
             margin-left: 0.5rem;
             font-size: 0.75rem;
         }
-        
+
         .has-submenu.active::after {
             content: '▲';
         }
-        
-        h1, h2, h3, h4, h5, h6 {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             color: var(--main-color);
             margin-top: 1.5rem;
             margin-bottom: 1rem;
         }
-        
+
         h1 {
             font-size: 2rem;
             padding-bottom: 0.5rem;
             border-bottom: 1px solid var(--border-color);
         }
-        
+
         h2 {
             font-size: 1.75rem;
         }
-        
+
         h3 {
             font-size: 1.5rem;
         }
-        
+
         h4 {
             font-size: 1.25rem;
         }
-        
+
         p {
             margin-bottom: 1rem;
         }
-        
-        ul, ol {
+
+        ul,
+        ol {
             margin-bottom: 1rem;
             padding-right: 1.5rem;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 1rem;
             background-color: white;
         }
-        
-        th, td {
+
+        th,
+        td {
             padding: 0.75rem;
             border: 1px solid var(--border-color);
             text-align: right;
         }
-        
+
         th {
             background-color: #f2f2f2;
             font-weight: bold;
         }
-        
+
         tr:nth-child(even) {
             background-color: #f8f9fa;
         }
-        
+
         .section {
             margin-bottom: 2rem;
         }
-        
+
         .anchor {
             display: block;
             position: relative;
             top: -70px;
             visibility: hidden;
         }
-        
+
         .search-container {
             padding: 1rem;
             position: sticky;
@@ -207,14 +215,14 @@
             z-index: 100;
             border-bottom: 1px solid var(--border-color);
         }
-        
+
         #search {
             width: 100%;
             padding: 0.5rem;
             border: 1px solid var(--border-color);
             border-radius: 4px;
         }
-        
+
         .search-results {
             position: fixed;
             left: 0;
@@ -229,11 +237,11 @@
             transition: transform 0.3s;
             z-index: 99;
         }
-        
+
         .search-results.show {
             transform: translateX(0);
         }
-        
+
         img {
             width: 100%;
             height: auto;
@@ -248,6 +256,7 @@
         img:hover {
             transform: scale(1.5);
         }
+
         .search-results-header {
             display: flex;
             justify-content: space-between;
@@ -256,7 +265,7 @@
             padding-bottom: 0.5rem;
             border-bottom: 1px solid var(--border-color);
         }
-        
+
         .search-results-close {
             background: none;
             border: none;
@@ -265,81 +274,88 @@
             color: var(--text-color);
             transition: color 0.2s;
         }
-        
+
         .search-results-close:hover {
             color: var(--main-color);
         }
-        
+
         .search-results-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        
+
         .search-result-item {
             padding: 0.5rem 0;
             border-bottom: 1px solid var(--border-color);
             cursor: pointer;
             transition: background-color 0.2s;
         }
-        
+
         .search-result-item:hover {
             background-color: var(--highlight-color);
         }
-        
+
         .search-result-item strong {
             color: var(--main-color);
         }
-        
+
         .highlight {
             background-color: var(--highlight-search);
             padding: 2px;
             border-radius: 2px;
             transition: background-color 0.5s;
         }
-        
+
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(100%);
             }
-            
+
             .sidebar.show {
                 transform: translateX(0);
             }
-            
+
             .content {
                 margin-right: 0;
                 width: 100%;
             }
-            
+
             .content.with-results {
                 margin-left: 0;
                 width: 100%;
             }
-            
+
             .sidebar-toggle {
                 display: block;
             }
-            
+
             .search-results {
                 width: 100%;
             }
         }
-.note {
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    color: #634b03;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #634b03;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         @media print {
-            .sidebar, .sidebar-toggle, .search-container, .search-results {
+
+            .sidebar,
+            .sidebar-toggle,
+            .search-container,
+            .search-results {
                 display: none;
             }
-            
-            .content, .content.with-results {
+
+            .content,
+            .content.with-results {
                 margin-right: 0;
                 margin-left: 0;
                 width: 100%;
@@ -348,19 +364,20 @@
         }
     </style>
 </head>
+
 <body>
     <button class="sidebar-toggle" id="sidebarToggle">☰ תפריט</button>
-    
+
     <div class="container">
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2>בסיס ידע</h2>
             </div>
-            
+
             <div class="search-container">
                 <input type="text" id="search" placeholder="חיפוש...">
             </div>
-            
+
             <ul class="nav-list" id="navList">
                 <li class="nav-item">
                     <a href="#intro" class="nav-link has-submenu">1. מבנה הפרויקט</a>
@@ -457,7 +474,7 @@
         </div>
         <main class="content">
             <h1>מתודולוגיה חחי - Power Apps ניהול ידע פיתוח</h1>
-            
+
             <div class="section" id="intro">
                 <span class="anchor" id="intro-anchor"></span>
                 <h2>1. מבנה הפרויקט</h2>
@@ -471,7 +488,7 @@
                         <li>סביבת ייצור: לאפליקציה הסופית</li>
                     </ul>
                 </div>
-                
+
                 <div class="section" id="version-control">
                     <span class="anchor" id="version-control-anchor"></span>
                     <h3>1.2 ניהול גרסאות</h3>
@@ -481,11 +498,11 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="section" id="naming-conventions">
                 <span class="anchor" id="naming-conventions-anchor"></span>
                 <h2>2. מוסכמות שמות</h2>
-                
+
                 <div class="section" id="general-rules">
                     <span class="anchor" id="general-rules-anchor"></span>
                     <h3>2.1 כללי</h3>
@@ -495,7 +512,7 @@
                         <li>הימנעו מקיצורים לא סטנדרטיים</li>
                     </ul>
                 </div>
-                
+
                 <div class="section" id="dataverse-fields">
                     <span class="anchor" id="dataverse-fields-anchor"></span>
                     <h3>2.2 שדות Dataverse</h3>
@@ -601,7 +618,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div class="section" id="power-apps-components">
                     <span class="anchor" id="power-apps-components-anchor"></span>
                     <h3>2.3 רכיבי Power Apps</h3>
@@ -612,7 +629,7 @@
                         <li>טבלאות: tbl + [תיאור] (לדוגמה: tblEmployeesList)</li>
                         <li>טפסים: frm + [תיאור] (לדוגמה: frmEmployeeDetails)</li>
                     </ul>
-                    
+
                     <table>
                         <thead>
                             <tr>
@@ -621,55 +638,175 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>Badge</td><td>bdg</td></tr>
-                            <tr><td>Button</td><td>btn</td></tr>
-                            <tr><td>Camera control</td><td>cam</td></tr>
-                            <tr><td>Canvas</td><td>can</td></tr>
-                            <tr><td>Card</td><td>crd</td></tr>
-                            <tr><td>Charts</td><td>chr</td></tr>
-                            <tr><td>CheckBox</td><td>chk</td></tr>
-                            <tr><td>Collection</td><td>col</td></tr>
-                            <tr><td>Combo box</td><td>cmb</td></tr>
-                            <tr><td>Component</td><td>cmp</td></tr>
-                            <tr><td>Container</td><td>con</td></tr>
-                            <tr><td>Dates</td><td>dte</td></tr>
-                            <tr><td>Drop down</td><td>drp</td></tr>
-                            <tr><td>Form</td><td>frm</td></tr>
-                            <tr><td>Gallery</td><td>gal</td></tr>
-                            <tr><td>Group</td><td>grp</td></tr>
-                            <tr><td>Header</td><td>hdr</td></tr>
-                            <tr><td>Html text</td><td>htm</td></tr>
-                            <tr><td>Icon</td><td>ico</td></tr>
-                            <tr><td>Image</td><td>img</td></tr>
-                            <tr><td>Info Button</td><td>info</td></tr>
-                            <tr><td>Label</td><td>lbl</td></tr>
-                            <tr><td>Link</td><td>lnk</td></tr>
-                            <tr><td>List box</td><td>lst</td></tr>
-                            <tr><td>Microphone</td><td>mic</td></tr>
-                            <tr><td>Microsoft Stream</td><td>str</td></tr>
-                            <tr><td>Page section shape</td><td>sec</td></tr>
-                            <tr><td>Pen Input</td><td>pen</td></tr>
-                            <tr><td>Power BI Tile</td><td>pbi</td></tr>
-                            <tr><td>Progress Bar</td><td>pbar</td></tr>
-                            <tr><td>Rating</td><td>rtg</td></tr>
-                            <tr><td>Rich text editor</td><td>rte</td></tr>
-                            <tr><td>Shapes (rectangle, circle, and so on)</td><td>shp</td></tr>
-                            <tr><td>Slider</td><td>sld</td></tr>
-                            <tr><td>Tab List</td><td>tbl</td></tr>
-                            <tr><td>Table</td><td>tbl</td></tr>
-                            <tr><td>Text input</td><td>txt</td></tr>
-                            <tr><td>Timer</td><td>tmr</td></tr>
-                            <tr><td>Toggle</td><td>tgl</td></tr>
-                            <tr><td>Video</td><td>vid</td></tr>
+                            <tr>
+                                <td>Badge</td>
+                                <td>bdg</td>
+                            </tr>
+                            <tr>
+                                <td>Button</td>
+                                <td>btn</td>
+                            </tr>
+                            <tr>
+                                <td>Camera control</td>
+                                <td>cam</td>
+                            </tr>
+                            <tr>
+                                <td>Canvas</td>
+                                <td>can</td>
+                            </tr>
+                            <tr>
+                                <td>Card</td>
+                                <td>crd</td>
+                            </tr>
+                            <tr>
+                                <td>Charts</td>
+                                <td>chr</td>
+                            </tr>
+                            <tr>
+                                <td>CheckBox</td>
+                                <td>chk</td>
+                            </tr>
+                            <tr>
+                                <td>Collection</td>
+                                <td>col</td>
+                            </tr>
+                            <tr>
+                                <td>Combo box</td>
+                                <td>cmb</td>
+                            </tr>
+                            <tr>
+                                <td>Component</td>
+                                <td>cmp</td>
+                            </tr>
+                            <tr>
+                                <td>Container</td>
+                                <td>con</td>
+                            </tr>
+                            <tr>
+                                <td>Dates</td>
+                                <td>dte</td>
+                            </tr>
+                            <tr>
+                                <td>Drop down</td>
+                                <td>drp</td>
+                            </tr>
+                            <tr>
+                                <td>Form</td>
+                                <td>frm</td>
+                            </tr>
+                            <tr>
+                                <td>Gallery</td>
+                                <td>gal</td>
+                            </tr>
+                            <tr>
+                                <td>Group</td>
+                                <td>grp</td>
+                            </tr>
+                            <tr>
+                                <td>Header</td>
+                                <td>hdr</td>
+                            </tr>
+                            <tr>
+                                <td>Html text</td>
+                                <td>htm</td>
+                            </tr>
+                            <tr>
+                                <td>Icon</td>
+                                <td>ico</td>
+                            </tr>
+                            <tr>
+                                <td>Image</td>
+                                <td>img</td>
+                            </tr>
+                            <tr>
+                                <td>Info Button</td>
+                                <td>info</td>
+                            </tr>
+                            <tr>
+                                <td>Label</td>
+                                <td>lbl</td>
+                            </tr>
+                            <tr>
+                                <td>Link</td>
+                                <td>lnk</td>
+                            </tr>
+                            <tr>
+                                <td>List box</td>
+                                <td>lst</td>
+                            </tr>
+                            <tr>
+                                <td>Microphone</td>
+                                <td>mic</td>
+                            </tr>
+                            <tr>
+                                <td>Microsoft Stream</td>
+                                <td>str</td>
+                            </tr>
+                            <tr>
+                                <td>Page section shape</td>
+                                <td>sec</td>
+                            </tr>
+                            <tr>
+                                <td>Pen Input</td>
+                                <td>pen</td>
+                            </tr>
+                            <tr>
+                                <td>Power BI Tile</td>
+                                <td>pbi</td>
+                            </tr>
+                            <tr>
+                                <td>Progress Bar</td>
+                                <td>pbar</td>
+                            </tr>
+                            <tr>
+                                <td>Rating</td>
+                                <td>rtg</td>
+                            </tr>
+                            <tr>
+                                <td>Rich text editor</td>
+                                <td>rte</td>
+                            </tr>
+                            <tr>
+                                <td>Shapes (rectangle, circle, and so on)</td>
+                                <td>shp</td>
+                            </tr>
+                            <tr>
+                                <td>Slider</td>
+                                <td>sld</td>
+                            </tr>
+                            <tr>
+                                <td>Tab List</td>
+                                <td>tbl</td>
+                            </tr>
+                            <tr>
+                                <td>Table</td>
+                                <td>tbl</td>
+                            </tr>
+                            <tr>
+                                <td>Text input</td>
+                                <td>txt</td>
+                            </tr>
+                            <tr>
+                                <td>Timer</td>
+                                <td>tmr</td>
+                            </tr>
+                            <tr>
+                                <td>Toggle</td>
+                                <td>tgl</td>
+                            </tr>
+                            <tr>
+                                <td>Video</td>
+                                <td>vid</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            
+
             <div class="section" id="architecture">
                 <span class="anchor" id="architecture-anchor"></span>
                 <h2>3. ארכיטקטורה ופיתוח</h2>
-                
+
                 <div class="section" id="security">
                     <span class="anchor" id="security-anchor"></span>
                     <h3>3.2 אבטחה והרשאות</h3>
@@ -678,7 +815,7 @@
                         <li>תכננו מראש רמות הרשאה שונות למשתמשים שונים</li>
                     </ul>
                 </div>
-                
+
                 <div class="section" id="performance">
                     <span class="anchor" id="performance-anchor"></span>
                     <h3>3.3 ביצועים</h3>
@@ -686,7 +823,7 @@
                         <li>הוסיפו אינדקסים לשדות שיחופשו לעתים קרובות</li>
                     </ul>
                 </div>
-                
+
                 <div class="section" id="design">
                     <span class="anchor" id="design-anchor"></span>
                     <h3>3.4 עיצוב</h3>
@@ -695,7 +832,7 @@
                         <li>לבנות רכיבים בתוך Containers רספונסיביים (רוחביים ואופקיים)</li>
                     </ul>
                 </div>
-                
+
                 <div class="section" id="app-variables">
                     <span class="anchor" id="app-variables-anchor"></span>
                     <h3>משתנים באפליקציות</h3>
@@ -725,24 +862,26 @@
                     </table>
                 </div>
             </div>
-            
+
             <div class="section" id="processes">
                 <span class="anchor" id="processes-anchor"></span>
                 <h2>4. תהליכי עבודה</h2>
-                
+
                 <div class="section" id="task-management">
                     <span class="anchor" id="task-management-anchor"></span>
                     <h3>4.1 ניהול משימות</h3>
                     <ul>
                         <li>השתמשו בכלי לניהול משימות כמו Asana או Azure DevOps בהתאם לצורך.</li>
                         <li>Asana משמשת לניהול משימות פנימיות ודיונים בתוך הצוות, ללא חשש מהלקוח.</li>
-                        <li>Azure DevOps הוא הכלי הרשמי לפתיחת באגים ותקלות טכניות הדורשות התערבות של הלקוח, במיוחד בתוך סביבת CITRIX.</li>
-                        <li>ניתן להצטרף למערכת Asana דרך הזימון שנשלח לכלל המשתמשים ולנהל משימות בצורה קלה ונגישה מכל מכשיר.</li>
+                        <li>Azure DevOps הוא הכלי הרשמי לפתיחת באגים ותקלות טכניות הדורשות התערבות של הלקוח, במיוחד בתוך
+                            סביבת CITRIX.</li>
+                        <li>ניתן להצטרף למערכת Asana דרך הזימון שנשלח לכלל המשתמשים ולנהל משימות בצורה קלה ונגישה מכל
+                            מכשיר.</li>
                         <li>חשוב להשתמש במערכת המתאימה לכל סוג משימה כדי לייעל את העבודה ולמנוע בלבול.</li>
                     </ul>
                 </div>
-                
-                
+
+
                 <div class="section" id="communication">
                     <span class="anchor" id="communication-anchor"></span>
                     <h3>4.2 תקשורת</h3>
@@ -752,11 +891,11 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="section" id="documentation">
                 <span class="anchor" id="documentation-anchor"></span>
                 <h2>5. תיעוד</h2>
-                
+
                 <div class="section" id="code-documentation">
                     <span class="anchor" id="code-documentation-anchor"></span>
                     <h3>5.1 תיעוד קוד</h3>
@@ -767,34 +906,37 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="section" id="backup">
                 <span class="anchor" id="backup-anchor"></span>
                 <h2>6. גיבוי ושחזור</h2>
                 <ul>
                     <li>הגדירו ויישמו מדיניות גיבוי ושחזור</li>
                     <li>בדקו באופן תקופתי את יכולת השחזור</li>
-                    <li>במידה ועובדים על טופס קיים ויש צורך לשכפל את המסך לצורך גיבוי / השוואה יש לזכור למחוק את העותק ולהשאיר את הטופס המקורי.</li>
+                    <li>במידה ועובדים על טופס קיים ויש צורך לשכפל את המסך לצורך גיבוי / השוואה יש לזכור למחוק את העותק
+                        ולהשאיר את הטופס המקורי.</li>
                 </ul>
             </div>
-  <div class="section" id="self-testing">
+            <div class="section" id="self-testing">
                 <span class="anchor" id="self-testing-anchor"></span>
                 <h2>7. בדיקה עצמית</h2>
                 <ul>
-                    <li>הסרת אובייקטים שלא בשימוש / לצורכי בדיקות על מנת למזער בלבול של מפתחים אחרים אשר נכנסים לטופס אחרינו ושיפור ביצועים</li>
+                    <li>הסרת אובייקטים שלא בשימוש / לצורכי בדיקות על מנת למזער בלבול של מפתחים אחרים אשר נכנסים לטופס
+                        אחרינו ושיפור ביצועים</li>
                     <li>לוודא שאין אזהרות / בעיות ב appChecker ותיקונם במידת הצורך.</li>
                     <li>שימוש במטאטא בלשונית DATA על מנת לנקות / להסיר בסיסי נתונים שלא בשימוש</li>
                     <img src="img/1.png" alt="מסך ראשי של appChecker">
                     <li>שימוש בלשונית "ביצועים" תחת appChecker ולתקן את ההערות</li>
                 </ul>
             </div>
-            
+
             <div class="section" id="onboarding">
                 <span class="anchor" id="onboarding-anchor"></span>
                 <h2>הנחיות לכניסה לתפקיד פיתוח PA</h2>
                 <p>לצורך התחברות ראשונית למערכת, להתקשר למספר של תמיכת חברת החשמל ולקבל אימייל, שם משתמש וסיסמה.</p>
                 <p>תמיכה חח"י: 076-8642999.</p>
-                <p>יש צורך בהתחברות ל- authanticator של משתמש חברת החשמל, וניתן לעשות זאת רק מתוך הסיטריקס (סביבת העבודה) של חברת החשמל.</p>
+                <p>יש צורך בהתחברות ל- authanticator של משתמש חברת החשמל, וניתן לעשות זאת רק מתוך הסיטריקס (סביבת
+                    העבודה) של חברת החשמל.</p>
                 <p>לצורך זה יש לבצע התחברות ראשונית ל-authanticator מתוך מחשב של חבר צוות המחובר למערכת.</p>
                 <p>הדיילי והתקשורת בתוך חח"ח מתקיימת ב- webex.</p>
                 <p>צריך לקבל משתמש לאתר המעקב תהליכים דיגיטליים מרואי.</p>
@@ -802,31 +944,34 @@
                 <p>סיסמא: abra1234##</p>
                 <p>שם משתמש: abra-iec@outlook.com</p>
                 <p>בעיצובים בפיגמה, גודל הטקסט מופיע ב- px. במערכת ה-PA יש להמיר אותם ל-pt. מצורף לינק להמרה.<br>
-                בטימס של היוזר של חברת החשמל, יש קבוצה בשם power apps. כל המסמכים הרלוונטים נמצאים בfiles בקבוצה.</p>
+                    בטימס של היוזר של חברת החשמל, יש קבוצה בשם power apps. כל המסמכים הרלוונטים נמצאים בfiles בקבוצה.
+                </p>
                 <img src="img/2.png" alt="המסמכים הרלוונטים בקבוצת power apps">
                 <p>מסמכי האיפיון שאנו עובדים עליהם נמצאים במסמכי איפיון- מסמכים בעבודה</p>
                 <p>בקובץ "שדות עבוד תהליכים דיגיטליים" יש רשימת שמית של השדות אותם אנו מקבלים מה- apim</p>
                 <p>יש 3 enviroments לחח"י- dev, test,prod. לכל סביבה יש משתמש אפליקטיבי.</p>
-                
+
                 <h3>משתמשי מערכת:</h3>
                 <h4>משתמש dev:</h4>
                 <p>Pplatform_D-SVC@iec.co.il<br>
-                *סיסמה*</p>
-                
+                    *סיסמה*</p>
+
                 <h4>משתמש test:</h4>
                 <p>Pplatform_T-SVC@iec.co.il<br>
                     *סיסמה*</p>
-                
+
                 <h4>משתמש prod:</h4>
                 <p>Pplatform_P-SVC@iec.co.il<br>
                     *סיסמה*</p>
             </div>
-            
+
             <div class="section" id="approver-table">
                 <span class="anchor" id="approver-table-anchor"></span>
                 <h2>טבלת Approver</h2>
-                <p>טבלת הנתונים הראשית של התהליכים הדיגיטליים של חברת החמשל היא טבלת Approvers. היא מכילה את כל שלבי האישור של כל תהליך. גם כאשר אנו יוצרים תהליך ללא אישורים, אנחנו נשמור את התהליך בתוך טבלת approvers כתהליך שהסתיים בהצלחה.</p>
-                
+                <p>טבלת הנתונים הראשית של התהליכים הדיגיטליים של חברת החמשל היא טבלת Approvers. היא מכילה את כל שלבי
+                    האישור של כל תהליך. גם כאשר אנו יוצרים תהליך ללא אישורים, אנחנו נשמור את התהליך בתוך טבלת approvers
+                    כתהליך שהסתיים בהצלחה.</p>
+
                 <h3>הסבר קצר על טבלת Approver:</h3>
                 <table>
                     <thead>
@@ -842,8 +987,10 @@
                         </tr>
                         <tr>
                             <td>OrderGuid</td>
-                            <td>המזהה הייחודי של הרשומה בטבלת הנתונים המקורית של התהליך- העמודה עם אותו השם של הטבלה.<br><br>
-                            ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר ויעל יותר.</td>
+                            <td>המזהה הייחודי של הרשומה בטבלת הנתונים המקורית של התהליך- העמודה עם אותו השם של
+                                הטבלה.<br><br>
+                                ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר
+                                ויעל יותר.</td>
                         </tr>
                         <tr>
                             <td>URLDeepLink</td>
@@ -859,8 +1006,9 @@
                         </tr>
                         <tr>
                             <td>AppStatus</td>
-                            <td>סטטוס התהליך- התוצאה הסופית או הסטטוס הכללי של כל התהליך. אם יש רשומה אחת שאושרה ורשומה אחת שמחכה לאישור, ה-AppStatus של שתיהן יהיה ממתין לאישור.<br><br>
-                            עמודה אוטומטית שאנו לא מכניסים אליה מידע.</td>
+                            <td>סטטוס התהליך- התוצאה הסופית או הסטטוס הכללי של כל התהליך. אם יש רשומה אחת שאושרה ורשומה
+                                אחת שמחכה לאישור, ה-AppStatus של שתיהן יהיה ממתין לאישור.<br><br>
+                                עמודה אוטומטית שאנו לא מכניסים אליה מידע.</td>
                         </tr>
                         <tr>
                             <td>Stage</td>
@@ -874,30 +1022,33 @@
                     </tbody>
                 </table>
             </div>
-            
+
             <div class="section" id="action-center">
                 <span class="anchor" id="action-center-anchor"></span>
                 <h2>Action Center</h2>
                 <p>האפליקציה שבה כלל המשתמשים יכולים לראות אילו בקשות הם הגישו ומה הסטטוס שלהם.</p>
                 <p>אנחנו מציגים ב-Action Center את כל הרשומות שנוצרו בטבלת Approver שהשדה STAGE = 1.</p>
-                <p>לכן, יש צורך לוודא שגם במידה <strong>ואין צורך</strong> בסבב אישורים בטופס שהקמנו יש להקים שורה בטבלת APPROVER שהשדה STAGE = 1, אחרת הלקוח לא יראה את הטופס בטבלאות השונות ב-ACTION CENTER.</p>
+                <p>לכן, יש צורך לוודא שגם במידה <strong>ואין צורך</strong> בסבב אישורים בטופס שהקמנו יש להקים שורה בטבלת
+                    APPROVER שהשדה STAGE = 1, אחרת הלקוח לא יראה את הטופס בטבלאות השונות ב-ACTION CENTER.</p>
             </div>
-            
+
             <div class="section" id="configuration-table">
                 <span class="anchor" id="configuration-table-anchor"></span>
                 <h2>טבלת קונפיגורציה</h2>
                 <p>בתוך הפתרון של ה-action canter נחפש את האפליקציה של ה- model driven.</p>
-                <p>בטבלה זו אנו נכניס את השמות הלוגיים של הטבלה הראשית של התהליך ממנה אנו רוצים להציג נתונים + טבלה משנית שקשורה (לא חובה-רק במידה ויש צורך להציג הרחבה מטבלה שנייה).</p>
+                <p>בטבלה זו אנו נכניס את השמות הלוגיים של הטבלה הראשית של התהליך ממנה אנו רוצים להציג נתונים + טבלה
+                    משנית שקשורה (לא חובה-רק במידה ויש צורך להציג הרחבה מטבלה שנייה).</p>
                 <p>Entity- השם של הטבלה הראשית</p>
                 <p>Related entity- השם של הטבלה המשנית</p>
                 <p>ונכניס את השדות כפי שמופיע ב-output של get a row by id בפאוור אוטומייט.<br>
-                בסקשיין "שדות" אנו נכניס את השמות של העמודות מהטבלה הראשית (Entity) כפי שהם מופיעים ב-power automate.</p>
+                    בסקשיין "שדות" אנו נכניס את השמות של העמודות מהטבלה הראשית (Entity) כפי שהם מופיעים ב-power
+                    automate.</p>
                 <p>בסקשיין "שדות מקושרים" אנו נכניס את השמות של העמודות מהטבלה המשנית (related-entity)<br>
-                וליצור קשר עם מפתח שמכיר כיצד להתאים את האפליקציה לתהליך החדש.</p>
+                    וליצור קשר עם מפתח שמכיר כיצד להתאים את האפליקציה לתהליך החדש.</p>
                 <p>ה- orderID הוא השדה המקשר בין טבלת Aprovers לטבלה של התהליך.</p>
                 <img src="img/3.png" alt="טבלת קונפיגורציה">
             </div>
-            
+
             <div class="section" id="security-roles">
                 <span class="anchor" id="security-roles-anchor"></span>
                 <h2>תפקידי אבטחה</h2>
@@ -910,54 +1061,59 @@
                     <li>min prov app approvers</li>
                 </ul>
                 <p>יש לחפש את שם הטבלה החדשה ולהיכנס אליה</p>
-                
+
                 <p>אנו לרוב נבחר לתת הרשאה ל-user או לא לתת הרשאה בכלל. זה תלוי בצורך הפרטני של כל תהליך.</p>
                 <img src="img/5.png" alt="תפקידי אבטחה">
                 <h3>הסבר קצר:</h3>
                 <p>user: הרשאה לרשומות שהבעלות שלהם היא אותו יוזר</p>
                 <p>Organization: הרשאה לכל הרשומות בטבלה ללא הגבלה</p>
-                
+
                 <div class="note">
                     <p><strong>הערה כללית:</strong> פתרון IEC FORMS מכיל זרימות עבודה ישנות מ- KPMG.</p>
                 </div>
             </div>
-            
+
             <div class="section" id="document-sanitization">
                 <span class="anchor" id="document-sanitization-anchor"></span>
                 <h2>הלבנת מסמכים</h2>
-                <p>אם שומרים קבצים בטבלת annotation אז יש פלוו שרץ ישירות ועושה להם הלבנה. הפלוו הוא OPSWAT בפתרון IEC-OPSWAT</p>
-                <p>דוגמה לשמירת קבצים בטבלת הערות/annotaion ניתן לראות בפתרון 40 בפלו Associated_Car_Permit_UploadCarLicense</p>
+                <p>אם שומרים קבצים בטבלת annotation אז יש פלוו שרץ ישירות ועושה להם הלבנה. הפלוו הוא OPSWAT בפתרון
+                    IEC-OPSWAT</p>
+                <p>דוגמה לשמירת קבצים בטבלת הערות/annotaion ניתן לראות בפתרון 40 בפלו
+                    Associated_Car_Permit_UploadCarLicense</p>
                 <p>אם שומרים קובץ בטבלה אחרת יש צורך ליצור פלוו המלבין את הקבצים.</p>
                 <p>Associated_Car_Permit_UploadCarLicense</p>
                 <p>יש לשמור עותק של הפלו MyStoryAttachments_14S - OPSWAT<br>
-                ולשייך אותו לפתרון הרלוונטי. יש לשנות את הטריגר שלו שיכיל את הטבלה של הפתרון ששומר את הקובץ-</p>
+                    ולשייך אותו לפתרון הרלוונטי. יש לשנות את הטריגר שלו שיכיל את הטבלה של הפתרון ששומר את הקובץ-</p>
                 <p style="font-weight: bold; color: red; background-color: yellow;">גדי יוסיף עוד מידע</p>
             </div>
-            
+
             <div class="section" id="ad-groups">
                 <span class="anchor" id="ad-groups-anchor"></span>
                 <h2>קבוצות AD</h2>
                 <p>עובדי פנסיה וגמל : 057725c6-10f8-47b2-8b26-ad0aa1204b14</p>
                 <p>(בAzure DevOps בחחי במאמרי ידע יש רשימה מלאה של כל קבוצות EntraID עם הGUID שלהם)</p>
             </div>
-            
+
             <div class="section" id="useful-links">
                 <span class="anchor" id="useful-links-anchor"></span>
                 <h2>לינקים שימושיים</h2>
                 <ol>
                     <li>מערכת מעקב תהליכים דיגיטליים
-                        <a href="https://iec-tasks-powerplatform.netlify.app/" target="_blank">https://iec-tasks-powerplatform.netlify.app/</a>
+                        <a href="https://iec-tasks-powerplatform.netlify.app/"
+                            target="_blank">https://iec-tasks-powerplatform.netlify.app/</a>
                         <br>יש לקבל שם משתמש וסיסמא מרואי
                     </li>
                     <li>לינקים לטפסים ישן-
-                        <a href="https://ieconline.sharepoint.com.mcas.ms/:x:/r/sites/PowerApps/_layouts/15/Doc2.aspx?action=edit&sourcedoc=%7B43def57d-030a-48c3-b023-f2b790006391%7D&wdOrigin=TEAMS-WEB.teamsSdk_ns.rwc&wdExp=TEAMS-TREATMENT&wdhostclicktime=1724663426184&web=1" target="_blank">קישור לטפסים</a>
+                        <a href="https://ieconline.sharepoint.com.mcas.ms/:x:/r/sites/PowerApps/_layouts/15/Doc2.aspx?action=edit&sourcedoc=%7B43def57d-030a-48c3-b023-f2b790006391%7D&wdOrigin=TEAMS-WEB.teamsSdk_ns.rwc&wdExp=TEAMS-TREATMENT&wdhostclicktime=1724663426184&web=1"
+                            target="_blank">קישור לטפסים</a>
                     </li>
                     <li>המרת PX ל- PT
-                        <a href="https://cssunitconverter.vercel.app/px-to-pt" target="_blank">https://cssunitconverter.vercel.app/px-to-pt</a>
+                        <a href="https://cssunitconverter.vercel.app/px-to-pt"
+                            target="_blank">https://cssunitconverter.vercel.app/px-to-pt</a>
                     </li>
                 </ol>
             </div>
-            
+
             <div class="section" id="new-solution">
                 <span class="anchor" id="new-solution-anchor"></span>
                 <h2>הקמת פתרון חדש</h2>
@@ -965,7 +1121,7 @@
                 <img src="img/6.png" alt="בחירת IEC כ- Publisher">
                 <h3>טבלה חדשה - עמודות בסיס</h3>
                 <p>בכל טבלה חדשה, יש לוודא כי עמודות הבסיס הבאות מוקמות:</p>
-                
+
                 <table>
                     <thead>
                         <tr>
@@ -1004,13 +1160,15 @@
                         </tr>
                     </tbody>
                 </table>
-                
+
                 <h3>הערות:</h3>
                 <ol>
                     <li>
-                        <p>טבלת APPROVER <strong>הקיימת</strong> אנחנו ממלאים את השדה: OrderGuid בעת יצירת שורות חדשות בטבלת APPROVER</p>
+                        <p>טבלת APPROVER <strong>הקיימת</strong> אנחנו ממלאים את השדה: OrderGuid בעת יצירת שורות חדשות
+                            בטבלת APPROVER</p>
                         <p>עם ה-GUID של הרשומה מהטבלה הראשית החדשה שלנו.</p>
-                        <p>ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר ויעל יותר.</p>
+                        <p>ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר ויעל
+                            יותר.</p>
                     </li>
                     <li>
                         <p>כשיוצרים רשומות חדשות בטבלת APPRVOER יש לשים לב למלא את השדות:</p>
@@ -1026,312 +1184,327 @@
                         </ul>
                     </li>
                 </ol>
-                
-                          <h3>Stage:</h3>
-            <p>אנחנו מציגים ב-Action Center את כל הרשומות שנוצרו בטבלת Approver שהשדה STAGE = 1.</p>
-            <p>לכן, יש צורך לוודא שגם במידה <strong>ואין צורך</strong> בסבב אישורים בטופס שהקמנו יש להקים שורה בטבלת APPROVER שהשדה STAGE = 1, אחרת הלקוח לא יראה את הטופס בטבלאות השונות ב-ACTION CENTER.</p>
-            
-            <div class="section" id="new-canvas-app">
-                <span class="anchor" id="new-canvas-app-anchor"></span>
-                <h2>הקמת Canvas App חדש</h2>
-                <p>מה צריך לעשות כאשר פותחים אפליקציה חדשה:</p>
-                
-                <h3>1. שינוי גודל המסך</h3>
-                <p><strong>יש לשנות את גודל המסך לתצוגות HD ו-LAPTOP לפי העיצובים שמקבלים מהמעצבים של חח"י.</strong></p>
-                <p>לאחר לחיצה על SETTINGS יפתח החלון הבא, נלחץ על DISPLAY:</p>
-                <img src="img/7.png" alt="החלון של DISPLAY">
-                <p>נגלול מעט למטה ונשנה את הערכים הבאים:</p>
-                <ul>
-                    <li>Size - Custom</li>
-                    <li>Width - 1920</li>
-                    <li>Height - 936</li>
-                </ul>
-                <p>*לאחר כל שינוי נצטרך לאשר את השינוי בחלון שיקפוץ</p>
-                <img src="img/8.png" alt="החלון של DISPLAY">
-                <h3>2. בנוסף נצטרך לבטל את האפשרויות הבאות:</h3>
-                <img src="img/9.png" alt="החלון של DISPLAY">
-                <ul>
-                    <li>Lock aspect ratio</li>
-                    <li>Lock orientation</li>
-                </ul>
-                
-                <h3>3. בנוסף נצטרך להפעיל / להדליק את האפשרות הבאה ואשר נמצאת בכרטיסיית "Retired":</h3>
-                <img src="img/10.png" alt="החלון של DISPLAY">
-                <ul>
-                    <li>Allow automatic field assignment for component input</li>
-                </ul>
-                
-                <h3>4. יש להתאים את הנקודות בהן העיצוב ישתנה מעיצוב HD לעיצוב Laptop לעיצוב Mobile.</h3>
-                <p>לצורך זה נבחר את ה-APP אשר נמצא בראש הרשימה מצד שמאל</p>
-                <img src="img/11.png" alt="החלון של DISPLAY">
-                <p>מצד ימין בהגדרות / Advanced</p>
-                <p>נחפש שורה בשם SizeBreakpoints</p>
-                
-                <ul>
-                    <li>אם האפליקציה היא רק ל-HD, אין צורך לשנות.</li>
-                    <li>אם האפליקציה היא ל-HD ול-Laptop נזין את הערך הבא: [1280]<br>
-                        כאשר אנחנו רוצים לשנות ערך שיהיה רספונסיבי לגודל המסך, נבדוק מה גודל המסך באמצעות<br>
-                        If(*[Screen name]*.Size =2, [value],[value])<br>
-                        גודל 1 הוא רוחב המסך עד 1280 שהוא laptop וגודל 2 הוא רוחב המסך הגדול יותר מ1280 שהוא HD.
-                    </li>
-                    <li>אם האפליקציה היא גם ל- mobile נזין את הערך הבא: [768,1280]<br>
-                        כאשר אנחנו רוצים לשנות ערך שיהיה רספונסיבי לגודל המסך, נבדוק מה גודל המסך באמצעות<br>
-                        Switch(*[Screen name]*.Size , 3, [value],2, [value],1,[value])<br>
-                        גודל 1 הוא mobile עד 768, גודל 2 הוא laptop בין 768 עד 1280, וגודל HD הוא כל רוחב שגודל מ1280
-                    </li>
-                </ul>
-                
-                <h3>5. השלב הבא הוא לשנות ערכים במסך שאנחנו עובדים עליו</h3>
-                <p>לדוגמא אם המסך הראשון ברשימה נקרא Screen1 אז נלחץ עליו ובצד ימין בהגדרות / Advanced</p>
-                <p>נחפש שורה בשם Height ונשנה את הערך בערך הבא בצורה שכתובה:</p>
-                <pre>Max(Min(App.Height, 936),App.MinScreenHeight)</pre>
-                
-                <p>לאחר מכן נחפש שורה בשם Width ונשנה את הערך בערך הבא בצורה שכתובה:</p>
-                <pre>Max(Min(App.Width, 1920),App.MinScreenWidth)</pre>
-                
-                <p>לאחר השינויים יש לשמור את היישום, ללחוץ על פרסום ולרענן את דפדפן.</p>
-                
-                <h3>6. לשתף עם קבוצת הטסט ועם המשתמש האפליקטיבי של סביבת dev</h3>
-                
-                <h3>7. להכניס את הלינק למערכת מעקב אחר תהליכים דיגיטליים לטופס 999</h3>
-                
-                <h3>8. איך לייבא ולהשתמש בקומפוננטות</h3>
-                <p>נבחר את ה + ויוצג החלון הבא, נבחר את המסומן באדום (Import component):</p>
-                <p>לאחר לחיצה על המסומן באדום יוצג החלון הבא:</p>
-                <p>נפתח את הראשון ברשימה -- IEC Forms Components -- FullScreen</p>
-                <p>יפתח החלון הבא:</p>
-                <p>נבחר את הקומפוננטות שנרצה לייבא ע"י לחיצה על העיגול משמאל לשם ולחיצה על Import המסומן בחץ אדום.</p>
-                
-                <h3>9. להתקין את הפתרון של DropdownRtlStyles:</h3>
-                <p>מתחילים באותה צורה כמו ייבוא קומפוננטה מספריית קומפוננטות.</p>
-                <p>נבחר ב- code ואז נבחר ב- DropdownRrlStyles_Key</p>
-                <p>קומפוננטה זו הופכת את ה- comboBox וה- dropdown להיות RTL.</p>
-                <p>ניתן להכריח רכיבים להיות RTL על ידי הוספת התחילית הבאה באפליקציה ל:<br>
-                RTLFIX_</p>
-                
-                <h3>10. ליצור קונטרול שמכיל את הצבעים, פונטים וגדלים של העיצוב.</h3>
-            </div>
-            
-            <div class="section" id="components-info">
-                <span class="anchor" id="components-info-anchor"></span>
-                <h2>הסבר על סוגי קומפוננטות</h2>
-                
-                <h3>Component_HD_FullScreen</h3>
-                <p>יש רק כותרת עם:</p>
-                <ul>
-                    <li>תמונת חברת חשמל ללא כיתוב מטה</li>
-                    <li>כותרת הניתנת לבחירת ערך ידנית</li>
-                    <li>כפתור דיווח על בעיה</li>
-                </ul>
-                <p>יש מקטע עם פרטים אישיים עם:</p>
-                <ul>
-                    <li>כותרות מובנות מראש ורק הערך מתחת ניתן לבחירה ידנית</li>
-                </ul>
-                <p>בנוסף יש עוד כותרת ו-2 שדות לבחירה ידנית במידה ורוצים להציג פרטים של חותם מדף קודם / נתונים נוספים.</p>
-                <p>ניתן להסתרה ע"י השארת הערכים ריקים.</p>
-                
-                <h3>Component_HD_Header&Footer</h3>
-                <p>יש כותרת עם:</p>
-                <ul>
-                    <li>תמונת חברת חשמל ללא כיתוב מטה</li>
-                    <li>כותרת הניתנת לבחירת ערך ידנית</li>
-                    <li>כותרת משנה הניתנת לבחירת ערך ידנית</li>
-                    <li>כפתור דיווח על בעיה</li>
-                </ul>
-                <p>יש שורה תחתונה עם:</p>
-                <ul>
-                    <li>כפתור שליחה אשר ניתן להסתרה באופן ידני</li>
-                </ul>
-                
-                <h3>Component_HD_FullScreen_FreeLabels</h3>
-                <p>יש רק כותרת עם:</p>
-                <ul>
-                    <li>תמונת חברת חשמל ללא כיתוב מטה</li>
-                    <li>כותרת הניתנת לבחירת ערך ידנית</li>
-                    <li>כפתור דיווח על בעיה</li>
-                </ul>
-                <p>יש 3 מקטעים:</p>
-                <ol>
-                    <li>כותרת ראשית + 8 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
-                    <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
-                    <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
-                </ol>
-                
-                <h3>Component_HD_FullScreen_FreeLabels_Header&Footer</h3>
-                <p>יש כותרת עם:</p>
-                <ul>
-                    <li>תמונת חברת חשמל ללא כיתוב מטה</li>
-                    <li>כותרת הניתנת לבחירת ערך ידנית</li>
-                    <li>כותרת משנה הניתנת לבחירת ערך ידנית</li>
-                    <li>כפתור דיווח על בעיה</li>
-                </ul>
-                <p>יש שורה תחתונה עם:</p>
-                <ul>
-                    <li>כפתור שליחה אשר ניתן להסתרה באופן ידני</li>
-                </ul>
-                <p>יש 3 מקטעים:</p>
-                <ol>
-                    <li>כותרת ראשית + 8 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
-                    <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
-                    <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
-                </ol>
-                
-                <h3>Component_ReportProblemPopup</h3>
-                <p>חלון דיווח על בעיה,</p>
-                <p>ערכים שאפשר למלא ידנית:</p>
-                <ul>
-                    <li>Fullname</li>
-                    <li>phonenumber</li>
-                </ul>
-                <p>בנוסף יש X ו- Y שמאפשרים למקום את החלון באמצע המסך בהתאם לצורך אך לא ניתן לשנות את גודל החלון</p>
-                
-                <h3>שימוש בערכים המתקבלים מקומפוננטות לצורך יצירת בקשה</h3>
-                <p>לאחר לחיצה על "שליחה" בקומפוננטה, מתקבל ממנה הערך componenetName.FooterBTN שהוא בוליאני.</p>
-                <p>אותו נזין בתוך ה- default של קונטרול Toggle ואת כל הפונקציה שאנו רוצים לבצע עם שליחת הבקשה נשים ב- OnChange של ה- toggle.</p>
-                <p>אותה לוגיקה נבצע גם בקומפוננטת דיווח על בעיה. הערך המתקבל ממנה הוא</p>
-                <pre>cmp_Responsive_ReportProblemPopup_1.SendPatch_ReportProblemPopup1</pre>
-                <p>ניתן לראות דוגמה לשימושיות בכל האפליקציות.</p>
-            </div>
-            
-                        <div class="section" id="workflows">
-                <span class="anchor" id="workflows-anchor"></span>
-                <h2>זרימות עבודה (Flows)</h2>
-                <p>אנו מחלקים את זרימות העבודה ל-3 זרימות מרכזיות: Build, middle ו- final.</p>
-                
-                <h3>Build</h3>
-                <p>בשמירת בקשה חדשה בטבלת הנתונים של התהליך, תפתח זרימת עבודה אשר תיצור את תהליך האישור בטבלת Approvers ומקים שורות מאשרים בהתאם לצורך. ניתן לראות דוגמה בזרימת העבודה Build_Stage_36.</p>
-                
-                <h3>Middle</h3>
-                <p>זרימת העבודה מחכה לראות האם יש שורה פעילה ב-Approvers, שהשתנו בה ערכים. (Stage=1)</p>
-                <p>הזרימה תמשיך בשליחת מייל לאדם הרלוונטי ובעדכון רשומות נוספות. ניתן לראות דוגמה בזרימת העבודה Middle_Stage_36</p>
-                
-                <h3>Final</h3>
-                <p>בסיום תהליך האישור, זרימת העבודה תופעל, תיצור קובץ סופי המופק בסיום התהליך ותשלח אותו לעובד. ניתן לראות דומה בזרימת העבודה Final_Stage_36.</p>
-                <p>בחלק מהתהליכים יש ליצור מסמך סופי שישלח לעובד.</p>
-                
-                <h4>על מנת להעלות את המסמך לתיקיית הטמפלטיים יש:</h4>
-                <ol>
-                    <li>להתחבר לסיטריקס</li>
-                    <li>להתחבר עם המשתמש האפלקטיבי</li>
-                    <li>להכנס ל-shareppoint site של PA</li>
-                    <li>להעלות את המסמך לתיקיית: מסמכים- טמפלייט</li>
-                    <li>להמשיך עם זרימת העבודה. ניתן לראות זרימה לדוגמה ליצירת מסמך מתוך טמפלייט Final_Stage_36.</li>
-                </ol>
-                
-                <p>בסוף כל זרימת עבודה יש להכניס את ה- scope:</p>
-                <p>Scope Failure Notifications</p>
-                <p>יש להגדיר את ה- run after ל- has failed.</p>
-                <p>מטרת הסקופ היא לשלוח מייל וליידע כי זרימת העבודה נכשלה.</p>
-                <p>יש להכניס את כל הפעולות הקודמות לתוך scope נוסף ולוודא כי קוראים לו flow.</p>
-            </div>
-            
-            <div class="section" id="process-completion">
-                <span class="anchor" id="process-completion-anchor"></span>
-                <h2>סיום תהליך</h2>
-                <p>בכל סוף פרוייקט לפני שמעבירים את המערכת לבדיקת QA, יש להכנס לאיפיון ולכתוב הערות מפתח. המטרה היא ליצור תשתית המאפשרת לנו לשמור על אחידות פיתוח ואפשרות לעשות בדיקות QA גם על המידע עצמו ולא רק על העיצוב והפונקציונאליות.</p>
-                
-                <h3>הערות המפתח הכוללות:</h3>
-                <h4>1. מבנה המערכת- Power Apps Canvas שמות המסכים והתפקיד שלהם. לדוגמה:</h4>
-                <ul>
-                    <li><strong>מסך ראשי:</strong> הגשת הבקשה כולל העלאת קבצים ושמירה בטבלת הנתונים.</li>
-                    <li><strong>מסך מנהל:</strong> הצגת בקשת העובד ונימוק המנהל לאישור או החזרה לעובד</li>
-                    <li><strong>מסך מרכז ליאור:</strong> הצגת בקשת העובד ונימוק המנהל ואפשרות להחלטה למרכז ליאור לאשר או להחזיר לעובד.</li>
-                </ul>
-                
-                <h4>2. זרימות עבודה- שמות ה- Power Automate ואופן פעולתם. לדוגמה:</h4>
-                <ul>
-                    <li><strong>טריגר</strong>: יצירת רשומה חדשה בטבלת Approvers עם IDform של התהליך.</li>
-                    <li><strong>פעולות</strong>:
-                        <ul>
-                            <li>הבאת הבקשה מהטבלה המקורית.</li>
-                            <li>בדיקה האם זרימת העבודה נמצאת ב- production</li>
-                            <li>שליחת מייל למנהל הרלוונטי.</li>
-                            <li>עדכון עמודת URLDeeplink של הרשומה ב- Approvers.</li>
-                            <li>שליחת מייל לעובד.</li>
-                        </ul>
-                    </li>
-                </ul>
-                
-                <h4>3. DB- טבלאות, עמודות וסוג הנתונים המוזנים לכל טבלה. יש לציין דוגמה של הנתון.</h4>
-                
-                <p>שם הטבלה Employment Authorization_36</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>שם עמודה</th>
-                            <th>דוגמה לערך</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Employment_Authorization_36</td>
-                            <td>497b4f4f-f4b5-ef11-b8e9-000d3add945e</td>
-                        </tr>
-                        <tr>
-                            <td>SenderEmail</td>
-                            <td>LIMOR.LEVIN@IEC.CO.IL</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <p>שם הטבלה Approvers</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>שם עמודה</th>
-                            <th>דוגמה לערך</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>URLDeepLink</td>
-                            <td>https://apps.powerapps.com/play/e/c287f742-2959-ecfb-8a08-95f903abcd4e/a/504246ff-5549-442f-a4e8-afe4fedcff5d?tenantId=40ed954c-3e38-4c31-858a-c768fd7a39aa&sourcetime=1733305934654&source=portal&hidenavbar=true&ApproveID=555d74ca-b5c2-ef11-b8e9-002248a253e8</td>
-                        </tr>
-                        <tr>
-                            <td>Stage</td>
-                            <td>1</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h4>4. תפקידי אבטחה- מהם תפקידי האבטחה שהוגדרו לקבוצות min priv apps use users ולקבוצת min prov app approvers. אם הוגדרו תפקידי אבטחה פרטניים בתוך זרימות העבודה, יש לציין זאת.</h4>
-            </div>
+
+                <h3>Stage:</h3>
+                <p>אנחנו מציגים ב-Action Center את כל הרשומות שנוצרו בטבלת Approver שהשדה STAGE = 1.</p>
+                <p>לכן, יש צורך לוודא שגם במידה <strong>ואין צורך</strong> בסבב אישורים בטופס שהקמנו יש להקים שורה בטבלת
+                    APPROVER שהשדה STAGE = 1, אחרת הלקוח לא יראה את הטופס בטבלאות השונות ב-ACTION CENTER.</p>
+
+                <div class="section" id="new-canvas-app">
+                    <span class="anchor" id="new-canvas-app-anchor"></span>
+                    <h2>הקמת Canvas App חדש</h2>
+                    <p>מה צריך לעשות כאשר פותחים אפליקציה חדשה:</p>
+
+                    <h3>1. שינוי גודל המסך</h3>
+                    <p><strong>יש לשנות את גודל המסך לתצוגות HD ו-LAPTOP לפי העיצובים שמקבלים מהמעצבים של חח"י.</strong>
+                    </p>
+                    <p>לאחר לחיצה על SETTINGS יפתח החלון הבא, נלחץ על DISPLAY:</p>
+                    <img src="img/7.png" alt="החלון של DISPLAY">
+                    <p>נגלול מעט למטה ונשנה את הערכים הבאים:</p>
+                    <ul>
+                        <li>Size - Custom</li>
+                        <li>Width - 1920</li>
+                        <li>Height - 936</li>
+                    </ul>
+                    <p>*לאחר כל שינוי נצטרך לאשר את השינוי בחלון שיקפוץ</p>
+                    <img src="img/8.png" alt="החלון של DISPLAY">
+                    <h3>2. בנוסף נצטרך לבטל את האפשרויות הבאות:</h3>
+                    <img src="img/9.png" alt="החלון של DISPLAY">
+                    <ul>
+                        <li>Lock aspect ratio</li>
+                        <li>Lock orientation</li>
+                    </ul>
+
+                    <h3>3. בנוסף נצטרך להפעיל / להדליק את האפשרות הבאה ואשר נמצאת בכרטיסיית "Retired":</h3>
+                    <img src="img/10.png" alt="החלון של DISPLAY">
+                    <ul>
+                        <li>Allow automatic field assignment for component input</li>
+                    </ul>
+
+                    <h3>4. יש להתאים את הנקודות בהן העיצוב ישתנה מעיצוב HD לעיצוב Laptop לעיצוב Mobile.</h3>
+                    <p>לצורך זה נבחר את ה-APP אשר נמצא בראש הרשימה מצד שמאל</p>
+                    <img src="img/11.png" alt="החלון של DISPLAY">
+                    <p>מצד ימין בהגדרות / Advanced</p>
+                    <p>נחפש שורה בשם SizeBreakpoints</p>
+
+                    <ul>
+                        <li>אם האפליקציה היא רק ל-HD, אין צורך לשנות.</li>
+                        <li>אם האפליקציה היא ל-HD ול-Laptop נזין את הערך הבא: [1280]<br>
+                            כאשר אנחנו רוצים לשנות ערך שיהיה רספונסיבי לגודל המסך, נבדוק מה גודל המסך באמצעות<br>
+                            If(*[Screen name]*.Size =2, [value],[value])<br>
+                            גודל 1 הוא רוחב המסך עד 1280 שהוא laptop וגודל 2 הוא רוחב המסך הגדול יותר מ1280 שהוא HD.
+                        </li>
+                        <li>אם האפליקציה היא גם ל- mobile נזין את הערך הבא: [768,1280]<br>
+                            כאשר אנחנו רוצים לשנות ערך שיהיה רספונסיבי לגודל המסך, נבדוק מה גודל המסך באמצעות<br>
+                            Switch(*[Screen name]*.Size , 3, [value],2, [value],1,[value])<br>
+                            גודל 1 הוא mobile עד 768, גודל 2 הוא laptop בין 768 עד 1280, וגודל HD הוא כל רוחב שגודל
+                            מ1280
+                        </li>
+                    </ul>
+
+                    <h3>5. השלב הבא הוא לשנות ערכים במסך שאנחנו עובדים עליו</h3>
+                    <p>לדוגמא אם המסך הראשון ברשימה נקרא Screen1 אז נלחץ עליו ובצד ימין בהגדרות / Advanced</p>
+                    <p>נחפש שורה בשם Height ונשנה את הערך בערך הבא בצורה שכתובה:</p>
+                    <pre>Max(Min(App.Height, 936),App.MinScreenHeight)</pre>
+
+                    <p>לאחר מכן נחפש שורה בשם Width ונשנה את הערך בערך הבא בצורה שכתובה:</p>
+                    <pre>Max(Min(App.Width, 1920),App.MinScreenWidth)</pre>
+
+                    <p>לאחר השינויים יש לשמור את היישום, ללחוץ על פרסום ולרענן את דפדפן.</p>
+
+                    <h3>6. לשתף עם קבוצת הטסט ועם המשתמש האפליקטיבי של סביבת dev</h3>
+
+                    <h3>7. להכניס את הלינק למערכת מעקב אחר תהליכים דיגיטליים לטופס 999</h3>
+
+                    <h3>8. איך לייבא ולהשתמש בקומפוננטות</h3>
+                    <p>נבחר את ה + ויוצג החלון הבא, נבחר את המסומן באדום (Import component):</p>
+                    <p>לאחר לחיצה על המסומן באדום יוצג החלון הבא:</p>
+                    <p>נפתח את הראשון ברשימה -- IEC Forms Components -- FullScreen</p>
+                    <p>יפתח החלון הבא:</p>
+                    <p>נבחר את הקומפוננטות שנרצה לייבא ע"י לחיצה על העיגול משמאל לשם ולחיצה על Import המסומן בחץ אדום.
+                    </p>
+
+                    <h3>9. להתקין את הפתרון של DropdownRtlStyles:</h3>
+                    <p>מתחילים באותה צורה כמו ייבוא קומפוננטה מספריית קומפוננטות.</p>
+                    <p>נבחר ב- code ואז נבחר ב- DropdownRrlStyles_Key</p>
+                    <p>קומפוננטה זו הופכת את ה- comboBox וה- dropdown להיות RTL.</p>
+                    <p>ניתן להכריח רכיבים להיות RTL על ידי הוספת התחילית הבאה באפליקציה ל:<br>
+                        RTLFIX_</p>
+
+                    <h3>10. ליצור קונטרול שמכיל את הצבעים, פונטים וגדלים של העיצוב.</h3>
+                </div>
+
+                <div class="section" id="components-info">
+                    <span class="anchor" id="components-info-anchor"></span>
+                    <h2>הסבר על סוגי קומפוננטות</h2>
+
+                    <h3>Component_HD_FullScreen</h3>
+                    <p>יש רק כותרת עם:</p>
+                    <ul>
+                        <li>תמונת חברת חשמל ללא כיתוב מטה</li>
+                        <li>כותרת הניתנת לבחירת ערך ידנית</li>
+                        <li>כפתור דיווח על בעיה</li>
+                    </ul>
+                    <p>יש מקטע עם פרטים אישיים עם:</p>
+                    <ul>
+                        <li>כותרות מובנות מראש ורק הערך מתחת ניתן לבחירה ידנית</li>
+                    </ul>
+                    <p>בנוסף יש עוד כותרת ו-2 שדות לבחירה ידנית במידה ורוצים להציג פרטים של חותם מדף קודם / נתונים
+                        נוספים.</p>
+                    <p>ניתן להסתרה ע"י השארת הערכים ריקים.</p>
+
+                    <h3>Component_HD_Header&Footer</h3>
+                    <p>יש כותרת עם:</p>
+                    <ul>
+                        <li>תמונת חברת חשמל ללא כיתוב מטה</li>
+                        <li>כותרת הניתנת לבחירת ערך ידנית</li>
+                        <li>כותרת משנה הניתנת לבחירת ערך ידנית</li>
+                        <li>כפתור דיווח על בעיה</li>
+                    </ul>
+                    <p>יש שורה תחתונה עם:</p>
+                    <ul>
+                        <li>כפתור שליחה אשר ניתן להסתרה באופן ידני</li>
+                    </ul>
+
+                    <h3>Component_HD_FullScreen_FreeLabels</h3>
+                    <p>יש רק כותרת עם:</p>
+                    <ul>
+                        <li>תמונת חברת חשמל ללא כיתוב מטה</li>
+                        <li>כותרת הניתנת לבחירת ערך ידנית</li>
+                        <li>כפתור דיווח על בעיה</li>
+                    </ul>
+                    <p>יש 3 מקטעים:</p>
+                    <ol>
+                        <li>כותרת ראשית + 8 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
+                        <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
+                        <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
+                    </ol>
+
+                    <h3>Component_HD_FullScreen_FreeLabels_Header&Footer</h3>
+                    <p>יש כותרת עם:</p>
+                    <ul>
+                        <li>תמונת חברת חשמל ללא כיתוב מטה</li>
+                        <li>כותרת הניתנת לבחירת ערך ידנית</li>
+                        <li>כותרת משנה הניתנת לבחירת ערך ידנית</li>
+                        <li>כפתור דיווח על בעיה</li>
+                    </ul>
+                    <p>יש שורה תחתונה עם:</p>
+                    <ul>
+                        <li>כפתור שליחה אשר ניתן להסתרה באופן ידני</li>
+                    </ul>
+                    <p>יש 3 מקטעים:</p>
+                    <ol>
+                        <li>כותרת ראשית + 8 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
+                        <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
+                        <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
+                    </ol>
+
+                    <h3>Component_ReportProblemPopup</h3>
+                    <p>חלון דיווח על בעיה,</p>
+                    <p>ערכים שאפשר למלא ידנית:</p>
+                    <ul>
+                        <li>Fullname</li>
+                        <li>phonenumber</li>
+                    </ul>
+                    <p>בנוסף יש X ו- Y שמאפשרים למקום את החלון באמצע המסך בהתאם לצורך אך לא ניתן לשנות את גודל החלון</p>
+
+                    <h3>שימוש בערכים המתקבלים מקומפוננטות לצורך יצירת בקשה</h3>
+                    <p>לאחר לחיצה על "שליחה" בקומפוננטה, מתקבל ממנה הערך componenetName.FooterBTN שהוא בוליאני.</p>
+                    <p>אותו נזין בתוך ה- default של קונטרול Toggle ואת כל הפונקציה שאנו רוצים לבצע עם שליחת הבקשה נשים
+                        ב- OnChange של ה- toggle.</p>
+                    <p>אותה לוגיקה נבצע גם בקומפוננטת דיווח על בעיה. הערך המתקבל ממנה הוא</p>
+                    <pre>cmp_Responsive_ReportProblemPopup_1.SendPatch_ReportProblemPopup1</pre>
+                    <p>ניתן לראות דוגמה לשימושיות בכל האפליקציות.</p>
+                </div>
+
+                <div class="section" id="workflows">
+                    <span class="anchor" id="workflows-anchor"></span>
+                    <h2>זרימות עבודה (Flows)</h2>
+                    <p>אנו מחלקים את זרימות העבודה ל-3 זרימות מרכזיות: Build, middle ו- final.</p>
+
+                    <h3>Build</h3>
+                    <p>בשמירת בקשה חדשה בטבלת הנתונים של התהליך, תפתח זרימת עבודה אשר תיצור את תהליך האישור בטבלת
+                        Approvers ומקים שורות מאשרים בהתאם לצורך. ניתן לראות דוגמה בזרימת העבודה Build_Stage_36.</p>
+
+                    <h3>Middle</h3>
+                    <p>זרימת העבודה מחכה לראות האם יש שורה פעילה ב-Approvers, שהשתנו בה ערכים. (Stage=1)</p>
+                    <p>הזרימה תמשיך בשליחת מייל לאדם הרלוונטי ובעדכון רשומות נוספות. ניתן לראות דוגמה בזרימת העבודה
+                        Middle_Stage_36</p>
+
+                    <h3>Final</h3>
+                    <p>בסיום תהליך האישור, זרימת העבודה תופעל, תיצור קובץ סופי המופק בסיום התהליך ותשלח אותו לעובד. ניתן
+                        לראות דומה בזרימת העבודה Final_Stage_36.</p>
+                    <p>בחלק מהתהליכים יש ליצור מסמך סופי שישלח לעובד.</p>
+
+                    <h4>על מנת להעלות את המסמך לתיקיית הטמפלטיים יש:</h4>
+                    <ol>
+                        <li>להתחבר לסיטריקס</li>
+                        <li>להתחבר עם המשתמש האפלקטיבי</li>
+                        <li>להכנס ל-shareppoint site של PA</li>
+                        <li>להעלות את המסמך לתיקיית: מסמכים- טמפלייט</li>
+                        <li>להמשיך עם זרימת העבודה. ניתן לראות זרימה לדוגמה ליצירת מסמך מתוך טמפלייט Final_Stage_36.
+                        </li>
+                    </ol>
+
+                    <p>בסוף כל זרימת עבודה יש להכניס את ה- scope:</p>
+                    <p>Scope Failure Notifications</p>
+                    <p>יש להגדיר את ה- run after ל- has failed.</p>
+                    <p>מטרת הסקופ היא לשלוח מייל וליידע כי זרימת העבודה נכשלה.</p>
+                    <p>יש להכניס את כל הפעולות הקודמות לתוך scope נוסף ולוודא כי קוראים לו flow.</p>
+                </div>
+
+                <div class="section" id="process-completion">
+                    <span class="anchor" id="process-completion-anchor"></span>
+                    <h2>סיום תהליך</h2>
+                    <p>בכל סוף פרוייקט לפני שמעבירים את המערכת לבדיקת QA, יש להכנס לאיפיון ולכתוב הערות מפתח. המטרה היא
+                        ליצור תשתית המאפשרת לנו לשמור על אחידות פיתוח ואפשרות לעשות בדיקות QA גם על המידע עצמו ולא רק על
+                        העיצוב והפונקציונאליות.</p>
+
+                    <h3>הערות המפתח הכוללות:</h3>
+                    <h4>1. מבנה המערכת- Power Apps Canvas שמות המסכים והתפקיד שלהם. לדוגמה:</h4>
+                    <ul>
+                        <li><strong>מסך ראשי:</strong> הגשת הבקשה כולל העלאת קבצים ושמירה בטבלת הנתונים.</li>
+                        <li><strong>מסך מנהל:</strong> הצגת בקשת העובד ונימוק המנהל לאישור או החזרה לעובד</li>
+                        <li><strong>מסך מרכז ליאור:</strong> הצגת בקשת העובד ונימוק המנהל ואפשרות להחלטה למרכז ליאור
+                            לאשר או להחזיר לעובד.</li>
+                    </ul>
+
+                    <h4>2. זרימות עבודה- שמות ה- Power Automate ואופן פעולתם. לדוגמה:</h4>
+                    <ul>
+                        <li><strong>טריגר</strong>: יצירת רשומה חדשה בטבלת Approvers עם IDform של התהליך.</li>
+                        <li><strong>פעולות</strong>:
+                            <ul>
+                                <li>הבאת הבקשה מהטבלה המקורית.</li>
+                                <li>בדיקה האם זרימת העבודה נמצאת ב- production</li>
+                                <li>שליחת מייל למנהל הרלוונטי.</li>
+                                <li>עדכון עמודת URLDeeplink של הרשומה ב- Approvers.</li>
+                                <li>שליחת מייל לעובד.</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4>3. DB- טבלאות, עמודות וסוג הנתונים המוזנים לכל טבלה. יש לציין דוגמה של הנתון.</h4>
+
+                    <p>שם הטבלה Employment Authorization_36</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>שם עמודה</th>
+                                <th>דוגמה לערך</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Employment_Authorization_36</td>
+                                <td>497b4f4f-f4b5-ef11-b8e9-000d3add945e</td>
+                            </tr>
+                            <tr>
+                                <td>SenderEmail</td>
+                                <td>LIMOR.LEVIN@IEC.CO.IL</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>שם הטבלה Approvers</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>שם עמודה</th>
+                                <th>דוגמה לערך</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>URLDeepLink</td>
+                                <td>https://apps.powerapps.com/play/e/c287f742-2959-ecfb-8a08-95f903abcd4e/a/504246ff-5549-442f-a4e8-afe4fedcff5d?tenantId=40ed954c-3e38-4c31-858a-c768fd7a39aa&sourcetime=1733305934654&source=portal&hidenavbar=true&ApproveID=555d74ca-b5c2-ef11-b8e9-002248a253e8
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Stage</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>4. תפקידי אבטחה- מהם תפקידי האבטחה שהוגדרו לקבוצות min priv apps use users ולקבוצת min prov app
+                        approvers. אם הוגדרו תפקידי אבטחה פרטניים בתוך זרימות העבודה, יש לציין זאת.</h4>
+                </div>
         </main>
     </div>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Handle submenu toggling
             const hasSubmenuLinks = document.querySelectorAll('.has-submenu');
             hasSubmenuLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
+                link.addEventListener('click', function (e) {
                     e.preventDefault();
                     this.classList.toggle('active');
                     const subNav = this.nextElementSibling;
                     subNav.classList.toggle('show');
                 });
             });
-            
+
             // Handle sidebar toggle on mobile
             const sidebarToggle = document.getElementById('sidebarToggle');
             if (sidebarToggle) {
-                sidebarToggle.addEventListener('click', function() {
+                sidebarToggle.addEventListener('click', function () {
                     const sidebar = document.querySelector('.sidebar');
                     sidebar.classList.toggle('show');
                 });
             }
-            
+
             // Variables for search
             const searchInput = document.getElementById('search');
-const searchResults = document.getElementById('searchResults');
-const searchResultsList = document.getElementById('searchResultsList');
-const closeSearchResults = document.getElementById('closeSearchResults');
-const content = document.querySelector('.content');
-            
+            const searchResults = document.getElementById('searchResults');
+            const searchResultsList = document.getElementById('searchResultsList');
+            const closeSearchResults = document.getElementById('closeSearchResults');
+            const content = document.querySelector('.content');
+
             // Debounce function for search
             function debounce(func, wait) {
                 let timeout;
-                return function() {
+                return function () {
                     const context = this;
                     const args = arguments;
                     clearTimeout(timeout);
@@ -1340,11 +1513,11 @@ const content = document.querySelector('.content');
                     }, wait);
                 };
             }
-            
+
             // Function to extract text nodes from the content
             function getTextNodesIn(element) {
                 const textNodes = [];
-                
+
                 function getTextNodes(node) {
                     if (node.nodeType === 3) {
                         // Text node
@@ -1358,45 +1531,50 @@ const content = document.querySelector('.content');
                         }
                     }
                 }
-                
+
                 getTextNodes(element);
                 return textNodes;
             }
-            
-            // Function to highlight search term in text
+
+            function escapeRegExp(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+            }
+
+            // Update your highlightText function to escape the search term
             function highlightText(node, term) {
                 const text = node.textContent;
+                const escapedTerm = escapeRegExp(term);
                 const index = text.toLowerCase().indexOf(term.toLowerCase());
                 if (index >= 0) {
                     // Split the text node into parts
                     const beforeMatch = text.substring(0, index);
                     const match = text.substring(index, index + term.length);
                     const afterMatch = text.substring(index + term.length);
-                    
+
                     // Create elements to replace the text node
                     const fragment = document.createDocumentFragment();
-                    
+
                     if (beforeMatch) {
                         fragment.appendChild(document.createTextNode(beforeMatch));
                     }
-                    
+
                     const spanElement = document.createElement('span');
                     spanElement.className = 'highlight';
                     spanElement.textContent = match;
                     fragment.appendChild(spanElement);
-                    
+
                     if (afterMatch) {
                         fragment.appendChild(document.createTextNode(afterMatch));
                     }
-                    
+
                     // Replace the original text node with our fragment
                     node.parentNode.replaceChild(fragment, node);
-                    
+
                     return true;
                 }
                 return false;
             }
-            
+
             // Function to remove highlights
             function removeHighlights() {
                 const highlights = document.querySelectorAll('.highlight');
@@ -1408,25 +1586,25 @@ const content = document.querySelector('.content');
                     parent.normalize();
                 });
             }
-            
+
             // Function to search content and display results
             function searchContent(query) {
-    // בדיקה אם האלמנטים קיימים
-    if (!searchResults || !content) {
-        console.error('Required DOM elements not found');
-        return;
-    }
+                // בדיקה אם האלמנטים קיימים
+                if (!searchResults || !content) {
+                    console.error('Required DOM elements not found');
+                    return;
+                }
 
-    if (!query || query.length < 2) {
-        searchResults.classList.remove('show');
-        content.classList.remove('with-results');
-        return;
-    }
-                
+                if (!query || query.length < 2) {
+                    searchResults.classList.remove('show');
+                    content.classList.remove('with-results');
+                    return;
+                }
+
                 // Get all text nodes in the content
                 const textNodes = getTextNodesIn(content);
                 const matches = [];
-                
+
                 // Find matches
                 textNodes.forEach(node => {
                     const text = node.textContent;
@@ -1437,14 +1615,14 @@ const content = document.querySelector('.content');
                         while (container && !['P', 'LI', 'TD', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(container.tagName)) {
                             container = container.parentNode;
                         }
-                        
+
                         if (container) {
                             // Get surrounding text for context
                             let fullText = text;
                             const contextStart = Math.max(0, index - 30);
                             const contextEnd = Math.min(fullText.length, index + query.length + 30);
                             let contextText = fullText.substring(contextStart, contextEnd);
-                            
+
                             // Add ellipsis if needed
                             if (contextStart > 0) {
                                 contextText = '...' + contextText;
@@ -1452,13 +1630,14 @@ const content = document.querySelector('.content');
                             if (contextEnd < fullText.length) {
                                 contextText += '...';
                             }
-                            
+
                             // Create highlighted version for search results
+                            const escapedQuery = escapeRegExp(query);
                             const highlightedText = contextText.replace(
-                                new RegExp(query, 'gi'),
+                                new RegExp(escapedQuery, 'gi'),
                                 match => `<strong>${match}</strong>`
                             );
-                            
+
                             // Add match to the list
                             matches.push({
                                 node: node,
@@ -1469,7 +1648,7 @@ const content = document.querySelector('.content');
                         }
                     }
                 });
-                
+
                 // Display matches in the search results panel
                 searchResultsList.innerHTML = '';
                 if (matches.length > 0) {
@@ -1478,117 +1657,133 @@ const content = document.querySelector('.content');
                         li.className = 'search-result-item';
                         li.innerHTML = match.highlightedText;
                         li.setAttribute('data-index', index);
-                        
-                        li.addEventListener('click', function() {
-                            // Scroll to the element
-                            const matchData = matches[this.getAttribute('data-index')];
-                            
-                            // Remove any existing highlights
+
+                        // Modify your click event handler for search results
+                        li.addEventListener('click', function () {
+                            // Get the index of the clicked result
+                            const index = parseInt(this.getAttribute('data-index'));
+
+                            // Remove any existing highlights first
                             removeHighlights();
-                            
-                            // Highlight the search term in the text node
-                            highlightText(matchData.node, query);
-                            
-                            // Scroll the element into view
-                            matchData.container.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            
+
+                            // Get the original container element (which should still be valid)
+                            const container = matches[index].container;
+
+                            // Scroll the container into view
+                            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                            // After removing highlights, we need to find the text nodes again
+                            // because the original references might not be valid anymore
+                            const textNodes = getTextNodesIn(container);
+                            const query = searchInput.value.trim();
+
+                            // Try to highlight the query in any of the text nodes in the container
+                            let highlighted = false;
+                            for (const node of textNodes) {
+                                if (node.textContent.toLowerCase().includes(query.toLowerCase())) {
+                                    highlighted = highlightText(node, query);
+                                    if (highlighted) break; // Stop after first successful highlight
+                                }
+                            }
+
                             // On mobile, hide the search results after clicking
                             if (window.innerWidth <= 768) {
                                 searchResults.classList.remove('show');
-                                content .classList.remove('with-results');
+                                content.classList.remove('with-results');
                             }
-                            
+
                             // Remove highlight after 10 seconds
                             setTimeout(removeHighlights, 10000);
                         });
-                        
+
                         searchResultsList.appendChild(li);
                     });
-                    
+
                     // Show search results panel
                     searchResults.classList.add('show');
-                    content .classList.add('with-results');
+                    content.classList.add('with-results');
                 } else {
                     const li = document.createElement('li');
                     li.className = 'search-result-item';
                     li.textContent = 'לא נמצאו תוצאות';
                     searchResultsList.appendChild(li);
-                    
+
                     // Show search results panel
                     searchResults.classList.add('show');
-                    content .classList.add('with-results');
+                    content.classList.add('with-results');
                 }
             }
-            
+
             // Debounced search function
-            const debouncedSearch = debounce(function() {
-    if (!searchInput) return;
-    const query = searchInput.value.trim();
-    searchContent(query);
-}, 300);
+            const debouncedSearch = debounce(function () {
+                if (!searchInput) return;
+                const query = searchInput.value.trim();
+                searchContent(query);
+            }, 300);
 
-// Set up search input event listener
-if (searchInput) {
-    searchInput.addEventListener('input', debouncedSearch);
-}
-
-// Close search results panel
-if (closeSearchResults && searchResults && content) {
-    closeSearchResults.addEventListener('click', function() {
-        searchResults.classList.remove('show');
-        content.classList.remove('with-results');
-    });
-}
-            
-            // Highlight active section based on scroll position
-            window.addEventListener('scroll', function() {
-    const scrollPosition = window.scrollY;
-    const sections = document.querySelectorAll('.section');
-    const navLinks = document.querySelectorAll('.nav-link:not(.has-submenu)');
-    
-    sections.forEach((section) => {
-        const sectionTop = section.offsetTop - 100;
-        const sectionBottom = sectionTop + section.offsetHeight;
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            const activeLink = document.querySelector(`a[href="#${section.id}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-                
-                // פתיחת תת-תפריט במידת הצורך
-                const parentSubmenu = activeLink.closest('.sub-nav');
-                if (parentSubmenu && !parentSubmenu.classList.contains('show')) {
-                    parentSubmenu.classList.add('show');
-                    parentSubmenu.previousElementSibling.classList.add('active');
-                }
-                
-                // גלילת סרגל הניווט כך שהפריט הפעיל יהיה נראה
-                const sidebar = document.querySelector('.sidebar');
-                if (sidebar) {
-                    // חישוב המיקום של הפריט הפעיל בתוך הסיידבר
-                    const activeLinkTop = activeLink.offsetTop;
-                    const activeLinkHeight = activeLink.offsetHeight;
-                    const sidebarScrollTop = sidebar.scrollTop;
-                    const sidebarHeight = sidebar.offsetHeight;
-                    
-                    // בדיקה אם הפריט הפעיל נמצא מחוץ לאזור הנראה
-                    if (activeLinkTop < sidebarScrollTop || activeLinkTop + activeLinkHeight > sidebarScrollTop + sidebarHeight) {
-                        // גלילה אל הפריט הפעיל עם מרווח קטן מעל
-                        sidebar.scrollTo({
-                            top: activeLinkTop - sidebarHeight / 4,
-                            behavior: 'smooth'
-                        });
-                    }
-                }
+            // Set up search input event listener
+            if (searchInput) {
+                searchInput.addEventListener('input', debouncedSearch);
             }
-        }
-    });
-});
+
+            // Close search results panel
+            if (closeSearchResults && searchResults && content) {
+                closeSearchResults.addEventListener('click', function () {
+                    searchResults.classList.remove('show');
+                    content.classList.remove('with-results');
+                });
+            }
+
+            // Highlight active section based on scroll position
+            window.addEventListener('scroll', function () {
+                const scrollPosition = window.scrollY;
+                const sections = document.querySelectorAll('.section');
+                const navLinks = document.querySelectorAll('.nav-link:not(.has-submenu)');
+
+                sections.forEach((section) => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                        });
+
+                        const activeLink = document.querySelector(`a[href="#${section.id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+
+                            // פתיחת תת-תפריט במידת הצורך
+                            const parentSubmenu = activeLink.closest('.sub-nav');
+                            if (parentSubmenu && !parentSubmenu.classList.contains('show')) {
+                                parentSubmenu.classList.add('show');
+                                parentSubmenu.previousElementSibling.classList.add('active');
+                            }
+
+                            // גלילת סרגל הניווט כך שהפריט הפעיל יהיה נראה
+                            const sidebar = document.querySelector('.sidebar');
+                            if (sidebar) {
+                                // חישוב המיקום של הפריט הפעיל בתוך הסיידבר
+                                const activeLinkTop = activeLink.offsetTop;
+                                const activeLinkHeight = activeLink.offsetHeight;
+                                const sidebarScrollTop = sidebar.scrollTop;
+                                const sidebarHeight = sidebar.offsetHeight;
+
+                                // בדיקה אם הפריט הפעיל נמצא מחוץ לאזור הנראה
+                                if (activeLinkTop < sidebarScrollTop || activeLinkTop + activeLinkHeight > sidebarScrollTop + sidebarHeight) {
+                                    // גלילה אל הפריט הפעיל עם מרווח קטן מעל
+                                    sidebar.scrollTo({
+                                        top: activeLinkTop - sidebarHeight / 4,
+                                        behavior: 'smooth'
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+            });
         });
     </script>
 </body>
+
 </html>
