@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>בסיס ידע - מתודולוגיה חח"י</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <!-- Tippy.js for tooltips -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.umd.min.js"></script>
     <style>
         :root {
             --main-color: #0056b3;
@@ -31,7 +40,94 @@
             padding: 0;
             direction: rtl;
         }
-
+        .node {
+      transition: all 0.3s ease;
+    }
+    .node:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .arrow-down {
+      position: relative;
+      height: 30px;
+    }
+    .arrow-down:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 50%;
+      width: 2px;
+      background: #4b5563;
+    }
+    .arrow-down:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: calc(50% - 5px);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 8px solid #4b5563;
+    }
+    .approval-state {
+      position: relative;
+      padding-right: 20px;
+    }
+    .approval-state:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .approval-state.pending:before {
+      background-color: #f59e0b;
+    }
+    .approval-state.approved:before {
+      background-color: #10b981;
+    }
+    .approval-state.rejected:before {
+      background-color: #ef4444;
+    }
+    .highlight-pulse {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+      }
+    }
+    /* Custom connector line styling */
+    .connector {
+      position: absolute;
+      background-color: #4b5563;
+      z-index: -1;
+    }
+    .connector-vertical {
+      width: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .connector-horizontal {
+      height: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
         .container {
             display: flex;
         }
@@ -473,6 +569,9 @@
                 </li>
                 <li class="nav-item">
                     <a href="#approver-table" class="nav-link">טבלת Approver</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#approver-steps" class="nav-link">דיאגרמת סבב אישורים </a>
                 </li>
                 <li class="nav-item">
                     <a href="#action-center" class="nav-link">Action Center</a>
@@ -1068,6 +1167,275 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="section" id="approver-steps">
+                <span class="anchor" id="approver-steps-anchor"></span>
+                <div class=" mx-auto px-4 py-8 max-w-6xl">
+                    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">דיאגרמת סבב אישורים - 3 מאשרים</h1>
+                    
+                    <div class="relative flex flex-col items-center space-y-6">
+                                              <!-- Legend -->
+                      <div class="w-full max-w-2xl mt-4 bg-white border border-gray-200 rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-700 mb-2">מקרא:</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                          <div class="flex items-center">
+                            <span class="approval-state pending w-3 h-3 rounded-full"></span>
+                            <span class="mr-2 text-sm text-gray-600">ממתין לאישור</span>
+                          </div>
+                          <div class="flex items-center">
+                            <span class="approval-state approved w-3 h-3 rounded-full"></span>
+                            <span class="mr-2 text-sm text-gray-600">אושר</span>
+                          </div>
+                          <div class="flex items-center">
+                            <span class="approval-state rejected w-3 h-3 rounded-full"></span>
+                            <span class="mr-2 text-sm text-gray-600">נדחה</span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Main Table Section -->
+                      <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-blue-500">
+                        <div class="flex items-center justify-center mb-4">
+                          <i class="fas fa-table text-blue-500 text-2xl mr-2"></i>
+                          <h2 class="text-xl font-semibold text-blue-700">טבלה ראשית (Main Table)</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">ID:</span>
+                            <span class="font-medium block">1001</span>
+                          </div>
+                          <div class="bg-blue-50 p-3 rounded border border-blue-200 highlight-pulse">
+                            <span class="text-blue-500 text-sm">GUID:</span>
+                            <span class="font-medium block" title="מזהה ייחודי שמקשר בין הטבלאות">5F8D3A76-C2B1-42E9...</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">Form Name:</span>
+                            <span class="font-medium block">בקשת רכש</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">Status:</span>
+                            <span class="approval-state pending font-medium block">ממתין לאישור</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">Created By:</span>
+                            <span class="font-medium block">ישראל ישראלי</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="arrow-down animate__animated animate__fadeIn"></div>
+                      
+                      <!-- Approver Table Description -->
+                      <div class="w-full max-w-2xl text-center">
+                        <div class="inline-block bg-green-100 text-green-800 px-4 py-2 rounded-full font-semibold">
+                          <i class="fas fa-users-cog mr-2"></i>טבלת APPROVER - 3 רשומות עבור סבב אישורים
+                        </div>
+                      </div>
+                      
+                      <!-- Approver 1 -->
+                      <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
+                        <div class="flex items-center justify-center mb-4">
+                          <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
+                          <h2 class="text-xl font-semibold text-green-700">מאשר 1 (Stage = 1)</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">Approver:</span>
+                            <span class="font-medium block">דן לוי</span>
+                          </div>
+                          <div class="bg-green-50 p-3 rounded border border-green-200">
+                            <span class="text-green-500 text-sm">Stage:</span>
+                            <span class="font-medium block">1</span>
+                          </div>
+                          <div class="bg-blue-50 p-3 rounded border border-blue-200">
+                            <span class="text-blue-500 text-sm">OrderGuid:</span>
+                            <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">DeepLink:</span>
+                            <span class="font-medium block">/form/1001</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">Status:</span>
+                            <span class="approval-state approved font-medium block">אושר</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="arrow-down animate__animated animate__fadeIn"></div>
+                      
+                      <!-- Process Steps for Approver 1 -->
+                      <div class="node w-full max-w-lg bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-300">
+                        <div class="flex flex-col space-y-3">
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
+                              <i class="fas fa-desktop text-blue-600"></i>
+                            </div>
+                            <div class="mr-3">
+                              <p class="text-sm font-medium">הצגה ב-Action Center למאשר 1</p>
+                            </div>
+                          </div>
+                          <div class="w-1 h-6 bg-gray-300 mr-5"></div>
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-green-100 p-2 rounded-full">
+                              <i class="fas fa-check text-green-600"></i>
+                            </div>
+                            <div class="mr-3">
+                              <p class="text-sm font-medium">אישור ע״י מאשר 1</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="arrow-down animate__animated animate__fadeIn"></div>
+                      
+                      <!-- Approver 2 -->
+                      <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
+                        <div class="flex items-center justify-center mb-4">
+                          <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
+                          <h2 class="text-xl font-semibold text-green-700">מאשר 2 (Stage = 2)</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">Approver:</span>
+                            <span class="font-medium block">רונית כהן</span>
+                          </div>
+                          <div class="bg-green-50 p-3 rounded border border-green-200">
+                            <span class="text-green-500 text-sm">Stage:</span>
+                            <span class="font-medium block">2</span>
+                          </div>
+                          <div class="bg-blue-50 p-3 rounded border border-blue-200">
+                            <span class="text-blue-500 text-sm">OrderGuid:</span>
+                            <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">DeepLink:</span>
+                            <span class="font-medium block">/form/1001</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">Status:</span>
+                            <span class="approval-state approved font-medium block">אושר</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="arrow-down animate__animated animate__fadeIn"></div>
+                      
+                      <!-- Process Steps for Approver 2 -->
+                      <div class="node w-full max-w-lg bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-300">
+                        <div class="flex flex-col space-y-3">
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
+                              <i class="fas fa-desktop text-blue-600"></i>
+                            </div>
+                            <div class="mr-3">
+                              <p class="text-sm font-medium">הצגה ב-Action Center למאשר 2</p>
+                            </div>
+                          </div>
+                          <div class="w-1 h-6 bg-gray-300 mr-5"></div>
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-green-100 p-2 rounded-full">
+                              <i class="fas fa-check text-green-600"></i>
+                            </div>
+                            <div class="mr-3">
+                              <p class="text-sm font-medium">אישור ע״י מאשר 2</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="arrow-down animate__animated animate__fadeIn"></div>
+                      
+                      <!-- Approver 3 -->
+                      <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
+                        <div class="flex items-center justify-center mb-4">
+                          <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
+                          <h2 class="text-xl font-semibold text-green-700">מאשר 3 (Stage = 3)</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">Approver:</span>
+                            <span class="font-medium block">יוסי אברהם</span>
+                          </div>
+                          <div class="bg-green-50 p-3 rounded border border-green-200">
+                            <span class="text-green-500 text-sm">Stage:</span>
+                            <span class="font-medium block">3</span>
+                          </div>
+                          <div class="bg-blue-50 p-3 rounded border border-blue-200">
+                            <span class="text-blue-500 text-sm">OrderGuid:</span>
+                            <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">DeepLink:</span>
+                            <span class="font-medium block">/form/1001</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">Status:</span>
+                            <span class="approval-state pending font-medium block">ממתין לאישור</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="arrow-down animate__animated animate__fadeIn"></div>
+                      
+                      <!-- Process Steps for Approver 3 -->
+                      <div class="node w-full max-w-lg bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-300">
+                        <div class="flex flex-col space-y-3">
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
+                              <i class="fas fa-desktop text-blue-600"></i>
+                            </div>
+                            <div class="mr-3">
+                              <p class="text-sm font-medium">הצגה ב-Action Center למאשר 3</p>
+                            </div>
+                          </div>
+                          <div class="w-1 h-6 bg-gray-300 mr-5"></div>
+                          <div class="flex items-center opacity-50">
+                            <div class="flex-shrink-0 bg-gray-100 p-2 rounded-full">
+                              <i class="fas fa-hourglass-half text-gray-600"></i>
+                            </div>
+                            <div class="mr-3">
+                              <p class="text-sm font-medium">ממתין לאישור מאשר 3</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="arrow-down animate__animated animate__fadeIn opacity-30"></div>
+                      
+                      <!-- Final Approval -->
+                      <div class="node w-full max-w-lg bg-white rounded-lg shadow-md p-6 border border-gray-300 opacity-90 hover:opacity-100 transition-opacity duration-300">
+                    <div class="flex items-center justify-start space-x-4">
+                        <div class="bg-green-100 p-4 rounded-full shadow-sm">
+                            <i class="fas fa-check-double text-green-500 text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xl font-semibold text-green-600">הטופס אושר סופית</p>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                      
+                      <!-- Explanation Note -->
+                      <div class="w-full max-w-2xl mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex">
+                          <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-yellow-500 text-xl"></i>
+                          </div>
+                          <div class="mr-3">
+                            <h3 class="font-semibold text-yellow-800">הערה חשובה:</h3>
+                            <p class="text-yellow-700 text-sm">
+                              כל 3 הרשומות בטבלת APPROVER משתמשות באותו OrderGuid מהטבלה הראשית כדי ליצור קישור.
+                              ההבדל העיקרי בין הרשומות הוא ערך ה-Stage המציין את סדר האישורים (1, 2, 3) וכן ה-RunNumber המציין גם הוא את מספר האישור בסבב.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+
+                    </div>
+                  </div>
+                  
             </div>
 
             <div class="section" id="action-center">
@@ -1928,6 +2296,25 @@
                 }
             }
         });
+         // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+      tippy('[title]', {
+        placement: 'top',
+        arrow: true,
+        theme: 'light',
+      });
+      
+      // Add hover animation to nodes
+      const nodes = document.querySelectorAll('.node');
+      nodes.forEach(node => {
+        node.addEventListener('mouseenter', function() {
+          this.classList.add('animate__animated', 'animate__pulse');
+        });
+        node.addEventListener('mouseleave', function() {
+          this.classList.remove('animate__animated', 'animate__pulse');
+        });
+      });
+    });
     </script>
 </body>
 
