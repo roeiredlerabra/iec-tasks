@@ -251,6 +251,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             transition: transform 0.3s ease;
+            border: 2px solid blue;
         }
 
         img:hover {
@@ -306,6 +307,23 @@
             border-radius: 2px;
             transition: background-color 0.5s;
         }
+        .image-container {
+    display: flex;
+    gap: 10px; /* Adjust spacing as needed */
+    flex-wrap: wrap; /* Allows wrapping if needed */
+    justify-content: center; /* Center images when wrapped */
+}
+
+
+
+/* Responsive: Stack images vertically on small screens */
+@media (max-width: 600px) {
+    .image-container {
+        flex-direction: column; /* Stack images */
+        align-items: center; /* Center align */
+    }
+}
+
 
         @media (max-width: 768px) {
             .sidebar {
@@ -1093,8 +1111,12 @@
                 <h2>קבוצות AD</h2>
                 <p>עובדי פנסיה וגמל : 057725c6-10f8-47b2-8b26-ad0aa1204b14</p>
                 <p>(בAzure DevOps בחחי במאמרי ידע יש רשימה מלאה של כל קבוצות EntraID עם הGUID שלהם)</p>
-                <img src="img/13.png" alt="קבוצות AD">
+                <div class="image-container">
+                    <img src="img/13.png" alt="קבוצות AD">
+                    <img src="img/14.png" alt="EntraID-USER">
+                </div>
             </div>
+            
 
             <div class="section" id="useful-links">
                 <span class="anchor" id="useful-links-anchor"></span>
