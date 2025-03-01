@@ -72,6 +72,22 @@
             transition: all 0.3s;
         }
 
+        .search-options {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .search-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .search-option input {
+            margin-left: 0.5rem;
+        }
+
         .content.with-results {
             margin-left: var(--search-results-width);
             width: calc(100% - var(--sidebar-width) - var(--search-results-width));
@@ -307,22 +323,28 @@
             border-radius: 2px;
             transition: background-color 0.5s;
         }
+
         .image-container {
-    display: flex;
-    gap: 10px; /* Adjust spacing as needed */
-    flex-wrap: wrap; /* Allows wrapping if needed */
-    justify-content: center; /* Center images when wrapped */
-}
+            display: flex;
+            gap: 10px;
+            /* Adjust spacing as needed */
+            flex-wrap: wrap;
+            /* Allows wrapping if needed */
+            justify-content: center;
+            /* Center images when wrapped */
+        }
 
 
 
-/* Responsive: Stack images vertically on small screens */
-@media (max-width: 600px) {
-    .image-container {
-        flex-direction: column; /* Stack images */
-        align-items: center; /* Center align */
-    }
-}
+        /* Responsive: Stack images vertically on small screens */
+        @media (max-width: 600px) {
+            .image-container {
+                flex-direction: column;
+                /* Stack images */
+                align-items: center;
+                /* Center align */
+            }
+        }
 
 
         @media (max-width: 768px) {
@@ -394,6 +416,12 @@
 
             <div class="search-container">
                 <input type="text" id="search" placeholder="חיפוש...">
+                <div class="search-options">
+                    <label class="search-option">
+                        <input type="checkbox" id="wholeWordSearch">
+                        <span>חיפוש מילה שלמה בלבד</span>
+                    </label>
+                </div>
             </div>
 
             <ul class="nav-list" id="navList">
@@ -1116,7 +1144,7 @@
                     <img src="img/14.png" alt="EntraID-USER">
                 </div>
             </div>
-            
+
 
             <div class="section" id="useful-links">
                 <span class="anchor" id="useful-links-anchor"></span>
@@ -1497,6 +1525,7 @@
     </div>
 
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
             // Handle submenu toggling
             const hasSubmenuLinks = document.querySelectorAll('.has-submenu');
@@ -1565,15 +1594,42 @@
             }
 
             // Update your highlightText function to escape the search term
-            function highlightText(node, term) {
+            function highlightText(node, term, wholeWord = false) {
                 const text = node.textContent;
                 const escapedTerm = escapeRegExp(term);
-                const index = text.toLowerCase().indexOf(term.toLowerCase());
+
+                let index = -1;
+                let termLength = term.length;
+
+                if (wholeWord) {
+                    // Special handling for Hebrew text
+                    const isHebrewTerm = /[\u0590-\u05FF]/.test(term);
+
+                    if (isHebrewTerm) {
+                        // For Hebrew, check if the word is surrounded by spaces or punctuation or at text boundaries
+                        const hebrewWordPattern = new RegExp(`(^|\\s|[,.!?;:])${escapedTerm}($|\\s|[,.!?;:])`, 'i');
+                        const match = text.match(hebrewWordPattern);
+                        if (match) {
+                            // Adjust index to skip the space or punctuation before the match
+                            index = match.index + (match[1] && match[1].length > 0 ? match[1].length : 0);
+                        }
+                    } else {
+                        // For non-Hebrew text, use regular word boundaries
+                        const wholeWordRegex = new RegExp(`\\b${escapedTerm}\\b`, 'i');
+                        const match = text.match(wholeWordRegex);
+                        if (match) {
+                            index = match.index;
+                        }
+                    }
+                } else {
+                    index = text.toLowerCase().indexOf(term.toLowerCase());
+                }
+
                 if (index >= 0) {
                     // Split the text node into parts
                     const beforeMatch = text.substring(0, index);
-                    const match = text.substring(index, index + term.length);
-                    const afterMatch = text.substring(index + term.length);
+                    const match = text.substring(index, index + termLength);
+                    const afterMatch = text.substring(index + termLength);
 
                     // Create elements to replace the text node
                     const fragment = document.createDocumentFragment();
@@ -1611,9 +1667,8 @@
                 });
             }
 
-            // Function to search content and display results
             function searchContent(query) {
-                // בדיקה אם האלמנטים קיימים
+                // Check if elements exist
                 if (!searchResults || !content) {
                     console.error('Required DOM elements not found');
                     return;
@@ -1629,11 +1684,45 @@
                 const textNodes = getTextNodesIn(content);
                 const matches = [];
 
+                // Check if whole word search is enabled
+                const wholeWordSearch = document.getElementById('wholeWordSearch').checked;
+
                 // Find matches
                 textNodes.forEach(node => {
                     const text = node.textContent;
-                    const index = text.toLowerCase().indexOf(query.toLowerCase());
-                    if (index >= 0) {
+                    let matchFound = false;
+                    let index = -1;
+
+                    if (wholeWordSearch) {
+                        // For whole word search - use word boundaries for non-Hebrew
+                        // For Hebrew text, we need a different approach since \b doesn't work well with Hebrew
+                        const isHebrewQuery = /[\u0590-\u05FF]/.test(query); // Check if query contains Hebrew characters
+
+                        if (isHebrewQuery) {
+                            // For Hebrew, check if the word is surrounded by spaces or punctuation or at text boundaries
+                            const hebrewWordPattern = new RegExp(`(^|\\s|[,.!?;:])${escapeRegExp(query)}($|\\s|[,.!?;:])`, 'i');
+                            const match = text.match(hebrewWordPattern);
+                            if (match) {
+                                matchFound = true;
+                                // Adjust index to skip the space or punctuation before the match
+                                index = match.index + (match[1] && match[1].length > 0 ? match[1].length : 0);
+                            }
+                        } else {
+                            // For non-Hebrew text, use regular word boundaries
+                            const wholeWordRegex = new RegExp(`\\b${escapeRegExp(query)}\\b`, 'i');
+                            const match = text.match(wholeWordRegex);
+                            if (match) {
+                                matchFound = true;
+                                index = match.index;
+                            }
+                        }
+                    } else {
+                        // For partial word search (existing logic)
+                        index = text.toLowerCase().indexOf(query.toLowerCase());
+                        matchFound = index >= 0;
+                    }
+
+                    if (matchFound) {
                         // Get the containing paragraph or element
                         let container = node.parentNode;
                         while (container && !['P', 'LI', 'TD', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(container.tagName)) {
@@ -1657,9 +1746,17 @@
 
                             // Create highlighted version for search results
                             const escapedQuery = escapeRegExp(query);
+                            let highlightRegex;
+
+                            if (wholeWordSearch) {
+                                highlightRegex = new RegExp(`\\b(${escapedQuery})\\b`, 'gi');
+                            } else {
+                                highlightRegex = new RegExp(`(${escapedQuery})`, 'gi');
+                            }
+
                             const highlightedText = contextText.replace(
-                                new RegExp(escapedQuery, 'gi'),
-                                match => `<strong>${match}</strong>`
+                                highlightRegex,
+                                '<strong>$1</strong>'
                             );
 
                             // Add match to the list
@@ -1667,7 +1764,9 @@
                                 node: node,
                                 container: container,
                                 text: contextText,
-                                highlightedText: highlightedText
+                                highlightedText: highlightedText,
+                                index: index,
+                                query: query
                             });
                         }
                     }
@@ -1699,14 +1798,24 @@
                             // After removing highlights, we need to find the text nodes again
                             // because the original references might not be valid anymore
                             const textNodes = getTextNodesIn(container);
-                            const query = searchInput.value.trim();
+                            const query = matches[index].query;
+                            const wholeWordSearch = document.getElementById('wholeWordSearch').checked;
 
                             // Try to highlight the query in any of the text nodes in the container
                             let highlighted = false;
                             for (const node of textNodes) {
-                                if (node.textContent.toLowerCase().includes(query.toLowerCase())) {
-                                    highlighted = highlightText(node, query);
-                                    if (highlighted) break; // Stop after first successful highlight
+                                if (wholeWordSearch) {
+                                    const escapedQuery = escapeRegExp(query);
+                                    const wholeWordRegex = new RegExp(`\\b${escapedQuery}\\b`, 'i');
+                                    if (wholeWordRegex.test(node.textContent)) {
+                                        highlightText(node, query, wholeWordSearch);
+                                        highlighted = true;
+                                        break;
+                                    }
+                                } else if (node.textContent.toLowerCase().includes(query.toLowerCase())) {
+                                    highlightText(node, query, wholeWordSearch);
+                                    highlighted = true;
+                                    break;
                                 }
                             }
 
@@ -1806,6 +1915,18 @@
                     }
                 });
             });
+        });
+        // Make sure this matches how you declared searchInput earlier in your code
+        const searchInputElement = document.getElementById('search');
+
+        document.getElementById('wholeWordSearch').addEventListener('change', function () {
+            if (searchInputElement) {
+                // Re-trigger search with current input value
+                const query = searchInputElement.value.trim();
+                if (query.length >= 2) {
+                    searchContent(query);
+                }
+            }
         });
     </script>
 </body>
