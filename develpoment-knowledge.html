@@ -369,6 +369,34 @@
         img:hover {
             transform: scale(1.5);
         }
+/* Apply styles to all <a href> links, except those inside .nav-item */
+    a[href]:not(.nav-item a) {
+    display: inline; /* Prevents breaking text flow */
+    padding: 2px 6px;
+    background: linear-gradient(135deg, #0078D4, #005A9E); /* Microsoft blue gradient */
+    color: #fff !important;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.3s ease-in-out;
+    white-space: nowrap; /* Prevents wrapping inside text */
+}
+
+/* Hover effect */
+a[href]:not(.nav-item a):hover {
+    background: linear-gradient(135deg, #005A9E, #003E6E);
+}
+
+/* Ensure proper RTL alignment */
+html[dir="rtl"] a[href]:not(.nav-item a) {
+    direction: rtl;
+    unicode-bidi: embed;
+}
+
+
+
+
 
         .search-results-header {
             display: flex;
