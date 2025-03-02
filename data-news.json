@@ -1,0 +1,35 @@
+{
+    "users": [
+        { "id": 1, "name": "מיכל פישר", "username": "michal fisher", "avatar": "img/michaljpg.jpg" },
+        { "id": 2, "name": "דורון ארנון", "username": "doron arnon", "avatar": "https://cdn3d.iconscout.com/3d/premium/thumb/bald-man-3d-icon-download-in-png-blend-fbx-gltf-file-formats--male-avatar-person-pack-people-icons-5012795.png?f=webp" },
+        { "id": 3, "name": "אבראהים את'יר", "username": "atheer abrahem", "avatar": "https://w7.pngwing.com/pngs/13/53/png-transparent-computer-icons-woman-avatar-woman-people-logo-monochrome-thumbnail.png" },
+        { "id": 4, "name": "רואי רדלר", "username": "roei redler", "avatar": "https://p.kindpng.com/picc/s/780-7804962_cartoon-avatar-png-image-transparent-avatar-user-image.png" },
+        { "id": 5, "name": "מירית בינשטוק", "username": "mirit binstock", "avatar": "img/mirit.jpg" }
+    ],
+    "announcements": [
+        { 
+            "id": 1, 
+            "userId": 1, 
+            "title": "חסר מידע? להרים דגל!", 
+            "content": "בזמן האיפיון, אם לא מוגדרת כמות תווים בשדות, יש להרים דגל וליידע את הצוות.", 
+            "date": "2025-03-03 10:00",
+            "tags": [ "איפיון", "שיטות עבודה"],
+            "codeSnippet": "",
+            "images": [
+                "https://www.wikihow.com/images/thumb/9/9a/Take-Cornell-Notes-Step-8-Version-3.jpg/v4-460px-Take-Cornell-Notes-Step-8-Version-3.jpg"
+            ]
+        },
+        {
+            "id": 2,
+            "userId": 2,
+            "title": "בעיה ב-APIM? חסר מידע?",
+            "content": "במידה ויש שאלות על שדות ממשקים, נא לשלוח במייל לדורון את המידע הנדרש  input ו-output.",
+            "date": "2025-03-03 11:00",
+            "tags": ["ממשקים", "APIM"],
+            "codeSnippet": "// Input JSON Data:\n{\n  \"employees\": [\n    {\n      \"id\": 1,\n      \"firstName\": \"John\",\n      \"lastName\": \"Doe\",\n      \"email\": \"john.doe@example.com\",\n      \"phone\": \"+1234567890\"\n    }\n  ]\n}\n// Output JSON Data (after processing):\n{\n  \"employees\": [\n    {\n      \"id\": 1,\n      \"name\": \"John Doe\",\n      \"contact\": {\n        \"email\": \"john.doe@example.com\",\n        \"phone\": \"+1234567890\"\n      },\n      \"location\": {\n        \"city\": \"Springfield\",\n        \"state\": \"IL\"\n      },\n      \"job\": {\n        \"title\": \"Software Engineer\",\n        \"department\": \"Engineering\"\n      }\n    }\n  ]\n}", 
+            "images": [
+                "https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd16de616-7366-4ad7-9348-30e58599b6e1_854x420.png"
+            ]
+        }
+    ]
+}

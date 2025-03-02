@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דבקונקט - רשת חברתית למפתחים</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Syntax highlighting for code -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <!-- Swiper for image carousels -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
+    <style>
+        /* RTL overrides for Swiper */
+        .swiper-button-next {
+            right: auto;
+            left: 10px;
+        }
+        .swiper-button-prev {
+            left: auto;
+            right: 10px;
+        }
+        
+        /* RTL code display */
+        pre, code {
+            direction: ltr;
+            text-align: left;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <h1 class="text-2xl font-bold text-blue-600">דבקונקט</h1>
+                    </div>
+                    <nav class="hidden sm:mr-6 sm:flex sm:space-x-8 space-x-reverse">
+                        <a href="#" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            בית
+                        </a>
+
+                    </nav>
+                </div>
+                <div class="hidden sm:mr-6 sm:flex sm:items-center">
+                    <button type="button" class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <span class="sr-only">צפה בהתראות</span>
+                        <i class="fas fa-bell"></i>
+                    </button>
+
+                    <!-- Profile dropdown -->
+                    <div class="mr-3 relative">
+                        <div>
+                            <button type="button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" id="user-menu-button">
+                                <span class="sr-only">פתח תפריט משתמש</span>
+                                <img class="h-8 w-8 rounded-full" src="img/abra Profile Photo.png" alt="תמונת פרופיל">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="-ml-2 flex items-center sm:hidden">
+                    <!-- Mobile menu button -->
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" id="mobile-menu-button">
+                        <span class="sr-only">פתח תפריט ראשי</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="sm:hidden hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="#" class="bg-blue-50 border-blue-500 text-blue-700 block pr-3 pl-4 py-2 border-r-4 text-base font-medium">
+                    בית
+                </a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pr-3 pl-4 py-2 border-r-4 text-base font-medium">
+                    גלה
+                </a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pr-3 pl-4 py-2 border-r-4 text-base font-medium">
+                    התראות
+                </a>
+                <a href="#" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pr-3 pl-4 py-2 border-r-4 text-base font-medium">
+                    הודעות
+                </a>
+            </div>
+            <div class="pt-4 pb-3 border-t border-gray-200">
+                <div class="flex items-center px-4">
+                    <div class="flex-shrink-0">
+                        <img class="h-10 w-10 rounded-full" src="img/abra Profile Photo.png" alt="תמונת פרופיל">
+                    </div>
+                    <div class="mr-3">
+                        <div class="text-base font-medium text-gray-800">אליס ג'ונסון</div>
+                        <div class="text-sm font-medium text-gray-500">alice@example.com</div>
+                    </div>
+                </div>
+                <div class="mt-3 space-y-1">
+                    <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+                        הפרופיל שלך
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+                        הגדרות
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+                        התנתק
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div class="flex flex-wrap">
+            <!-- Left Sidebar - Filters and Tags (in RTL, appears on right side) -->
+            <div class="w-full md:w-1/4 lg:w-1/5 px-2 mb-4">
+                <div class="bg-white shadow rounded-lg p-4 sticky top-20">
+                    <!-- User Profile -->
+                    <div class="flex items-center mb-4">
+                        <img src="img/abra Profile Photo.png" alt="פרופיל" class="w-12 h-12 rounded-full">
+                        <div class="mr-4">
+                            <h3 class="text-lg font-semibold"> Abra MS Solutions</h3>
+                            <p class="text-sm text-gray-500">@abra</p>
+                        </div>
+                    </div>
+                    
+
+                    
+                    <!-- Filters Section -->
+                    <div class="border-t pt-4 mt-4">
+                        <h2 class="text-lg font-semibold mb-4">סינון</h2>
+                        
+                        <!-- Search Bar -->
+                        <div class="mb-4">
+                            <div class="relative">
+                                <input type="text" id="search-input" placeholder="חפש פוסטים..." 
+                                    class="w-full p-2 pr-10 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300" 
+                                    oninput="filterPosts()">
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Date Range Filter -->
+                        <div class="mb-4">
+                            <div class="flex items-center mb-2">
+                                <label for="date-from" class="ml-2 text-sm font-medium text-gray-700">מתאריך:</label>
+                                <input type="date" id="date-from" class="p-1 border rounded text-sm w-full" onchange="filterPosts()">
+                            </div>
+                            <div class="flex items-center">
+                                <label for="date-to" class="ml-2 text-sm font-medium text-gray-700">עד תאריך:</label>
+                                <input type="date" id="date-to" class="p-1 border rounded text-sm w-full" onchange="filterPosts()">
+                            </div>
+                        </div>
+
+                        <!-- User Filter -->
+                        <div class="mb-4">
+                            <label for="user-filter" class="block text-sm font-medium text-gray-700 mb-1">משתמש:</label>
+                            <select id="user-filter" class="w-full p-2 border rounded" onchange="filterPosts()">
+                                <option value="">כל המשתמשים</option>
+                                <!-- User options will be populated dynamically -->
+                            </select>
+                        </div>
+
+                        <!-- Tag Filters -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">תגיות:</label>
+                            <div id="tag-filters" class="flex flex-wrap gap-2"></div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="w-full md:w-2/4 lg:w-3/5 px-2 mb-4">
+
+
+                <!-- Posts Container -->
+                <div id="feed-container"></div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+// Replace the existing database loading code with this
+let database = null; // Global database variable
+
+// Load JSON database
+fetch("/data-news.json")
+  .then((response) => response.json())
+  .then((data) => {
+    database = data; // Assign to global variable
+    
+    // Initialize the app after data is loaded
+    populateUserFilter();
+    updateTagFilters();
+    renderPosts();
+  })
+  .catch((error) => {
+    console.error("Error loading JSON:", error);
+    // Display error message to user
+    document.getElementById("feed-container").innerHTML = `
+      <div class="bg-white shadow rounded-lg p-6 text-center">
+        <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-3"></i>
+        <h3 class="text-lg font-semibold mb-1">שגיאה בטעינת נתונים</h3>
+        <p class="text-gray-500">לא ניתן לטעון את בסיס הנתונים. נסה לרענן את הדף.</p>
+      </div>
+    `;
+  });
+
+        let activeTag = null; // Store active tag filter
+        let selectedUserId = null; // Store selected user ID
+        let dateFrom = null; // Store from date
+        let dateTo = null; // Store to date
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Function to get user by ID
+        function getUserById(userId) {
+            return database.users.find(user => user.id === userId);
+        }
+
+        // Function to format date for display
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('he-IL', options);
+        }
+
+        // Function to check if a date is within a range
+        function isDateInRange(dateStr, fromDate, toDate) {
+            if (!fromDate && !toDate) return true;
+            
+            const date = new Date(dateStr);
+            
+            if (fromDate && !toDate) {
+                return date >= new Date(fromDate);
+            }
+            
+            if (!fromDate && toDate) {
+                return date <= new Date(toDate);
+            }
+            
+            return date >= new Date(fromDate) && date <= new Date(toDate);
+        }
+
+        // Function to render posts
+        function renderPosts() {
+            const container = document.getElementById("feed-container");
+            container.innerHTML = ""; // Clear before re-rendering
+
+            const filteredPosts = filterData();
+            
+            // Sort posts by date (newest first)
+            filteredPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            filteredPosts.forEach(post => {
+                const user = getUserById(post.userId);
+                if (!user) return;
+
+                // Create post element
+                const postDiv = document.createElement("div");
+                postDiv.classList.add("bg-white", "shadow", "rounded-lg", "mb-6", "overflow-hidden");
+
+                // Post header
+                let postHTML = `
+                    <div class="p-4 flex items-start">
+                        <img src="${user.avatar}" alt="${user.name}" class="w-12 h-12 rounded-full">
+
+                        <div class="mr-3 flex-grow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-semibold">${user.name}</h3>
+                                    <div class="text-sm text-gray-500">${formatDate(post.date)}</div>
+                                </div>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Post content
+                postHTML += `
+                    <div class="px-4 pb-2">
+                        <h2 class="text-xl font-semibold mb-2">${post.title}</h2>
+                        <p class="mb-3">${post.content}</p>
+                `;
+
+                // Code snippet if available
+                if (post.codeSnippet) {
+                    postHTML += `
+                        <div class="bg-gray-100 rounded-md p-3 mb-3 overflow-x-auto">
+                            <pre><code class="language-javascript">${post.codeSnippet}</code></pre>
+                        </div>
+                    `;
+                }
+
+                // Images carousel if available
+                if (post.images && post.images.length > 0) {
+                    if (post.images.length === 1) {
+                        postHTML += `
+                            <div class="mb-3 rounded-md overflow-hidden">
+                                <img src="${post.images[0]}" alt="תמונת פוסט" class="w-full h-auto">
+                            </div>
+                        `;
+                    } else {
+                        postHTML += `
+                            <div class="swiper post-carousel mb-3 rounded-md overflow-hidden" id="carousel-${post.id}">
+                                <div class="swiper-wrapper">
+                                    ${post.images.map(img => `
+                                        <div class="swiper-slide">
+                                            <img src="${img}" alt="תמונת פוסט" class="w-full h-auto">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        `;
+                    }
+                }
+
+                // Tags
+                postHTML += `
+                    <div class="flex flex-wrap gap-2 mt-2 mb-3">
+                        ${post.tags.map(tag => `
+                            <span class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full cursor-pointer hover:bg-blue-200" 
+                                onclick="filterByTag('${tag}')">#${tag}</span>
+                        `).join("")}
+                    </div>
+                `;
+
+                // JSON representation toggle
+                postHTML += `
+                    <div class="mb-3">
+                        <button class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center" 
+                                onclick="toggleJsonView('json-${post.id}')">
+                            <i class="fas fa-code ml-1"></i> הצג נתוני JSON
+                        </button>
+                        <div id="json-${post.id}" class="hidden mt-2 bg-gray-100 p-3 rounded-md overflow-x-auto">
+                            <pre><code class="language-json">${JSON.stringify(post, null, 2)}</code></pre>
+                        </div>
+                    </div>
+                `;
+
+                // Post actions
+                postHTML += `
+                   
+                `;
+
+                postDiv.innerHTML = postHTML;
+                container.appendChild(postDiv);
+
+                // Initialize Swiper carousel if there are multiple images
+                if (post.images && post.images.length > 1) {
+                    new Swiper(`#carousel-${post.id}`, {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                        loop: true,
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true,
+                        },
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        },
+                    });
+                }
+
+                // Apply syntax highlighting to code snippets
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+            });
+
+            // Show no results message if needed
+            if (filteredPosts.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white shadow rounded-lg p-6 text-center">
+                        <i class="fas fa-search text-gray-400 text-4xl mb-3"></i>
+                        <h3 class="text-lg font-semibold mb-1">לא נמצאו פוסטים</h3>
+                        <p class="text-gray-500">נסה לשנות את הסינון או את קריטריוני החיפוש</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to filter posts by multiple criteria
+        function filterData() {
+            const searchText = document.getElementById("search-input").value.toLowerCase();
+            const fromDate = document.getElementById("date-from").value;
+            const toDate = document.getElementById("date-to").value;
+            const userFilter = document.getElementById("user-filter").value;
+            
+            return database.announcements.filter(post => {
+                // Text search
+                const textMatch = post.title.toLowerCase().includes(searchText) || 
+                                post.content.toLowerCase().includes(searchText) ||
+                                post.tags.some(tag => tag.toLowerCase().includes(searchText));
+                
+                // Tag filter
+                const tagMatch = activeTag ? post.tags.includes(activeTag) : true;
+                
+                // Date range filter
+                const dateMatch = isDateInRange(post.date, fromDate, toDate);
+                
+                // User filter
+                const userMatch = userFilter ? post.userId === parseInt(userFilter) : true;
+                
+                return textMatch && tagMatch && dateMatch && userMatch;
+            });
+        }
+
+        // Function to filter posts by tag
+        function filterByTag(tag) {
+            activeTag = activeTag === tag ? null : tag; // Toggle tag filter
+            renderPosts();
+            updateTagFilters();
+        }
+
+        // Function to toggle JSON view
+        function toggleJsonView(jsonId) {
+            const jsonElement = document.getElementById(jsonId);
+            jsonElement.classList.toggle('hidden');
+        }
+
+        function populateUserFilter() {
+    const userFilter = document.getElementById("user-filter");
+    userFilter.innerHTML = '<option value="">כל המשתמשים</option>';
+    
+    // Get unique user IDs from posts
+    const activeUserIds = [...new Set(database.announcements.map(post => post.userId))];
+    
+    // Filter the users array to only include users who have posts
+    const activeUsers = database.users.filter(user => activeUserIds.includes(user.id));
+    
+    // Add these users to the dropdown
+    activeUsers.forEach(user => {
+        const option = document.createElement("option");
+        option.value = user.id;
+        option.textContent = user.name;
+        userFilter.appendChild(option);
+    });
+}
+
+        // Function to render available tags
+        function updateTagFilters() {
+            const tagContainer = document.getElementById("tag-filters");
+            tagContainer.innerHTML = "";
+
+            const allTags = [...new Set(database.announcements.flatMap(post => post.tags))];
+            allTags.forEach(tag => {
+                const tagButton = document.createElement("span");
+                tagButton.textContent = `#${tag}`;
+                tagButton.classList.add("px-3", "py-1", "text-xs", "rounded", "cursor-pointer");
+                
+                if (activeTag === tag) {
+                    tagButton.classList.add("bg-blue-500", "text-white");
+                } else {
+                    tagButton.classList.add("bg-gray-200", "hover:bg-gray-300");
+                }
+                
+                tagButton.onclick = () => filterByTag(tag);
+                tagContainer.appendChild(tagButton);
+            });
+        }
+
+        // Event listeners for filter changes
+        document.getElementById("search-input").addEventListener("input", filterPosts);
+        document.getElementById("date-from").addEventListener("change", filterPosts);
+        document.getElementById("date-to").addEventListener("change", filterPosts);
+        document.getElementById("user-filter").addEventListener("change", filterPosts);
+
+        // Function to handle all post filtering
+        function filterPosts() {
+            renderPosts();
+        }
+
+        // Initialize
+        document.addEventListener("DOMContentLoaded", () => {
+            populateUserFilter();
+            updateTagFilters();
+            renderPosts();
+        });
+    </script>
+</body>
+</html>
