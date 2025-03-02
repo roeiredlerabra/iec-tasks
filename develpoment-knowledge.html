@@ -1211,10 +1211,7 @@
                             <span class="text-gray-500 text-sm">Form Name:</span>
                             <span class="font-medium block">בקשת רכש</span>
                           </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">Status:</span>
-                            <span class="approval-state pending font-medium block">ממתין לאישור</span>
-                          </div>
+
                           <div class="bg-gray-50 p-3 rounded border border-gray-200">
                             <span class="text-gray-500 text-sm">Created By:</span>
                             <span class="font-medium block">ישראל ישראלי</span>
@@ -1232,34 +1229,39 @@
                       </div>
                       
                       <!-- Approver 1 -->
-                      <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
-                        <div class="flex items-center justify-center mb-4">
-                          <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
-                          <h2 class="text-xl font-semibold text-green-700">מאשר 1 (Stage = 1)</h2>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">Approver:</span>
-                            <span class="font-medium block">דן לוי</span>
-                          </div>
-                          <div class="bg-green-50 p-3 rounded border border-green-200">
-                            <span class="text-green-500 text-sm">Stage:</span>
-                            <span class="font-medium block">1</span>
-                          </div>
-                          <div class="bg-blue-50 p-3 rounded border border-blue-200">
-                            <span class="text-blue-500 text-sm">OrderGuid:</span>
-                            <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
-                          </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">DeepLink:</span>
-                            <span class="font-medium block">/form/1001</span>
-                          </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">Status:</span>
-                            <span class="approval-state approved font-medium block">אושר</span>
-                          </div>
-                        </div>
-                      </div>
+<div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
+    <div class="flex items-center justify-center mb-4">
+      <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
+      <h2 class="text-xl font-semibold text-green-700">מאשר 1 (Stage = 1)</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div class="bg-gray-50 p-3 rounded border border-gray-200">
+        <span class="text-gray-500 text-sm">מאשר:</span>
+        <span class="font-medium block">דן לוי</span>
+      </div>
+      <div class="bg-green-50 p-3 rounded border border-green-200">
+        <span class="text-green-500 text-sm">שלב:</span>
+        <span class="font-medium block">1</span>
+      </div>
+      <div class="bg-blue-50 p-3 rounded border border-blue-200">
+        <span class="text-blue-500 text-sm">OrderGuid:</span>
+        <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
+      </div>
+      <div class="bg-gray-50 p-3 rounded border border-gray-200">
+        <span class="text-gray-500 text-sm">DeepLink:</span>
+        <span class="font-medium block">/form/1001</span>
+      </div>
+      <div class="bg-gray-50 p-3 rounded border border-gray-200">
+        <span class="text-gray-500 text-sm">סטטוס:</span>
+        <span class="approval-state approved font-medium block">אושר</span>
+      </div>
+      <div class="bg-yellow-50 p-3 rounded border border-gray-200">
+        <span class="text-gray-500 text-sm">AppStatus (סטטוס ראשי):</span>
+        <span class="approval-state pending font-medium block">ממתין לאישור</span>
+        <p class="text-xs text-purple-400 mt-1">זהו הסטטוס הראשי שיופיע באקשן סנטר.</p>
+      </div>
+    </div>
+  </div>
                       
                       <div class="arrow-down animate__animated animate__fadeIn"></div>
                       
@@ -1313,6 +1315,10 @@
                           </div>
                           <div class="bg-gray-50 p-3 rounded border border-gray-200">
                             <span class="text-gray-500 text-sm">Status:</span>
+                            <span class="approval-state approved font-medium block">אושר</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">AppStatus:</span>
                             <span class="approval-state approved font-medium block">אושר</span>
                           </div>
                         </div>
@@ -1370,6 +1376,10 @@
                           </div>
                           <div class="bg-gray-50 p-3 rounded border border-gray-200">
                             <span class="text-gray-500 text-sm">Status:</span>
+                            <span class="approval-state pending font-medium block">ממתין לאישור</span>
+                          </div>
+                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-gray-500 text-sm">AppStatus:</span>
                             <span class="approval-state pending font-medium block">ממתין לאישור</span>
                           </div>
                         </div>
