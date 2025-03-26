@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamics 365 Security Role Comparator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-blue-600 mb-2">Dynamics 365 Security Role Comparator</h1>
+            <p class="text-gray-600">Compare security roles across multiple solution files</p>
+        </header>
+        
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8 border border-gray-200">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Upload Solution Files</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="relative">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500 transition-colors">
+                        <label class="block font-medium text-sm text-blue-600 mb-2">Solution 1 (Required)</label>
+                        <div class="flex items-center justify-center py-4">
+                            <input type="file" id="solution1" accept=".zip" required
+                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="text-center" id="solution1-placeholder">
+                                <i class="fas fa-file-upload text-gray-400 text-3xl mb-2"></i>
+                                <p class="text-sm text-gray-500">Click to browse</p>
+                            </div>
+                        </div>
+                        <div id="file-name-1" class="text-sm text-gray-600 mt-2 truncate"></div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500 transition-colors">
+                        <label class="block font-medium text-sm text-blue-600 mb-2">Solution 2</label>
+                        <div class="flex items-center justify-center py-4">
+                            <input type="file" id="solution2" accept=".zip"
+                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="text-center" id="solution2-placeholder">
+                                <i class="fas fa-file-upload text-gray-400 text-3xl mb-2"></i>
+                                <p class="text-sm text-gray-500">Click to browse</p>
+                            </div>
+                        </div>
+                        <div id="file-name-2" class="text-sm text-gray-600 mt-2 truncate"></div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500 transition-colors">
+                        <label class="block font-medium text-sm text-blue-600 mb-2">Solution 3</label>
+                        <div class="flex items-center justify-center py-4">
+                            <input type="file" id="solution3" accept=".zip"
+                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="text-center" id="solution3-placeholder">
+                                <i class="fas fa-file-upload text-gray-400 text-3xl mb-2"></i>
+                                <p class="text-sm text-gray-500">Click to browse</p>
+                            </div>
+                        </div>
+                        <div id="file-name-3" class="text-sm text-gray-600 mt-2 truncate"></div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-500 transition-colors">
+                        <label class="block font-medium text-sm text-blue-600 mb-2">Solution 4</label>
+                        <div class="flex items-center justify-center py-4">
+                            <input type="file" id="solution4" accept=".zip"
+                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="text-center" id="solution4-placeholder">
+                                <i class="fas fa-file-upload text-gray-400 text-3xl mb-2"></i>
+                                <p class="text-sm text-gray-500">Click to browse</p>
+                            </div>
+                        </div>
+                        <div id="file-name-4" class="text-sm text-gray-600 mt-2 truncate"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center">
+                <button id="compare-btn" disabled
+                        class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center">
+                    <i class="fas fa-search-plus mr-2"></i>
+                    Compare Security Roles
+                </button>
+            </div>
+            
+            <div id="upload-status" class="mt-4"></div>
+        </section>
+        
+        <section id="results-container" class="hidden">
+            <!-- Results will be displayed here -->
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const solution1 = document.getElementById('solution1');
+            const solution2 = document.getElementById('solution2');
+            const solution3 = document.getElementById('solution3');
+            const solution4 = document.getElementById('solution4');
+            const compareBtn = document.getElementById('compare-btn');
+            const resultsContainer = document.getElementById('results-container');
+            const uploadStatus = document.getElementById('upload-status');
+            
+            // Track uploaded files
+            const uploadedFiles = {
+                solution1: null,
+                solution2: null,
+                solution3: null,
+                solution4: null
+            };
+            
+            // Keep track of comparison results
+            let lastComparisonResults = null;
+            
+            // Update file display when a file is selected
+            function updateFileDisplay(input, fileNameId, placeholderId) {
+                const fileNameElement = document.getElementById(fileNameId);
+                const placeholderElement = document.getElementById(placeholderId);
+                
+                if (input.files && input.files[0]) {
+                    const fileName = input.files[0].name;
+                    fileNameElement.textContent = fileName;
+                    fileNameElement.title = fileName;
+                    
+                    // Hide placeholder, show file info
+                    placeholderElement.innerHTML = `
+                        <i class="fas fa-file-archive text-blue-500 text-3xl mb-2"></i>
+                        <p class="text-sm text-blue-600">File selected</p>
+                    `;
+                    
+                    return input.files[0];
+                } else {
+                    fileNameElement.textContent = '';
+                    
+                    // Show placeholder
+                    placeholderElement.innerHTML = `
+                        <i class="fas fa-file-upload text-gray-400 text-3xl mb-2"></i>
+                        <p class="text-sm text-gray-500">Click to browse</p>
+                    `;
+                    
+                    return null;
+                }
+            }
+            
+            // Update file info and enable/disable compare button
+            function updateFileInfo() {
+                uploadedFiles.solution1 = updateFileDisplay(solution1, 'file-name-1', 'solution1-placeholder');
+                uploadedFiles.solution2 = updateFileDisplay(solution2, 'file-name-2', 'solution2-placeholder');
+                uploadedFiles.solution3 = updateFileDisplay(solution3, 'file-name-3', 'solution3-placeholder');
+                uploadedFiles.solution4 = updateFileDisplay(solution4, 'file-name-4', 'solution4-placeholder');
+                
+                // Enable compare button if at least one file is uploaded
+                compareBtn.disabled = !uploadedFiles.solution1;
+            }
+            
+            // Set up file input event listeners
+            solution1.addEventListener('change', updateFileInfo);
+            solution2.addEventListener('change', updateFileInfo);
+            solution3.addEventListener('change', updateFileInfo);
+            solution4.addEventListener('change', updateFileInfo);
+            
+            // Process files when compare button is clicked
+            compareBtn.addEventListener('click', async function() {
+                if (!uploadedFiles.solution1) {
+                    displayStatus('error', 'Please upload at least one solution file.');
+                    return;
+                }
+                
+                // Show loading indicator with animation
+                displayStatus('loading', 'Processing files... This may take a few moments.');
+                
+                // Hide previous results
+                resultsContainer.innerHTML = '';
+                resultsContainer.classList.add('hidden');
+                
+                try {
+                    const solutions = [];
+                    
+                    // Process each uploaded file
+                    for (let i = 1; i <= 4; i++) {
+                        const file = uploadedFiles[`solution${i}`];
+                        if (file) {
+                            try {
+                                const solutionData = await processZipFile(file);
+                                solutions.push({
+                                    name: file.name,
+                                    data: solutionData
+                                });
+                            } catch (error) {
+                                console.error(`Error processing ${file.name}:`, error);
+                                displayStatus('error', `Error processing ${file.name}: ${error.message}`);
+                                return;
+                            }
+                        }
+                    }
+                    
+                    // Compare security roles
+                    const comparison = compareSecurityRoles(solutions);
+                    lastComparisonResults = {
+                        comparison: comparison,
+                        solutions: solutions
+                    };
+                    
+                    // Display results
+                    displayResults(comparison, solutions);
+                    resultsContainer.classList.remove('hidden');
+                    
+                    displayStatus('success', 'Analysis complete!');
+                    
+                    // Scroll to results
+                    resultsContainer.scrollIntoView({ behavior: 'smooth' });
+                } catch (error) {
+                    console.error('Comparison error:', error);
+                    displayStatus('error', `Error during comparison: ${error.message}`);
+                }
+            });
+            
+            // Display status messages with better styling
+            function displayStatus(type, message) {
+                let icon, bgColor, textColor, borderColor;
+                
+                switch (type) {
+                    case 'loading':
+                        icon = '<i class="fas fa-circle-notch fa-spin"></i>';
+                        bgColor = 'bg-blue-50';
+                        textColor = 'text-blue-700';
+                        borderColor = 'border-blue-200';
+                        break;
+                    case 'success':
+                        icon = '<i class="fas fa-check-circle"></i>';
+                        bgColor = 'bg-green-50';
+                        textColor = 'text-green-700';
+                        borderColor = 'border-green-200';
+                        break;
+                    case 'error':
+                        icon = '<i class="fas fa-exclamation-triangle"></i>';
+                        bgColor = 'bg-red-50';
+                        textColor = 'text-red-700';
+                        borderColor = 'border-red-200';
+                        break;
+                    default:
+                        icon = '<i class="fas fa-info-circle"></i>';
+                        bgColor = 'bg-gray-50';
+                        textColor = 'text-gray-700';
+                        borderColor = 'border-gray-200';
+                }
+                
+                uploadStatus.innerHTML = `
+                    <div class="flex items-center p-4 rounded-lg border ${borderColor} ${bgColor}">
+                        <span class="mr-3 ${textColor}">${icon}</span>
+                        <span class="${textColor}">${message}</span>
+                    </div>
+                `;
+            }
+            
+            // Process a zip file to extract security roles
+            async function processZipFile(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    
+                    reader.onload = async function(e) {
+                        try {
+                            const zip = await JSZip.loadAsync(e.target.result);
+                            let customizationsXml = null;
+                            
+                            // Search for customizations.xml in the zip file
+                            for (const path in zip.files) {
+                                if (path.endsWith('customizations.xml')) {
+                                    customizationsXml = await zip.files[path].async('text');
+                                    break;
+                                }
+                            }
+                            
+                            if (!customizationsXml) {
+                                reject(new Error('customizations.xml not found in the solution package'));
+                                return;
+                            }
+                            
+                            // Extract security roles from the XML
+                            const securityRoles = extractSecurityRoles(customizationsXml);
+                            resolve(securityRoles);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    };
+                    
+                    reader.onerror = function() {
+                        reject(new Error('Failed to read the file'));
+                    };
+                    
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+            
+            // Extract security roles from customizations.xml
+            function extractSecurityRoles(xmlString) {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+                
+                // Find Roles element
+                const rolesElement = xmlDoc.querySelector('Roles');
+                if (!rolesElement) {
+                    return []; // No roles found
+                }
+                
+                const roles = [];
+                
+                // Extract each Role
+                const roleElements = rolesElement.querySelectorAll('Role');
+                roleElements.forEach(roleElement => {
+                    const roleId = roleElement.getAttribute('id');
+                    const roleName = roleElement.getAttribute('name');
+                    const isInherited = roleElement.getAttribute('isinherited') === '1';
+                    
+                    const privileges = [];
+                    
+                    // Extract privileges for the role
+                    const privilegeElements = roleElement.querySelectorAll('RolePrivilege');
+                    privilegeElements.forEach(privilegeElement => {
+                        const privilegeName = privilegeElement.getAttribute('name');
+                        const privilegeLevel = privilegeElement.getAttribute('level');
+                        
+                        privileges.push({
+                            name: privilegeName,
+                            level: privilegeLevel
+                        });
+                    });
+                    
+                    roles.push({
+                        id: roleId,
+                        name: roleName,
+                        isInherited: isInherited,
+                        privileges: privileges
+                    });
+                });
+                
+                return roles;
+            }
+            
+            // Compare security roles between solutions
+            function compareSecurityRoles(solutions) {
+                if (solutions.length < 1) {
+                    return {
+                        roleComparison: [],
+                        privilegeComparison: []
+                    };
+                }
+                
+                // Get all unique role names across all solutions
+                const allRoleNames = new Set();
+                solutions.forEach(solution => {
+                    solution.data.forEach(role => {
+                        allRoleNames.add(role.name);
+                    });
+                });
+                
+                // Compare roles existence across solutions
+                const roleComparison = [];
+                allRoleNames.forEach(roleName => {
+                    const roleEntry = {
+                        name: roleName,
+                        existence: []
+                    };
+                    
+                    solutions.forEach(solution => {
+                        const roleExists = solution.data.some(role => role.name === roleName);
+                        roleEntry.existence.push({
+                            solution: solution.name,
+                            exists: roleExists
+                        });
+                    });
+                    
+                    roleComparison.push(roleEntry);
+                });
+                
+                // Compare privileges for all roles
+                const privilegeComparison = [];
+                allRoleNames.forEach(roleName => {
+                    const rolesWithName = [];
+                    
+                    solutions.forEach(solution => {
+                        const matchingRole = solution.data.find(role => role.name === roleName);
+                        if (matchingRole) {
+                            rolesWithName.push({
+                                solution: solution.name,
+                                role: matchingRole
+                            });
+                        }
+                    });
+                    
+                    // Get all unique privilege names across all instances of this role
+                    const allPrivilegeNames = new Set();
+                    rolesWithName.forEach(entry => {
+                        entry.role.privileges.forEach(privilege => {
+                            allPrivilegeNames.add(privilege.name);
+                        });
+                    });
+                    
+                    // Compare privileges across solutions
+                    const privilegeEntry = {
+                        roleName: roleName,
+                        privileges: []
+                    };
+                    
+                    allPrivilegeNames.forEach(privilegeName => {
+                        const privilegeCompare = {
+                            name: privilegeName,
+                            levels: []
+                        };
+                        
+                        solutions.forEach(solution => {
+                            const matchingRole = solution.data.find(role => role.name === roleName);
+                            if (matchingRole) {
+                                const matchingPrivilege = matchingRole.privileges.find(p => p.name === privilegeName);
+                                privilegeCompare.levels.push({
+                                    solution: solution.name,
+                                    level: matchingPrivilege ? matchingPrivilege.level : 'Not Present'
+                                });
+                            } else {
+                                privilegeCompare.levels.push({
+                                    solution: solution.name,
+                                    level: 'Role Not Present'
+                                });
+                            }
+                        });
+                        
+                        // Check if levels differ
+                        const levelsFromRoles = privilegeCompare.levels
+                            .filter(level => level.level !== 'Role Not Present')
+                            .map(level => level.level);
+                        
+                        const allSame = levelsFromRoles.length === 0 || 
+                            levelsFromRoles.every(level => level === levelsFromRoles[0]);
+                        
+                        privilegeCompare.different = !allSame;
+                        privilegeEntry.privileges.push(privilegeCompare);
+                    });
+                    
+                    // Only add to comparison if this role is in multiple solutions or if specifically requested
+                    if (rolesWithName.length > 0) {
+                        privilegeComparison.push(privilegeEntry);
+                    }
+                });
+                
+                return {
+                    roleComparison: roleComparison,
+                    privilegeComparison: privilegeComparison
+                };
+            }
+            
+            // Generate CSV data for export
+            function generateCSV(comparison, solutions) {
+                const rows = [];
+                
+                // Add header row
+                const headerRow = ['Role', 'Privilege'];
+                solutions.forEach(solution => {
+                    headerRow.push(solution.name);
+                });
+                rows.push(headerRow.join(','));
+                
+                // Add privilege data
+                comparison.privilegeComparison.forEach(rolePrivileges => {
+                    rolePrivileges.privileges.forEach(privilege => {
+                        const row = [rolePrivileges.roleName, privilege.name];
+                        
+                        privilege.levels.forEach(level => {
+                            row.push(level.level);
+                        });
+                        
+                        rows.push(row.join(','));
+                    });
+                });
+                
+                return rows.join('\n');
+            }
+            
+            // Display comparison results with improved UI
+            function displayResults(comparison, solutions) {
+                resultsContainer.innerHTML = '';
+                
+                if (solutions.length === 0) {
+                    resultsContainer.innerHTML = `
+                        <div class="bg-red-50 text-red-700 p-4 rounded-lg border border-red-200">
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                <span>No solutions to compare.</span>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Create summary section
+                const summarySection = document.createElement('div');
+                summarySection.className = 'bg-white rounded-lg shadow-md p-6 mb-6 border border-gray-200';
+                summarySection.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-700">
+                            <i class="fas fa-chart-pie text-blue-500 mr-2"></i>
+                            Comparison Summary
+                        </h2>
+                        <button id="export-csv" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                            <i class="fas fa-file-csv mr-2"></i>
+                            Export CSV
+                        </button>
+                    </div>
+                    <div class="grid md:grid-cols-${Math.min(solutions.length, 4)} gap-4 mb-4">
+                        ${solutions.map((s, index) => `
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                <div class="text-sm text-gray-500">Solution ${index + 1}</div>
+                                <div class="font-semibold text-blue-700 truncate" title="${s.name}">${s.name}</div>
+                                <div class="mt-2">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        <i class="fas fa-shield-alt mr-1"></i>
+                                        ${s.data.length} security roles
+                                    </span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                resultsContainer.appendChild(summarySection);
+                
+                // Add event listener for export button
+                document.getElementById('export-csv').addEventListener('click', function() {
+                    const csvData = generateCSV(comparison, solutions);
+                    const blob = new Blob([csvData], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'security-role-comparison.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
+                
+                // Enhanced filter section
+                const filterSection = document.createElement('div');
+                filterSection.className = 'bg-white rounded-lg shadow-md p-6 mb-6 border border-gray-200';
+                filterSection.innerHTML = `
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                        <i class="fas fa-filter text-blue-500 mr-2"></i>
+                        Filter Results
+                    </h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Role Filter</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                                <input type="text" id="role-filter" placeholder="Filter by role name..." 
+                                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <button id="clear-role-filter" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <i class="fas fa-times-circle text-gray-400 hover:text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Privilege Filter</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                                <input type="text" id="privilege-filter" placeholder="Filter by privilege name..." 
+                                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <button id="clear-privilege-filter" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <i class="fas fa-times-circle text-gray-400 hover:text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="show-only-differences" checked
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="show-only-differences" class="ml-2 block text-sm text-gray-700">
+                                Show Only Differences
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="show-inherited-roles"
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="show-inherited-roles" class="ml-2 block text-sm text-gray-700">
+                                Show Inherited Roles
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <label for="permission-level-filter" class="block text-sm text-gray-700 mr-2">
+                                Permission Level:
+                            </label>
+                            <select id="permission-level-filter" 
+                                class="block w-full py-1 pl-3 pr-10 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                <option value="all">All Levels</option>
+                                <option value="global">Global</option>
+                                <option value="deep">Deep</option>
+                                <option value="local">Local</option>
+                                <option value="basic">Basic</option>
+                                <option value="missing">Missing Permissions</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+                resultsContainer.appendChild(filterSection);
+                
+                // Setup filter clearing
+                document.getElementById('clear-role-filter').addEventListener('click', function() {
+                    document.getElementById('role-filter').value = '';
+                    document.getElementById('role-filter').dispatchEvent(new Event('input'));
+                });
+                
+                document.getElementById('clear-privilege-filter').addEventListener('click', function() {
+                    document.getElementById('privilege-filter').value = '';
+                    document.getElementById('privilege-filter').dispatchEvent(new Event('input'));
+                });
+                
+                // Role existence comparison
+                const roleDifferences = comparison.roleComparison.filter(role => 
+                    !role.existence.every((entry, i, arr) => entry.exists === arr[0].exists)
+                );
+                
+                if (roleDifferences.length > 0) {
+                    const roleComparisonSection = document.createElement('div');
+                    roleComparisonSection.className = 'bg-white rounded-lg shadow-md p-6 mb-6 border border-gray-200';
+                    roleComparisonSection.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-xl font-semibold text-gray-700">
+                                <i class="fas fa-exclamation-triangle text-amber-500 mr-2"></i>
+                                Role Existence Differences
+                                <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                    ${roleDifferences.length}
+                                </span>
+                            </h2>
+                            <button id="toggle-role-table" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="role-table-container">
+                            <div class="overflow-x-auto">
+                                <table id="role-diff-table" class="min-w-full divide-y divide-gray-200">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 z-10">
+                                                Role Name
+                                            </th>
+                                            ${solutions.map(s => `
+                                                <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 z-10">
+                                                    ${s.name}
+                                                </th>
+                                            `).join('')}
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200" id="role-diff-body">
+                                        ${roleDifferences.map(role => `
+                                            <tr class="role-row hover:bg-gray-50" data-role-name="${role.name.toLowerCase()}">
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                    ${role.name}
+                                                </td>
+                                               ${role.existence.map(e => `
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                                        <span class="${e.exists ? 'text-green-600' : 'text-red-600'}">
+                                                            ${e.exists ? 
+                                                                '<i class="fas fa-check-circle text-lg"></i>' : 
+                                                                '<i class="fas fa-times-circle text-lg"></i>'
+                                                            }
+                                                        </span>
+                                                    </td>
+                                                `).join('')}
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                    
+                    resultsContainer.appendChild(roleComparisonSection);
+                    
+                    // Toggle role table visibility
+                    document.getElementById('toggle-role-table').addEventListener('click', function() {
+                        const container = document.getElementById('role-table-container');
+                        const icon = this.querySelector('i');
+                        
+                        if (container.style.display === 'none') {
+                            container.style.display = 'block';
+                            icon.classList.remove('fa-chevron-up');
+                            icon.classList.add('fa-chevron-down');
+                        } else {
+                            container.style.display = 'none';
+                            icon.classList.remove('fa-chevron-down');
+                            icon.classList.add('fa-chevron-up');
+                        }
+                    });
+                }
+                
+                // Privilege comparison - now with card-based UI for each role
+                if (comparison.privilegeComparison.length > 0) {
+                    const privilegeComparisonContainer = document.createElement('div');
+                    privilegeComparisonContainer.className = 'space-y-6';
+                    privilegeComparisonContainer.id = 'privilege-comparison-container';
+                    
+                    // Count total differences
+                    let totalDifferences = 0;
+                    comparison.privilegeComparison.forEach(rolePrivileges => {
+                        totalDifferences += rolePrivileges.privileges.filter(p => p.different).length;
+                    });
+                    
+                    // Add header for privileges section
+                    const privilegesHeader = document.createElement('div');
+                    privilegesHeader.className = 'bg-white rounded-lg shadow-md p-6 mb-6 border border-gray-200';
+                    privilegesHeader.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-semibold text-gray-700">
+                                <i class="fas fa-key text-indigo-500 mr-2"></i>
+                                Privilege Comparison
+                                <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                    totalDifferences > 0 ? 'bg-amber-100 text-amber-800' : 'bg-green-100 text-green-800'
+                                }">
+                                    ${totalDifferences} differences
+                                </span>
+                            </h2>
+                            <button id="expand-all-roles" class="text-blue-600 hover:text-blue-800">
+                                <span>Expand All</span>
+                                <i class="fas fa-chevron-down ml-1"></i>
+                            </button>
+                        </div>
+                    `;
+                    resultsContainer.appendChild(privilegesHeader);
+                    
+                    if (totalDifferences === 0) {
+                        // No differences found message
+                        const noDifferences = document.createElement('div');
+                        noDifferences.className = 'bg-green-50 text-green-700 p-6 rounded-lg border border-green-200 mb-6';
+                        noDifferences.innerHTML = `
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-2xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium">No privilege differences found</p>
+                                    <p class="text-sm">All security roles have identical privileges across solutions.</p>
+                                </div>
+                            </div>
+                        `;
+                        resultsContainer.appendChild(noDifferences);
+                    }
+                    
+                    // Create role cards with privilege tables
+                    comparison.privilegeComparison.forEach(rolePrivileges => {
+                        const diffPrivileges = rolePrivileges.privileges.filter(p => p.different);
+                        
+                        const roleCard = document.createElement('div');
+                        roleCard.className = 'bg-white rounded-lg shadow-md border border-gray-200 role-card';
+                        roleCard.dataset.roleName = rolePrivileges.roleName.toLowerCase();
+                        
+                        // Show count of differences in the header
+                        const roleHeader = document.createElement('div');
+                        roleHeader.className = 'px-6 py-4 border-b border-gray-200 cursor-pointer role-header flex justify-between items-center';
+                        roleHeader.innerHTML = `
+                            <h3 class="text-lg font-medium text-gray-900 flex items-center">
+                                <i class="fas fa-user-shield text-indigo-500 mr-2"></i>
+                                ${rolePrivileges.roleName}
+                                ${diffPrivileges.length > 0 ? `
+                                    <span class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                        ${diffPrivileges.length} differences
+                                    </span>
+                                ` : ''}
+                            </h3>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform transform"></i>
+                        `;
+                        
+                        const roleContent = document.createElement('div');
+                        roleContent.className = 'role-content hidden';
+                        
+                        // Privilege search within this role
+                        const rolePrivilegeSearch = document.createElement('div');
+                        rolePrivilegeSearch.className = 'px-6 py-4 border-b border-gray-200';
+                        rolePrivilegeSearch.innerHTML = `
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                                <input type="text" class="role-privilege-filter block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
+                                       placeholder="Filter privileges in this role...">
+                            </div>
+                        `;
+                        
+                        // Create privilege table
+                        const tableContainer = document.createElement('div');
+                        tableContainer.className = 'overflow-x-auto';
+                        
+                        const privilegeTable = document.createElement('table');
+                        privilegeTable.className = 'min-w-full divide-y divide-gray-200 privilege-table';
+                        
+                        privilegeTable.innerHTML = `
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 z-10">
+                                        Privilege Name
+                                    </th>
+                                    ${solutions.map(s => `
+                                        <th scope="col" class="px-6 py-3 bg-gray-50 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 z-10">
+                                            ${s.name.split('.').shift()}
+                                        </th>
+                                    `).join('')}
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${rolePrivileges.privileges.map(privilege => {
+                                    const isDifferent = privilege.different;
+                                    return `
+                                        <tr class="privilege-row ${isDifferent ? 'bg-amber-50' : ''}" 
+                                            data-is-different="${isDifferent}" 
+                                            data-privilege-name="${privilege.name.toLowerCase()}"
+                                            data-levels="${privilege.levels.map(l => l.level.toLowerCase()).join(',')}"
+                                        >
+                                            <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900">
+                                                ${privilege.name}
+                                                ${isDifferent ? `
+                                                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
+                                                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                                                        Differs
+                                                    </span>
+                                                ` : ''}
+                                            </td>
+                                            ${privilege.levels.map(level => {
+                                                let bgColor, textColor, icon;
+                                                
+                                                if (level.level === 'Global') {
+                                                    bgColor = 'bg-green-100';
+                                                    textColor = 'text-green-800';
+                                                    icon = 'fa-globe';
+                                                } else if (level.level === 'Deep') {
+                                                    bgColor = 'bg-orange-100';
+                                                    textColor = 'text-orange-800';
+                                                    icon = 'fa-sitemap';
+                                                } else if (level.level === 'Local') {
+                                                    bgColor = 'bg-blue-100';
+                                                    textColor = 'text-blue-800';
+                                                    icon = 'fa-building';
+                                                } else if (level.level === 'Basic') {
+                                                    bgColor = 'bg-gray-100';
+                                                    textColor = 'text-gray-800';
+                                                    icon = 'fa-user';
+                                                } else if (level.level === 'Not Present') {
+                                                    bgColor = 'bg-red-100';
+                                                    textColor = 'text-red-800';
+                                                    icon = 'fa-times';
+                                                } else {
+                                                    bgColor = 'bg-gray-100';
+                                                    textColor = 'text-gray-500';
+                                                    icon = 'fa-question';
+                                                }
+                                                
+                                                return `
+                                                    <td class="px-6 py-3 whitespace-nowrap text-sm text-center">
+                                                        <span class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium ${bgColor} ${textColor}">
+                                                            <i class="fas ${icon} mr-1"></i>
+                                                            ${level.level}
+                                                        </span>
+                                                    </td>
+                                                `;
+                                            }).join('')}
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        `;
+                        
+                        tableContainer.appendChild(privilegeTable);
+                        
+                        // Add elements to the role card
+                        roleContent.appendChild(rolePrivilegeSearch);
+                        roleContent.appendChild(tableContainer);
+                        roleCard.appendChild(roleHeader);
+                        roleCard.appendChild(roleContent);
+                        
+                        // Add role card to the container
+                        privilegeComparisonContainer.appendChild(roleCard);
+                    });
+                    
+                    resultsContainer.appendChild(privilegeComparisonContainer);
+                    
+                    // Set up toggle functionality for role headers
+                    document.querySelectorAll('.role-header').forEach(header => {
+                        header.addEventListener('click', function() {
+                            const content = this.nextElementSibling;
+                            const icon = this.querySelector('i.fas');
+                            
+                            if (content.classList.contains('hidden')) {
+                                content.classList.remove('hidden');
+                                icon.classList.add('rotate-180');
+                            } else {
+                                content.classList.add('hidden');
+                                icon.classList.remove('rotate-180');
+                            }
+                        });
+                    });
+                    
+                    // Expand/Collapse all roles
+                    document.getElementById('expand-all-roles').addEventListener('click', function() {
+                        const isExpanding = this.querySelector('span').textContent === 'Expand All';
+                        const allContents = document.querySelectorAll('.role-content');
+                        const allIcons = document.querySelectorAll('.role-header i.fas');
+                        
+                        if (isExpanding) {
+                            allContents.forEach(content => content.classList.remove('hidden'));
+                            allIcons.forEach(icon => icon.classList.add('rotate-180'));
+                            this.querySelector('span').textContent = 'Collapse All';
+                            this.querySelector('i').classList.remove('fa-chevron-down');
+                            this.querySelector('i').classList.add('fa-chevron-up');
+                        } else {
+                            allContents.forEach(content => content.classList.add('hidden'));
+                            allIcons.forEach(icon => icon.classList.remove('rotate-180'));
+                            this.querySelector('span').textContent = 'Expand All';
+                            this.querySelector('i').classList.remove('fa-chevron-up');
+                            this.querySelector('i').classList.add('fa-chevron-down');
+                        }
+                    });
+                    
+                    // Role filter functionality
+                    const roleFilter = document.getElementById('role-filter');
+                    roleFilter.addEventListener('input', function() {
+                        const filterText = this.value.toLowerCase();
+                        
+                        // Apply to role comparison table
+                        if (document.getElementById('role-diff-body')) {
+                            const roleRows = document.querySelectorAll('#role-diff-body tr.role-row');
+                            roleRows.forEach(row => {
+                                const roleName = row.dataset.roleName;
+                                row.style.display = roleName.includes(filterText) ? '' : 'none';
+                            });
+                        }
+                        
+                        // Apply to role cards
+                        const roleCards = document.querySelectorAll('.role-card');
+                        roleCards.forEach(card => {
+                            const roleName = card.dataset.roleName;
+                            card.style.display = roleName.includes(filterText) ? '' : 'none';
+                        });
+                    });
+                    
+                    // Privilege filter functionality (global)
+                    const privilegeFilter = document.getElementById('privilege-filter');
+                    privilegeFilter.addEventListener('input', function() {
+                        const filterText = this.value.toLowerCase();
+                        
+                        // Apply to all privilege tables
+                        const privilegeRows = document.querySelectorAll('.privilege-row');
+                        privilegeRows.forEach(row => {
+                            const privilegeName = row.dataset.privilegeName;
+                            
+                            if (filterText === '') {
+                                // Apply the other filters only
+                                applyFiltersToRow(row);
+                            } else {
+                                // Apply text filter and other filters
+                                row.style.display = privilegeName.includes(filterText) ? '' : 'none';
+                                if (row.style.display !== 'none') {
+                                    applyFiltersToRow(row);
+                                }
+                            }
+                        });
+                    });
+                    
+                    // Role-specific privilege filters
+                    document.querySelectorAll('.role-privilege-filter').forEach(filter => {
+                        filter.addEventListener('input', function() {
+                            const filterText = this.value.toLowerCase();
+                            const table = this.closest('.role-content').querySelector('.privilege-table');
+                            const rows = table.querySelectorAll('tbody tr');
+                            
+                            rows.forEach(row => {
+                                const privilegeName = row.dataset.privilegeName;
+                                
+                                if (filterText === '') {
+                                    // Apply the global filters only
+                                    applyFiltersToRow(row);
+                                } else {
+                                    // Apply text filter and global filters
+                                    row.style.display = privilegeName.includes(filterText) ? '' : 'none';
+                                    if (row.style.display !== 'none') {
+                                        applyFiltersToRow(row);
+                                    }
+                                }
+                            });
+                        });
+                    });
+                    
+                    // "Show Only Differences" checkbox
+                    const showOnlyDifferencesCheckbox = document.getElementById('show-only-differences');
+                    showOnlyDifferencesCheckbox.addEventListener('change', function() {
+                        applyAllFilters();
+                    });
+                    
+                    // Permission level filter
+                    const permissionLevelFilter = document.getElementById('permission-level-filter');
+                    permissionLevelFilter.addEventListener('change', function() {
+                        applyAllFilters();
+                    });
+                    
+                    // Apply all filters function
+                    function applyAllFilters() {
+                        const privilegeRows = document.querySelectorAll('.privilege-row');
+                        privilegeRows.forEach(applyFiltersToRow);
+                    }
+                    
+                    // Function to apply filters to a single row
+                    function applyFiltersToRow(row) {
+                        const showOnlyDiffs = document.getElementById('show-only-differences').checked;
+                        const permissionLevel = document.getElementById('permission-level-filter').value;
+                        
+                        const isDifferent = row.dataset.isDifferent === 'true';
+                        const levels = row.dataset.levels;
+                        
+                        let shouldShow = true;
+                        
+                        // Apply "Show Only Differences" filter
+                        if (showOnlyDiffs && !isDifferent) {
+                            shouldShow = false;
+                        }
+                        
+                        // Apply permission level filter
+                        if (permissionLevel !== 'all' && !levels.includes(permissionLevel)) {
+                            shouldShow = false;
+                        }
+                        
+                        // Apply visibility
+                        row.style.display = shouldShow ? '' : 'none';
+                    }
+                    
+                    // Initialize filters
+                    applyAllFilters();
+                }
+                
+                // No differences found
+                if (roleDifferences.length === 0 && comparison.privilegeComparison.every(rp => 
+                    rp.privileges.every(p => !p.different)
+                )) {
+                    const noDifferencesSection = document.createElement('div');
+                    noDifferencesSection.className = 'bg-green-50 text-green-700 p-6 rounded-lg border border-green-200 mb-6';
+                    noDifferencesSection.innerHTML = `
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-3xl mr-4"></i>
+                            <div>
+                                <h3 class="font-bold text-lg">No Security Role Differences Found</h3>
+                                <p>All security roles and their privileges are identical across the compared solutions.</p>
+                            </div>
+                        </div>
+                    `;
+                    resultsContainer.appendChild(noDifferencesSection);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
