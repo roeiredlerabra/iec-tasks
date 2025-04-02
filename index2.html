@@ -36,7 +36,17 @@
             transition: all var(--transition-speed) ease;
             scroll-behavior: smooth;
         }
-
+        .group:hover .group-hover\:opacity-100 {
+    opacity: 1 !important;
+  }
+  
+  .group:hover .group-hover\:visible {
+    visibility: visible !important;
+  }
+  
+  .group:hover .group-hover\:scale-100 {
+    transform: scale(1) !important;
+  }
         /* Navbar Styling */
         .navbar {
             backdrop-filter: blur(10px);
@@ -1254,7 +1264,7 @@
             </div>
             
             <!-- Add Issue Button -->
-            <button onclick="openModal('issue', 'add')" class="btn btn-primary mt-6">
+            <button onclick="openModal('issue', 'add')" class="btn btn-primary flex items-center px-4 py-2 rounded-lg">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
