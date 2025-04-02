@@ -2498,20 +2498,57 @@
             } else if (type === 'issue') {
                 if (action === 'add' || action === 'update') {
                     modalContent.innerHTML += `
-                        <div class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                ${createFormField('משימה', 'text', 'modal-issue-text', true)}
-                                ${createFormField('סטטוס', 'select', 'modal-issue-status', true, false, ['בעבודה', 'הושלם', 'בהמתנה'])}
-                                ${createFormField('אחראי', 'text', 'modal-issue-responsible', true)}
-                            </div>
-                            <div>
-                                ${createFormField('אתגר', 'textarea', 'modal-issue-challenge', true)}
-                            </div>
-                            <div>
-                                ${createFormField('הערות', 'textarea', 'modal-issue-notes', false)}
-                            </div>
-                        </div>
-                    `;
+    <div class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            ${createFormField('משימה', 'text', 'modal-issue-text', true)}
+            ${createFormField('סטטוס', 'select', 'modal-issue-status', true, false, ['בעבודה', 'הושלם', 'בהמתנה'])}
+            ${createFormField('אחראי', 'text', 'modal-issue-responsible', true)}
+        </div>
+
+        <div class="border-t pt-4 mt-4"> <button type="button" id="toggle-challenge-btn" aria-expanded="false" aria-controls="challenge-content" class="flex justify-between items-center w-full text-left font-medium text-gray-700 hover:text-gray-900 focus:outline-none">
+                <span>אתגר</span>
+                <svg id="challenge-chevron" class="w-5 h-5 transform transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="challenge-content" class="mt-2 overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                ${createFormField('', 'textarea', 'modal-issue-challenge', true)} 
+                 </div>
+        </div>
+        <div class="border-t pt-4 mt-4"> ${createFormField('הערות', 'textarea', 'modal-issue-notes', false)}
+        </div>
+    </div>
+`;// Ensure modalContent is the actual DOM element where innerHTML was set
+const toggleBtn = modalContent.querySelector('#toggle-challenge-btn');
+const challengeContent = modalContent.querySelector('#challenge-content');
+const chevron = modalContent.querySelector('#challenge-chevron');
+
+if (toggleBtn && challengeContent && chevron) {
+    // Define a class that represents a reasonable expanded height.
+    // Adjust 'max-h-96' (384px) as needed, or use 'max-h-screen'.
+    const expandedClass = 'max-h-96'; 
+    const collapsedClass = 'max-h-0';
+
+    toggleBtn.addEventListener('click', () => {
+        const isCollapsed = challengeContent.classList.contains(collapsedClass);
+        
+        if (isCollapsed) {
+            // Expand
+            challengeContent.classList.remove(collapsedClass);
+            challengeContent.classList.add(expandedClass); // Add class for max height
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            chevron.classList.add('rotate-180'); // Rotate chevron up
+        } else {
+            // Collapse
+            challengeContent.classList.remove(expandedClass); // Remove max height class
+            challengeContent.classList.add(collapsedClass);
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            chevron.classList.remove('rotate-180'); // Rotate chevron down
+        }
+    });
+} else {
+    console.error("Could not find the necessary elements for the challenge collapsible section.");
+}
 
                     if (action === 'update') {
                         const selectedCase = store.getState().selectedCase;
