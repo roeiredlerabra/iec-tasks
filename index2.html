@@ -1167,36 +1167,41 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
                     <!-- Timeline Section - Vertical Container Left Side -->
                     <div class="md:col-span-1">
-                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 h-full">
-                            <div class="relative">
-                                <div class="absolute h-full right-3 top-0 w-1 bg-blue-500"></div>
-                    
-                                <div class="relative mb-8 flex items-start pr-8">
-                                    <div class="w-4 h-4 bg-blue-600 rounded-full border-2 border-blue absolute right-1.5 top-1"></div>
-                                    <div class="pr-6">
-                                        <div class="field-label text-sm font-medium text-gray-500">תאריך התחלת פיתוח</div>
-                                        <div id="case-dev-start-date-display" class="field-value text-lg font-semibold text-blue-600"></div>
-                                    </div>
-                                </div>
-                    
-                                <div class="relative mb-8 flex items-start pr-8">
-                                    <div class="w-4 h-4 bg-blue-600 rounded-full border-2 border-blue absolute right-1.5 top-1"></div>
-                                    <div class="pr-6">
-                                        <div class="field-label text-sm font-medium text-gray-500">העברה לטסט</div>
-                                        <div id="case-test-transfer-date-display" class="field-value text-lg font-semibold text-blue-600"></div>
-                                    </div>
-                                </div>
-                    
-                                <div class="relative flex items-start pr-8">
-                                    <div class="w-4 h-4 bg-gray-400 rounded-full border-2 border-blue absolute right-1.5 top-1"></div>
-                                    <div class="pr-6">
-                                        <div class="field-label text-sm font-medium text-gray-500">העברה לייצור</div>
-                                        <div id="case-production-transfer-date-display" class="field-value text-lg font-semibold text-gray-500"></div>
-                                    </div>
-                                </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 h-full">
+                          <div class="relative rtl">
+                            <!-- Vertical line -->
+                            <div class="absolute h-full right-3.5 top-2 w-1 bg-blue-100"></div>
+                      
+                            <!-- Timeline Item -->
+                            <div class="relative mb-12 flex items-start pr-12 group">
+                              <div class="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow absolute right-2 top-1 transition-transform group-hover:scale-110"></div>
+                              <div class="pr-6">
+                                <div class="text-sm font-medium text-gray-500">תאריך התחלת פיתוח</div>
+                                <div id="case-dev-start-date-display" class="text-base font-semibold text-blue-600 mt-1"></div>
+                              </div>
                             </div>
+                      
+                            <!-- Timeline Item -->
+                            <div class="relative mb-12 flex items-start pr-12 group">
+                              <div class="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow absolute right-2 top-1 transition-transform group-hover:scale-110"></div>
+                              <div class="pr-6">
+                                <div class="text-sm font-medium text-gray-500">העברה לטסט</div>
+                                <div id="case-test-transfer-date-display" class="text-base font-semibold text-blue-600 mt-1"></div>
+                              </div>
+                            </div>
+                      
+                            <!-- Timeline Item -->
+                            <div class="relative flex items-start pr-12 group">
+                              <div class="w-4 h-4 bg-green-400 rounded-full border-4 border-white shadow absolute right-2 top-1 transition-transform group-hover:scale-110"></div>
+                              <div class="pr-6">
+                                <div class="text-sm font-medium text-gray-500">העברה לייצור</div>
+                                <div id="case-production-transfer-date-display" class="text-base font-semibold text-gray-500 mt-1"></div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                    </div>
+                      </div>
+                      
         
                     <!-- Rest of Content - Horizontal Container Right Side -->
                     <div class="md:col-span-3">
