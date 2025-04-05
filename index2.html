@@ -1546,6 +1546,35 @@
             const loader = document.getElementById('loader');
             loader.classList.remove('active');
         }
+        function scrollTextareaToBottom(textareaId) {
+    const textarea = document.getElementById(textareaId);
+    if (textarea) {
+        // First set the CSS property for smooth scrolling
+        textarea.style.scrollBehavior = 'smooth';
+        
+        // Then scroll to bottom
+        textarea.scrollTop = textarea.scrollHeight;
+        
+        // Alternative approach using scrollIntoView on a hidden element
+        // This provides a more consistent smooth scrolling experience
+        const scrollToBottomElement = document.createElement('div');
+        scrollToBottomElement.style.height = '1px';
+        scrollToBottomElement.style.opacity = '0';
+        textarea.appendChild(scrollToBottomElement);
+        
+        scrollToBottomElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'end' 
+        });
+        
+        // Remove the temporary element after scrolling
+        setTimeout(() => {
+            if (textarea.contains(scrollToBottomElement)) {
+                textarea.removeChild(scrollToBottomElement);
+            }
+        }, 1000); // Remove after scroll animation completes
+    }
+}
 
         function showNotification(message, type) {
             Swal.fire({
@@ -2542,6 +2571,10 @@
         </div>
     </div>
 `;// Ensure modalContent is the actual DOM element where innerHTML was set
+setTimeout(() => {
+        scrollTextareaToBottom('modal-issue-notes');
+    }, 100); // Small delay to ensure modal is rendered
+
 const toggleBtn = modalContent.querySelector('#toggle-challenge-btn');
 const challengeContent = modalContent.querySelector('#challenge-content');
 const chevron = modalContent.querySelector('#challenge-chevron');
