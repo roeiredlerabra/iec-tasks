@@ -908,129 +908,135 @@
         .parent-case-header {
             animation: slideDown 0.3s ease-out forwards;
         }
+
         /* Work Queue Panel Styles */
-#workQueuePanel {
-    z-index: 1200; /* Higher than the dashboard but lower than the modal */
-}
+        #workQueuePanel {
+            z-index: 1200;
+            /* Higher than the dashboard but lower than the modal */
+        }
 
-#workQueuePanel .dashboard-content {
-    max-width: 500px;
-    height: 90%;
-    max-height: 600px;
-}
+        #workQueuePanel .dashboard-content {
+            max-width: 500px;
+            height: 90%;
+            max-height: 600px;
+        }
 
-#workQueueList {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(156, 163, 175, 0.5) rgba(229, 231, 235, 0.5);
-}
+        #workQueueList {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(156, 163, 175, 0.5) rgba(229, 231, 235, 0.5);
+        }
 
-#workQueueList::-webkit-scrollbar {
-    width: 6px;
-}
+        #workQueueList::-webkit-scrollbar {
+            width: 6px;
+        }
 
-#workQueueList::-webkit-scrollbar-track {
-    background: rgba(229, 231, 235, 0.5);
-    border-radius: 3px;
-}
+        #workQueueList::-webkit-scrollbar-track {
+            background: rgba(229, 231, 235, 0.5);
+            border-radius: 3px;
+        }
 
-#workQueueList::-webkit-scrollbar-thumb {
-    background-color: rgba(156, 163, 175, 0.5);
-    border-radius: 3px;
-}
+        #workQueueList::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 3px;
+        }
 
-/* Badge animation */
-@keyframes pulse-badge {
-    0% {
-        transform: translate(50%, -50%) scale(1);
-    }
-    50% {
-        transform: translate(50%, -50%) scale(1.1);
-    }
-    100% {
-        transform: translate(50%, -50%) scale(1);
-    }
-}
+        /* Badge animation */
+        @keyframes pulse-badge {
+            0% {
+                transform: translate(50%, -50%) scale(1);
+            }
 
-#queueBadge:not(.hidden) {
-    animation: pulse-badge 1.5s ease infinite;
-}
+            50% {
+                transform: translate(50%, -50%) scale(1.1);
+            }
 
-/* Queue item styles */
-.queue-item {
-    transition: background-color 0.3s ease;
-}
+            100% {
+                transform: translate(50%, -50%) scale(1);
+            }
+        }
 
-.queue-item:hover {
-    background-color: rgba(243, 244, 246, 0.8);
-}
+        #queueBadge:not(.hidden) {
+            animation: pulse-badge 1.5s ease infinite;
+        }
 
-.queue-item-animate-in {
-    animation: slideInRight 0.3s ease forwards;
-}
+        /* Queue item styles */
+        .queue-item {
+            transition: background-color 0.3s ease;
+        }
 
-@keyframes slideInRight {
-    from {
-        transform: translateX(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
+        .queue-item:hover {
+            background-color: rgba(243, 244, 246, 0.8);
+        }
 
-/* Status indicators */
-.status-icon {
-    transition: all 0.3s ease;
-}
+        .queue-item-animate-in {
+            animation: slideInRight 0.3s ease forwards;
+        }
 
-.status-processing {
-    animation: spin 1.5s linear infinite;
-}
+        @keyframes slideInRight {
+            from {
+                transform: translateX(20px);
+                opacity: 0;
+            }
 
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
 
-/* Tooltip for status */
-.status-tooltip {
-    position: relative;
-}
+        /* Status indicators */
+        .status-icon {
+            transition: all 0.3s ease;
+        }
 
-.status-tooltip .tooltip-text {
-    visibility: hidden;
-    width: 120px;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    top: -5px;
-    right: 105%;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
+        .status-processing {
+            animation: spin 1.5s linear infinite;
+        }
 
-.status-tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-}
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    #workQueuePanel .dashboard-content {
-        width: 95%;
-        max-width: none;
-        height: 80%;
-    }
-}
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Tooltip for status */
+        .status-tooltip {
+            position: relative;
+        }
+
+        .status-tooltip .tooltip-text {
+            visibility: hidden;
+            width: 120px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            top: -5px;
+            right: 105%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .status-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #workQueuePanel .dashboard-content {
+                width: 95%;
+                max-width: none;
+                height: 80%;
+            }
+        }
     </style>
 </head>
 
@@ -1140,16 +1146,20 @@
                             </ul>
                         </div>
                     </div>
-<!-- Queue Button (to be added to navbar) -->
-<div class="relative">
-    <button id="queueButton" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 transition duration-300">
-        <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-        </svg>
-        תור עבודה
-        <span id="queueBadge" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full hidden">0</span>
-    </button>
-</div>
+                    <!-- Queue Button (to be added to navbar) -->
+                    <div class="relative">
+                        <button id="queueButton"
+                            class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 transition duration-300">
+                            <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                </path>
+                            </svg>
+                            תור עבודה
+                            <span id="queueBadge"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full hidden">0</span>
+                        </button>
+                    </div>
                     <!-- User Menu -->
                     <div id="userDisplay" class="relative group">
                         <div class="user-menu">
@@ -1292,7 +1302,7 @@
                     </div>
                 </div>
             </div>
-        
+
             <!-- Case Details -->
             <div class="case-body p-6">
                 <!-- Main Content Grid with Timeline and Content -->
@@ -1300,41 +1310,50 @@
                     <!-- Timeline Section - Vertical Container Left Side -->
                     <div class="md:col-span-1">
                         <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 h-full">
-                          <div class="relative rtl">
-                            <!-- Vertical line -->
-                            <div class="absolute h-full right-3.5 top-2 w-1 bg-blue-100"></div>
-                      
-                            <!-- Timeline Item -->
-                            <div class="relative mb-12 flex items-start pr-12 group">
-                              <div class="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow absolute right-2 top-1 transition-transform group-hover:scale-110"></div>
-                              <div class="pr-6">
-                                <div class="text-sm font-medium text-gray-500">תאריך התחלת פיתוח</div>
-                                <div id="case-dev-start-date-display" class="text-base font-semibold text-blue-600 mt-1"></div>
-                              </div>
+                            <div class="relative rtl">
+                                <!-- Vertical line -->
+                                <div class="absolute h-full right-3.5 top-2 w-1 bg-blue-100"></div>
+
+                                <!-- Timeline Item -->
+                                <div class="relative mb-12 flex items-start pr-12 group">
+                                    <div
+                                        class="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow absolute right-2 top-1 transition-transform group-hover:scale-110">
+                                    </div>
+                                    <div class="pr-6">
+                                        <div class="text-sm font-medium text-gray-500">תאריך התחלת פיתוח</div>
+                                        <div id="case-dev-start-date-display"
+                                            class="text-base font-semibold text-blue-600 mt-1"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Timeline Item -->
+                                <div class="relative mb-12 flex items-start pr-12 group">
+                                    <div
+                                        class="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow absolute right-2 top-1 transition-transform group-hover:scale-110">
+                                    </div>
+                                    <div class="pr-6">
+                                        <div class="text-sm font-medium text-gray-500">העברה לטסט</div>
+                                        <div id="case-test-transfer-date-display"
+                                            class="text-base font-semibold text-blue-600 mt-1"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Timeline Item -->
+                                <div class="relative flex items-start pr-12 group">
+                                    <div
+                                        class="w-4 h-4 bg-green-400 rounded-full border-4 border-white shadow absolute right-2 top-1 transition-transform group-hover:scale-110">
+                                    </div>
+                                    <div class="pr-6">
+                                        <div class="text-sm font-medium text-gray-500">העברה לייצור</div>
+                                        <div id="case-production-transfer-date-display"
+                                            class="text-base font-semibold text-gray-500 mt-1"></div>
+                                    </div>
+                                </div>
                             </div>
-                      
-                            <!-- Timeline Item -->
-                            <div class="relative mb-12 flex items-start pr-12 group">
-                              <div class="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow absolute right-2 top-1 transition-transform group-hover:scale-110"></div>
-                              <div class="pr-6">
-                                <div class="text-sm font-medium text-gray-500">העברה לטסט</div>
-                                <div id="case-test-transfer-date-display" class="text-base font-semibold text-blue-600 mt-1"></div>
-                              </div>
-                            </div>
-                      
-                            <!-- Timeline Item -->
-                            <div class="relative flex items-start pr-12 group">
-                              <div class="w-4 h-4 bg-green-400 rounded-full border-4 border-white shadow absolute right-2 top-1 transition-transform group-hover:scale-110"></div>
-                              <div class="pr-6">
-                                <div class="text-sm font-medium text-gray-500">העברה לייצור</div>
-                                <div id="case-production-transfer-date-display" class="text-base font-semibold text-gray-500 mt-1"></div>
-                              </div>
-                            </div>
-                          </div>
                         </div>
-                      </div>
-                      
-        
+                    </div>
+
+
                     <!-- Rest of Content - Horizontal Container Right Side -->
                     <div class="md:col-span-3">
                         <!-- Status Grid -->
@@ -1360,7 +1379,7 @@
                                 <div class="field-label">ACTION CENTER</div>
                                 <div id="case-action-center-status-display" class="field-value badge"></div>
                             </div>
-        
+
                             <!-- Second Row: Additional Status -->
                             <div class="field-group">
                                 <div class="field-label">חיווי אוטומציה</div>
@@ -1379,7 +1398,7 @@
                                 <div id="case-CDR-display" class="field-value badge"></div>
                             </div>
                         </div>
-        
+
                         <!-- Description Section -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="md:col-span-1">
@@ -1399,7 +1418,7 @@
                         </div>
                     </div>
                 </div>
-        
+
                 <!-- Action Footer -->
                 <div class="flex flex-wrap justify-between items-center mt-8 pt-4 border-t border-gray-200">
                     <div class="flex flex-wrap gap-4 mb-4 sm:mb-0">
@@ -1422,7 +1441,7 @@
                             מחק טופס
                         </button>
                     </div>
-        
+
                     <!-- Counter Control -->
                     <div class="counter-container mb-4 sm:mb-0">
                         <button id="counter-decrease" onclick="updateCounter('decrease')"
@@ -1435,7 +1454,7 @@
                             +
                         </button>
                     </div>
-        
+
                     <button onclick="downloadCaseToExcel()"
                         class="btn btn-success flex items-center px-4 py-2 rounded-lg">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1670,233 +1689,233 @@
             filterStatus: 'all',
             user: null
         });
-// =========================================================
-// Work Queue System
-// =========================================================
-const workQueue = {
-    // Queue data structure
-    items: [],
-    // Queue status
-    isProcessing: false,
-    
-    // Add a new operation to the queue
-    add(operation) {
-        const queueItem = {
-            id: this.generateId(),
-            type: operation.type,
-            action: operation.action,
-            entityId: operation.id || null,
-            entityNumber: operation.number || operation.caseNumber || null,
-            entityTitle: operation.title || operation.issue || null,
-            status: 'pending',
-            createdAt: new Date(),
-            startedAt: null,
-            completedAt: null,
-            error: null,
-            data: operation
-        };
-        
-        this.items.push(queueItem);
-        this.updateQueueUI();
-        
-        // Start processing the queue if it's not already running
-        if (!this.isProcessing) {
-            this.processQueue();
-        }
-        
-        return queueItem.id;
-    },
-    
-    // Process the queue - runs one operation at a time sequentially
-    async processQueue() {
-        if (this.isProcessing || this.items.length === 0) return;
-        
-        this.isProcessing = true;
-        
-        // Get the next pending item
-        const item = this.items.find(i => i.status === 'pending');
-        if (!item) {
-            this.isProcessing = false;
-            return;
-        }
-        
-        // Update status to in progress
-        item.status = 'processing';
-        item.startedAt = new Date();
-        this.updateQueueUI();
-        
-        try {
-            // Send the operation to the API
-            const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(item.data)
-            });
-            
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            
-            const responseData = await response.json();
-            
-            // Update the item with success status
-            item.status = 'completed';
-            item.completedAt = new Date();
-            
-            // Show success notification
-            showNotification(`הפעולה ${this.getActionText(item.action)} בהצלחה`, 'success');
-            
-            // Refresh the data if needed
-            if (item.type === 'case' || (item.type === 'issue' && item.action !== 'add')) {
-                await fetchData();
-                
-                // Update selected case if needed
-                const state = store.getState();
-                if (state.selectedCase && 
-                    ((item.type === 'case' && state.selectedCase.number === item.entityNumber) ||
-                     (item.type === 'issue' && state.selectedCase.number === item.entityNumber))) {
-                    selectCase(state.selectedCase.number);
+        // =========================================================
+        // Work Queue System
+        // =========================================================
+        const workQueue = {
+            // Queue data structure
+            items: [],
+            // Queue status
+            isProcessing: false,
+
+            // Add a new operation to the queue
+            add(operation) {
+                const queueItem = {
+                    id: this.generateId(),
+                    type: operation.type,
+                    action: operation.action,
+                    entityId: operation.id || null,
+                    entityNumber: operation.number || operation.caseNumber || null,
+                    entityTitle: operation.title || operation.issue || null,
+                    status: 'pending',
+                    createdAt: new Date(),
+                    startedAt: null,
+                    completedAt: null,
+                    error: null,
+                    data: operation
+                };
+
+                this.items.push(queueItem);
+                this.updateQueueUI();
+
+                // Start processing the queue if it's not already running
+                if (!this.isProcessing) {
+                    this.processQueue();
                 }
-            }
-        } catch (error) {
-            // Update the item with failure status
-            item.status = 'failed';
-            item.completedAt = new Date();
-            item.error = error.message || 'Unknown error';
-            
-            // Show error notification
-            showNotification(`שגיאה בביצוע הפעולה: ${error.message}`, 'error');
-        }
-        
-        // Update the UI
-        this.updateQueueUI();
-        
-        // Continue processing the queue
-        this.isProcessing = false;
-        this.processQueue();
-    },
-    
-    // Generate a unique ID for queue items
-    generateId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-    },
-    
-    // Clear completed and failed items from the queue
-    clearCompleted() {
-        this.items = this.items.filter(item => item.status === 'pending' || item.status === 'processing');
-        this.updateQueueUI();
-    },
-    
-    // Get text representation of action
-    getActionText(action) {
-        switch (action) {
-            case 'add': return 'נוספה';
-            case 'update': return 'עודכנה';
-            case 'delete': return 'נמחקה';
-            default: return 'בוצעה';
-        }
-    },
-    
-    // Get text representation of entity type
-    getTypeText(type) {
-        return type === 'case' ? 'טופס' : 'משימה';
-    },
-    
-    // Get icon for queue item status
-    getStatusIcon(status) {
-        switch (status) {
-            case 'pending':
-                return '<svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
-            case 'processing':
-                return '<svg class="w-5 h-5 text-yellow-600 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>';
-            case 'completed':
-                return '<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
-            case 'failed':
-                return '<svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
-            default:
+
+                return queueItem.id;
+            },
+
+            // Process the queue - runs one operation at a time sequentially
+            async processQueue() {
+                if (this.isProcessing || this.items.length === 0) return;
+
+                this.isProcessing = true;
+
+                // Get the next pending item
+                const item = this.items.find(i => i.status === 'pending');
+                if (!item) {
+                    this.isProcessing = false;
+                    return;
+                }
+
+                // Update status to in progress
+                item.status = 'processing';
+                item.startedAt = new Date();
+                this.updateQueueUI();
+
+                try {
+                    // Send the operation to the API
+                    const response = await fetch('https://prod-104.westeurope.logic.azure.com:443/workflows/b7713903f38b4effb97853ea464dd728/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rkFqioCbLnqcJY7vjvC6KfNY7rsGVpn4YsyRxujJkXY', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(item.data)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const responseData = await response.json();
+
+                    // Update the item with success status
+                    item.status = 'completed';
+                    item.completedAt = new Date();
+
+                    // Show success notification
+                    showNotification(`הפעולה ${this.getActionText(item.action)} בהצלחה`, 'success');
+
+                    // Refresh the data if needed
+                    if (item.type === 'case' || (item.type === 'issue' && item.action !== 'add')) {
+                        await fetchData();
+
+                        // Update selected case if needed
+                        const state = store.getState();
+                        if (state.selectedCase &&
+                            ((item.type === 'case' && state.selectedCase.number === item.entityNumber) ||
+                                (item.type === 'issue' && state.selectedCase.number === item.entityNumber))) {
+                            selectCase(state.selectedCase.number);
+                        }
+                    }
+                } catch (error) {
+                    // Update the item with failure status
+                    item.status = 'failed';
+                    item.completedAt = new Date();
+                    item.error = error.message || 'Unknown error';
+
+                    // Show error notification
+                    showNotification(`שגיאה בביצוע הפעולה: ${error.message}`, 'error');
+                }
+
+                // Update the UI
+                this.updateQueueUI();
+
+                // Continue processing the queue
+                this.isProcessing = false;
+                this.processQueue();
+            },
+
+            // Generate a unique ID for queue items
+            generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+            },
+
+            // Clear completed and failed items from the queue
+            clearCompleted() {
+                this.items = this.items.filter(item => item.status === 'pending' || item.status === 'processing');
+                this.updateQueueUI();
+            },
+
+            // Get text representation of action
+            getActionText(action) {
+                switch (action) {
+                    case 'add': return 'נוספה';
+                    case 'update': return 'עודכנה';
+                    case 'delete': return 'נמחקה';
+                    default: return 'בוצעה';
+                }
+            },
+
+            // Get text representation of entity type
+            getTypeText(type) {
+                return type === 'case' ? 'טופס' : 'משימה';
+            },
+
+            // Get icon for queue item status
+            getStatusIcon(status) {
+                switch (status) {
+                    case 'pending':
+                        return '<svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                    case 'processing':
+                        return '<svg class="w-5 h-5 text-yellow-600 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>';
+                    case 'completed':
+                        return '<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                    case 'failed':
+                        return '<svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                    default:
+                        return '';
+                }
+            },
+
+            // Format time difference
+            getTimeDiff(startDate, endDate) {
+                if (!startDate) return '';
+
+                const start = new Date(startDate);
+                const end = endDate ? new Date(endDate) : new Date();
+                const diffMs = end - start;
+
+                if (diffMs < 1000) return 'פחות משנייה';
+
+                const seconds = Math.floor(diffMs / 1000);
+                if (seconds < 60) return `${seconds} שניות`;
+
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                return `${minutes} דקות ${remainingSeconds} שניות`;
+            },
+
+            // Get time text based on status
+            getTimeText(item) {
+                if (item.status === 'pending') {
+                    return `ממתין בתור ${this.getTimeDiff(item.createdAt)}`;
+                } else if (item.status === 'processing') {
+                    return `בביצוע ${this.getTimeDiff(item.startedAt)}`;
+                } else if (item.status === 'completed') {
+                    return `הושלם תוך ${this.getTimeDiff(item.startedAt, item.completedAt)}`;
+                } else if (item.status === 'failed') {
+                    return `נכשל לאחר ${this.getTimeDiff(item.startedAt, item.completedAt)}`;
+                }
                 return '';
-        }
-    },
-    
-    // Format time difference
-    getTimeDiff(startDate, endDate) {
-        if (!startDate) return '';
-        
-        const start = new Date(startDate);
-        const end = endDate ? new Date(endDate) : new Date();
-        const diffMs = end - start;
-        
-        if (diffMs < 1000) return 'פחות משנייה';
-        
-        const seconds = Math.floor(diffMs / 1000);
-        if (seconds < 60) return `${seconds} שניות`;
-        
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes} דקות ${remainingSeconds} שניות`;
-    },
-    
-    // Get time text based on status
-    getTimeText(item) {
-        if (item.status === 'pending') {
-            return `ממתין בתור ${this.getTimeDiff(item.createdAt)}`;
-        } else if (item.status === 'processing') {
-            return `בביצוע ${this.getTimeDiff(item.startedAt)}`;
-        } else if (item.status === 'completed') {
-            return `הושלם תוך ${this.getTimeDiff(item.startedAt, item.completedAt)}`;
-        } else if (item.status === 'failed') {
-            return `נכשל לאחר ${this.getTimeDiff(item.startedAt, item.completedAt)}`;
-        }
-        return '';
-    },
-    
-    // Get status class for styling
-    getStatusClass(status) {
-        switch (status) {
-            case 'pending': return 'bg-blue-100 text-blue-800';
-            case 'processing': return 'bg-yellow-100 text-yellow-800';
-            case 'completed': return 'bg-green-100 text-green-800';
-            case 'failed': return 'bg-red-100 text-red-800';
-            default: return '';
-        }
-    },
-    
-    // Toggle the work queue panel
-    toggleQueuePanel() {
-        const panel = document.getElementById('workQueuePanel');
-        if (panel.classList.contains('active')) {
-            panel.classList.remove('active');
-        } else {
-            panel.classList.add('active');
-            this.updateQueueUI();
-        }
-    },
-    
-    // Close the work queue panel
-    closeQueuePanel() {
-        const panel = document.getElementById('workQueuePanel');
-        panel.classList.remove('active');
-    },
-    
-    // Update the queue UI with current items
-    updateQueueUI() {
-        const panel = document.getElementById('workQueuePanel');
-        if (!panel) return;
-        
-        const queueList = document.getElementById('workQueueList');
-        if (!queueList) return;
-        
-        const badge = document.getElementById('queueBadge');
-        if (badge) {
-            const activeCount = this.items.filter(item => item.status === 'pending' || item.status === 'processing').length;
-            badge.textContent = activeCount;
-            badge.classList.toggle('hidden', activeCount === 0);
-        }
-        
-        queueList.innerHTML = '';
-        
-        if (this.items.length === 0) {
-            queueList.innerHTML = `
+            },
+
+            // Get status class for styling
+            getStatusClass(status) {
+                switch (status) {
+                    case 'pending': return 'bg-blue-100 text-blue-800';
+                    case 'processing': return 'bg-yellow-100 text-yellow-800';
+                    case 'completed': return 'bg-green-100 text-green-800';
+                    case 'failed': return 'bg-red-100 text-red-800';
+                    default: return '';
+                }
+            },
+
+            // Toggle the work queue panel
+            toggleQueuePanel() {
+                const panel = document.getElementById('workQueuePanel');
+                if (panel.classList.contains('active')) {
+                    panel.classList.remove('active');
+                } else {
+                    panel.classList.add('active');
+                    this.updateQueueUI();
+                }
+            },
+
+            // Close the work queue panel
+            closeQueuePanel() {
+                const panel = document.getElementById('workQueuePanel');
+                panel.classList.remove('active');
+            },
+
+            // Update the queue UI with current items
+            updateQueueUI() {
+                const panel = document.getElementById('workQueuePanel');
+                if (!panel) return;
+
+                const queueList = document.getElementById('workQueueList');
+                if (!queueList) return;
+
+                const badge = document.getElementById('queueBadge');
+                if (badge) {
+                    const activeCount = this.items.filter(item => item.status === 'pending' || item.status === 'processing').length;
+                    badge.textContent = activeCount;
+                    badge.classList.toggle('hidden', activeCount === 0);
+                }
+
+                queueList.innerHTML = '';
+
+                if (this.items.length === 0) {
+                    queueList.innerHTML = `
                 <div class="text-center py-6 text-gray-500">
                     <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
@@ -1904,24 +1923,24 @@ const workQueue = {
                     <p>אין פעולות בתור</p>
                 </div>
             `;
-            return;
-        }
-        
-        // Sort items: pending first, then processing, then completed, then failed
-        // Within each group, sort by created date (newest first)
-        const sortedItems = [...this.items].sort((a, b) => {
-            const statusOrder = { pending: 0, processing: 1, completed: 2, failed: 3 };
-            if (statusOrder[a.status] !== statusOrder[b.status]) {
-                return statusOrder[a.status] - statusOrder[b.status];
-            }
-            return new Date(b.createdAt) - new Date(a.createdAt);
-        });
-        
-        sortedItems.forEach(item => {
-            const listItem = document.createElement('div');
-            listItem.className = `border-b border-gray-200 last:border-b-0 p-4 ${item.status === 'failed' ? 'bg-red-50' : ''}`;
-            
-            listItem.innerHTML = `
+                    return;
+                }
+
+                // Sort items: pending first, then processing, then completed, then failed
+                // Within each group, sort by created date (newest first)
+                const sortedItems = [...this.items].sort((a, b) => {
+                    const statusOrder = { pending: 0, processing: 1, completed: 2, failed: 3 };
+                    if (statusOrder[a.status] !== statusOrder[b.status]) {
+                        return statusOrder[a.status] - statusOrder[b.status];
+                    }
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+
+                sortedItems.forEach(item => {
+                    const listItem = document.createElement('div');
+                    listItem.className = `border-b border-gray-200 last:border-b-0 p-4 ${item.status === 'failed' ? 'bg-red-50' : ''}`;
+
+                    listItem.innerHTML = `
                 <div class="flex items-start">
                     <div class="flex-shrink-0 pt-1">
                         ${this.getStatusIcon(item.status)}
@@ -1937,27 +1956,27 @@ const workQueue = {
                                 <p class="text-xs text-gray-500 mt-1">${this.getTimeText(item)}</p>
                             </div>
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${this.getStatusClass(item.status)}">
-                                ${item.status === 'pending' ? 'ממתין' : 
-                                  item.status === 'processing' ? 'בביצוע' : 
-                                  item.status === 'completed' ? 'הושלם' : 'נכשל'}
+                                ${item.status === 'pending' ? 'ממתין' :
+                            item.status === 'processing' ? 'בביצוע' :
+                                item.status === 'completed' ? 'הושלם' : 'נכשל'}
                             </span>
                         </div>
                         ${item.error ? `<p class="text-xs text-red-600 mt-2">${item.error}</p>` : ''}
                     </div>
                 </div>
             `;
-            
-            queueList.appendChild(listItem);
-        });
-        
-        // Update clear completed button visibility
-        const clearButton = document.getElementById('clearCompletedButton');
-        if (clearButton) {
-            const hasCompleted = this.items.some(item => item.status === 'completed' || item.status === 'failed');
-            clearButton.classList.toggle('hidden', !hasCompleted);
-        }
-    }
-};
+
+                    queueList.appendChild(listItem);
+                });
+
+                // Update clear completed button visibility
+                const clearButton = document.getElementById('clearCompletedButton');
+                if (clearButton) {
+                    const hasCompleted = this.items.some(item => item.status === 'completed' || item.status === 'failed');
+                    clearButton.classList.toggle('hidden', !hasCompleted);
+                }
+            }
+        };
         // =========================================================
         // UI Utilities
         // =========================================================
@@ -1971,34 +1990,34 @@ const workQueue = {
             loader.classList.remove('active');
         }
         function scrollTextareaToBottom(textareaId) {
-    const textarea = document.getElementById(textareaId);
-    if (textarea) {
-        // First set the CSS property for smooth scrolling
-        textarea.style.scrollBehavior = 'smooth';
-        
-        // Then scroll to bottom
-        textarea.scrollTop = textarea.scrollHeight;
-        
-        // Alternative approach using scrollIntoView on a hidden element
-        // This provides a more consistent smooth scrolling experience
-        const scrollToBottomElement = document.createElement('div');
-        scrollToBottomElement.style.height = '1px';
-        scrollToBottomElement.style.opacity = '0';
-        textarea.appendChild(scrollToBottomElement);
-        
-        scrollToBottomElement.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'end' 
-        });
-        
-        // Remove the temporary element after scrolling
-        setTimeout(() => {
-            if (textarea.contains(scrollToBottomElement)) {
-                textarea.removeChild(scrollToBottomElement);
+            const textarea = document.getElementById(textareaId);
+            if (textarea) {
+                // First set the CSS property for smooth scrolling
+                textarea.style.scrollBehavior = 'smooth';
+
+                // Then scroll to bottom
+                textarea.scrollTop = textarea.scrollHeight;
+
+                // Alternative approach using scrollIntoView on a hidden element
+                // This provides a more consistent smooth scrolling experience
+                const scrollToBottomElement = document.createElement('div');
+                scrollToBottomElement.style.height = '1px';
+                scrollToBottomElement.style.opacity = '0';
+                textarea.appendChild(scrollToBottomElement);
+
+                scrollToBottomElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end'
+                });
+
+                // Remove the temporary element after scrolling
+                setTimeout(() => {
+                    if (textarea.contains(scrollToBottomElement)) {
+                        textarea.removeChild(scrollToBottomElement);
+                    }
+                }, 1000); // Remove after scroll animation completes
             }
-        }, 1000); // Remove after scroll animation completes
-    }
-}
+        }
 
         function showNotification(message, type) {
             Swal.fire({
@@ -2822,24 +2841,25 @@ const workQueue = {
                 if (selectedCase) {
                     // Create parent case info header
                     const headerHTML = `
-                <div class="parent-case-header bg-gradient-to-r from-blue-50 to-indigo-50 p-4 mb-6 rounded-lg border-l-4 border-blue-500">
-                    <div class="flex items-center">
-                        <div class="bg-blue-100 p-2 rounded-full mr-3">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-semibold text-gray-600">משויך לטופס</h3>
-                            <div class="flex items-center">
-                                <span class="text-lg font-bold text-blue-700">מספר ${selectedCase.number}</span>
-                                <div class="w-1 h-1 bg-gray-400 rounded-full mx-2"></div>
-                                <span class="text-sm text-gray-700">${selectedCase.title}</span>
-                            </div>
-                        </div>
-                    </div>
+    <div class="parent-case-header sticky top-0 z-10 bg-gradient-to-r from-blue-50 to-indigo-50 p-4 mb-6 rounded-lg border-l-4 border-blue-500 shadow">
+        <div class="flex items-center">
+            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+            </div>
+            <div>
+                <h3 class="text-sm font-semibold text-gray-600">משויך לטופס</h3>
+                <div class="flex items-center">
+                    <span class="text-lg font-bold text-blue-700">מספר ${selectedCase.number}</span>
+                    <div class="w-1 h-1 bg-gray-400 rounded-full mx-2"></div>
+                    <span class="text-sm text-gray-700">${selectedCase.title}</span>
                 </div>
-            `;
+            </div>
+        </div>
+    </div>
+`;
+
 
                     // Prepend the header to modalContent before adding the rest of the content
                     modalContent.innerHTML = headerHTML;
@@ -2995,40 +3015,40 @@ const workQueue = {
         </div>
     </div>
 `;// Ensure modalContent is the actual DOM element where innerHTML was set
-setTimeout(() => {
-        scrollTextareaToBottom('modal-issue-notes');
-    }, 100); // Small delay to ensure modal is rendered
+                    setTimeout(() => {
+                        scrollTextareaToBottom('modal-issue-notes');
+                    }, 100); // Small delay to ensure modal is rendered
 
-const toggleBtn = modalContent.querySelector('#toggle-challenge-btn');
-const challengeContent = modalContent.querySelector('#challenge-content');
-const chevron = modalContent.querySelector('#challenge-chevron');
+                    const toggleBtn = modalContent.querySelector('#toggle-challenge-btn');
+                    const challengeContent = modalContent.querySelector('#challenge-content');
+                    const chevron = modalContent.querySelector('#challenge-chevron');
 
-if (toggleBtn && challengeContent && chevron) {
-    // Define a class that represents a reasonable expanded height.
-    // Adjust 'max-h-96' (384px) as needed, or use 'max-h-screen'.
-    const expandedClass = 'max-h-96'; 
-    const collapsedClass = 'max-h-0';
+                    if (toggleBtn && challengeContent && chevron) {
+                        // Define a class that represents a reasonable expanded height.
+                        // Adjust 'max-h-96' (384px) as needed, or use 'max-h-screen'.
+                        const expandedClass = 'max-h-96';
+                        const collapsedClass = 'max-h-0';
 
-    toggleBtn.addEventListener('click', () => {
-        const isCollapsed = challengeContent.classList.contains(collapsedClass);
-        
-        if (isCollapsed) {
-            // Expand
-            challengeContent.classList.remove(collapsedClass);
-            challengeContent.classList.add(expandedClass); // Add class for max height
-            toggleBtn.setAttribute('aria-expanded', 'true');
-            chevron.classList.add('rotate-180'); // Rotate chevron up
-        } else {
-            // Collapse
-            challengeContent.classList.remove(expandedClass); // Remove max height class
-            challengeContent.classList.add(collapsedClass);
-            toggleBtn.setAttribute('aria-expanded', 'false');
-            chevron.classList.remove('rotate-180'); // Rotate chevron down
-        }
-    });
-} else {
-    console.error("Could not find the necessary elements for the challenge collapsible section.");
-}
+                        toggleBtn.addEventListener('click', () => {
+                            const isCollapsed = challengeContent.classList.contains(collapsedClass);
+
+                            if (isCollapsed) {
+                                // Expand
+                                challengeContent.classList.remove(collapsedClass);
+                                challengeContent.classList.add(expandedClass); // Add class for max height
+                                toggleBtn.setAttribute('aria-expanded', 'true');
+                                chevron.classList.add('rotate-180'); // Rotate chevron up
+                            } else {
+                                // Collapse
+                                challengeContent.classList.remove(expandedClass); // Remove max height class
+                                challengeContent.classList.add(collapsedClass);
+                                toggleBtn.setAttribute('aria-expanded', 'false');
+                                chevron.classList.remove('rotate-180'); // Rotate chevron down
+                            }
+                        });
+                    } else {
+                        console.error("Could not find the necessary elements for the challenge collapsible section.");
+                    }
 
                     if (action === 'update') {
                         const selectedCase = store.getState().selectedCase;
@@ -3081,31 +3101,54 @@ if (toggleBtn && challengeContent && chevron) {
         }
 
         function createFormField(label, type, id, required, disabled = false, options = []) {
-            let field = `
-                <div class="form-field">
-                    <label for="${id}" class="block text-sm font-medium text-gray-700 mb-1">
-                        ${label}
-                        ${required ? '<span class="text-red-500">*</span>' : ''}
-                    </label>
-            `;
+    let field = `
+        <div class="form-field" dir="rtl">
+            <div class="flex justify-between items-center mb-1">
+                <label for="${id}" class="text-sm font-medium text-gray-700">
+                    ${label}
+                    ${required ? '<span class="text-red-500">*</span>' : ''}
+                </label>
+                <span class="text-xs text-gray-500">
+                    ספירת תווים: <span id="${id}-count">0</span> / 62500
+                </span>
+            </div>
+    `;
 
-            if (type === 'textarea') {
-                field += `<textarea id="${id}" class="form-control w-full" rows="4"${required ? ' required' : ''}${disabled ? ' disabled' : ''}></textarea>`;
-            } else if (type === 'select') {
-                field += `
-                    <select id="${id}" class="form-control w-full"${required ? ' required' : ''}${disabled ? ' disabled' : ''}>
-                        <option value="">בחר אפשרות</option>
-                        ${options.map(option => `<option value="${option}">${option}</option>`).join('')}
-                    </select>
-                `;
-            } else {
-                field += `<input type="${type}" id="${id}" class="form-control w-full"${required ? ' required' : ''}${disabled ? ' disabled' : ''}>`;
-            }
+    if (type === 'textarea') {
+        field += `<textarea id="${id}" class="form-control w-full" rows="4" maxlength="62500"
+                      ${required ? 'required' : ''}${disabled ? ' disabled' : ''}></textarea>`;
+    } else if (type === 'select') {
+        field += `
+            <select id="${id}" class="form-control w-full"${required ? ' required' : ''}${disabled ? ' disabled' : ''}>
+                <option value="">בחר אפשרות</option>
+                ${options.map(option => `<option value="${option}">${option}</option>`).join('')}
+            </select>
+        `;
+    } else {
+        field += `<input type="${type}" id="${id}" class="form-control w-full"${required ? ' required' : ''}${disabled ? ' disabled' : ''}>`;
+    }
 
-            field += `</div>`;
+    field += `</div>`;
 
-            return field;
+    // Wait until field is added to DOM, then attach live counter
+    setTimeout(() => {
+        const textarea = document.getElementById(id);
+        const counter = document.getElementById(`${id}-count`);
+        if (textarea && counter) {
+            // Set initial value
+            counter.textContent = textarea.value.length;
+
+            textarea.addEventListener('input', () => {
+                counter.textContent = textarea.value.length;
+            });
         }
+    }, 0);
+
+    return field;
+}
+
+
+
 
         function setupModalAccessibility() {
             const modal = document.getElementById('dynamicModal');
@@ -3134,209 +3177,209 @@ if (toggleBtn && challengeContent && chevron) {
             const modal = document.getElementById('dynamicModal');
             modal.removeEventListener('keydown', null);
         }
-// =========================================================
-// Modified API Functions to use Work Queue
-// =========================================================
-async function handleCaseAsync(action) {
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-    
-    let data = {
-        action: action,
-        type: 'case',
-        id: action === 'add' ? null : store.getState().selectedCase.id,
-        caseNumber: action === 'add' ? null : store.getState().selectedCase.number,
-        title: '',
-        responsible: '',
-        description: '',
-        color: '#FFFFFF',
-        developmentStartDate: '',
-        openIssuesAtStart: '',
-        hdDevelopmentStatus: '',
-        laptopDevelopmentStatus: '',
-        mobileDevelopmentStatus: '',
-        approversScreenStatus: '',
-        actionCenterStatus: '',
-        automationFailureIndicatorStatus: '',
-        reminderEmailStatus: '',
-        testTransferDate: '',
-        productionTransferDate: '',
-        securityRolesUpdateStatus: '',
-        CDR: '',
-        generalStatus: '',
-        devUrl: '',
-        testUrl: '',
-        prodUrl: ''
-    };
+        // =========================================================
+        // Modified API Functions to use Work Queue
+        // =========================================================
+        async function handleCaseAsync(action) {
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
 
-    // Check permissions
-    if (action === 'add' && !checkPermission('create')) {
-        showNotification('אין לך הרשאות ליצור', 'error');
-        return;
-    }
-    if (action === 'update' && !checkPermission('update')) {
-        showNotification('אין לך הרשאות לעדכן', 'error');
-        return;
-    }
-    if (action === 'delete' && !checkPermission('delete')) {
-        showNotification('אין לך הרשאות למחוק', 'error');
-        return;
-    }
+            let data = {
+                action: action,
+                type: 'case',
+                id: action === 'add' ? null : store.getState().selectedCase.id,
+                caseNumber: action === 'add' ? null : store.getState().selectedCase.number,
+                title: '',
+                responsible: '',
+                description: '',
+                color: '#FFFFFF',
+                developmentStartDate: '',
+                openIssuesAtStart: '',
+                hdDevelopmentStatus: '',
+                laptopDevelopmentStatus: '',
+                mobileDevelopmentStatus: '',
+                approversScreenStatus: '',
+                actionCenterStatus: '',
+                automationFailureIndicatorStatus: '',
+                reminderEmailStatus: '',
+                testTransferDate: '',
+                productionTransferDate: '',
+                securityRolesUpdateStatus: '',
+                CDR: '',
+                generalStatus: '',
+                devUrl: '',
+                testUrl: '',
+                prodUrl: ''
+            };
 
-    if (action === 'add' || action === 'update') {
-        // Get form field values
-        data.caseNumber = parseInt(document.getElementById('modal-case-number').value, 10);
-        data.title = document.getElementById('modal-case-title').value;
-        data.responsible = document.getElementById('modal-case-responsible').value;
-        data.description = document.getElementById('modal-case-description').value;
-        data.color = document.getElementById('modal-case-color').value;
-        data.developmentStartDate = document.getElementById('modal-case-dev-start-date').value;
-        data.openIssuesAtStart = document.getElementById('modal-case-open-issues').value;
-        data.hdDevelopmentStatus = document.getElementById('modal-case-hd-status').value;
-        data.laptopDevelopmentStatus = document.getElementById('modal-case-laptop-status').value;
-        data.mobileDevelopmentStatus = document.getElementById('modal-case-mobile-status').value;
-        data.approversScreenStatus = document.getElementById('modal-case-approvers-status').value;
-        data.actionCenterStatus = document.getElementById('modal-case-action-center-status').value;
-        data.automationFailureIndicatorStatus = document.getElementById('modal-case-automation-failure-status').value;
-        data.reminderEmailStatus = document.getElementById('modal-case-reminder-email-status').value;
-        data.testTransferDate = document.getElementById('modal-case-test-transfer-date').value;
-        data.productionTransferDate = document.getElementById('modal-case-production-transfer-date').value;
-        data.securityRolesUpdateStatus = document.getElementById('modal-case-security-roles-status').value;
-        data.CDR = document.getElementById('modal-case-CDR').value;
-        data.generalStatus = document.getElementById('modal-case-general-status').value;
-        data.devUrl = document.getElementById('modal-case-dev-url').value;
-        data.testUrl = document.getElementById('modal-case-test-url').value;
-        data.prodUrl = document.getElementById('modal-case-prod-url').value;
+            // Check permissions
+            if (action === 'add' && !checkPermission('create')) {
+                showNotification('אין לך הרשאות ליצור', 'error');
+                return;
+            }
+            if (action === 'update' && !checkPermission('update')) {
+                showNotification('אין לך הרשאות לעדכן', 'error');
+                return;
+            }
+            if (action === 'delete' && !checkPermission('delete')) {
+                showNotification('אין לך הרשאות למחוק', 'error');
+                return;
+            }
 
-        // Validate data
-        const errors = validateCaseData(data);
-        if (errors.length > 0) {
-            showNotification(errors.join('\n'), 'error');
-            return;
+            if (action === 'add' || action === 'update') {
+                // Get form field values
+                data.caseNumber = parseInt(document.getElementById('modal-case-number').value, 10);
+                data.title = document.getElementById('modal-case-title').value;
+                data.responsible = document.getElementById('modal-case-responsible').value;
+                data.description = document.getElementById('modal-case-description').value;
+                data.color = document.getElementById('modal-case-color').value;
+                data.developmentStartDate = document.getElementById('modal-case-dev-start-date').value;
+                data.openIssuesAtStart = document.getElementById('modal-case-open-issues').value;
+                data.hdDevelopmentStatus = document.getElementById('modal-case-hd-status').value;
+                data.laptopDevelopmentStatus = document.getElementById('modal-case-laptop-status').value;
+                data.mobileDevelopmentStatus = document.getElementById('modal-case-mobile-status').value;
+                data.approversScreenStatus = document.getElementById('modal-case-approvers-status').value;
+                data.actionCenterStatus = document.getElementById('modal-case-action-center-status').value;
+                data.automationFailureIndicatorStatus = document.getElementById('modal-case-automation-failure-status').value;
+                data.reminderEmailStatus = document.getElementById('modal-case-reminder-email-status').value;
+                data.testTransferDate = document.getElementById('modal-case-test-transfer-date').value;
+                data.productionTransferDate = document.getElementById('modal-case-production-transfer-date').value;
+                data.securityRolesUpdateStatus = document.getElementById('modal-case-security-roles-status').value;
+                data.CDR = document.getElementById('modal-case-CDR').value;
+                data.generalStatus = document.getElementById('modal-case-general-status').value;
+                data.devUrl = document.getElementById('modal-case-dev-url').value;
+                data.testUrl = document.getElementById('modal-case-test-url').value;
+                data.prodUrl = document.getElementById('modal-case-prod-url').value;
+
+                // Validate data
+                const errors = validateCaseData(data);
+                if (errors.length > 0) {
+                    showNotification(errors.join('\n'), 'error');
+                    return;
+                }
+            }
+
+            // Add to queue instead of sending directly
+            workQueue.add(data);
+
+            // Show notification that operation is queued
+            showNotification(`פעולת ${action === 'add' ? 'הוספת' : action === 'update' ? 'עדכון' : 'מחיקת'} הטופס נוספה לתור העבודה`, 'info');
+
+            // Close the modal
+            closeModal();
         }
-    }
 
-    // Add to queue instead of sending directly
-    workQueue.add(data);
-    
-    // Show notification that operation is queued
-    showNotification(`פעולת ${action === 'add' ? 'הוספת' : action === 'update' ? 'עדכון' : 'מחיקת'} הטופס נוספה לתור העבודה`, 'info');
-    
-    // Close the modal
-    closeModal();
-}
+        async function handleIssueAsync(action, index) {
+            const selectedCase = store.getState().selectedCase;
 
-async function handleIssueAsync(action, index) {
-    const selectedCase = store.getState().selectedCase;
+            let data = {
+                action: action,
+                type: 'issue',
+                id: action === 'add' ? null : selectedCase.issues[index].id,
+                caseNumber: selectedCase.number,
+                fatherId: selectedCase.id,
+                issue: '',
+                challenge: '',
+                notes: '',
+                status: '',
+                responsible: ''
+            };
 
-    let data = {
-        action: action,
-        type: 'issue',
-        id: action === 'add' ? null : selectedCase.issues[index].id,
-        caseNumber: selectedCase.number,
-        fatherId: selectedCase.id,
-        issue: '',
-        challenge: '',
-        notes: '',
-        status: '',
-        responsible: ''
-    };
+            // Check permissions
+            if (action === 'add' && !checkPermission('create')) {
+                showNotification('אין לך הרשאות ליצור', 'error');
+                return;
+            }
+            if (action === 'update' && !checkPermission('update')) {
+                showNotification('אין לך הרשאות לעדכן', 'error');
+                return;
+            }
+            if (action === 'delete' && !checkPermission('delete')) {
+                showNotification('אין לך הרשאות למחוק', 'error');
+                return;
+            }
 
-    // Check permissions
-    if (action === 'add' && !checkPermission('create')) {
-        showNotification('אין לך הרשאות ליצור', 'error');
-        return;
-    }
-    if (action === 'update' && !checkPermission('update')) {
-        showNotification('אין לך הרשאות לעדכן', 'error');
-        return;
-    }
-    if (action === 'delete' && !checkPermission('delete')) {
-        showNotification('אין לך הרשאות למחוק', 'error');
-        return;
-    }
+            if (action === 'add' || action === 'update') {
+                // Get form field values
+                data.issue = document.getElementById('modal-issue-text').value;
+                data.challenge = document.getElementById('modal-issue-challenge').value;
+                data.notes = document.getElementById('modal-issue-notes').value;
+                data.status = document.getElementById('modal-issue-status').value;
+                data.responsible = document.getElementById('modal-issue-responsible').value;
 
-    if (action === 'add' || action === 'update') {
-        // Get form field values
-        data.issue = document.getElementById('modal-issue-text').value;
-        data.challenge = document.getElementById('modal-issue-challenge').value;
-        data.notes = document.getElementById('modal-issue-notes').value;
-        data.status = document.getElementById('modal-issue-status').value;
-        data.responsible = document.getElementById('modal-issue-responsible').value;
+                // Validate data
+                const errors = validateIssueData(data);
+                if (errors.length > 0) {
+                    showNotification(errors.join('\n'), 'error');
+                    return;
+                }
+            }
 
-        // Validate data
-        const errors = validateIssueData(data);
-        if (errors.length > 0) {
-            showNotification(errors.join('\n'), 'error');
-            return;
+            // Add to queue instead of sending directly
+            workQueue.add(data);
+
+            // Show notification that operation is queued
+            showNotification(`פעולת ${action === 'add' ? 'הוספת' : action === 'update' ? 'עדכון' : 'מחיקת'} המשימה נוספה לתור העבודה`, 'info');
+
+            // Close the modal
+            closeModal();
         }
-    }
 
-    // Add to queue instead of sending directly
-    workQueue.add(data);
-    
-    // Show notification that operation is queued
-    showNotification(`פעולת ${action === 'add' ? 'הוספת' : action === 'update' ? 'עדכון' : 'מחיקת'} המשימה נוספה לתור העבודה`, 'info');
-    
-    // Close the modal
-    closeModal();
-}
+        async function updateCounterAsync(action) {
+            // Check permissions first
+            const canCreate = checkPermission('create');
+            const canUpdate = checkPermission('update');
 
-async function updateCounterAsync(action) {
-    // Check permissions first
-    const canCreate = checkPermission('create');
-    const canUpdate = checkPermission('update');
+            if (!canCreate && !canUpdate) {
+                showNotification('אין לך הרשאות לשנות את המונה', 'error');
+                return;
+            }
 
-    if (!canCreate && !canUpdate) {
-        showNotification('אין לך הרשאות לשנות את המונה', 'error');
-        return;
-    }
+            const selectedCase = store.getState().selectedCase;
+            if (!selectedCase) {
+                showNotification('אין טופס נבחר', 'error');
+                return;
+            }
 
-    const selectedCase = store.getState().selectedCase;
-    if (!selectedCase) {
-        showNotification('אין טופס נבחר', 'error');
-        return;
-    }
+            const counterValue = document.getElementById('counter-value');
+            const currentCount = parseInt(counterValue.textContent);
+            const newCount = action === 'increase' ? currentCount + 1 : currentCount - 1;
 
-    const counterValue = document.getElementById('counter-value');
-    const currentCount = parseInt(counterValue.textContent);
-    const newCount = action === 'increase' ? currentCount + 1 : currentCount - 1;
+            if (newCount < 0) {
+                showNotification('לא ניתן להוריד מתחת ל-0', 'error');
+                return;
+            }
 
-    if (newCount < 0) {
-        showNotification('לא ניתן להוריד מתחת ל-0', 'error');
-        return;
-    }
+            // Optimistically update the UI
+            counterValue.textContent = newCount;
 
-    // Optimistically update the UI
-    counterValue.textContent = newCount;
+            // Add counter update to queue
+            workQueue.add({
+                action: 'counter',
+                type: 'case',
+                id: selectedCase.id,
+                number: selectedCase.number,
+                title: selectedCase.title,
+                counter: newCount
+            });
 
-    // Add counter update to queue
-    workQueue.add({
-        action: 'counter',
-        type: 'case',
-        id: selectedCase.id,
-        number: selectedCase.number,
-        title: selectedCase.title,
-        counter: newCount
-    });
-    
-    // Show notification that operation is queued
-    showNotification('עדכון המונה נוסף לתור העבודה', 'info');
-}
+            // Show notification that operation is queued
+            showNotification('עדכון המונה נוסף לתור העבודה', 'info');
+        }
 
-// =========================================================
-// UI Components for Work Queue
-// =========================================================
-function createWorkQueueUI() {
-    // Add the queue button to the navbar
-    const navButtons = document.querySelector('.navbar .navigation-items');
-    
-    // Create the queue button and add it to the navbar (before the info button)
-    const infoButton = document.getElementById('infoButton');
-    if (infoButton && infoButton.parentNode) {
-        const queueButton = document.createElement('div');
-        queueButton.className = 'relative';
-        queueButton.innerHTML = `
+        // =========================================================
+        // UI Components for Work Queue
+        // =========================================================
+        function createWorkQueueUI() {
+            // Add the queue button to the navbar
+            const navButtons = document.querySelector('.navbar .navigation-items');
+
+            // Create the queue button and add it to the navbar (before the info button)
+            const infoButton = document.getElementById('infoButton');
+            if (infoButton && infoButton.parentNode) {
+                const queueButton = document.createElement('div');
+                queueButton.className = 'relative';
+                queueButton.innerHTML = `
             <button id="queueButton" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 transition duration-300">
                 <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
@@ -3345,17 +3388,17 @@ function createWorkQueueUI() {
                 <span id="queueBadge" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full hidden">0</span>
             </button>
         `;
-        infoButton.parentNode.parentNode.insertBefore(queueButton, infoButton.parentNode);
-        
-        // Add event listener for the queue button
-        document.getElementById('queueButton').addEventListener('click', () => workQueue.toggleQueuePanel());
-    }
-    
-    // Create the queue panel and add it to the body
-    const queuePanel = document.createElement('div');
-    queuePanel.id = 'workQueuePanel';
-    queuePanel.className = 'dashboard-container';
-    queuePanel.innerHTML = `
+                infoButton.parentNode.parentNode.insertBefore(queueButton, infoButton.parentNode);
+
+                // Add event listener for the queue button
+                document.getElementById('queueButton').addEventListener('click', () => workQueue.toggleQueuePanel());
+            }
+
+            // Create the queue panel and add it to the body
+            const queuePanel = document.createElement('div');
+            queuePanel.id = 'workQueuePanel';
+            queuePanel.className = 'dashboard-container';
+            queuePanel.innerHTML = `
         <div class="dashboard-content" style="overflow-y: hidden; display: flex; flex-direction: column;">
             <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
                 <h2 class="text-xl font-bold">תור עבודה</h2>
@@ -3373,25 +3416,25 @@ function createWorkQueueUI() {
             <div id="workQueueList" class="overflow-y-auto flex-grow"></div>
         </div>
     `;
-    document.body.appendChild(queuePanel);
-    
-    // Add event listeners for the queue panel buttons
-    document.getElementById('closeQueueButton').addEventListener('click', () => workQueue.closeQueuePanel());
-    document.getElementById('clearCompletedButton').addEventListener('click', () => workQueue.clearCompleted());
-    
-    // Initialize the queue UI
-    workQueue.updateQueueUI();
-}
+            document.body.appendChild(queuePanel);
 
-// =========================================================
-// Replace existing functions with async versions
-// =========================================================
-function replaceHandlerFunctions() {
-    // Replace the existing handle functions with the async versions
-    window.handleCase = handleCaseAsync;
-    window.handleIssue = handleIssueAsync;
-    window.updateCounter = updateCounterAsync;
-}
+            // Add event listeners for the queue panel buttons
+            document.getElementById('closeQueueButton').addEventListener('click', () => workQueue.closeQueuePanel());
+            document.getElementById('clearCompletedButton').addEventListener('click', () => workQueue.clearCompleted());
+
+            // Initialize the queue UI
+            workQueue.updateQueueUI();
+        }
+
+        // =========================================================
+        // Replace existing functions with async versions
+        // =========================================================
+        function replaceHandlerFunctions() {
+            // Replace the existing handle functions with the async versions
+            window.handleCase = handleCaseAsync;
+            window.handleIssue = handleIssueAsync;
+            window.updateCounter = updateCounterAsync;
+        }
         // =========================================================
         // Form Handling and Validation
         // =========================================================
@@ -4102,56 +4145,56 @@ function replaceHandlerFunctions() {
             }
         }
 
-// =========================================================
-// Event Listeners
-// =========================================================
-document.addEventListener('DOMContentLoaded', () => {
-    // שמירת הפונקציה המקורית לפני שאנחנו מחליפים אותה
-    const initAppOriginal = window.initializeApp;
-    
-    // החלפת פונקציית האתחול עם גרסה חדשה שמתמכת בתור העבודה
-    window.initializeApp = async function() {
-        // קריאה לפונקציה המקורית
-        await initAppOriginal();
-        
-        // הוספת רכיבי ממשק המשתמש של תור העבודה
-        createWorkQueueUI();
-        
-        // החלפת פונקציות הטיפול
-        replaceHandlerFunctions();
-        
-        // הוספת מאזיני אירועים נוספים שצריכים להתווסף לאחר האתחול
-        document.getElementById('dashboardButton').addEventListener('click', openDashboard);
-        document.getElementById('closeDashboard').addEventListener('click', closeDashboard);
-        
-        // הוספת מאזין לסגירת תור העבודה עם מקש Escape
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                workQueue.closeQueuePanel();
-                closeModal();
-                closeDashboard();
+        // =========================================================
+        // Event Listeners
+        // =========================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // שמירת הפונקציה המקורית לפני שאנחנו מחליפים אותה
+            const initAppOriginal = window.initializeApp;
+
+            // החלפת פונקציית האתחול עם גרסה חדשה שמתמכת בתור העבודה
+            window.initializeApp = async function () {
+                // קריאה לפונקציה המקורית
+                await initAppOriginal();
+
+                // הוספת רכיבי ממשק המשתמש של תור העבודה
+                createWorkQueueUI();
+
+                // החלפת פונקציות הטיפול
+                replaceHandlerFunctions();
+
+                // הוספת מאזיני אירועים נוספים שצריכים להתווסף לאחר האתחול
+                document.getElementById('dashboardButton').addEventListener('click', openDashboard);
+                document.getElementById('closeDashboard').addEventListener('click', closeDashboard);
+
+                // הוספת מאזין לסגירת תור העבודה עם מקש Escape
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') {
+                        workQueue.closeQueuePanel();
+                        closeModal();
+                        closeDashboard();
+                    }
+                });
+            };
+
+            // אתחול התחברות
+            initializeLogin();
+
+            // בדיקת התחברות קיימת וקריאה לפונקציית האתחול החדשה אם קיימת
+            if (checkExistingLogin()) {
+                initializeApp();
             }
+
+            // מאזין אירועים לכפתור ההתנתקות
+            document.getElementById('logoutButton').addEventListener('click', logout);
+
+            // מאזין אירועים לסגירת מודל כאשר לוחצים מחוץ לו
+            document.getElementById('dynamicModal').addEventListener('click', function (event) {
+                if (event.target === this) {
+                    closeModal();
+                }
+            });
         });
-    };
-    
-    // אתחול התחברות
-    initializeLogin();
-    
-    // בדיקת התחברות קיימת וקריאה לפונקציית האתחול החדשה אם קיימת
-    if (checkExistingLogin()) {
-        initializeApp();
-    }
-    
-    // מאזין אירועים לכפתור ההתנתקות
-    document.getElementById('logoutButton').addEventListener('click', logout);
-    
-    // מאזין אירועים לסגירת מודל כאשר לוחצים מחוץ לו
-    document.getElementById('dynamicModal').addEventListener('click', function(event) {
-        if (event.target === this) {
-            closeModal();
-        }
-    });
-});
 
         // Subscribe to state changes
         store.subscribe(() => {
@@ -4167,26 +4210,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     </script>
     <!-- Work Queue Panel -->
-<div id="workQueuePanel" class="dashboard-container">
-    <div class="dashboard-content" style="overflow-y: hidden; display: flex; flex-direction: column;">
-        <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
-            <h2 class="text-xl font-bold">תור עבודה</h2>
-            <div class="flex space-x-2 rtl:space-x-reverse">
-                <button id="clearCompletedButton" class="text-sm text-gray-600 hover:text-gray-900 hidden">
-                    נקה פעולות שהסתיימו
-                </button>
-                <button id="closeQueueButton" class="text-gray-500 hover:text-gray-700 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
+    <div id="workQueuePanel" class="dashboard-container">
+        <div class="dashboard-content" style="overflow-y: hidden; display: flex; flex-direction: column;">
+            <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
+                <h2 class="text-xl font-bold">תור עבודה</h2>
+                <div class="flex space-x-2 rtl:space-x-reverse">
+                    <button id="clearCompletedButton" class="text-sm text-gray-600 hover:text-gray-900 hidden">
+                        נקה פעולות שהסתיימו
+                    </button>
+                    <button id="closeQueueButton" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="workQueueList" class="overflow-y-auto flex-grow">
+                <!-- Queue items will be loaded here -->
             </div>
         </div>
-        <div id="workQueueList" class="overflow-y-auto flex-grow">
-            <!-- Queue items will be loaded here -->
-        </div>
     </div>
-</div>
 </body>
 
 </html>
