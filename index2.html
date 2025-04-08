@@ -1037,6 +1037,16 @@
                 height: 80%;
             }
         }
+        .days-count {
+                background-color: #EBF5FF;
+                border-radius: 0.5rem;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+                color: #2563EB;
+                display: inline-block;
+                margin-top: 0.5rem;
+                font-weight: 600;
+            }
     </style>
 </head>
 
@@ -1335,6 +1345,7 @@
                                         <div class="text-sm font-medium text-gray-500">העברה לטסט</div>
                                         <div id="case-test-transfer-date-display"
                                             class="text-base font-semibold text-blue-600 mt-1"></div>
+                                        <div id="dev-to-test-days" class="days-count"></div>
                                     </div>
                                 </div>
 
@@ -1347,6 +1358,7 @@
                                         <div class="text-sm font-medium text-gray-500">העברה לייצור</div>
                                         <div id="case-production-transfer-date-display"
                                             class="text-base font-semibold text-gray-500 mt-1"></div>
+                                        <div id="test-to-production-days" class="days-count"></div>
                                     </div>
                                 </div>
                             </div>
@@ -2337,6 +2349,13 @@
             setFieldValue('case-test-transfer-date-display', formatDate(selectedCase.testTransferDate));
             setFieldValue('case-production-transfer-date-display', formatDate(selectedCase.productionTransferDate));
 
+            // חישוב והצגת ימים בין שלבים
+            calculateAndDisplayDaysBetweenStages(
+                selectedCase.developmentStartDate,
+                selectedCase.testTransferDate,
+                selectedCase.productionTransferDate
+            );
+
             document.getElementById('counter-value').textContent = selectedCase.counter || 0;
 
             // Set general status badge
@@ -2349,6 +2368,170 @@
 
             populateEnvironmentLinks(selectedCase);
             applyPermissions();
+        }
+
+        // פונקציה שמנקה את כל האינטרוולים
+        function clearAllDaysUpdateIntervals() {
+            // ניקוי האינטרוול עבור פיתוח לטסט
+            if (window.devToTestUpdateInterval) {
+                clearInterval(window.devToTestUpdateInterval);
+                window.devToTestUpdateInterval = null;
+            }
+
+            // ניקוי האינטרוול עבור טסט לייצור
+            if (window.daysUpdateInterval) {
+                clearInterval(window.daysUpdateInterval);
+                window.daysUpdateInterval = null;
+            }
+        }
+
+        // פונקציה חדשה לחישוב והצגת ימים בין השלבים
+        function calculateAndDisplayDaysBetweenStages(devStartDate, testDate, productionDate) {
+            // ניקוי כל האינטרוולים הקיימים בעת החלפת מקרה
+            clearAllDaysUpdateIntervals();
+
+            // בדיקה האם קיימים אלמנטים לתצוגת ימים - אם לא, ניצור אותם
+            ensureDaysCountElements();
+
+            // חישוב ימים בין פיתוח לטסט או עד היום הנוכחי
+            if (devStartDate && devStartDate !== "לא הוגדר") {
+                // אם יש גם תאריך טסט תקין
+                if (testDate && testDate !== "לא הוגדר") {
+                    const devToTestDays = calculateDaysBetween(devStartDate, testDate);
+                    document.getElementById('dev-to-test-days').textContent = `${devToTestDays} ימים`;
+                    document.getElementById('dev-to-test-days').style.display = 'inline-block';
+                }
+                // אם אין תאריך טסט, נחשב מתאריך פיתוח עד היום
+                else {
+                    const devToNowDays = calculateDaysBetween(devStartDate, getCurrentDate());
+                    document.getElementById('dev-to-test-days').textContent = `${devToNowDays} ימים (עד היום)`;
+                    document.getElementById('dev-to-test-days').style.display = 'inline-block';
+
+                    // הגדרת עדכון דינמי עבור הימים מהפיתוח ועד היום
+                    if (window.devToTestUpdateInterval) {
+                        clearInterval(window.devToTestUpdateInterval);
+                    }
+
+                    window.devToTestUpdateInterval = setInterval(() => {
+                        const updatedDays = calculateDaysBetween(devStartDate, getCurrentDate());
+                        document.getElementById('dev-to-test-days').textContent = `${updatedDays} ימים (עד היום)`;
+                    }, 60000); // עדכון כל דקה
+                }
+            } else {
+                document.getElementById('dev-to-test-days').style.display = 'none';
+            }
+
+            // חישוב ימים בין טסט לייצור או עד היום הנוכחי
+            if (testDate && testDate !== "לא הוגדר") {
+                // בדיקה האם תאריך הייצור מוגדר ותקין
+                const hasValidProductionDate = productionDate && productionDate !== "לא הוגדר";
+
+                // קביעת תאריך הסיום - או תאריך הייצור או היום הנוכחי
+                const endDate = hasValidProductionDate ? productionDate : getCurrentDate();
+                const testToProductionDays = calculateDaysBetween(testDate, endDate);
+
+                if (hasValidProductionDate) {
+                    document.getElementById('test-to-production-days').textContent = `${testToProductionDays} ימים`;
+                } else {
+                    document.getElementById('test-to-production-days').textContent = `${testToProductionDays} ימים (עד היום)`;
+
+                    // הגדרת עדכון דינמי אם אין תאריך ייצור תקין
+                    if (window.daysUpdateInterval) {
+                        clearInterval(window.daysUpdateInterval);
+                    }
+
+                    window.daysUpdateInterval = setInterval(() => {
+                        const updatedDays = calculateDaysBetween(testDate, getCurrentDate());
+                        document.getElementById('test-to-production-days').textContent = `${updatedDays} ימים (עד היום)`;
+                    }, 60000); // עדכון כל דקה
+                }
+
+                document.getElementById('test-to-production-days').style.display = 'inline-block';
+            } else {
+                document.getElementById('test-to-production-days').style.display = 'none';
+            }
+        }
+
+        // פונקציה שמוודאת שהאלמנטים להצגת ימים קיימים בעמוד
+        function ensureDaysCountElements() {
+            // בדיקה והוספת אלמנט לימים בין פיתוח לטסט
+            if (!document.getElementById('dev-to-test-days')) {
+                const testDateContainer = document.getElementById('case-test-transfer-date-display').parentNode;
+                const devToTestDaysElem = document.createElement('div');
+                devToTestDaysElem.id = 'dev-to-test-days';
+                devToTestDaysElem.className = 'days-count';
+                testDateContainer.appendChild(devToTestDaysElem);
+            }
+
+            // בדיקה והוספת אלמנט לימים בין טסט לייצור
+            if (!document.getElementById('test-to-production-days')) {
+                const productionDateContainer = document.getElementById('case-production-transfer-date-display').parentNode;
+                const testToProductionDaysElem = document.createElement('div');
+                testToProductionDaysElem.id = 'test-to-production-days';
+                testToProductionDaysElem.className = 'days-count';
+                productionDateContainer.appendChild(testToProductionDaysElem);
+            }
+
+            // וידוא שיש סגנון CSS מתאים
+            ensureDaysCountStyle();
+        }
+
+        // הוספת סגנון CSS לתצוגת הימים אם לא קיים
+        function ensureDaysCountStyle() {
+            if (!document.getElementById('days-count-style')) {
+                const styleElement = document.createElement('style');
+                styleElement.id = 'days-count-style';
+                
+                document.head.appendChild(styleElement);
+            }
+        }
+
+        // פונקציית עזר לחישוב ימים בין תאריכים
+        function calculateDaysBetween(startDate, endDate) {
+            // בדיקה שהתאריכים תקינים ולא "לא הוגדר"
+            if (!startDate || startDate === "לא הוגדר" || !endDate || endDate === "לא הוגדר") {
+                return 0;
+            }
+
+            try {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+
+                // בדיקה שהתאריכים תקינים
+                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                    console.error("תאריך לא תקין:", startDate, "או", endDate);
+                    return 0;
+                }
+
+                const diffTime = Math.abs(end - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays;
+            } catch (error) {
+                console.error("שגיאה בחישוב ימים בין תאריכים:", error);
+                return 0;
+            }
+        }
+
+        // פונקציית עזר לקבלת התאריך הנוכחי בפורמט ISO
+        function getCurrentDate() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // אם אין לך כבר פונקציית formatDate, הנה יישום אפשרי
+        function formatDate(dateString) {
+            if (!dateString) return "לא הוגדר";
+            if (dateString === "לא הוגדר") return "לא הוגדר";
+
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) {
+                    return dateString; // אם התאריך לא תקין, מחזיר את המחרוזת המקורית
+                }
+                return date.toLocaleDateString('he-IL');
+            } catch (error) {
+                console.error("שגיאה בפורמט תאריך:", error);
+                return dateString;
+            }
         }
 
         function setFieldValue(elementId, value) {
@@ -3101,7 +3284,7 @@
         }
 
         function createFormField(label, type, id, required, disabled = false, options = []) {
-    let field = `
+            let field = `
         <div class="form-field" dir="rtl">
             <div class="flex justify-between items-center mb-1">
                 <label for="${id}" class="text-sm font-medium text-gray-700">
@@ -3114,38 +3297,38 @@
             </div>
     `;
 
-    if (type === 'textarea') {
-        field += `<textarea id="${id}" class="form-control w-full" rows="4" maxlength="62500"
+            if (type === 'textarea') {
+                field += `<textarea id="${id}" class="form-control w-full" rows="4" maxlength="62500"
                       ${required ? 'required' : ''}${disabled ? ' disabled' : ''}></textarea>`;
-    } else if (type === 'select') {
-        field += `
+            } else if (type === 'select') {
+                field += `
             <select id="${id}" class="form-control w-full"${required ? ' required' : ''}${disabled ? ' disabled' : ''}>
                 <option value="">בחר אפשרות</option>
                 ${options.map(option => `<option value="${option}">${option}</option>`).join('')}
             </select>
         `;
-    } else {
-        field += `<input type="${type}" id="${id}" class="form-control w-full"${required ? ' required' : ''}${disabled ? ' disabled' : ''}>`;
-    }
+            } else {
+                field += `<input type="${type}" id="${id}" class="form-control w-full"${required ? ' required' : ''}${disabled ? ' disabled' : ''}>`;
+            }
 
-    field += `</div>`;
+            field += `</div>`;
 
-    // Wait until field is added to DOM, then attach live counter
-    setTimeout(() => {
-        const textarea = document.getElementById(id);
-        const counter = document.getElementById(`${id}-count`);
-        if (textarea && counter) {
-            // Set initial value
-            counter.textContent = textarea.value.length;
+            // Wait until field is added to DOM, then attach live counter
+            setTimeout(() => {
+                const textarea = document.getElementById(id);
+                const counter = document.getElementById(`${id}-count`);
+                if (textarea && counter) {
+                    // Set initial value
+                    counter.textContent = textarea.value.length;
 
-            textarea.addEventListener('input', () => {
-                counter.textContent = textarea.value.length;
-            });
+                    textarea.addEventListener('input', () => {
+                        counter.textContent = textarea.value.length;
+                    });
+                }
+            }, 0);
+
+            return field;
         }
-    }, 0);
-
-    return field;
-}
 
 
 
