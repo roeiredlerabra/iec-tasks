@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html dir="rtl" lang="he">
 
@@ -7,13 +8,13 @@
     <title>בסיס ידע - מתודולוגיה חח"י</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-  <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <!-- Tippy.js for tooltips -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.umd.min.js"></script>
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <!-- Tippy.js for tooltips -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.umd.min.js"></script>
     <style>
         :root {
             --main-color: #0056b3;
@@ -41,93 +42,93 @@
             direction: rtl;
         }
         .node {
-      transition: all 0.3s ease;
-    }
-    .node:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-    .arrow-down {
-      position: relative;
-      height: 30px;
-    }
-    .arrow-down:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 50%;
-      width: 2px;
-      background: #4b5563;
-    }
-    .arrow-down:before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      right: calc(50% - 5px);
-      width: 0;
-      height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 8px solid #4b5563;
-    }
-    .approval-state {
-      position: relative;
-      padding-right: 20px;
-    }
-    .approval-state:before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-    .approval-state.pending:before {
-      background-color: #f59e0b;
-    }
-    .approval-state.approved:before {
-      background-color: #10b981;
-    }
-    .approval-state.rejected:before {
-      background-color: #ef4444;
-    }
-    .highlight-pulse {
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5);
-      }
-      70% {
-        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-      }
-    }
-    /* Custom connector line styling */
-    .connector {
-      position: absolute;
-      background-color: #4b5563;
-      z-index: -1;
-    }
-    .connector-vertical {
-      width: 2px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    .connector-horizontal {
-      height: 2px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
+            transition: all 0.3s ease;
+        }
+        .node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .arrow-down {
+            position: relative;
+            height: 30px;
+        }
+        .arrow-down:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 50%;
+            width: 2px;
+            background: #4b5563;
+        }
+        .arrow-down:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: calc(50% - 5px);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 8px solid #4b5563;
+        }
+        .approval-state {
+            position: relative;
+            padding-right: 20px;
+        }
+        .approval-state:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .approval-state.pending:before {
+            background-color: #f59e0b;
+        }
+        .approval-state.approved:before {
+            background-color: #10b981;
+        }
+        .approval-state.rejected:before {
+            background-color: #ef4444;
+        }
+        .highlight-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
+        /* Custom connector line styling */
+        .connector {
+            position: absolute;
+            background-color: #4b5563;
+            z-index: -1;
+        }
+        .connector-vertical {
+            width: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .connector-horizontal {
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
         .container {
             display: flex;
         }
@@ -369,34 +370,30 @@
         img:hover {
             transform: scale(1.5);
         }
-/* Apply styles to all <a href> links, except those inside .nav-item */
-    a[href]:not(.nav-item a) {
-    display: inline; /* Prevents breaking text flow */
-    padding: 2px 6px;
-    background: linear-gradient(135deg, #0078D4, #005A9E); /* Microsoft blue gradient */
-    color: #fff !important;
-    font-weight: bold;
-    font-size: 14px;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background 0.3s ease-in-out;
-    white-space: nowrap; /* Prevents wrapping inside text */
-}
+        /* Apply styles to all <a href> links, except those inside .nav-item */
+        a[href]:not(.nav-item a) {
+            display: inline; /* Prevents breaking text flow */
+            padding: 2px 6px;
+            background: linear-gradient(135deg, #0078D4, #005A9E); /* Microsoft blue gradient */
+            color: #fff !important;
+            font-weight: bold;
+            font-size: 14px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s ease-in-out;
+            white-space: nowrap; /* Prevents wrapping inside text */
+        }
 
-/* Hover effect */
-a[href]:not(.nav-item a):hover {
-    background: linear-gradient(135deg, #005A9E, #003E6E);
-}
+        /* Hover effect */
+        a[href]:not(.nav-item a):hover {
+            background: linear-gradient(135deg, #005A9E, #003E6E);
+        }
 
-/* Ensure proper RTL alignment */
-html[dir="rtl"] a[href]:not(.nav-item a) {
-    direction: rtl;
-    unicode-bidi: embed;
-}
-
-
-
-
+        /* Ensure proper RTL alignment */
+        html[dir="rtl"] a[href]:not(.nav-item a) {
+            direction: rtl;
+            unicode-bidi: embed;
+        }
 
         .search-results-header {
             display: flex;
@@ -458,8 +455,6 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
             /* Center images when wrapped */
         }
 
-
-
         /* Responsive: Stack images vertically on small screens */
         @media (max-width: 600px) {
             .image-container {
@@ -469,7 +464,6 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                 /* Center align */
             }
         }
-
 
         @media (max-width: 768px) {
             .sidebar {
@@ -551,94 +545,94 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                 </div>
             </div>
 
+            <!-- תפריט צד מאורגן מחדש -->
             <ul class="nav-list" id="navList">
+                <!-- 1. כללי -->
                 <li class="nav-item">
-                    <a href="#intro" class="nav-link has-submenu">1. מבנה הפרויקט</a>
+                    <a href="#general" class="nav-link has-submenu">1. כללי</a>
                     <ul class="sub-nav">
-                        <li><a href="#environments" class="nav-link">1.1 סביבות עבודה</a></li>
-                        <li><a href="#version-control" class="nav-link">1.2 ניהול גרסאות</a></li>
+                        <li><a href="#intro" class="nav-link">1.1 מבוא</a></li>
+                        <li><a href="#project-structure" class="nav-link">1.2 מבנה הפרויקט</a></li>
+                        <li><a href="#environments" class="nav-link">1.3 סביבות עבודה</a></li>
+                        <li><a href="#version-control" class="nav-link">1.4 ניהול גרסאות</a></li>
                     </ul>
                 </li>
+
+                <!-- 2. מתודולוגיית פיתוח -->
                 <li class="nav-item">
-                    <a href="#naming-conventions" class="nav-link has-submenu">2. מוסכמות שמות</a>
+                    <a href="#dev-methodology" class="nav-link has-submenu">2. מתודולוגיית פיתוח</a>
                     <ul class="sub-nav">
-                        <li><a href="#general-rules" class="nav-link">2.1 כללי</a></li>
-                        <li><a href="#dataverse-fields" class="nav-link">2.2 שדות Dataverse</a></li>
-                        <li><a href="#power-apps-components" class="nav-link">2.3 רכיבי Power Apps</a></li>
+                        <li><a href="#naming-conventions" class="nav-link has-submenu">2.1 מוסכמות שמות</a>
+                            <ul class="sub-nav">
+                                <li><a href="#general-rules" class="nav-link">2.1.1 כללי</a></li>
+                                <li><a href="#dataverse-fields" class="nav-link">2.1.2 שדות Dataverse</a></li>
+                                <li><a href="#power-apps-components" class="nav-link">2.1.3 רכיבי Power Apps</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#architecture" class="nav-link">2.2 ארכיטקטורה</a></li>
+                        <li><a href="#design" class="nav-link">2.3 עיצוב</a></li>
+                        <li><a href="#app-variables" class="nav-link">2.4 משתנים באפליקציות</a></li>
+                        <li><a href="#code-documentation" class="nav-link">2.5 תיעוד קוד</a></li>
+                        <li><a href="#performance" class="nav-link">2.6 ביצועים</a></li>
                     </ul>
                 </li>
+
+                <!-- 3. פיתוח Power Apps -->
                 <li class="nav-item">
-                    <a href="#architecture" class="nav-link has-submenu">3. ארכיטקטורה ופיתוח</a>
+                    <a href="#power-apps-dev" class="nav-link has-submenu">3. פיתוח Power Apps</a>
                     <ul class="sub-nav">
-                        <li><a href="#security" class="nav-link">3.2 אבטחה והרשאות</a></li>
-                        <li><a href="#performance" class="nav-link">3.3 ביצועים</a></li>
-                        <li><a href="#design" class="nav-link">3.4 עיצוב</a></li>
-                        <li><a href="#app-variables" class="nav-link">משתנים באפליקציות</a></li>
+                        <li><a href="#new-solution" class="nav-link">3.1 הקמת פתרון חדש</a></li>
+                        <li><a href="#new-canvas-app" class="nav-link">3.2 הקמת Canvas App חדש</a></li>
+                        <li><a href="#components-info" class="nav-link">3.3 סוגי קומפוננטות</a></li>
+                        <li><a href="#security-roles" class="nav-link">3.4 תפקידי אבטחה</a></li>
                     </ul>
                 </li>
+
+                <!-- 4. תהליכי עבודה ואישורים -->
                 <li class="nav-item">
-                    <a href="#processes" class="nav-link has-submenu">4. תהליכי עבודה</a>
+                    <a href="#processes-approvals" class="nav-link has-submenu">4. תהליכי עבודה ואישורים</a>
                     <ul class="sub-nav">
-                        <li><a href="#task-management" class="nav-link">4.1 ניהול משימות</a></li>
-                        <li><a href="#communication" class="nav-link">4.2 תקשורת</a></li>
+                        <li><a href="#approver-table" class="nav-link">4.1 טבלת Approver</a></li>
+                        <li><a href="#approver-steps" class="nav-link">4.2 דיאגרמת סבב אישורים</a></li>
+                        <li><a href="#action-center" class="nav-link">4.3 Action Center</a></li>
+                        <li><a href="#configuration-table" class="nav-link">4.4 טבלת קונפיגורציה</a></li>
+                        <li><a href="#workflows" class="nav-link">4.5 זרימות עבודה (Flows)</a></li>
+                        <li><a href="#process-completion" class="nav-link">4.6 סיום תהליך</a></li>
                     </ul>
                 </li>
+
+                <!-- 5. אבטחה וגישה -->
                 <li class="nav-item">
-                    <a href="#documentation" class="nav-link has-submenu">5. תיעוד</a>
+                    <a href="#security-access" class="nav-link has-submenu">5. אבטחה וגישה</a>
                     <ul class="sub-nav">
-                        <li><a href="#code-documentation" class="nav-link">5.1 תיעוד קוד</a></li>
+                        <li><a href="#security" class="nav-link">5.1 אבטחה והרשאות</a></li>
+                        <li><a href="#document-sanitization" class="nav-link">5.2 הלבנת מסמכים</a></li>
+                        <li><a href="#ad-groups" class="nav-link">5.3 קבוצות AD (Entra ID)</a></li>
                     </ul>
                 </li>
+
+                <!-- 6. תחזוקה ובקרת איכות -->
                 <li class="nav-item">
-                    <a href="#backup" class="nav-link">6. גיבוי ושחזור</a>
+                    <a href="#maintenance-qa" class="nav-link has-submenu">6. תחזוקה ובקרת איכות</a>
+                    <ul class="sub-nav">
+                        <li><a href="#backup" class="nav-link">6.1 גיבוי ושחזור</a></li>
+                        <li><a href="#self-testing" class="nav-link">6.2 בדיקה עצמית</a></li>
+                    </ul>
                 </li>
+
+                <!-- 7. ניהול ידע וצוות -->
                 <li class="nav-item">
-                    <a href="#self-testing" class="nav-link">7. בדיקה עצמית</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#onboarding" class="nav-link">הנחיות לכניסה לתפקיד פיתוח PA</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#approver-table" class="nav-link">טבלת Approver</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#approver-steps" class="nav-link">דיאגרמת סבב אישורים </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#action-center" class="nav-link">Action Center</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#configuration-table" class="nav-link">טבלת קונפיגורציה</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#security-roles" class="nav-link">תפקידי אבטחה</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#document-sanitization" class="nav-link">הלבנת מסמכים</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#ad-groups" class="nav-link">קבוצות AD (Entra ID)</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#useful-links" class="nav-link">לינקים שימושיים</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#new-solution" class="nav-link">הקמת פתרון חדש</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#new-canvas-app" class="nav-link">הקמת Canvas App חדש</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#components-info" class="nav-link">הסבר על סוגי קומפוננטות</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#workflows" class="nav-link">זרימות עבודה (Flows)</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#process-completion" class="nav-link">סיום תהליך</a>
+                    <a href="#knowledge-team" class="nav-link has-submenu">7. ניהול ידע וצוות</a>
+                    <ul class="sub-nav">
+                        <li><a href="#task-management" class="nav-link">7.1 ניהול משימות</a></li>
+                        <li><a href="#communication" class="nav-link">7.2 תקשורת</a></li>
+                        <li><a href="#onboarding" class="nav-link">7.3 הנחיות לכניסה לתפקיד</a></li>
+                        <li><a href="#useful-links" class="nav-link">7.4 לינקים שימושיים</a></li>
+                    </ul>
                 </li>
             </ul>
         </aside>
+
         <div class="search-results" id="searchResults">
             <div class="search-results-header">
                 <h3>תוצאות חיפוש</h3>
@@ -648,27 +642,49 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                 <!-- תוצאות החיפוש יוצגו כאן -->
             </ul>
         </div>
+
         <main class="content">
             <h1>מתודולוגיה חחי - Power Apps ניהול ידע פיתוח</h1>
 
-            <div class="section" id="intro">
-                <span class="anchor" id="intro-anchor"></span>
-                <h2>1. מבנה הפרויקט</h2>
-                <img src="img/architect.png" alt="מבנה הפרויקט" class="img">
+            <!-- 1. כללי -->
+            <div class="section" id="general">
+                <span class="anchor" id="general-anchor"></span>
+                <h2>1. כללי</h2>
+
+                <div class="section" id="intro">
+                    <span class="anchor" id="intro-anchor"></span>
+                    <h3>1.1 מבוא</h3>
+                    <p>בסיס ידע זה מכיל את כל המידע הדרוש לפיתוח אפליקציות Power Apps בחברת החשמל. מטרתו לשמר ידע, לאפשר אחידות בפיתוח ולסייע למפתחים חדשים להשתלב בעבודה.</p>
+                </div>
+
+                <div class="section" id="project-structure">
+                    <span class="anchor" id="project-structure-anchor"></span>
+                    <h3>1.2 מבנה הפרויקט</h3>
+                    <img src="img/architect.png" alt="מבנה הפרויקט" class="img">
+                </div>
+
                 <div class="section" id="environments">
                     <span class="anchor" id="environments-anchor"></span>
-                    <h3>1.1 סביבות עבודה</h3>
+                    <h3>1.3 סביבות עבודה</h3>
                     <ul>
                         <li>סביבת פיתוח: לפיתוח ובדיקות ראשוניות</li>
                         <li>סביבת QA: לבדיקות מקיפות</li>
                         <li>סביבת ייצור: לאפליקציה הסופית</li>
                     </ul>
                     <img src="img/12.png" alt="סביבות עבודה" class="img">
+                    
+                    <h4>משתמשי מערכת לפי סביבות:</h4>
+                    <p><strong>משתמש dev:</strong> Pplatform_D-SVC@iec.co.il<br>
+                    *סיסמה*</p>
+                    <p><strong>משתמש test:</strong> Pplatform_T-SVC@iec.co.il<br>
+                    *סיסמה*</p>
+                    <p><strong>משתמש prod:</strong> Pplatform_P-SVC@iec.co.il<br>
+                    *סיסמה*</p>
                 </div>
 
                 <div class="section" id="version-control">
                     <span class="anchor" id="version-control-anchor"></span>
-                    <h3>1.2 ניהול גרסאות</h3>
+                    <h3>1.4 ניהול גרסאות</h3>
                     <ul>
                         <li>השתמשו ב-Git או בכלי ניהול גרסאות דומה</li>
                         <li>הגדירו מדיניות ברורה לענפים (branches) ומיזוגים (merges)</li>
@@ -676,343 +692,349 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                 </div>
             </div>
 
-            <div class="section" id="naming-conventions">
-                <span class="anchor" id="naming-conventions-anchor"></span>
-                <h2>2. מוסכמות שמות</h2>
+            <!-- 2. מתודולוגיית פיתוח -->
+            <div class="section" id="dev-methodology">
+                <span class="anchor" id="dev-methodology-anchor"></span>
+                <h2>2. מתודולוגיית פיתוח</h2>
 
-                <div class="section" id="general-rules">
-                    <span class="anchor" id="general-rules-anchor"></span>
-                    <h3>2.1 כללי</h3>
+                <div class="section" id="naming-conventions">
+                    <span class="anchor" id="naming-conventions-anchor"></span>
+                    <h3>2.1 מוסכמות שמות</h3>
+
+                    <div class="section" id="general-rules">
+                        <span class="anchor" id="general-rules-anchor"></span>
+                        <h4>2.1.1 כללי</h4>
+                        <ul>
+                            <li>השתמשו באנגלית לכל השמות</li>
+                            <li>השתמשו ב-CamelCase לשמות שדות ורכיבים</li>
+                            <li>הימנעו מקיצורים לא סטנדרטיים</li>
+                        </ul>
+                    </div>
+
+                    <div class="section" id="dataverse-fields">
+                        <span class="anchor" id="dataverse-fields-anchor"></span>
+                        <h4>2.1.2 שדות Dataverse</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>שם השדה</th>
+                                    <th>סוג שדה</th>
+                                    <th>הערות</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>FirstName</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>LastName</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>FullName</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>BirthDate</td>
+                                    <td>Date Only</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>EmployeeUserID</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים<br>(משתמש APIM / SAP = U7T0Q)</td>
+                                </tr>
+                                <tr>
+                                    <td>EmployeeIDCard</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים<br>(תעודת זהות = 9999999)</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>PhoneNumber</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td>Multiple Lines of Text</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td>Single Line of Text</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>PostalCode</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 10 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>HireDate</td>
+                                    <td>Date Only</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>JobTitle</td>
+                                    <td>Single Line of Text</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Department</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>ManagerEmail</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>ManagerUserID</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                                <tr>
+                                    <td>ManagerIDCard</td>
+                                    <td>Single Line of Text</td>
+                                    <td>מקסימום 100 תווים</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section" id="power-apps-components">
+                        <span class="anchor" id="power-apps-components-anchor"></span>
+                        <h4>2.1.3 רכיבי Power Apps</h4>
+                        <ul>
+                            <li>כפתורים: btn + [פעולה] (לדוגמה: btnSubmit, btnCancel)</li>
+                            <li>תיבות טקסט: txt + [תיאור] (לדוגמה: txtFirstName)</li>
+                            <li>רשימות נגללות: drp + [תיאור] (לדוגמה: drpDepartment)</li>
+                            <li>טבלאות: tbl + [תיאור] (לדוגמה: tblEmployeesList)</li>
+                            <li>טפסים: frm + [תיאור] (לדוגמה: frmEmployeeDetails)</li>
+                        </ul>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Control name</th>
+                                    <th>Abbreviation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Badge</td>
+                                    <td>bdg</td>
+                                </tr>
+                                <tr>
+                                    <td>Button</td>
+                                    <td>btn</td>
+                                </tr>
+                                <tr>
+                                    <td>Camera control</td>
+                                    <td>cam</td>
+                                </tr>
+                                <tr>
+                                    <td>Canvas</td>
+                                    <td>can</td>
+                                </tr>
+                                <tr>
+                                    <td>Card</td>
+                                    <td>crd</td>
+                                </tr>
+                                <tr>
+                                    <td>Charts</td>
+                                    <td>chr</td>
+                                </tr>
+                                <tr>
+                                    <td>CheckBox</td>
+                                    <td>chk</td>
+                                </tr>
+                                <tr>
+                                    <td>Collection</td>
+                                    <td>col</td>
+                                </tr>
+                                <tr>
+                                    <td>Combo box</td>
+                                    <td>cmb</td>
+                                </tr>
+                                <tr>
+                                    <td>Component</td>
+                                    <td>cmp</td>
+                                </tr>
+                                <tr>
+                                    <td>Container</td>
+                                    <td>con</td>
+                                </tr>
+                                <tr>
+                                    <td>Dates</td>
+                                    <td>dte</td>
+                                </tr>
+                                <tr>
+                                    <td>Drop down</td>
+                                    <td>drp</td>
+                                </tr>
+                                <tr>
+                                    <td>Form</td>
+                                    <td>frm</td>
+                                </tr>
+                                <tr>
+                                    <td>Gallery</td>
+                                    <td>gal</td>
+                                </tr>
+                                <tr>
+                                    <td>Group</td>
+                                    <td>grp</td>
+                                </tr>
+                                <tr>
+                                    <td>Header</td>
+                                    <td>hdr</td>
+                                </tr>
+                                <tr>
+                                    <td>Html text</td>
+                                    <td>htm</td>
+                                </tr>
+                                <tr>
+                                    <td>Icon</td>
+                                    <td>ico</td>
+                                </tr>
+                                <tr>
+                                    <td>Image</td>
+                                    <td>img</td>
+                                </tr>
+                                <tr>
+                                    <td>Info Button</td>
+                                    <td>info</td>
+                                </tr>
+                                <tr>
+                                    <td>Label</td>
+                                    <td>lbl</td>
+                                </tr>
+                                <tr>
+                                    <td>Link</td>
+                                    <td>lnk</td>
+                                </tr>
+                                <tr>
+                                    <td>List box</td>
+                                    <td>lst</td>
+                                </tr>
+                                <tr>
+                                    <td>Microphone</td>
+                                    <td>mic</td>
+                                </tr>
+                                <tr>
+                                    <td>Microsoft Stream</td>
+                                    <td>str</td>
+                                </tr>
+                                <tr>
+                                    <td>Page section shape</td>
+                                    <td>sec</td>
+                                </tr>
+                                <tr>
+                                    <td>Pen Input</td>
+                                    <td>pen</td>
+                                </tr>
+                                <tr>
+                                    <td>Power BI Tile</td>
+                                    <td>pbi</td>
+                                </tr>
+                                <tr>
+                                    <td>Progress Bar</td>
+                                    <td>pbar</td>
+                                </tr>
+                                <tr>
+                                    <td>Rating</td>
+                                    <td>rtg</td>
+                                </tr>
+                                <tr>
+                                    <td>Rich text editor</td>
+                                    <td>rte</td>
+                                </tr>
+                                <tr>
+                                    <td>Shapes (rectangle, circle, and so on)</td>
+                                    <td>shp</td>
+                                </tr>
+                                <tr>
+                                    <td>Slider</td>
+                                    <td>sld</td>
+                                </tr>
+                                <tr>
+                                    <td>Tab List</td>
+                                    <td>tbl</td>
+                                </tr>
+                                <tr>
+                                    <td>Table</td>
+                                    <td>tbl</td>
+                                </tr>
+                                <tr>
+                                    <td>Text input</td>
+                                    <td>txt</td>
+                                </tr>
+                                <tr>
+                                    <td>Timer</td>
+                                    <td>tmr</td>
+                                </tr>
+                                <tr>
+                                    <td>Toggle</td>
+                                    <td>tgl</td>
+                                </tr>
+                                <tr>
+                                    <td>Video</td>
+                                    <td>vid</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="section" id="architecture">
+                    <span class="anchor" id="architecture-anchor"></span>
+                    <h3>2.2 ארכיטקטורה</h3>
+                    <p>הגישה הארכיטקטונית בפיתוח מערכות Power Apps מבוססת על מספר עקרונות מרכזיים:</p>
                     <ul>
-                        <li>השתמשו באנגלית לכל השמות</li>
-                        <li>השתמשו ב-CamelCase לשמות שדות ורכיבים</li>
-                        <li>הימנעו מקיצורים לא סטנדרטיים</li>
+                        <li>הפרדה בין שכבת הנתונים, הלוגיקה והתצוגה</li>
+                        <li>שימוש בטבלאות נתונים משותפות לחיבור בין תהליכים</li>
+                        <li>בניית זרימות עבודה מודולריות ומשותפות</li>
                     </ul>
                 </div>
-
-                <div class="section" id="dataverse-fields">
-                    <span class="anchor" id="dataverse-fields-anchor"></span>
-                    <h3>2.2 שדות Dataverse</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>שם השדה</th>
-                                <th>סוג שדה</th>
-                                <th>הערות</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>FirstName</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>LastName</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>FullName</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>BirthDate</td>
-                                <td>Date Only</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>EmployeeUserID</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים<br>(משתמש APIM / SAP = U7T0Q)</td>
-                            </tr>
-                            <tr>
-                                <td>EmployeeIDCard</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים<br>(תעודת זהות = 9999999)</td>
-                            </tr>
-                            <tr>
-                                <td>Gender</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>Email</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>PhoneNumber</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>Address</td>
-                                <td>Multiple Lines of Text</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>City</td>
-                                <td>Single Line of Text</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>PostalCode</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 10 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>HireDate</td>
-                                <td>Date Only</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>JobTitle</td>
-                                <td>Single Line of Text</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Department</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>ManagerEmail</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>ManagerUserID</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                            <tr>
-                                <td>ManagerIDCard</td>
-                                <td>Single Line of Text</td>
-                                <td>מקסימום 100 תווים</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="section" id="power-apps-components">
-                    <span class="anchor" id="power-apps-components-anchor"></span>
-                    <h3>2.3 רכיבי Power Apps</h3>
-                    <ul>
-                        <li>כפתורים: btn + [פעולה] (לדוגמה: btnSubmit, btnCancel)</li>
-                        <li>תיבות טקסט: txt + [תיאור] (לדוגמה: txtFirstName)</li>
-                        <li>רשימות נגללות: drp + [תיאור] (לדוגמה: drpDepartment)</li>
-                        <li>טבלאות: tbl + [תיאור] (לדוגמה: tblEmployeesList)</li>
-                        <li>טפסים: frm + [תיאור] (לדוגמה: frmEmployeeDetails)</li>
-                    </ul>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Control name</th>
-                                <th>Abbreviation</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Badge</td>
-                                <td>bdg</td>
-                            </tr>
-                            <tr>
-                                <td>Button</td>
-                                <td>btn</td>
-                            </tr>
-                            <tr>
-                                <td>Camera control</td>
-                                <td>cam</td>
-                            </tr>
-                            <tr>
-                                <td>Canvas</td>
-                                <td>can</td>
-                            </tr>
-                            <tr>
-                                <td>Card</td>
-                                <td>crd</td>
-                            </tr>
-                            <tr>
-                                <td>Charts</td>
-                                <td>chr</td>
-                            </tr>
-                            <tr>
-                                <td>CheckBox</td>
-                                <td>chk</td>
-                            </tr>
-                            <tr>
-                                <td>Collection</td>
-                                <td>col</td>
-                            </tr>
-                            <tr>
-                                <td>Combo box</td>
-                                <td>cmb</td>
-                            </tr>
-                            <tr>
-                                <td>Component</td>
-                                <td>cmp</td>
-                            </tr>
-                            <tr>
-                                <td>Container</td>
-                                <td>con</td>
-                            </tr>
-                            <tr>
-                                <td>Dates</td>
-                                <td>dte</td>
-                            </tr>
-                            <tr>
-                                <td>Drop down</td>
-                                <td>drp</td>
-                            </tr>
-                            <tr>
-                                <td>Form</td>
-                                <td>frm</td>
-                            </tr>
-                            <tr>
-                                <td>Gallery</td>
-                                <td>gal</td>
-                            </tr>
-                            <tr>
-                                <td>Group</td>
-                                <td>grp</td>
-                            </tr>
-                            <tr>
-                                <td>Header</td>
-                                <td>hdr</td>
-                            </tr>
-                            <tr>
-                                <td>Html text</td>
-                                <td>htm</td>
-                            </tr>
-                            <tr>
-                                <td>Icon</td>
-                                <td>ico</td>
-                            </tr>
-                            <tr>
-                                <td>Image</td>
-                                <td>img</td>
-                            </tr>
-                            <tr>
-                                <td>Info Button</td>
-                                <td>info</td>
-                            </tr>
-                            <tr>
-                                <td>Label</td>
-                                <td>lbl</td>
-                            </tr>
-                            <tr>
-                                <td>Link</td>
-                                <td>lnk</td>
-                            </tr>
-                            <tr>
-                                <td>List box</td>
-                                <td>lst</td>
-                            </tr>
-                            <tr>
-                                <td>Microphone</td>
-                                <td>mic</td>
-                            </tr>
-                            <tr>
-                                <td>Microsoft Stream</td>
-                                <td>str</td>
-                            </tr>
-                            <tr>
-                                <td>Page section shape</td>
-                                <td>sec</td>
-                            </tr>
-                            <tr>
-                                <td>Pen Input</td>
-                                <td>pen</td>
-                            </tr>
-                            <tr>
-                                <td>Power BI Tile</td>
-                                <td>pbi</td>
-                            </tr>
-                            <tr>
-                                <td>Progress Bar</td>
-                                <td>pbar</td>
-                            </tr>
-                            <tr>
-                                <td>Rating</td>
-                                <td>rtg</td>
-                            </tr>
-                            <tr>
-                                <td>Rich text editor</td>
-                                <td>rte</td>
-                            </tr>
-                            <tr>
-                                <td>Shapes (rectangle, circle, and so on)</td>
-                                <td>shp</td>
-                            </tr>
-                            <tr>
-                                <td>Slider</td>
-                                <td>sld</td>
-                            </tr>
-                            <tr>
-                                <td>Tab List</td>
-                                <td>tbl</td>
-                            </tr>
-                            <tr>
-                                <td>Table</td>
-                                <td>tbl</td>
-                            </tr>
-                            <tr>
-                                <td>Text input</td>
-                                <td>txt</td>
-                            </tr>
-                            <tr>
-                                <td>Timer</td>
-                                <td>tmr</td>
-                            </tr>
-                            <tr>
-                                <td>Toggle</td>
-                                <td>tgl</td>
-                            </tr>
-                            <tr>
-                                <td>Video</td>
-                                <td>vid</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="section" id="architecture">
-                <span class="anchor" id="architecture-anchor"></span>
-                <h2>3. ארכיטקטורה ופיתוח</h2>
 
                 <div class="section" id="security">
                     <span class="anchor" id="security-anchor"></span>
-                    <h3>3.2 אבטחה והרשאות</h3>
+                    <h3>5.1 אבטחה והרשאות</h3>
                     <ul>
                         <li>הגדירו מדיניות אבטחה ברמת השדה למידע רגיש</li>
                         <li>תכננו מראש רמות הרשאה שונות למשתמשים שונים</li>
                     </ul>
                 </div>
 
-                <div class="section" id="performance">
-                    <span class="anchor" id="performance-anchor"></span>
-                    <h3>3.3 ביצועים</h3>
-                    <ul>
-                        <li>הוסיפו אינדקסים לשדות שיחופשו לעתים קרובות</li>
-                    </ul>
-                </div>
-
                 <div class="section" id="design">
                     <span class="anchor" id="design-anchor"></span>
-                    <h3>3.4 עיצוב</h3>
+                    <h3>2.3 עיצוב</h3>
                     <ul>
-                        <li>להקפיד להגדיר בגובה ורוחב של רכיבים להשתמש בערך דינמי (לדוגמה: Paren.Width /2)</li>
+                        <li>להקפיד להגדיר בגובה ורוחב של רכיבים להשתמש בערך דינמי (לדוגמה: Parent.Width /2)</li>
                         <li>לבנות רכיבים בתוך Containers רספונסיביים (רוחביים ואופקיים)</li>
+                        <li>לשמור על עיצוב אחיד בכל האפליקציה</li>
+                        <li>להשתמש בקומפוננטות מוכנות מראש לשמירה על אחידות</li>
                     </ul>
                 </div>
 
                 <div class="section" id="app-variables">
                     <span class="anchor" id="app-variables-anchor"></span>
-                    <h3>משתנים באפליקציות</h3>
+                    <h3>2.4 משתנים באפליקציות</h3>
                     <table>
                         <thead>
                             <tr>
@@ -1038,628 +1060,115 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-            <div class="section" id="processes">
-                <span class="anchor" id="processes-anchor"></span>
-                <h2>4. תהליכי עבודה</h2>
-
-                <div class="section" id="task-management">
-                    <span class="anchor" id="task-management-anchor"></span>
-                    <h3>4.1 ניהול משימות</h3>
-                    <ul>
-                        <li>השתמשו בכלי לניהול משימות כמו Asana או Azure DevOps בהתאם לצורך.</li>
-                        <li>Asana משמשת לניהול משימות פנימיות ודיונים בתוך הצוות, ללא חשש מהלקוח.</li>
-                        <li>Azure DevOps הוא הכלי הרשמי לפתיחת באגים ותקלות טכניות הדורשות התערבות של הלקוח, במיוחד בתוך
-                            סביבת CITRIX.</li>
-                        <li>ניתן להצטרף למערכת Asana דרך הזימון שנשלח לכלל המשתמשים ולנהל משימות בצורה קלה ונגישה מכל
-                            מכשיר.</li>
-                        <li>חשוב להשתמש במערכת המתאימה לכל סוג משימה כדי לייעל את העבודה ולמנוע בלבול.</li>
-                    </ul>
-                </div>
-
-
-                <div class="section" id="communication">
-                    <span class="anchor" id="communication-anchor"></span>
-                    <h3>4.2 תקשורת</h3>
-                    <ul>
-                        <li>קיימו פגישות צוות קבועות לעדכון סטטוס</li>
-                        <li>השתמשו בכלי כמו Microsoft Teams לתקשורת שוטפת</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="section" id="documentation">
-                <span class="anchor" id="documentation-anchor"></span>
-                <h2>5. תיעוד</h2>
 
                 <div class="section" id="code-documentation">
                     <span class="anchor" id="code-documentation-anchor"></span>
-                    <h3>5.1 תיעוד קוד</h3>
+                    <h3>2.5 תיעוד קוד</h3>
                     <ul>
                         <li>כתבו הערות ברורות בקוד</li>
                         <li>תיעוד ברור ומפורט ככל הניתן</li>
                         <li>במידה ומשתמשים ב-*/ לוודא שסוגרים את ההערה בצורה תקינה עם /* נוסף במקום הנכון</li>
                     </ul>
                 </div>
+
+                <div class="section" id="performance">
+                    <span class="anchor" id="performance-anchor"></span>
+                    <h3>2.6 ביצועים</h3>
+                    <ul>
+                        <li>הוסיפו אינדקסים לשדות שיחופשו לעתים קרובות</li>
+                        <li>הסירו אובייקטים שלא בשימוש לשיפור ביצועים</li>
+                        <li>השתמשו במטאטא בלשונית DATA על מנת לנקות / להסיר בסיסי נתונים שלא בשימוש</li>
+                        <li>בדקו את מדדי הביצועים ב-appChecker וטפלו בבעיות</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="section" id="backup">
-                <span class="anchor" id="backup-anchor"></span>
-                <h2>6. גיבוי ושחזור</h2>
-                <ul>
-                    <li>הגדירו ויישמו מדיניות גיבוי ושחזור</li>
-                    <li>בדקו באופן תקופתי את יכולת השחזור</li>
-                    <li>במידה ועובדים על טופס קיים ויש צורך לשכפל את המסך לצורך גיבוי / השוואה יש לזכור למחוק את העותק
-                        ולהשאיר את הטופס המקורי.</li>
-                </ul>
-            </div>
-            <div class="section" id="self-testing">
-                <span class="anchor" id="self-testing-anchor"></span>
-                <h2>7. בדיקה עצמית</h2>
-                <ul>
-                    <li>הסרת אובייקטים שלא בשימוש / לצורכי בדיקות על מנת למזער בלבול של מפתחים אחרים אשר נכנסים לטופס
-                        אחרינו ושיפור ביצועים</li>
-                    <li>לוודא שאין אזהרות / בעיות ב appChecker ותיקונם במידת הצורך.</li>
-                    <li>שימוש במטאטא בלשונית DATA על מנת לנקות / להסיר בסיסי נתונים שלא בשימוש</li>
-                    <img src="img/1.png" alt="מסך ראשי של appChecker">
-                    <li>שימוש בלשונית "ביצועים" תחת appChecker ולתקן את ההערות</li>
-                </ul>
-            </div>
+            <!-- 3. פיתוח Power Apps -->
+            <div class="section" id="power-apps-dev">
+                <span class="anchor" id="power-apps-dev-anchor"></span>
+                <h2>3. פיתוח Power Apps</h2>
 
-            <div class="section" id="onboarding">
-                <span class="anchor" id="onboarding-anchor"></span>
-                <h2>הנחיות לכניסה לתפקיד פיתוח PA</h2>
-                <p>לצורך התחברות ראשונית למערכת, להתקשר למספר של תמיכת חברת החשמל ולקבל אימייל, שם משתמש וסיסמה.</p>
-                <p>תמיכה חח"י: 076-8642999.</p>
-                <p>יש צורך בהתחברות ל- authanticator של משתמש חברת החשמל, וניתן לעשות זאת רק מתוך הסיטריקס (סביבת
-                    העבודה) של חברת החשמל.</p>
-                <p>לצורך זה יש לבצע התחברות ראשונית ל-authanticator מתוך מחשב של חבר צוות המחובר למערכת.</p>
-                <p>הדיילי והתקשורת בתוך חח"ח מתקיימת ב- webex.</p>
-                <p>צריך לקבל משתמש לאתר המעקב תהליכים דיגיטליים מרואי.</p>
-                <p>העיצוב של כל התהליכים נמצא ב- figma.</p>
-                <p>סיסמא: abra1234##</p>
-                <p>שם משתמש: abra-iec@outlook.com</p>
-                <p>בעיצובים בפיגמה, גודל הטקסט מופיע ב- px. במערכת ה-PA יש להמיר אותם ל-pt. מצורף לינק להמרה.<br>
-                    בטימס של היוזר של חברת החשמל, יש קבוצה בשם power apps. כל המסמכים הרלוונטים נמצאים בfiles בקבוצה.
-                </p>
-                <img src="img/2.png" alt="המסמכים הרלוונטים בקבוצת power apps">
-                <p>מסמכי האיפיון שאנו עובדים עליהם נמצאים במסמכי איפיון- מסמכים בעבודה</p>
-                <p>בקובץ "שדות עבוד תהליכים דיגיטליים" יש רשימת שמית של השדות אותם אנו מקבלים מה- apim</p>
-                <p>יש 3 enviroments לחח"י- dev, test,prod. לכל סביבה יש משתמש אפליקטיבי.</p>
-
-                <h3>משתמשי מערכת:</h3>
-                <h4>משתמש dev:</h4>
-                <p>Pplatform_D-SVC@iec.co.il<br>
-                    *סיסמה*</p>
-
-                <h4>משתמש test:</h4>
-                <p>Pplatform_T-SVC@iec.co.il<br>
-                    *סיסמה*</p>
-
-                <h4>משתמש prod:</h4>
-                <p>Pplatform_P-SVC@iec.co.il<br>
-                    *סיסמה*</p>
-            </div>
-
-            <div class="section" id="approver-table">
-                <span class="anchor" id="approver-table-anchor"></span>
-                <h2>טבלת Approver</h2>
-                <p>טבלת הנתונים הראשית של התהליכים הדיגיטליים של חברת החמשל היא טבלת Approvers. היא מכילה את כל שלבי
-                    האישור של כל תהליך. גם כאשר אנו יוצרים תהליך ללא אישורים, אנחנו נשמור את התהליך בתוך טבלת approvers
-                    כתהליך שהסתיים בהצלחה.</p>
-
-                <h3>הסבר קצר על טבלת Approver:</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>שם עמודה</th>
-                            <th>הסבר</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>OrderID</td>
-                            <td>מספר OrderID של הרשומה בטבלת הנתונים המקורית של התהליך</td>
-                        </tr>
-                        <tr>
-                            <td>OrderGuid</td>
-                            <td>המזהה הייחודי של הרשומה בטבלת הנתונים המקורית של התהליך- העמודה עם אותו השם של
-                                הטבלה.<br><br>
-                                ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר
-                                ויעל יותר.</td>
-                        </tr>
-                        <tr>
-                            <td>URLDeepLink</td>
-                            <td>קישור לאפליקציית התהליך עם ה-GUID של הרשומה ב- Approvers</td>
-                        </tr>
-                        <tr>
-                            <td>Active</td>
-                            <td>הרשומה הפעילה בכל תהליך אישור. אם התהליך מאושר, אז כל הרשומות יהיו false</td>
-                        </tr>
-                        <tr>
-                            <td>ApproveStatus</td>
-                            <td>סטטוס הרשומה הנוכחית. האם המאשר אישר/דחה/ממתין לאישור</td>
-                        </tr>
-                        <tr>
-                            <td>AppStatus</td>
-                            <td>סטטוס התהליך- התוצאה הסופית או הסטטוס הכללי של כל התהליך. אם יש רשומה אחת שאושרה ורשומה
-                                אחת שמחכה לאישור, ה-AppStatus של שתיהן יהיה ממתין לאישור.<br><br>
-                                עמודה אוטומטית שאנו לא מכניסים אליה מידע.</td>
-                        </tr>
-                        <tr>
-                            <td>Stage</td>
-                            <td>
-                                <ol>
-                                    <li>המאשר הראשון בתהליך</li>
-                                    <li>המאשר השני בתהליך</li>
-                                </ol>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="section" id="approver-steps">
-                <span class="anchor" id="approver-steps-anchor"></span>
-                <div class=" mx-auto px-4 py-8 max-w-6xl">
-                    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">דיאגרמת סבב אישורים - 3 מאשרים</h1>
+                <div class="section" id="new-solution">
+                    <span class="anchor" id="new-solution-anchor"></span>
+                    <h3>3.1 הקמת פתרון חדש</h3>
+                    <p>בהקמת פתרון חדש יש לבחור את IEC כ- Publisher</p>
+                    <img src="img/6.png" alt="בחירת IEC כ- Publisher">
                     
-                    <div class="relative flex flex-col items-center space-y-6">
-                                              <!-- Legend -->
-                      <div class="w-full max-w-2xl mt-4 bg-white border border-gray-200 rounded-lg p-4">
-                        <h3 class="font-semibold text-gray-700 mb-2">מקרא:</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                          <div class="flex items-center">
-                            <span class="approval-state pending w-3 h-3 rounded-full"></span>
-                            <span class="mr-2 text-sm text-gray-600">ממתין לאישור</span>
-                          </div>
-                          <div class="flex items-center">
-                            <span class="approval-state approved w-3 h-3 rounded-full"></span>
-                            <span class="mr-2 text-sm text-gray-600">אושר</span>
-                          </div>
-                          <div class="flex items-center">
-                            <span class="approval-state rejected w-3 h-3 rounded-full"></span>
-                            <span class="mr-2 text-sm text-gray-600">נדחה</span>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Main Table Section -->
-                      <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-blue-500">
-                        <div class="flex items-center justify-center mb-4">
-                          <i class="fas fa-table text-blue-500 text-2xl mr-2"></i>
-                          <h2 class="text-xl font-semibold text-blue-700">טבלה ראשית (Main Table)</h2>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">ID:</span>
-                            <span class="font-medium block">1001</span>
-                          </div>
-                          <div class="bg-blue-50 p-3 rounded border border-blue-200 highlight-pulse">
-                            <span class="text-blue-500 text-sm">GUID:</span>
-                            <span class="font-medium block" title="מזהה ייחודי שמקשר בין הטבלאות">5F8D3A76-C2B1-42E9...</span>
-                          </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">Form Name:</span>
-                            <span class="font-medium block">בקשת רכש</span>
-                          </div>
+                    <h4>טבלה חדשה - עמודות בסיס</h4>
+                    <p>בכל טבלה חדשה, יש לוודא כי עמודות הבסיס הבאות מוקמות:</p>
 
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">Created By:</span>
-                            <span class="font-medium block">ישראל ישראלי</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="arrow-down animate__animated animate__fadeIn"></div>
-                      
-                      <!-- Approver Table Description -->
-                      <div class="w-full max-w-2xl text-center">
-                        <div class="inline-block bg-green-100 text-green-800 px-4 py-2 rounded-full font-semibold">
-                          <i class="fas fa-users-cog mr-2"></i>טבלת APPROVER - 3 רשומות עבור סבב אישורים
-                        </div>
-                      </div>
-                      
-                      <!-- Approver 1 -->
-<div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
-    <div class="flex items-center justify-center mb-4">
-      <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
-      <h2 class="text-xl font-semibold text-green-700">מאשר 1 (Stage = 1)</h2>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-      <div class="bg-gray-50 p-3 rounded border border-gray-200">
-        <span class="text-gray-500 text-sm">מאשר:</span>
-        <span class="font-medium block">דן לוי</span>
-      </div>
-      <div class="bg-green-50 p-3 rounded border border-green-200">
-        <span class="text-green-500 text-sm">שלב:</span>
-        <span class="font-medium block">1</span>
-      </div>
-      <div class="bg-blue-50 p-3 rounded border border-blue-200">
-        <span class="text-blue-500 text-sm">OrderGuid:</span>
-        <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
-      </div>
-      <div class="bg-gray-50 p-3 rounded border border-gray-200">
-        <span class="text-gray-500 text-sm">DeepLink:</span>
-        <span class="font-medium block">/form/1001</span>
-      </div>
-      <div class="bg-gray-50 p-3 rounded border border-gray-200">
-        <span class="text-gray-500 text-sm">סטטוס:</span>
-        <span class="approval-state approved font-medium block">אושר</span>
-      </div>
-      <div class="bg-yellow-50 p-3 rounded border border-gray-200">
-        <span class="text-gray-500 text-sm">AppStatus (סטטוס ראשי):</span>
-        <span class="approval-state pending font-medium block">ממתין לאישור</span>
-        <p class="text-xs text-purple-400 mt-1">
-            זהו הסטטוס הראשי שיופיע באקשן סנטר.
-            <br> יתקבל כ-"אושר" רק אם כל השלבים יאושרו.
-            <br> אם לפחות שלב אחד נדחה – יהפוך ל-"נדחה".
-            <br> אחרת, ישאר "ממתין לאישור".
-          </p>      </div>
-    </div>
-  </div>
-                      
-                      <div class="arrow-down animate__animated animate__fadeIn"></div>
-                      
-                      <!-- Process Steps for Approver 1 -->
-                      <div class="node w-full max-w-lg bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-300">
-                        <div class="flex flex-col space-y-3">
-                          <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
-                              <i class="fas fa-desktop text-blue-600"></i>
-                            </div>
-                            <div class="mr-3">
-                              <p class="text-sm font-medium">הצגה ב-Action Center למאשר 1</p>
-                            </div>
-                          </div>
-                          <div class="w-1 h-6 bg-gray-300 mr-5"></div>
-                          <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-green-100 p-2 rounded-full">
-                              <i class="fas fa-check text-green-600"></i>
-                            </div>
-                            <div class="mr-3">
-                              <p class="text-sm font-medium">אישור ע״י מאשר 1</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="arrow-down animate__animated animate__fadeIn"></div>
-                      
-                      <!-- Approver 2 -->
-                      <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
-                        <div class="flex items-center justify-center mb-4">
-                          <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
-                          <h2 class="text-xl font-semibold text-green-700">מאשר 2 (Stage = 2)</h2>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">Approver:</span>
-                            <span class="font-medium block">רונית כהן</span>
-                          </div>
-                          <div class="bg-green-50 p-3 rounded border border-green-200">
-                            <span class="text-green-500 text-sm">Stage:</span>
-                            <span class="font-medium block">2</span>
-                          </div>
-                          <div class="bg-blue-50 p-3 rounded border border-blue-200">
-                            <span class="text-blue-500 text-sm">OrderGuid:</span>
-                            <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
-                          </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">DeepLink:</span>
-                            <span class="font-medium block">/form/1001</span>
-                          </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">Status:</span>
-                            <span class="approval-state approved font-medium block">אושר</span>
-                          </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">AppStatus:</span>
-                            <span class="approval-state approved font-medium block">אושר</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="arrow-down animate__animated animate__fadeIn"></div>
-                      
-                      <!-- Process Steps for Approver 2 -->
-                      <div class="node w-full max-w-lg bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-300">
-                        <div class="flex flex-col space-y-3">
-                          <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
-                              <i class="fas fa-desktop text-blue-600"></i>
-                            </div>
-                            <div class="mr-3">
-                              <p class="text-sm font-medium">הצגה ב-Action Center למאשר 2</p>
-                            </div>
-                          </div>
-                          <div class="w-1 h-6 bg-gray-300 mr-5"></div>
-                          <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-green-100 p-2 rounded-full">
-                              <i class="fas fa-check text-green-600"></i>
-                            </div>
-                            <div class="mr-3">
-                              <p class="text-sm font-medium">אישור ע״י מאשר 2</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="arrow-down animate__animated animate__fadeIn"></div>
-                      
-                      <!-- Approver 3 -->
-                      <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
-                        <div class="flex items-center justify-center mb-4">
-                          <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
-                          <h2 class="text-xl font-semibold text-green-700">מאשר 3 (Stage = 3)</h2>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">Approver:</span>
-                            <span class="font-medium block">יוסי אברהם</span>
-                          </div>
-                          <div class="bg-green-50 p-3 rounded border border-green-200">
-                            <span class="text-green-500 text-sm">Stage:</span>
-                            <span class="font-medium block">3</span>
-                          </div>
-                          <div class="bg-blue-50 p-3 rounded border border-blue-200">
-                            <span class="text-blue-500 text-sm">OrderGuid:</span>
-                            <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
-                          </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">DeepLink:</span>
-                            <span class="font-medium block">/form/1001</span>
-                          </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">Status:</span>
-                            <span class="approval-state pending font-medium block">ממתין לאישור</span>
-                          </div>
-                          <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-gray-500 text-sm">AppStatus:</span>
-                            <span class="approval-state pending font-medium block">ממתין לאישור</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="arrow-down animate__animated animate__fadeIn"></div>
-                      
-                      <!-- Process Steps for Approver 3 -->
-                      <div class="node w-full max-w-lg bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-300">
-                        <div class="flex flex-col space-y-3">
-                          <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
-                              <i class="fas fa-desktop text-blue-600"></i>
-                            </div>
-                            <div class="mr-3">
-                              <p class="text-sm font-medium">הצגה ב-Action Center למאשר 3</p>
-                            </div>
-                          </div>
-                          <div class="w-1 h-6 bg-gray-300 mr-5"></div>
-                          <div class="flex items-center opacity-50">
-                            <div class="flex-shrink-0 bg-gray-100 p-2 rounded-full">
-                              <i class="fas fa-hourglass-half text-gray-600"></i>
-                            </div>
-                            <div class="mr-3">
-                              <p class="text-sm font-medium">ממתין לאישור מאשר 3</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="arrow-down animate__animated animate__fadeIn opacity-30"></div>
-                      
-                      <!-- Final Approval -->
-                      <div class="node w-full max-w-lg bg-white rounded-lg shadow-md p-6 border border-gray-300 opacity-90 hover:opacity-100 transition-opacity duration-300">
-                    <div class="flex items-center justify-start space-x-4">
-                        <div class="bg-green-100 p-4 rounded-full shadow-sm">
-                            <i class="fas fa-check-double text-green-500 text-2xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-xl font-semibold text-green-600">הטופס אושר סופית</p>
-                            
-                        </div>
-                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>הסבר</th>
+                                <th>הגדרות</th>
+                                <th>סוג נתונים</th>
+                                <th>שם לוגי</th>
+                                <th>שם תצוגה</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ריצה אוטומטית של מספרים ללא התערבות חיצונית שלנו</td>
+                                <td>Minimum number of digits: 1<br>Seed Value: 1<br>ספירת תווים מרביים: 100</td>
+                                <td>מספר אוטומטי #</td>
+                                <td>iec_orderid</td>
+                                <td>OrderId</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>ריצה אוטומטית של מספרים ללא התערבות חיצונית שלנו</td>
+                                <td>Minimum number of digits: 5<br>Seed Value: 1<br>ספירת תווים מרביים: 100</td>
+                                <td>מספר אוטומטי #</td>
+                                <td>iec_runnumber</td>
+                                <td>Run Number</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>אנחנו ממלאים ידנית מה-CurrentUser<br>שדה בשם: MailNickname</td>
+                                <td>ספירת תווים מרביים: 100</td>
+                                <td>טקסט</td>
+                                <td>iec_user_sap_id</td>
+                                <td>USER SAP ID</td>
+                                <td>3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>הערות:</h4>
+                    <ol>
+                        <li>
+                            <p>טבלת APPROVER <strong>הקיימת</strong> אנחנו ממלאים את השדה: OrderGuid בעת יצירת שורות חדשות בטבלת APPROVER</p>
+                            <p>עם ה-GUID של הרשומה מהטבלה הראשית החדשה שלנו.</p>
+                            <p>ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר ויעל יותר.</p>
+                        </li>
+                        <li>
+                            <p>כשיוצרים רשומות חדשות בטבלת APPRVOER יש לשים לב למלא את השדות:</p>
+                            <ul>
+                                <li>DeepLInk</li>
+                                <li>FormName</li>
+                                <li>IDForm</li>
+                                <li>MailSubject</li>
+                                <li>OrderGuid -- GUID נלקח מהשורה החדשה שיצרנו בטבלה הראשית של הטופס שלנו.</li>
+                                <li>OrderID</li>
+                                <li>RunNumber</li>
+                                <li>Stage</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h4>Stage:</h4>
+                    <p>אנחנו מציגים ב-Action Center את כל הרשומות שנוצרו בטבלת Approver שהשדה STAGE = 1.</p>
+                    <p>לכן, יש צורך לוודא שגם במידה <strong>ואין צורך</strong> בסבב אישורים בטופס שהקמנו יש להקים שורה בטבלת APPROVER שהשדה STAGE = 1, אחרת הלקוח לא יראה את הטופס בטבלאות השונות ב-ACTION CENTER.</p>
                 </div>
-                
-                      
-                      <!-- Explanation Note -->
-                      <div class="w-full max-w-2xl mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                        <div class="flex">
-                          <div class="flex-shrink-0">
-                            <i class="fas fa-info-circle text-yellow-500 text-xl"></i>
-                          </div>
-                          <div class="mr-3">
-                            <h3 class="font-semibold text-yellow-800">הערה חשובה:</h3>
-                            <p class="text-yellow-700 text-sm">
-                              כל 3 הרשומות בטבלת APPROVER משתמשות באותו OrderGuid מהטבלה הראשית כדי ליצור קישור.
-                              ההבדל העיקרי בין הרשומות הוא ערך ה-Stage המציין את סדר האישורים (1, 2, 3) וכן ה-RunNumber המציין גם הוא את מספר האישור בסבב.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      
 
-                    </div>
-                  </div>
-                  
-            </div>
-
-            <div class="section" id="action-center">
-                <span class="anchor" id="action-center-anchor"></span>
-                <h2>Action Center</h2>
-                <p>האפליקציה שבה כלל המשתמשים יכולים לראות אילו בקשות הם הגישו ומה הסטטוס שלהם.</p>
-                <p>אנחנו מציגים ב-Action Center את כל הרשומות שנוצרו בטבלת Approver שהשדה STAGE = 1.</p>
-                <p>לכן, יש צורך לוודא שגם במידה <strong>ואין צורך</strong> בסבב אישורים בטופס שהקמנו יש להקים שורה בטבלת
-                    APPROVER שהשדה STAGE = 1, אחרת הלקוח לא יראה את הטופס בטבלאות השונות ב-ACTION CENTER.</p>
-            </div>
-
-            <div class="section" id="configuration-table">
-                <span class="anchor" id="configuration-table-anchor"></span>
-                <h2>טבלת קונפיגורציה</h2>
-                <p>בתוך הפתרון של ה-action canter נחפש את האפליקציה של ה- model driven.</p>
-                <p>בטבלה זו אנו נכניס את השמות הלוגיים של הטבלה הראשית של התהליך ממנה אנו רוצים להציג נתונים + טבלה
-                    משנית שקשורה (לא חובה-רק במידה ויש צורך להציג הרחבה מטבלה שנייה).</p>
-                <p>Entity- השם של הטבלה הראשית</p>
-                <p>Related entity- השם של הטבלה המשנית</p>
-                <p>ונכניס את השדות כפי שמופיע ב-output של get a row by id בפאוור אוטומייט.<br>
-                    בסקשיין "שדות" אנו נכניס את השמות של העמודות מהטבלה הראשית (Entity) כפי שהם מופיעים ב-power
-                    automate.</p>
-                <p>בסקשיין "שדות מקושרים" אנו נכניס את השמות של העמודות מהטבלה המשנית (related-entity)<br>
-                    וליצור קשר עם מפתח שמכיר כיצד להתאים את האפליקציה לתהליך החדש.</p>
-                <p>ה- orderID הוא השדה המקשר בין טבלת Aprovers לטבלה של התהליך.</p>
-                <img src="img/3.png" alt="טבלת קונפיגורציה">
-            </div>
-
-            <div class="section" id="security-roles">
-                <span class="anchor" id="security-roles-anchor"></span>
-                <h2>תפקידי אבטחה</h2>
-                <p>לכל תהליך יש להגדיר תפקידי אבטחה. מדובר במתן גישה לטבלת הנתונים ולא לאפליקציית POWER APPS.</p>
-                <p>יש להגדיר את תפקידי האבטחה בפתרון IEC FORM - SECURITY RULES</p>
-                <img src="img/4.png" alt="תפקידי אבטחה">
-                <p>תפקידי האבטחה שיש לערוך:</p>
-                <ul>
-                    <li>min priv apps use users</li>
-                    <li>min prov app approvers</li>
-                </ul>
-                <p>יש לחפש את שם הטבלה החדשה ולהיכנס אליה</p>
-
-                <p>אנו לרוב נבחר לתת הרשאה ל-user או לא לתת הרשאה בכלל. זה תלוי בצורך הפרטני של כל תהליך.</p>
-                <img src="img/5.png" alt="תפקידי אבטחה">
-                <h3>הסבר קצר:</h3>
-                <p>user: הרשאה לרשומות שהבעלות שלהם היא אותו יוזר</p>
-                <p>Organization: הרשאה לכל הרשומות בטבלה ללא הגבלה</p>
-
-                <div class="note">
-                    <p><strong>הערה כללית:</strong> פתרון IEC FORMS מכיל זרימות עבודה ישנות מ- KPMG.</p>
-                </div>
-            </div>
-
-            <div class="section" id="document-sanitization">
-                <span class="anchor" id="document-sanitization-anchor"></span>
-                <h2>הלבנת מסמכים</h2>
-                <p>אם שומרים קבצים בטבלת annotation אז יש פלוו שרץ ישירות ועושה להם הלבנה. הפלוו הוא OPSWAT בפתרון
-                    IEC-OPSWAT</p>
-                <p>דוגמה לשמירת קבצים בטבלת הערות/annotaion ניתן לראות בפתרון 40 בפלו
-                    Associated_Car_Permit_UploadCarLicense</p>
-                <p>אם שומרים קובץ בטבלה אחרת יש צורך ליצור פלוו המלבין את הקבצים.</p>
-                <p>Associated_Car_Permit_UploadCarLicense</p>
-                <p>יש לשמור עותק של הפלו MyStoryAttachments_14S - OPSWAT<br>
-                    ולשייך אותו לפתרון הרלוונטי. יש לשנות את הטריגר שלו שיכיל את הטבלה של הפתרון ששומר את הקובץ-</p>
-                <p style="font-weight: bold; color: red; background-color: yellow;">גדי יוסיף עוד מידע</p>
-            </div>
-
-            <div class="section" id="ad-groups">
-                <span class="anchor" id="ad-groups-anchor"></span>
-                <h2>קבוצות AD (Entra ID)</h2>
-                <p>עובדי פנסיה וגמל : 057725c6-10f8-47b2-8b26-ad0aa1204b14</p>
-                <p>(בAzure DevOps בחחי במאמרי ידע יש רשימה מלאה של כל קבוצות EntraID עם הGUID שלהם)</p>
-                <div class="image-container">
-                    <img src="img/13.png" alt="קבוצות AD (Entra ID)">
-                    <img src="img/14.png" alt="EntraID-USER">
-                </div>
-            </div>
-
-
-            <div class="section" id="useful-links">
-                <span class="anchor" id="useful-links-anchor"></span>
-                <h2>לינקים שימושיים</h2>
-                <ol>
-                    <li>מערכת מעקב תהליכים דיגיטליים
-                        <a href="https://iec-tasks-powerplatform.netlify.app/"
-                            target="_blank">https://iec-tasks-powerplatform.netlify.app/</a>
-                        <br>יש לקבל שם משתמש וסיסמא מרואי
-                    </li>
-                    <li>לינקים לטפסים ישן-
-                        <a href="https://ieconline.sharepoint.com.mcas.ms/:x:/r/sites/PowerApps/_layouts/15/Doc2.aspx?action=edit&sourcedoc=%7B43def57d-030a-48c3-b023-f2b790006391%7D&wdOrigin=TEAMS-WEB.teamsSdk_ns.rwc&wdExp=TEAMS-TREATMENT&wdhostclicktime=1724663426184&web=1"
-                            target="_blank">קישור לטפסים</a>
-                    </li>
-                    <li>המרת PX ל- PT
-                        <a href="https://cssunitconverter.vercel.app/px-to-pt"
-                            target="_blank">https://cssunitconverter.vercel.app/px-to-pt</a>
-                    </li>
-                </ol>
-            </div>
-
-            <div class="section" id="new-solution">
-                <span class="anchor" id="new-solution-anchor"></span>
-                <h2>הקמת פתרון חדש</h2>
-                <p>בהקמת פתרון חדש יש לבחור את IEC כ- Publisher</p>
-                <img src="img/6.png" alt="בחירת IEC כ- Publisher">
-                <h3>טבלה חדשה - עמודות בסיס</h3>
-                <p>בכל טבלה חדשה, יש לוודא כי עמודות הבסיס הבאות מוקמות:</p>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>הסבר</th>
-                            <th>הגדרות</th>
-                            <th>סוג נתונים</th>
-                            <th>שם לוגי</th>
-                            <th>שם תצוגה</th>
-                            <th>#</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>ריצה אוטומטית של מספרים ללא התערבות חיצונית שלנו</td>
-                            <td>Minimum number of digits: 1<br>Seed Value: 1<br>ספירת תווים מרביים: 100</td>
-                            <td>מספר אוטומטי #</td>
-                            <td>iec_orderid</td>
-                            <td>OrderId</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>ריצה אוטומטית של מספרים ללא התערבות חיצונית שלנו</td>
-                            <td>Minimum number of digits: 5<br>Seed Value: 1<br>ספירת תווים מרביים: 100</td>
-                            <td>מספר אוטומטי #</td>
-                            <td>iec_runnumber</td>
-                            <td>Run Number</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>אנחנו ממלאים ידנית מה-CurrentUser<br>שדה בשם: MailNickname</td>
-                            <td>ספירת תווים מרביים: 100</td>
-                            <td>טקסט</td>
-                            <td>iec_user_sap_id</td>
-                            <td>USER SAP ID</td>
-                            <td>3</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3>הערות:</h3>
-                <ol>
-                    <li>
-                        <p>טבלת APPROVER <strong>הקיימת</strong> אנחנו ממלאים את השדה: OrderGuid בעת יצירת שורות חדשות
-                            בטבלת APPROVER</p>
-                        <p>עם ה-GUID של הרשומה מהטבלה הראשית החדשה שלנו.</p>
-                        <p>ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר ויעל
-                            יותר.</p>
-                    </li>
-                    <li>
-                        <p>כשיוצרים רשומות חדשות בטבלת APPRVOER יש לשים לב למלא את השדות:</p>
-                        <ul>
-                            <li>DeepLInk</li>
-                            <li>FormName</li>
-                            <li>IDForm</li>
-                            <li>MailSubject</li>
-                            <li>OrderGuid -- GUID נלקח מהשורה החדשה שיצרנו בטבלה הראשית של הטופס שלנו.</li>
-                            <li>OrderID</li>
-                            <li>RunNumber</li>
-                            <li>Stage</li>
-                        </ul>
-                    </li>
-                </ol>
-
-                <h3>Stage:</h3>
-                <p>אנחנו מציגים ב-Action Center את כל הרשומות שנוצרו בטבלת Approver שהשדה STAGE = 1.</p>
-                <p>לכן, יש צורך לוודא שגם במידה <strong>ואין צורך</strong> בסבב אישורים בטופס שהקמנו יש להקים שורה בטבלת
-                    APPROVER שהשדה STAGE = 1, אחרת הלקוח לא יראה את הטופס בטבלאות השונות ב-ACTION CENTER.</p>
-
-                    <div class="section" id="new-canvas-app">
-                        <span class="anchor" id="new-canvas-app-anchor"></span>
-                        <h2>הקמת Canvas App חדש</h2>
-                        <p>מה צריך לעשות כאשר פותחים אפליקציה חדשה:</p>
-                    <h3>1. שינוי הגדרות תצוגה</h3>
+                <div class="section" id="new-canvas-app">
+                    <span class="anchor" id="new-canvas-app-anchor"></span>
+                    <h3>3.2 הקמת Canvas App חדש</h3>
+                    <p>מה צריך לעשות כאשר פותחים אפליקציה חדשה:</p>
+                    
+                    <h4>1. שינוי הגדרות תצוגה</h4>
                     <p><strong>יש להגדיר את תצוגת המסך כך שתהיה רספונסיבית לכל סוגי המכשירים.</strong></p>
                     <p>לאחר לחיצה על SETTINGS יפתח החלון הבא, נלחץ על DISPLAY:</p>
                     <img src="img/7.png" alt="החלון של DISPLAY">
@@ -1672,7 +1181,7 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                     <p>*לאחר כל שינוי נצטרך לאשר את השינוי בחלון שיקפוץ</p>
                     <img src="img/8.png" alt="החלון של DISPLAY">
                     
-                    <h3>2. התאמת המסכים</h3>
+                    <h4>2. התאמת המסכים</h4>
                     <p>עבור כל מסך בנפרד יש לבצע את השינויים הבאים:</p>
                     <p>לדוגמא אם המסך הראשון ברשימה נקרא Screen1 אז נלחץ עליו ובצד ימין בהגדרות / Advanced</p>
                     <p>נחפש את השורות הבאות ונעדכן אותן:</p>
@@ -1686,7 +1195,7 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                     
                     <p>לאחר השינויים יש לשמור את היישום, ללחוץ על פרסום ולרענן את דפדפן.</p>
                     
-                    <h3>3. הגדרת ניווט אוטומטי לפי סוג המכשיר</h3>
+                    <h4>3. הגדרת ניווט אוטומטי לפי סוג המכשיר</h4>
                     <p>באירוע OnStart של האפליקציה, נוסיף קוד שמזהה את סוג המכשיר ומנווט בהתאם:</p>
                     <pre>
                     If(Host.OSType = "iOS" Or Host.OSType = "Android", 
@@ -1701,12 +1210,12 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                     <p>הערכים האפשריים ל-Host.OSType הם: Windows, Mac OS, iOS, Android, Linux</p>
                     <p><strong>הערה חשובה:</strong> כאשר משתמשים בגישה זו של ניווט ישיר למסך מותאם מובייל, אין צורך להגדיר SizeBreakpoints, מכיוון שכל מסך מתוכנן בנפרד לפי המכשיר המתאים.</p>
                     
-                    <h3>4. לשתף עם קבוצת הטסט ועם המשתמש האפליקטיבי של סביבת dev</h3>
+                    <h4>4. לשתף עם קבוצת הטסט ועם המשתמש האפליקטיבי של סביבת dev</h4>
                     
-                    <h3>5. להכניס את הלינק למערכת מעקב אחר תהליכים דיגיטליים לטופס 999</h3>
+                    <h4>5. להכניס את הלינק למערכת מעקב אחר תהליכים דיגיטליים לטופס 999</h4>
                     <img src="img/15.png" alt="מערכת מעקב תהליכים">
                     
-                    <h3>6. איך לייבא ולהשתמש בקומפוננטות</h3>
+                    <h4>6. איך לייבא ולהשתמש בקומפוננטות</h4>
                     <p>נבחר את ה + ויוצג החלון הבא, נבחר את המסומן באדום (Import component):</p>
                     <img src="img/import_component.png" alt="ייבוא קומפוננטה">
                     <p>לאחר לחיצה על המסומן באדום יוצג החלון הבא:</p>
@@ -1716,7 +1225,7 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                     <img src="img/components_selection.png" alt="בחירת קומפוננטות">
                     <p>נבחר את הקומפוננטות שנרצה לייבא ע"י לחיצה על העיגול משמאל לשם ולחיצה על Import המסומן בחץ אדום.</p>
                     
-                    <h3>7. להתקין את הפתרון של DropdownRtlStyles:</h3>
+                    <h4>7. להתקין את הפתרון של DropdownRtlStyles:</h4>
                     <p>מתחילים באותה צורה כמו ייבוא קומפוננטה מספריית קומפוננטות.</p>
                     <p>נבחר ב- code ואז נבחר ב- DropdownRrlStyles_Key</p>
                     <img src="img/dropdown_rtl.png" alt="התקנת DropdownRtlStyles">
@@ -1724,7 +1233,7 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                     <p>ניתן להכריח רכיבים להיות RTL על ידי הוספת התחילית הבאה באפליקציה ל:<br>
                         RTLFIX_</p>
                     
-                    <h3>8. ליצור קונטרול שמכיל את הצבעים, פונטים וגדלים של העיצוב.</h3>
+                    <h4>8. ליצור קונטרול שמכיל את הצבעים, פונטים וגדלים של העיצוב.</h4>
                     <p>מומלץ ליצור קונטרול ייעודי שיכלול את כל הגדרות העיצוב הנדרשות לאפליקציה, כגון:</p>
                     <ul>
                         <li>צבעים</li>
@@ -1733,13 +1242,13 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                         <li>מרווחים</li>
                     </ul>
                     <p>כך ניתן יהיה לשמור על אחידות בעיצוב ולבצע שינויים בקלות מנקודה מרכזית אחת.</p>
-                    </div>
+                </div>
 
                 <div class="section" id="components-info">
                     <span class="anchor" id="components-info-anchor"></span>
-                    <h2>הסבר על סוגי קומפוננטות</h2>
+                    <h3>3.3 סוגי קומפוננטות</h3>
 
-                    <h3>Component_HD_FullScreen</h3>
+                    <h4>Component_HD_FullScreen</h4>
                     <p>יש רק כותרת עם:</p>
                     <ul>
                         <li>תמונת חברת חשמל ללא כיתוב מטה</li>
@@ -1750,11 +1259,10 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                     <ul>
                         <li>כותרות מובנות מראש ורק הערך מתחת ניתן לבחירה ידנית</li>
                     </ul>
-                    <p>בנוסף יש עוד כותרת ו-2 שדות לבחירה ידנית במידה ורוצים להציג פרטים של חותם מדף קודם / נתונים
-                        נוספים.</p>
+                    <p>בנוסף יש עוד כותרת ו-2 שדות לבחירה ידנית במידה ורוצים להציג פרטים של חותם מדף קודם / נתונים נוספים.</p>
                     <p>ניתן להסתרה ע"י השארת הערכים ריקים.</p>
 
-                    <h3>Component_HD_Header&Footer</h3>
+                    <h4>Component_HD_Header&Footer</h4>
                     <p>יש כותרת עם:</p>
                     <ul>
                         <li>תמונת חברת חשמל ללא כיתוב מטה</li>
@@ -1767,7 +1275,7 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                         <li>כפתור שליחה אשר ניתן להסתרה באופן ידני</li>
                     </ul>
 
-                    <h3>Component_HD_FullScreen_FreeLabels</h3>
+                    <h4>Component_HD_FullScreen_FreeLabels</h4>
                     <p>יש רק כותרת עם:</p>
                     <ul>
                         <li>תמונת חברת חשמל ללא כיתוב מטה</li>
@@ -1781,7 +1289,7 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                         <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
                     </ol>
 
-                    <h3>Component_HD_FullScreen_FreeLabels_Header&Footer</h3>
+                    <h4>Component_HD_FullScreen_FreeLabels_Header&Footer</h4>
                     <p>יש כותרת עם:</p>
                     <ul>
                         <li>תמונת חברת חשמל ללא כיתוב מטה</li>
@@ -1800,7 +1308,7 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                         <li>כותרת ראשית + 4 שדות לבחירה ידנית כולל הכותרות, ניתן להסתיר ע"י השארת הערכים ריקים</li>
                     </ol>
 
-                    <h3>Component_ReportProblemPopup</h3>
+                    <h4>Component_ReportProblemPopup</h4>
                     <p>חלון דיווח על בעיה,</p>
                     <p>ערכים שאפשר למלא ידנית:</p>
                     <ul>
@@ -1809,32 +1317,415 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                     </ul>
                     <p>בנוסף יש X ו- Y שמאפשרים למקום את החלון באמצע המסך בהתאם לצורך אך לא ניתן לשנות את גודל החלון</p>
 
-                    <h3>שימוש בערכים המתקבלים מקומפוננטות לצורך יצירת בקשה</h3>
+                    <h4>שימוש בערכים המתקבלים מקומפוננטות לצורך יצירת בקשה</h4>
                     <p>לאחר לחיצה על "שליחה" בקומפוננטה, מתקבל ממנה הערך componenetName.FooterBTN שהוא בוליאני.</p>
-                    <p>אותו נזין בתוך ה- default של קונטרול Toggle ואת כל הפונקציה שאנו רוצים לבצע עם שליחת הבקשה נשים
-                        ב- OnChange של ה- toggle.</p>
+                    <p>אותו נזין בתוך ה- default של קונטרול Toggle ואת כל הפונקציה שאנו רוצים לבצע עם שליחת הבקשה נשים ב- OnChange של ה- toggle.</p>
                     <p>אותה לוגיקה נבצע גם בקומפוננטת דיווח על בעיה. הערך המתקבל ממנה הוא</p>
                     <pre>cmp_Responsive_ReportProblemPopup_1.SendPatch_ReportProblemPopup1</pre>
                     <p>ניתן לראות דוגמה לשימושיות בכל האפליקציות.</p>
                 </div>
 
+                <div class="section" id="security-roles">
+                    <span class="anchor" id="security-roles-anchor"></span>
+                    <h3>3.4 תפקידי אבטחה</h3>
+                    <p>לכל תהליך יש להגדיר תפקידי אבטחה. מדובר במתן גישה לטבלת הנתונים ולא לאפליקציית POWER APPS.</p>
+                    <p>יש להגדיר את תפקידי האבטחה בפתרון IEC FORM - SECURITY RULES</p>
+                    <img src="img/4.png" alt="תפקידי אבטחה">
+                    <p>תפקידי האבטחה שיש לערוך:</p>
+                    <ul>
+                        <li>min priv apps use users</li>
+                        <li>min prov app approvers</li>
+                    </ul>
+                    <p>יש לחפש את שם הטבלה החדשה ולהיכנס אליה</p>
+
+                    <p>אנו לרוב נבחר לתת הרשאה ל-user או לא לתת הרשאה בכלל. זה תלוי בצורך הפרטני של כל תהליך.</p>
+                    <img src="img/5.png" alt="תפקידי אבטחה">
+                    <h4>הסבר קצר:</h4>
+                    <p>user: הרשאה לרשומות שהבעלות שלהם היא אותו יוזר</p>
+                    <p>Organization: הרשאה לכל הרשומות בטבלה ללא הגבלה</p>
+
+                    <div class="note">
+                        <p><strong>הערה כללית:</strong> פתרון IEC FORMS מכיל זרימות עבודה ישנות מ- KPMG.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. תהליכי עבודה ואישורים -->
+            <div class="section" id="processes-approvals">
+                <span class="anchor" id="processes-approvals-anchor"></span>
+                <h2>4. תהליכי עבודה ואישורים</h2>
+
+                <div class="section" id="approver-table">
+                    <span class="anchor" id="approver-table-anchor"></span>
+                    <h3>4.1 טבלת Approver</h3>
+                    <p>טבלת הנתונים הראשית של התהליכים הדיגיטליים של חברת החמשל היא טבלת Approvers. היא מכילה את כל שלבי האישור של כל תהליך. גם כאשר אנו יוצרים תהליך ללא אישורים, אנחנו נשמור את התהליך בתוך טבלת approvers כתהליך שהסתיים בהצלחה.</p>
+
+                    <h4>הסבר קצר על טבלת Approver:</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>שם עמודה</th>
+                                <th>הסבר</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>OrderID</td>
+                                <td>מספר OrderID של הרשומה בטבלת הנתונים המקורית של התהליך</td>
+                            </tr>
+                            <tr>
+                                <td>OrderGuid</td>
+                                <td>המזהה הייחודי של הרשומה בטבלת הנתונים המקורית של התהליך- העמודה עם אותו השם של הטבלה.<br><br>
+                                ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר ויעל יותר.</td>
+                            </tr>
+                            <tr>
+                                <td>URLDeepLink</td>
+                                <td>קישור לאפליקציית התהליך עם ה-GUID של הרשומה ב- Approvers</td>
+                            </tr>
+                            <tr>
+                                <td>Active</td>
+                                <td>הרשומה הפעילה בכל תהליך אישור. אם התהליך מאושר, אז כל הרשומות יהיו false</td>
+                            </tr>
+                            <tr>
+                                <td>ApproveStatus</td>
+                                <td>סטטוס הרשומה הנוכחית. האם המאשר אישר/דחה/ממתין לאישור</td>
+                            </tr>
+                            <tr>
+                                <td>AppStatus</td>
+                                <td>סטטוס התהליך- התוצאה הסופית או הסטטוס הכללי של כל התהליך. אם יש רשומה אחת שאושרה ורשומה אחת שמחכה לאישור, ה-AppStatus של שתיהן יהיה ממתין לאישור.<br><br>
+                                עמודה אוטומטית שאנו לא מכניסים אליה מידע.</td>
+                            </tr>
+                            <tr>
+                                <td>Stage</td>
+                                <td>
+                                    <ol>
+                                        <li>המאשר הראשון בתהליך</li>
+                                        <li>המאשר השני בתהליך</li>
+                                    </ol>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="section" id="approver-steps">
+                    <span class="anchor" id="approver-steps-anchor"></span>
+                    <h3>4.2 דיאגרמת סבב אישורים</h3>
+                    <div class=" mx-auto px-4 py-8 max-w-6xl">
+                        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">דיאגרמת סבב אישורים - 3 מאשרים</h1>
+                        
+                        <div class="relative flex flex-col items-center space-y-6">
+                                                  <!-- Legend -->
+                          <div class="w-full max-w-2xl mt-4 bg-white border border-gray-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-700 mb-2">מקרא:</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                              <div class="flex items-center">
+                                <span class="approval-state pending w-3 h-3 rounded-full"></span>
+                                <span class="mr-2 text-sm text-gray-600">ממתין לאישור</span>
+                              </div>
+                              <div class="flex items-center">
+                                <span class="approval-state approved w-3 h-3 rounded-full"></span>
+                                <span class="mr-2 text-sm text-gray-600">אושר</span>
+                              </div>
+                              <div class="flex items-center">
+                                <span class="approval-state rejected w-3 h-3 rounded-full"></span>
+                                <span class="mr-2 text-sm text-gray-600">נדחה</span>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Main Table Section -->
+                          <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-blue-500">
+                            <div class="flex items-center justify-center mb-4">
+                              <i class="fas fa-table text-blue-500 text-2xl mr-2"></i>
+                              <h2 class="text-xl font-semibold text-blue-700">טבלה ראשית (Main Table)</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">ID:</span>
+                                <span class="font-medium block">1001</span>
+                              </div>
+                              <div class="bg-blue-50 p-3 rounded border border-blue-200 highlight-pulse">
+                                <span class="text-blue-500 text-sm">GUID:</span>
+                                <span class="font-medium block" title="מזהה ייחודי שמקשר בין הטבלאות">5F8D3A76-C2B1-42E9...</span>
+                              </div>
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">Form Name:</span>
+                                <span class="font-medium block">בקשת רכש</span>
+                              </div>
+
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">Created By:</span>
+                                <span class="font-medium block">ישראל ישראלי</span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="arrow-down animate__animated animate__fadeIn"></div>
+                          
+                          <!-- Approver Table Description -->
+                          <div class="w-full max-w-2xl text-center">
+                            <div class="inline-block bg-green-100 text-green-800 px-4 py-2 rounded-full font-semibold">
+                              <i class="fas fa-users-cog mr-2"></i>טבלת APPROVER - 3 רשומות עבור סבב אישורים
+                            </div>
+                          </div>
+                          
+                          <!-- Approver 1 -->
+                        <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
+                            <div class="flex items-center justify-center mb-4">
+                              <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
+                              <h2 class="text-xl font-semibold text-green-700">מאשר 1 (Stage = 1)</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">מאשר:</span>
+                                <span class="font-medium block">דן לוי</span>
+                              </div>
+                              <div class="bg-green-50 p-3 rounded border border-green-200">
+                                <span class="text-green-500 text-sm">שלב:</span>
+                                <span class="font-medium block">1</span>
+                              </div>
+                              <div class="bg-blue-50 p-3 rounded border border-blue-200">
+                                <span class="text-blue-500 text-sm">OrderGuid:</span>
+                                <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
+                              </div>
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">DeepLink:</span>
+                                <span class="font-medium block">/form/1001</span>
+                              </div>
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">סטטוס:</span>
+                                <span class="approval-state approved font-medium block">אושר</span>
+                              </div>
+                              <div class="bg-yellow-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">AppStatus (סטטוס ראשי):</span>
+                                <span class="approval-state pending font-medium block">ממתין לאישור</span>
+                                <p class="text-xs text-purple-400 mt-1">
+                                    זהו הסטטוס הראשי שיופיע באקשן סנטר.
+                                    <br> יתקבל כ-"אושר" רק אם כל השלבים יאושרו.
+                                    <br> אם לפחות שלב אחד נדחה – יהפוך ל-"נדחה".
+                                    <br> אחרת, ישאר "ממתין לאישור".
+                                  </p>      </div>
+                            </div>
+                          </div>
+                          
+                          <div class="arrow-down animate__animated animate__fadeIn"></div>
+                          
+                          <!-- Process Steps for Approver 1 -->
+                          <div class="node w-full max-w-lg bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-300">
+                            <div class="flex flex-col space-y-3">
+                              <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
+                                  <i class="fas fa-desktop text-blue-600"></i>
+                                </div>
+                                <div class="mr-3">
+                                  <p class="text-sm font-medium">הצגה ב-Action Center למאשר 1</p>
+                                </div>
+                              </div>
+                              <div class="w-1 h-6 bg-gray-300 mr-5"></div>
+                              <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-green-100 p-2 rounded-full">
+                                  <i class="fas fa-check text-green-600"></i>
+                                </div>
+                                <div class="mr-3">
+                                  <p class="text-sm font-medium">אישור ע״י מאשר 1</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="arrow-down animate__animated animate__fadeIn"></div>
+                          
+                          <!-- Approver 2 -->
+                          <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
+                            <div class="flex items-center justify-center mb-4">
+                              <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
+                              <h2 class="text-xl font-semibold text-green-700">מאשר 2 (Stage = 2)</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">Approver:</span>
+                                <span class="font-medium block">רונית כהן</span>
+                              </div>
+                              <div class="bg-green-50 p-3 rounded border border-green-200">
+                                <span class="text-green-500 text-sm">Stage:</span>
+                                <span class="font-medium block">2</span>
+                              </div>
+                              <div class="bg-blue-50 p-3 rounded border border-blue-200">
+                                <span class="text-blue-500 text-sm">OrderGuid:</span>
+                                <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
+                              </div>
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">DeepLink:</span>
+                                <span class="font-medium block">/form/1001</span>
+                              </div>
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">Status:</span>
+                                <span class="approval-state approved font-medium block">אושר</span>
+                              </div>
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">AppStatus:</span>
+                                <span class="approval-state approved font-medium block">אושר</span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="arrow-down animate__animated animate__fadeIn"></div>
+                          
+                          <!-- Process Steps for Approver 2 -->
+                          <div class="node w-full max-w-lg bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-300">
+                            <div class="flex flex-col space-y-3">
+                              <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
+                                  <i class="fas fa-desktop text-blue-600"></i>
+                                </div>
+                                <div class="mr-3">
+                                  <p class="text-sm font-medium">הצגה ב-Action Center למאשר 2</p>
+                                </div>
+                              </div>
+                              <div class="w-1 h-6 bg-gray-300 mr-5"></div>
+                              <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-green-100 p-2 rounded-full">
+                                  <i class="fas fa-check text-green-600"></i>
+                                </div>
+                                <div class="mr-3">
+                                  <p class="text-sm font-medium">אישור ע״י מאשר 2</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="arrow-down animate__animated animate__fadeIn"></div>
+                          
+                          <!-- Approver 3 -->
+                          <div class="node w-full max-w-2xl bg-white rounded-lg shadow-md p-6 border-2 border-green-500">
+                            <div class="flex items-center justify-center mb-4">
+                              <i class="fas fa-user-check text-green-500 text-2xl mr-2"></i>
+                              <h2 class="text-xl font-semibold text-green-700">מאשר 3 (Stage = 3)</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">Approver:</span>
+                                <span class="font-medium block">יוסי אברהם</span>
+                              </div>
+                              <div class="bg-green-50 p-3 rounded border border-green-200">
+                                <span class="text-green-500 text-sm">Stage:</span>
+                                <span class="font-medium block">3</span>
+                              </div>
+                              <div class="bg-blue-50 p-3 rounded border border-blue-200">
+                                <span class="text-blue-500 text-sm">OrderGuid:</span>
+                                <span class="font-medium block" title="מקושר לטבלה הראשית">5F8D3A76-C2B1...</span>
+                              </div>
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">DeepLink:</span>
+                                <span class="font-medium block">/form/1001</span>
+                              </div>
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">Status:</span>
+                                <span class="approval-state pending font-medium block">ממתין לאישור</span>
+                              </div>
+                              <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                <span class="text-gray-500 text-sm">AppStatus:</span>
+                                <span class="approval-state pending font-medium block">ממתין לאישור</span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="arrow-down animate__animated animate__fadeIn"></div>
+                          
+                          <!-- Process Steps for Approver 3 -->
+                          <div class="node w-full max-w-lg bg-gray-50 rounded-lg shadow-sm p-4 border border-gray-300">
+                            <div class="flex flex-col space-y-3">
+                              <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
+                                  <i class="fas fa-desktop text-blue-600"></i>
+                                </div>
+                                <div class="mr-3">
+                                  <p class="text-sm font-medium">הצגה ב-Action Center למאשר 3</p>
+                                </div>
+                              </div>
+                              <div class="w-1 h-6 bg-gray-300 mr-5"></div>
+                              <div class="flex items-center opacity-50">
+                                <div class="flex-shrink-0 bg-gray-100 p-2 rounded-full">
+                                  <i class="fas fa-hourglass-half text-gray-600"></i>
+                                </div>
+                                <div class="mr-3">
+                                  <p class="text-sm font-medium">ממתין לאישור מאשר 3</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="arrow-down animate__animated animate__fadeIn opacity-30"></div>
+                          
+                          <!-- Final Approval -->
+                          <div class="node w-full max-w-lg bg-white rounded-lg shadow-md p-6 border border-gray-300 opacity-90 hover:opacity-100 transition-opacity duration-300">
+                        <div class="flex items-center justify-start space-x-4">
+                            <div class="bg-green-100 p-4 rounded-full shadow-sm">
+                                <i class="fas fa-check-double text-green-500 text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xl font-semibold text-green-600">הטופס אושר סופית</p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                          
+                          <!-- Explanation Note -->
+                          <div class="w-full max-w-2xl mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <div class="flex">
+                              <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle text-yellow-500 text-xl"></i>
+                              </div>
+                              <div class="mr-3">
+                                <h3 class="font-semibold text-yellow-800">הערה חשובה:</h3>
+                                <p class="text-yellow-700 text-sm">
+                                    כל 3 הרשומות בטבלת APPROVER משתמשות באותו OrderGuid מהטבלה הראשית כדי ליצור קישור.
+                                ההבדל העיקרי בין הרשומות הוא ערך ה-Stage המציין את סדר האישורים (1, 2, 3) וכן ה-RunNumber המציין גם הוא את מספר האישור בסבב.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+
+                <div class="section" id="action-center">
+                    <span class="anchor" id="action-center-anchor"></span>
+                    <h3>4.3 Action Center</h3>
+                    <p>האפליקציה שבה כלל המשתמשים יכולים לראות אילו בקשות הם הגישו ומה הסטטוס שלהם.</p>
+                    <p>אנחנו מציגים ב-Action Center את כל הרשומות שנוצרו בטבלת Approver שהשדה STAGE = 1.</p>
+                    <p>לכן, יש צורך לוודא שגם במידה <strong>ואין צורך</strong> בסבב אישורים בטופס שהקמנו יש להקים שורה בטבלת APPROVER שהשדה STAGE = 1, אחרת הלקוח לא יראה את הטופס בטבלאות השונות ב-ACTION CENTER.</p>
+                </div>
+
+                <div class="section" id="configuration-table">
+                    <span class="anchor" id="configuration-table-anchor"></span>
+                    <h3>4.4 טבלת קונפיגורציה</h3>
+                    <p>בתוך הפתרון של ה-action canter נחפש את האפליקציה של ה- model driven.</p>
+                    <p>בטבלה זו אנו נכניס את השמות הלוגיים של הטבלה הראשית של התהליך ממנה אנו רוצים להציג נתונים + טבלה משנית שקשורה (לא חובה-רק במידה ויש צורך להציג הרחבה מטבלה שנייה).</p>
+                    <p>Entity- השם של הטבלה הראשית</p>
+                    <p>Related entity- השם של הטבלה המשנית</p>
+                    <p>ונכניס את השדות כפי שמופיע ב-output של get a row by id בפאוור אוטומייט.<br>
+                        בסקשיין "שדות" אנו נכניס את השמות של העמודות מהטבלה הראשית (Entity) כפי שהם מופיעים ב-power automate.</p>
+                    <p>בסקשיין "שדות מקושרים" אנו נכניס את השמות של העמודות מהטבלה המשנית (related-entity)<br>
+                        וליצור קשר עם מפתח שמכיר כיצד להתאים את האפליקציה לתהליך החדש.</p>
+                    <p>ה- orderID הוא השדה המקשר בין טבלת Aprovers לטבלה של התהליך.</p>
+                    <img src="img/3.png" alt="טבלת קונפיגורציה">
+                </div>
+
                 <div class="section" id="workflows">
                     <span class="anchor" id="workflows-anchor"></span>
-                    <h2>זרימות עבודה (Flows)</h2>
+                    <h3>4.5 זרימות עבודה (Flows)</h3>
                     <p>אנו מחלקים את זרימות העבודה ל-3 זרימות מרכזיות: Build, middle ו- final.</p>
 
-                    <h3>Build</h3>
-                    <p>בשמירת בקשה חדשה בטבלת הנתונים של התהליך, תפתח זרימת עבודה אשר תיצור את תהליך האישור בטבלת
-                        Approvers ומקים שורות מאשרים בהתאם לצורך. ניתן לראות דוגמה בזרימת העבודה Build_Stage_36.</p>
+                    <h4>Build</h4>
+                    <p>בשמירת בקשה חדשה בטבלת הנתונים של התהליך, תפתח זרימת עבודה אשר תיצור את תהליך האישור בטבלת Approvers ומקים שורות מאשרים בהתאם לצורך. ניתן לראות דוגמה בזרימת העבודה Build_Stage_36.</p>
 
-                    <h3>Middle</h3>
+                    <h4>Middle</h4>
                     <p>זרימת העבודה מחכה לראות האם יש שורה פעילה ב-Approvers, שהשתנו בה ערכים. (Stage=1)</p>
-                    <p>הזרימה תמשיך בשליחת מייל לאדם הרלוונטי ובעדכון רשומות נוספות. ניתן לראות דוגמה בזרימת העבודה
-                        Middle_Stage_36</p>
+                    <p>הזרימה תמשיך בשליחת מייל לאדם הרלוונטי ובעדכון רשומות נוספות. ניתן לראות דוגמה בזרימת העבודה Middle_Stage_36</p>
 
-                    <h3>Final</h3>
-                    <p>בסיום תהליך האישור, זרימת העבודה תופעל, תיצור קובץ סופי המופק בסיום התהליך ותשלח אותו לעובד. ניתן
-                        לראות דומה בזרימת העבודה Final_Stage_36.</p>
+                    <h4>Final</h4>
+                    <p>בסיום תהליך האישור, זרימת העבודה תופעל, תיצור קובץ סופי המופק בסיום התהליך ותשלח אותו לעובד. ניתן לראות דומה בזרימת העבודה Final_Stage_36.</p>
                     <p>בחלק מהתהליכים יש ליצור מסמך סופי שישלח לעובד.</p>
 
                     <h4>על מנת להעלות את המסמך לתיקיית הטמפלטיים יש:</h4>
@@ -1843,8 +1734,7 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                         <li>להתחבר עם המשתמש האפלקטיבי</li>
                         <li>להכנס ל-shareppoint site של PA</li>
                         <li>להעלות את המסמך לתיקיית: מסמכים- טמפלייט</li>
-                        <li>להמשיך עם זרימת העבודה. ניתן לראות זרימה לדוגמה ליצירת מסמך מתוך טמפלייט Final_Stage_36.
-                        </li>
+                        <li>להמשיך עם זרימת העבודה. ניתן לראות זרימה לדוגמה ליצירת מסמך מתוך טמפלייט Final_Stage_36.</li>
                     </ol>
 
                     <p>בסוף כל זרימת עבודה יש להכניס את ה- scope:</p>
@@ -1856,21 +1746,18 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
 
                 <div class="section" id="process-completion">
                     <span class="anchor" id="process-completion-anchor"></span>
-                    <h2>סיום תהליך</h2>
-                    <p>בכל סוף פרוייקט לפני שמעבירים את המערכת לבדיקת QA, יש להכנס לאיפיון ולכתוב הערות מפתח. המטרה היא
-                        ליצור תשתית המאפשרת לנו לשמור על אחידות פיתוח ואפשרות לעשות בדיקות QA גם על המידע עצמו ולא רק על
-                        העיצוב והפונקציונאליות.</p>
+                    <h3>4.6 סיום תהליך</h3>
+                    <p>בכל סוף פרוייקט לפני שמעבירים את המערכת לבדיקת QA, יש להכנס לאיפיון ולכתוב הערות מפתח. המטרה היא ליצור תשתית המאפשרת לנו לשמור על אחידות פיתוח ואפשרות לעשות בדיקות QA גם על המידע עצמו ולא רק על העיצוב והפונקציונאליות.</p>
 
-                    <h3>הערות המפתח הכוללות:</h3>
-                    <h4>1. מבנה המערכת- Power Apps Canvas שמות המסכים והתפקיד שלהם. לדוגמה:</h4>
+                    <h4>הערות המפתח הכוללות:</h4>
+                    <h5>1. מבנה המערכת- Power Apps Canvas שמות המסכים והתפקיד שלהם. לדוגמה:</h5>
                     <ul>
                         <li><strong>מסך ראשי:</strong> הגשת הבקשה כולל העלאת קבצים ושמירה בטבלת הנתונים.</li>
                         <li><strong>מסך מנהל:</strong> הצגת בקשת העובד ונימוק המנהל לאישור או החזרה לעובד</li>
-                        <li><strong>מסך מרכז ליאור:</strong> הצגת בקשת העובד ונימוק המנהל ואפשרות להחלטה למרכז ליאור
-                            לאשר או להחזיר לעובד.</li>
+                        <li><strong>מסך מרכז ליאור:</strong> הצגת בקשת העובד ונימוק המנהל ואפשרות להחלטה למרכז ליאור לאשר או להחזיר לעובד.</li>
                     </ul>
 
-                    <h4>2. זרימות עבודה- שמות ה- Power Automate ואופן פעולתם. לדוגמה:</h4>
+                    <h5>2. זרימות עבודה- שמות ה- Power Automate ואופן פעולתם. לדוגמה:</h5>
                     <ul>
                         <li><strong>טריגר</strong>: יצירת רשומה חדשה בטבלת Approvers עם IDform של התהליך.</li>
                         <li><strong>פעולות</strong>:
@@ -1884,7 +1771,7 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                         </li>
                     </ul>
 
-                    <h4>3. DB- טבלאות, עמודות וסוג הנתונים המוזנים לכל טבלה. יש לציין דוגמה של הנתון.</h4>
+                    <h5>3. DB- טבלאות, עמודות וסוג הנתונים המוזנים לכל טבלה. יש לציין דוגמה של הנתון.</h5>
 
                     <p>שם הטבלה Employment Authorization_36</p>
                     <table>
@@ -1927,14 +1814,146 @@ html[dir="rtl"] a[href]:not(.nav-item a) {
                         </tbody>
                     </table>
 
-                    <h4>4. תפקידי אבטחה- מהם תפקידי האבטחה שהוגדרו לקבוצות min priv apps use users ולקבוצת min prov app
-                        approvers. אם הוגדרו תפקידי אבטחה פרטניים בתוך זרימות העבודה, יש לציין זאת.</h4>
+                    <h5>4. תפקידי אבטחה- מהם תפקידי האבטחה שהוגדרו לקבוצות min priv apps use users ולקבוצת min prov app approvers. אם הוגדרו תפקידי אבטחה פרטניים בתוך זרימות העבודה, יש לציין זאת.</h5>
                 </div>
+            </div>
+
+            <!-- 5. אבטחה וגישה -->
+            <div class="section" id="security-access">
+                <span class="anchor" id="security-access-anchor"></span>
+                <h2>5. אבטחה וגישה</h2>
+
+                <div class="section" id="security">
+                    <span class="anchor" id="security-anchor"></span>
+                    <h3>5.1 אבטחה והרשאות</h3>
+                    <ul>
+                        <li>הגדירו מדיניות אבטחה ברמת השדה למידע רגיש</li>
+                        <li>תכננו מראש רמות הרשאה שונות למשתמשים שונים</li>
+                        <li>השתמשו בקבוצות AD לניהול הרשאות</li>
+                    </ul>
+                </div>
+
+                <div class="section" id="document-sanitization">
+                    <span class="anchor" id="document-sanitization-anchor"></span>
+                    <h3>5.2 הלבנת מסמכים</h3>
+                    <p>אם שומרים קבצים בטבלת annotation אז יש פלוו שרץ ישירות ועושה להם הלבנה. הפלוו הוא OPSWAT בפתרון IEC-OPSWAT</p>
+                    <p>דוגמה לשמירת קבצים בטבלת הערות/annotaion ניתן לראות בפתרון 40 בפלו Associated_Car_Permit_UploadCarLicense</p>
+                    <p>אם שומרים קובץ בטבלה אחרת יש צורך ליצור פלוו המלבין את הקבצים.</p>
+                    <p>Associated_Car_Permit_UploadCarLicense</p>
+                    <p>יש לשמור עותק של הפלו MyStoryAttachments_14S - OPSWAT<br>
+                        ולשייך אותו לפתרון הרלוונטי. יש לשנות את הטריגר שלו שיכיל את הטבלה של הפתרון ששומר את הקובץ-</p>
+                    <p style="font-weight: bold; color: red; background-color: yellow;">גדי יוסיף עוד מידע</p>
+                </div>
+
+                <div class="section" id="ad-groups">
+                    <span class="anchor" id="ad-groups-anchor"></span>
+                    <h3>5.3 קבוצות AD (Entra ID)</h3>
+                    <p>עובדי פנסיה וגמל : 057725c6-10f8-47b2-8b26-ad0aa1204b14</p>
+                    <p>(בAzure DevOps בחחי במאמרי ידע יש רשימה מלאה של כל קבוצות EntraID עם הGUID שלהם)</p>
+                    <div class="image-container">
+                        <img src="img/13.png" alt="קבוצות AD (Entra ID)">
+                        <img src="img/14.png" alt="EntraID-USER">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. תחזוקה ובקרת איכות -->
+            <div class="section" id="maintenance-qa">
+                <span class="anchor" id="maintenance-qa-anchor"></span>
+                <h2>6. תחזוקה ובקרת איכות</h2>
+
+                <div class="section" id="backup">
+                    <span class="anchor" id="backup-anchor"></span>
+                    <h3>6.1 גיבוי ושחזור</h3>
+                    <ul>
+                        <li>הגדירו ויישמו מדיניות גיבוי ושחזור</li>
+                        <li>בדקו באופן תקופתי את יכולת השחזור</li>
+                        <li>במידה ועובדים על טופס קיים ויש צורך לשכפל את המסך לצורך גיבוי / השוואה יש לזכור למחוק את העותק ולהשאיר את הטופס המקורי.</li>
+                    </ul>
+                </div>
+
+                <div class="section" id="self-testing">
+                    <span class="anchor" id="self-testing-anchor"></span>
+                    <h3>6.2 בדיקה עצמית</h3>
+                    <ul>
+                        <li>הסרת אובייקטים שלא בשימוש / לצורכי בדיקות על מנת למזער בלבול של מפתחים אחרים אשר נכנסים לטופס אחרינו ושיפור ביצועים</li>
+                        <li>לוודא שאין אזהרות / בעיות ב appChecker ותיקונם במידת הצורך.</li>
+                        <li>שימוש במטאטא בלשונית DATA על מנת לנקות / להסיר בסיסי נתונים שלא בשימוש</li>
+                        <img src="img/1.png" alt="מסך ראשי של appChecker">
+                        <li>שימוש בלשונית "ביצועים" תחת appChecker ולתקן את ההערות</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 7. ניהול ידע וצוות -->
+            <div class="section" id="knowledge-team">
+                <span class="anchor" id="knowledge-team-anchor"></span>
+                <h2>7. ניהול ידע וצוות</h2>
+
+                <div class="section" id="task-management">
+                    <span class="anchor" id="task-management-anchor"></span>
+                    <h3>7.1 ניהול משימות</h3>
+                    <ul>
+                        <li>השתמשו בכלי לניהול משימות כמו Asana או Azure DevOps בהתאם לצורך.</li>
+                        <li>Asana משמשת לניהול משימות פנימיות ודיונים בתוך הצוות, ללא חשש מהלקוח.</li>
+                        <li>Azure DevOps הוא הכלי הרשמי לפתיחת באגים ותקלות טכניות הדורשות התערבות של הלקוח, במיוחד בתוך סביבת CITRIX.</li>
+                        <li>ניתן להצטרף למערכת Asana דרך הזימון שנשלח לכלל המשתמשים ולנהל משימות בצורה קלה ונגישה מכל מכשיר.</li>
+                        <li>חשוב להשתמש במערכת המתאימה לכל סוג משימה כדי לייעל את העבודה ולמנוע בלבול.</li>
+                    </ul>
+                </div>
+
+                <div class="section" id="communication">
+                    <span class="anchor" id="communication-anchor"></span>
+                    <h3>7.2 תקשורת</h3>
+                    <ul>
+                        <li>קיימו פגישות צוות קבועות לעדכון סטטוס</li>
+                        <li>השתמשו בכלי כמו Microsoft Teams לתקשורת שוטפת</li>
+                        <li>הדיילי והתקשורת בתוך חח"ח מתקיימת ב- Webex</li>
+                    </ul>
+                </div>
+
+                <div class="section" id="onboarding">
+                    <span class="anchor" id="onboarding-anchor"></span>
+                    <h3>7.3 הנחיות לכניסה לתפקיד פיתוח PA</h3>
+                    <p>לצורך התחברות ראשונית למערכת, להתקשר למספר של תמיכת חברת החשמל ולקבל אימייל, שם משתמש וסיסמה.</p>
+                    <p>תמיכה חח"י: 076-8642999.</p>
+                    <p>יש צורך בהתחברות ל- authanticator של משתמש חברת החשמל, וניתן לעשות זאת רק מתוך הסיטריקס (סביבת העבודה) של חברת החשמל.</p>
+                    <p>לצורך זה יש לבצע התחברות ראשונית ל-authanticator מתוך מחשב של חבר צוות המחובר למערכת.</p>
+                    <p>הדיילי והתקשורת בתוך חח"ח מתקיימת ב- webex.</p>
+                    <p>צריך לקבל משתמש לאתר המעקב תהליכים דיגיטליים מרואי.</p>
+                    <p>העיצוב של כל התהליכים נמצא ב- figma.</p>
+                    <p>סיסמא: abra1234##</p>
+                    <p>שם משתמש: abra-iec@outlook.com</p>
+                    <p>בעיצובים בפיגמה, גודל הטקסט מופיע ב- px. במערכת ה-PA יש להמיר אותם ל-pt. מצורף לינק להמרה.<br>
+                        בטימס של היוזר של חברת החשמל, יש קבוצה בשם power apps. כל המסמכים הרלוונטים נמצאים בfiles בקבוצה.
+                    </p>
+                    <img src="img/2.png" alt="המסמכים הרלוונטים בקבוצת power apps">
+                    <p>מסמכי האיפיון שאנו עובדים עליהם נמצאים במסמכי איפיון- מסמכים בעבודה</p>
+                    <p>בקובץ "שדות עבוד תהליכים דיגיטליים" יש רשימת שמית של השדות אותם אנו מקבלים מה- apim</p>
+                    <p>יש 3 enviroments לחח"י- dev, test,prod. לכל סביבה יש משתמש אפליקטיבי.</p>
+                </div>
+
+                <div class="section" id="useful-links">
+                    <span class="anchor" id="useful-links-anchor"></span>
+                    <h3>7.4 לינקים שימושיים</h3>
+                    <ol>
+                        <li>מערכת מעקב תהליכים דיגיטליים
+                            <a href="https://iec-tasks-powerplatform.netlify.app/" target="_blank">https://iec-tasks-powerplatform.netlify.app/</a>
+                            <br>יש לקבל שם משתמש וסיסמא מרואי
+                        </li>
+                        <li>לינקים לטפסים ישן-
+                            <a href="https://ieconline.sharepoint.com.mcas.ms/:x:/r/sites/PowerApps/_layouts/15/Doc2.aspx?action=edit&sourcedoc=%7B43def57d-030a-48c3-b023-f2b790006391%7D&wdOrigin=TEAMS-WEB.teamsSdk_ns.rwc&wdExp=TEAMS-TREATMENT&wdhostclicktime=1724663426184&web=1" target="_blank">קישור לטפסים</a>
+                        </li>
+                        <li>המרת PX ל- PT
+                            <a href="https://cssunitconverter.vercel.app/px-to-pt" target="_blank">https://cssunitconverter.vercel.app/px-to-pt</a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
         </main>
     </div>
 
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
             // Handle submenu toggling
             const hasSubmenuLinks = document.querySelectorAll('.has-submenu');
