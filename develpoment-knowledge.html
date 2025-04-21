@@ -520,6 +520,143 @@
                 padding: 0;
             }
         }
+        .code-block {
+  /* Container styling */
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5rem 0;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  background-color: #f8f9fa;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  
+  /* Improved scrolling experience */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  scrollbar-width: thin; /* For Firefox */
+  position: relative;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 1rem;
+  white-space: pre; /* Prevents wrapping of lines */
+  overflow: visible; /* Ensures content isn't cut off */
+  min-width: min-content; /* Ensures the pre expands to fit all content */
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  tab-size: 2;
+}
+
+.code-block code {
+  display: block;
+  color: #24292e;
+  font-size: inherit;
+  direction: ltr;
+  word-wrap: normal; /* Prevents wrapping inside code */
+  word-break: normal;
+}
+
+/* Customize scrollbar appearance */
+.code-block::-webkit-scrollbar {
+  height: 8px;
+}
+
+.code-block::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+}
+
+.code-block::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 6px;
+}
+
+.code-block::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Optional: Add line numbers */
+.code-block.with-line-numbers pre {
+  counter-reset: line;
+  padding-left: 3.5rem;
+}
+
+.code-block.with-line-numbers pre code::before {
+  counter-increment: line;
+  content: counter(line);
+  position: absolute;
+  left: 0;
+  width: 2.5rem;
+  padding-right: 0.5rem;
+  color: #6e7781;
+  text-align: right;
+  border-right: 1px solid #e1e4e8;
+}
+
+/* Optional: Visual indication of horizontal overflow */
+.code-block.show-overflow-indicator {
+  position: relative;
+}
+
+.code-block.show-overflow-indicator::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(to right, transparent, rgba(248, 249, 250, 0.8));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.code-block.show-overflow-indicator:hover::after {
+  opacity: 1;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .code-block {
+    background-color: #0d1117;
+    border-color: #30363d;
+  }
+  
+  .code-block code {
+    color: #c9d1d9;
+  }
+  
+  .code-block::-webkit-scrollbar-track {
+    background: #161b22;
+  }
+  
+  .code-block::-webkit-scrollbar-thumb {
+    background: #484f58;
+  }
+  
+  .code-block::-webkit-scrollbar-thumb:hover {
+    background: #6e7681;
+  }
+  
+  .code-block.show-overflow-indicator::after {
+    background: linear-gradient(to right, transparent, rgba(13, 17, 23, 0.8));
+  }
+  
+  .code-block.with-line-numbers pre code::before {
+    color: #8b949e;
+    border-right-color: #30363d;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .code-block {
+    font-size: 0.85rem;
+  }
+}
     </style>
 </head>
 
@@ -567,6 +704,8 @@
                                 <li><a href="#general-rules" class="nav-link">2.1.1 כללי</a></li>
                                 <li><a href="#dataverse-fields" class="nav-link">2.1.2 שדות Dataverse</a></li>
                                 <li><a href="#power-apps-components" class="nav-link">2.1.3 רכיבי Power Apps</a></li>
+                                <li><a href="#power-apps-createrecord" class="nav-link">2.1.4 Power Apps patch/submit form</a></li>
+
                             </ul>
                         </li>
                         <li><a href="#architecture" class="nav-link">2.2 ארכיטקטורה</a></li>
@@ -999,6 +1138,83 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="section" id="power-apps-createrecord">
+                        <span class="anchor" id="power-apps-createrecord-anchor"></span>
+                        <h4>2.1.4 Power Apps patch/submit form</h4>
+                    
+                        <p>ניתן ליצור רשומות חדשות ב-Power Apps באמצעות שתי גישות עיקריות: <code>Patch</code> או <code>SubmitForm</code>.</p>
+                    
+                        <h5>שימוש ב-Patch</h5>
+                        <p>הפקודה <code>Patch</code> מאפשרת שליטה מלאה על תהליך יצירת הרשומה:</p>
+                    
+                        <div  style="text-align: left; overflow-x: auto; background-color: #f8f9fa; padding: 1rem; border-radius: 8px; border: 1px solid #ddd;">
+                            <pre dir="ltr" style="margin: 0;text-align: left;max-height: 50vh;"><code>//saving the patch response for error handaling and to use the row GUID for future uses
+                                UpdateContext(
+                                    {
+                                        glbSubmittedLoan: Patch(
+                                            CompanyLoan_47S,
+                                            Defaults(CompanyLoan_47S),
+                                            {
+                                                LoanName: glbLoan.LoanName,
+                                                Email: User_Info_Table.Y_EMAIL,
+                                                Department: User_Info_Table.YHR_MAHLAKA_SHRT,
+                                                DepartmentCode: Value(User_Info_Table.MACHLAKA),
+                                                EmployeeSeniority: User_Info_Table.Vetek,
+                                               EmployeeStanding: User_Info_Table.MAAMAD_DESC,
+                                                EmployeeStandingCode: Value(User_Info_Table.MAAMAD),
+                                                FullName: User_Info_Table.NACHN & " " & User_Info_Table.VORNA,
+                                                EmployeeIDCard: User_Info_Table.Id_Number,
+                                                PaymentsNum: Value(glbLoan.PaymentsNum),
+                                                LoanSum: glbLoan.LoanSum,
+                                                LoanType: glbLoan.LoanType,
+                                                LoanRelatedDate: glbLoan.LoanRelatedDate,
+                                                LoanComments: glbLoan.LoanComments,
+                                                LoanStatement: glbLoan.LoanStatement,
+                                                user_sap_id: User_Info_Table.USRID,
+                                                LoanTermsStatement: RTLFIX_Checkbox2_1.Value,
+                                                SpecialRequest: glbLoan.SpecialRequest,
+                                                hasLowSalaries: glbEmpLoanData.hasLowSalaries,
+                                                isLessThanSixMonthsUntilEndOfEmployment: glbEmpLoanData.isLessThanSixMonthsUntilEndOfEmployment
+                                                //choices
+                                                ,LoanStatus:  LookUp(Choices(CompanyLoan_47S.LoanStatus),Value=1).Value
+                                                , SenderEmail: CurrentUser.workMail,
+                                                SenderName: CurrentUser.shemMale
+                                            }
+                                        )
+                                    }
+                                );
+                                ForAll(
+                                    colAttachments,
+                                    Patch(
+                                        CompanyLoans_Attachments,
+                                        Defaults(CompanyLoans_Attachments),
+                                        {
+                                            Name: ThisRecord.Name,
+                                            attached_File: {
+                                                FileName: ThisRecord.Name,
+                                                Value: ThisRecord.Value
+                                            },
+                                            ContentType: ThisRecord.ContentType,
+                                            OrderGuid: glbSubmittedLoan.CompanyLoan_47,
+                                            Size: ThisRecord.Size,RelatedDate:ThisRecord.RelatedDate
+                                        }
+                                    )
+                                );</code></pre>
+                        </div>
+                    
+                        <h5>שימוש ב-SubmitForm</h5>
+                        <p>במקרה של שימוש בטופס שנבנה עם Form control, ניתן לשלוח את הנתונים בעזרת הפקודה <code>SubmitForm</code>. להלן המחשה של השימוש בטופס כזה:</p>
+
+                        <div class="note">
+                            <p><strong>חשוב:</strong> בתמונה להלן, הרכיבים המסומנים באדום צריך למחוק, כיוון שהם מיותרים ועלולים להשפיע על ביצועי האפליקציה. בנוסף, יש לשנות את שמות הרכיבים לשמות עם קונבנציה מתאימה ושם עם משמעות, למשל: <code>frmLoanRequest</code> במקום <code>Form_1</code> ו-<code>btnSubmitLoan</code> במקום <code>Button_1</code>.</p>
+                        </div>  
+                        <div class="example-image">
+                            <img src="img/power-apps-form-new.png" alt="דוגמה לשימוש ב-SubmitForm בטופס Power Apps" style="max-width:100%; border:1px solid #ccc; border-radius:8px;" />
+                            <p class="caption">איור: טופס Power Apps הכולל שימוש ב-SubmitForm</p>
+                        </div>
+                    </div>
+
+
                 </div>
 
                 <div class="section" id="architecture">
