@@ -1233,14 +1233,36 @@
                         </section>
                       
                         <section>
-                          <h5>דוגמה מעשית</h5>
-                          <p>נניח שהשדה LoanStatus כולל את האפשרויות הבאות:</p>
-                          <ul>
-                            <li><strong>Value=1</strong>, Label="בהמתנה לאישור"</li>
-                            <li><strong>Value=2</strong>, Label="מאושר"</li>
-                            <li><strong>Value=3</strong>, Label="נדחה"</li>
-                          </ul>
-                          <p>
+                            <h5>דוגמה מעשית</h5>
+                            <p style="text-align: right; direction: rtl;">נניח שהשדה LoanStatus כולל את האפשרויות הבאות:</p>
+                            
+                            <table style="width: 70%; margin-right: 10px; direction: rtl;">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: right;">ערך (Value)</th>
+                                        <th style="text-align: right;">תווית (Label)</th>
+                                        <th style="text-align: right;">משמעות</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: right;"><strong>1</strong></td>
+                                        <td style="text-align: right;">בהמתנה לאישור</td>
+                                        <td style="text-align: right;">הבקשה ממתינה לאישור מהגורם המאשר</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right;"><strong>2</strong></td>
+                                        <td style="text-align: right;">מאושר</td>
+                                        <td style="text-align: right;">הבקשה אושרה לביצוע</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right;"><strong>3</strong></td>
+                                        <td style="text-align: right;">נדחה</td>
+                                        <td style="text-align: right;">הבקשה נדחתה</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>  <p></p>
                             הקוד שלנו בוחר את האפשרות שבה <code>Value=1</code> – כלומר, הסטטוס ההתחלתי של ההלוואה יהיה "בהמתנה לאישור".
                           </p>
                         </section>
