@@ -722,8 +722,9 @@
                     <ul class="sub-nav">
                         <li><a href="#new-solution" class="nav-link">3.1 הקמת פתרון חדש</a></li>
                         <li><a href="#new-canvas-app" class="nav-link">3.2 הקמת Canvas App חדש</a></li>
-                        <li><a href="#components-info" class="nav-link">3.3 סוגי קומפוננטות</a></li>
-                        <li><a href="#security-roles" class="nav-link">3.4 תפקידי אבטחה</a></li>
+                        <li><a href="#new-MDA-app" class="nav-link">3.3 הקמת Model Driven App חדש</a></li>
+                        <li><a href="#components-info" class="nav-link">3.4 סוגי קומפוננטות</a></li>
+                        <li><a href="#security-roles" class="nav-link">3.5 תפקידי אבטחה</a></li>
                     </ul>
                 </li>
 
@@ -1532,10 +1533,62 @@
                     </ul>
                     <p>כך ניתן יהיה לשמור על אחידות בעיצוב ולבצע שינויים בקלות מנקודה מרכזית אחת.</p>
                 </div>
+                <div class="section" id="new-MDA-app">
+                    <span class="anchor" id="new-MDA-app-anchor"></span>
+                    <h3>3.3 הקמת אפליקציית MDA חדשה</h3>
+                    <p>בעת הקמת אפליקציית MDA חדשה, יש לוודא כי:</p>
+                    <ul>
+                    <li>יש להקים תפקיד אבטחה (Security Role) חדש עם השם <code>{מספר הטופס}_MDA_Access</code></li>
+                    <li>יש לקשר את תפקיד האבטחה הזה למודל דריבן אפליקציה</li>
+                    <li>חובה לבצע זאת כדי לאפשר ליוזרים בסביבות QA וייצור גישה לאפליקציה</li>
+                    <li>מדובר בשיטת אבטחה שמקורה בעולם ה-Dynamics וחשוב לציית לה</li>
+                </ul>
+                
+                <h4>שלבים ליצירת תפקיד אבטחה למודל דריבן אפליקציה:</h4>
+                <ol>
+                    <li>היכנסו למרכז ניהול הפאואר פלטפורם (Power Platform Admin Center)</li>
+                    <li>בחרו בסביבה הרלוונטית</li>
+                    <li>עברו ל-Settings > Users + permissions > Security roles</li>
+                    <li>לחצו על New כדי ליצור תפקיד אבטחה חדש</li>
+                    <li>הגדירו את שם התפקיד בפורמט: <code>{מספר הטופס}_MDA_Access</code>, לדוגמה: <code>47_MDA_Access</code></li>
+                    <li>אל תגדירו בתוך תפקיד האבטחה הרשאות לטבלאות</li>
+                    <li>שמרו את התפקיד</li>
+                </ol>
+                
+                <h4>שיוך תפקיד האבטחה לאפליקציה:</h4>
+                <ol>
+                    <img src="img/michel-builds-assign-role-to-app.png" alt="שיוך תפקיד אבטחה לאפליקציה">
+                    <li>פתחו את האפליקציה במודל דריבן אפ דיזיינר</li>
+                    <li>בחרו באפשרות Properties</li>
+                    <li>בסעיף Manage Roles, הוסיפו את תפקיד האבטחה שיצרתם</li>
+                    <li>שמרו ופרסמו את האפליקציה</li>
+                </ol>
+                
+                <div class="note">
+                    <p><strong>חשוב מאוד:</strong> ללא הקמת תפקיד אבטחה ייעודי והגדרתו באפליקציה, המשתמשים בסביבות QA וייצור לא יוכלו לגשת לאפליקציה כלל, גם אם יש להם הרשאות לטבלאות עצמן.</p>
+                </div>
+                
+                <h4>בדיקת תפקידי אבטחה:</h4>
+                <p>ניתן לבדוק אילו תפקידי אבטחה משויכים לאפליקציה בכל עת על ידי:</p>
+                <ol>
+                    <li>כניסה לפתרון (Solution) המכיל את האפליקציה</li>
+                    <li>בחירה באפליקציית המודל דריבן</li>
+                    <li>לחיצה על "Edit" או תפריט שלוש הנקודות > Properties</li>
+                    <li>בדיקת הסעיף Security Roles</li>
+                </ol>
 
+                <h4>שימוש בקבוצות משתמשים:</h4>
+                <p>לניהול יעיל יותר של ההרשאות, מומלץ להשתמש בקבוצות Entra ID ולשייך להן את תפקידי האבטחה, במקום לשייך תפקידי אבטחה לכל משתמש בנפרד. במקרה כזה:</p>
+                <ol>
+                    <li>צרו קבוצת Entra ID ייעודית לאפליקציה</li>
+                    <li>שייכו את משתמשי האפליקציה לקבוצה זו</li>
+                    <li>הקצו את תפקיד האבטחה <code>{מספר הטופס}_MDA_Access</code> לקבוצה</li>
+                </ol>
+
+                    </div>
                 <div class="section" id="components-info">
                     <span class="anchor" id="components-info-anchor"></span>
-                    <h3>3.3 סוגי קומפוננטות</h3>
+                    <h3>3.4 סוגי קומפוננטות</h3>
 
                     <h4>Component_HD_FullScreen</h4>
                     <p>יש רק כותרת עם:</p>
@@ -1616,7 +1669,7 @@
 
                 <div class="section" id="security-roles">
                     <span class="anchor" id="security-roles-anchor"></span>
-                    <h3>3.4 תפקידי אבטחה</h3>
+                    <h3>3.5 תפקידי אבטחה</h3>
                     <p>לכל תהליך יש להגדיר תפקידי אבטחה. מדובר במתן גישה לטבלת הנתונים ולא לאפליקציית POWER APPS.</p>
                     <p>יש להגדיר את תפקידי האבטחה בפתרון IEC FORM - SECURITY RULES</p>
                     <img src="img/4.png" alt="תפקידי אבטחה">
