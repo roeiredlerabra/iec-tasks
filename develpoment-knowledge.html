@@ -1518,7 +1518,7 @@
                     <h4>7. להתקין את הפתרון של DropdownRtlStyles:</h4>
                     <p>מתחילים באותה צורה כמו ייבוא קומפוננטה מספריית קומפוננטות.</p>
                     <p>נבחר ב- code ואז נבחר ב- DropdownRrlStyles_Key</p>
-                    <img src="img/dropdown_rtl.png" alt="התקנת DropdownRtlStyles">
+                    <img src="img/rtlpcf.png" alt="התקנת DropdownRtlStyles">
                     <p>קומפוננטה זו הופכת את ה- comboBox וה- dropdown להיות RTL.</p>
                     <p>ניתן להכריח רכיבים להיות RTL על ידי הוספת התחילית הבאה באפליקציה ל:<br>
                         RTLFIX_</p>
@@ -1697,58 +1697,256 @@
                 <span class="anchor" id="processes-approvals-anchor"></span>
                 <h2>4. תהליכי עבודה ואישורים</h2>
 
-                <div class="section" id="approver-table">
-                    <span class="anchor" id="approver-table-anchor"></span>
-                    <h3>4.1 טבלת Approver</h3>
-                    <p>טבלת הנתונים הראשית של התהליכים הדיגיטליים של חברת החמשל היא טבלת Approvers. היא מכילה את כל שלבי האישור של כל תהליך. גם כאשר אנו יוצרים תהליך ללא אישורים, אנחנו נשמור את התהליך בתוך טבלת approvers כתהליך שהסתיים בהצלחה.</p>
+<div class="section" id="approver-table" dir="rtl">
+    <span class="anchor" id="approver-table-anchor"></span>
+    <h3>4.1 טבלת Approver</h3>
+    <p>טבלת הנתונים הראשית של התהליכים הדיגיטליים של חברת החשמל היא טבלת Approvers. היא מכילה את כל שלבי האישור של כל תהליך. גם כאשר אנו יוצרים תהליך ללא אישורים, אנחנו נשמור את התהליך בתוך טבלת approvers כתהליך שהסתיים בהצלחה.</p>
 
-                    <h4>הסבר קצר על טבלת Approver:</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>שם עמודה</th>
-                                <th>הסבר</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>OrderID</td>
-                                <td>מספר OrderID של הרשומה בטבלת הנתונים המקורית של התהליך</td>
-                            </tr>
-                            <tr>
-                                <td>OrderGuid</td>
-                                <td>המזהה הייחודי של הרשומה בטבלת הנתונים המקורית של התהליך- העמודה עם אותו השם של הטבלה.<br><br>
-                                ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר ויעל יותר.</td>
-                            </tr>
-                            <tr>
-                                <td>URLDeepLink</td>
-                                <td>קישור לאפליקציית התהליך עם ה-GUID של הרשומה ב- Approvers</td>
-                            </tr>
-                            <tr>
-                                <td>Active</td>
-                                <td>הרשומה הפעילה בכל תהליך אישור. אם התהליך מאושר, אז כל הרשומות יהיו false</td>
-                            </tr>
-                            <tr>
-                                <td>ApproveStatus</td>
-                                <td>סטטוס הרשומה הנוכחית. האם המאשר אישר/דחה/ממתין לאישור</td>
-                            </tr>
-                            <tr>
-                                <td>AppStatus</td>
-                                <td>סטטוס התהליך- התוצאה הסופית או הסטטוס הכללי של כל התהליך. אם יש רשומה אחת שאושרה ורשומה אחת שמחכה לאישור, ה-AppStatus של שתיהן יהיה ממתין לאישור.<br><br>
-                                עמודה אוטומטית שאנו לא מכניסים אליה מידע.</td>
-                            </tr>
-                            <tr>
-                                <td>Stage</td>
-                                <td>
-                                    <ol>
-                                        <li>המאשר הראשון בתהליך</li>
-                                        <li>המאשר השני בתהליך</li>
-                                    </ol>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <p><strong>עדכון:</strong> כיום אנו משתמשים ויוצרים טבלות Approver מהסוג החדש והמורחב בשם <code>Approver_{App Number}</code>, הכוללות שדות נוספים רבים לניהול מתקדם של תהליכי האישור.</p>
+
+    <h4>הסבר על טבלת Approver הקודמת (לתיעוד היסטורי):</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>שם עמודה</th>
+                <th>הסבר</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>OrderID</td>
+                <td>מספר OrderID של הרשומה בטבלת הנתונים המקורית של התהליך</td>
+            </tr>
+            <tr>
+                <td>OrderGuid</td>
+                <td>המזהה הייחודי של הרשומה בטבלת הנתונים המקורית של התהליך- העמודה עם אותו השם של הטבלה.<br><br>
+                ככה אנחנו יוצרים קשר בין טבלת APPROVER לטבלה החדשה שלנו, מה שיאפשר לנו לבצע חיפוש מהיר ויעל יותר.</td>
+            </tr>
+            <tr>
+                <td>URLDeepLink</td>
+                <td>קישור לאפליקציית התהליך עם ה-GUID של הרשומה ב- Approvers</td>
+            </tr>
+            <tr>
+                <td>Active</td>
+                <td>הרשומה הפעילה בכל תהליך אישור. אם התהליך מאושר, אז כל הרשומות יהיו false</td>
+            </tr>
+            <tr>
+                <td>ApproveStatus</td>
+                <td>סטטוס הרשומה הנוכחית. האם המאשר אישר/דחה/ממתין לאישור</td>
+            </tr>
+            <tr>
+                <td>AppStatus</td>
+                <td>סטטוס התהליך- התוצאה הסופית או הסטטוס הכללי של כל התהליך. אם יש רשומה אחת שאושרה ורשומה אחת שמחכה לאישור, ה-AppStatus של שתיהן יהיה ממתין לאישור.<br><br>
+                עמודה אוטומטית שאנו לא מכניסים אליה מידע.</td>
+            </tr>
+            <tr>
+                <td>Stage</td>
+                <td>
+                    <ol>
+                        <li>המאשר הראשון בתהליך</li>
+                        <li>המאשר השני בתהליך</li>
+                    </ol>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <<h4>הסבר על טבלת Approver החדשה והמורחבת:</h4>
+<p>הטבלה החדשה בשם <code>Approver_{App Number}</code> מספקת יכולות מתקדמות של ניהול תהליכי אישור עם שדות מפורטים לכל היבט של התהליך.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>שם עמודה</th>
+            <th>הסבר</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>iec_ApproverId</td>
+            <td>מפתח ראשי אוטומטי (GUID). דוגמה: 00000000-0000-0000-0000-000000000000</td>
+        </tr>
+        <tr>
+            <td>iec_SourceRowId</td>
+            <td>GUID של רשומת הבקשה המקושרת. דוגמה: 5a4e23d1-f3a2-40e1-b7a8-157c789e3206</td>
+        </tr>
+        <tr>
+            <td>iec_IDApp</td>
+            <td>מזהה מספר הפתרון/אפליקציה. דוגמה: 35</td>
+        </tr>
+        <tr>
+            <td>iec_ApplicationName</td>
+            <td>שם האפליקציה לקריאות. דוגמה: HR Onboarding, Expense Approval</td>
+        </tr>
+        <tr>
+            <td>iec_DeepLink</td>
+            <td>קישור ישיר לאובייקט/ישות באפליקציה. דוגמה: https://org.crm.dynamics.com/main.aspx?appId=9c7b2ea6-d5f1-48e3-b243-7abef18d51c0&pagetype=entityrecord&etn=iec_request&id=5a4e23d1-f3a2-40e1-b7a8-157c789e3206</td>
+        </tr>
+        <tr>
+            <td>iec_ExternalId</td>
+            <td>מזהה חיצוני למעקב בין שירותים. לדוגמה מספר מזהה של השורה מ-SAP. דוגמה: REQ-2025-05-001-HR</td>
+        </tr>
+        <tr>
+            <td>iec_ApproverUserId</td>
+            <td>GUID של המשתמש המאשר. דוגמה: 7bf3ab45-e8c2-4d29-8c16-91e7c9fd03ab</td>
+        </tr>
+        <tr>
+            <td>iec_ApproverName</td>
+            <td>שם המאשר לתצוגה. דוגמה: דניאל כהן, Sarah Johnson</td>
+        </tr>
+        <tr>
+            <td>iec_ApproverEmail</td>
+            <td>כתובת דוא"ל לשליחת האישור. דוגמה: daniel@company.com - יכול להיות משורשר לכמה מאשרים עם פסיק מפריד</td>
+        </tr>
+        <tr>
+            <td>iec_ApproverRole</td>
+            <td>תפקיד המאשר. ערכים: Manager, Director, VP, CFO, HR, Legal, IT</td>
+        </tr>
+        <tr>
+            <td>iec_SubStageTitle</td>
+            <td>שם תיאורי של תת-השלב. דוגמה: אישור מנהל ישיר, אישור תקציבי, אישור משאבי אנוש</td>
+        </tr>
+        <tr>
+            <td>iec_SubStageNumber</td>
+            <td>סדר האישור בתהליך. דוגמה: 1, 2, 10</td>
+        </tr>
+        <tr>
+            <td>iec_ApproveStatus</td>
+            <td>סטטוס הרשומה הנוכחית. ערכים: 897320000 (אושר), 897320001 (נדחה), 897320002 (ממתין לאישור). ערך ברירת מחדל: ממתין לאישור</td>
+        </tr>
+        <tr>
+            <td>iec_ApproverDelegateId</td>
+            <td>GUID של המאשר החלופי. דוגמה: 6ef8cd92-a7f3-4e12-b5d9-0c738f26a51c</td>
+        </tr>
+        <tr>
+            <td>iec_ApproverDelegateName</td>
+            <td>שם המאשר החלופי. דוגמה: רונית לוי, John Smith</td>
+        </tr>
+        <tr>
+            <td>iec_DelegationReason</td>
+            <td>סיבת ההאצלה</td>
+        </tr>
+        <tr>
+            <td>iec_ApprovalGroupName</td>
+            <td>שם קבוצה משוייכת. דוגמה: מחלקת שכר</td>
+        </tr>
+        <tr>
+            <td>iec_ApprovalGroupId</td>
+            <td>GUID של קבוצת אישור משותפת. דוגמה: 82a7c539-e4b2-4f67-9c1d-3a5eb28f76e4</td>
+        </tr>
+        <tr>
+            <td>iec_StageNumber</td>
+            <td>מספר השלב בתהליך. דוגמה: 1, 2, 3</td>
+        </tr>
+        <tr>
+            <td>iec_StageTitle</td>
+            <td>שם תיאורי של השלב. דוגמה: אישור מנהל ישיר, אישור תקציבי, אישור משאבי אנוש</td>
+        </tr>
+        <tr>
+            <td>iec_StatusReason</td>
+            <td>סטטוס משני. ערכים: OnHold, InReview, Pending_Info, Final_Approval</td>
+        </tr>
+        <tr>
+            <td>iec_IsMandatory</td>
+            <td>האם האישור הכרחי. ערכים: Yes, No. ערך ברירת מחדל: Yes</td>
+        </tr>
+        <tr>
+            <td>iec_Priority</td>
+            <td>עדיפות וחשיבות האישור. ערכים: Low, Medium, High, Critical. ערך ברירת מחדל: Medium</td>
+        </tr>
+        <tr>
+            <td>iec_IsRepeatable</td>
+            <td>האם ניתן לחזור על שלב זה. ערכים: Yes, No. ערך ברירת מחדל: No</td>
+        </tr>
+        <tr>
+            <td>iec_RequiresMFA</td>
+            <td>האם דורש אימות רב-גורמי למאשר. ערכים: Yes, No. ערך ברירת מחדל: No</td>
+        </tr>
+        <tr>
+            <td>iec_CommentBody</td>
+            <td>הערות מהמאשר. דוגמה: אני מאשר את הבקשה אבל מבקש לקבל עדכון על התקדמות הפרויקט בעוד חודש</td>
+        </tr>
+        <tr>
+            <td>iec_CommentedOn</td>
+            <td>זמן הוספת ההערות. דוגמה: 2025-05-21T14:32:15Z</td>
+        </tr>
+        <tr>
+            <td>iec_IsApprovalRequestSent</td>
+            <td>האם נשלחה התראה. ערכים: Yes, No. אם תאריך שליחה מלא, אז סמן בכן אחרת לא</td>
+        </tr>
+        <tr>
+            <td>iec_ApprovalRequestSentTime</td>
+            <td>זמן התראה אחרונה. דוגמה: 2025-05-20T09:15:00Z</td>
+        </tr>
+        <tr>
+            <td>iec_AttachmentReferences</td>
+            <td>אינדיקציה האם המאשר העלה מסמכים. ערכים: Yes, No. ערך ברירת מחדל: No</td>
+        </tr>
+        <tr>
+            <td>iec_ChannelType</td>
+            <td>ערוץ התקשורת למשלוח התראות. ערכים: Email, Teams, SMS, WhatsApp. ערך ברירת מחדל: Email</td>
+        </tr>
+        <tr>
+            <td>iec_ReadReceipt</td>
+            <td>האם התקבל אישור קריאה. ערכים: Yes, No. ערך ברירת מחדל: No</td>
+        </tr>
+        <tr>
+            <td>iec_TimeoutDate</td>
+            <td>תאריך פקיעת תוקף. דוגמה: 2025-05-23T17:00:00Z</td>
+        </tr>
+        <tr>
+            <td>iec_ReminderCount</td>
+            <td>מספר התזכורות שנשלחו. דוגמה: 0, 1, 3. ערך ברירת מחדל: 0</td>
+        </tr>
+        <tr>
+            <td>iec_MaxReminders</td>
+            <td>מקסימום תזכורות לשליחה. דוגמה: 2, 3, 5. ערך ברירת מחדל: 3</td>
+        </tr>
+        <tr>
+            <td>iec_NextReminderDate</td>
+            <td>מועד התזכורת הבאה. דוגמה: 2025-05-22T09:00:00Z</td>
+        </tr>
+        <tr>
+            <td>iec_ReminderInterval</td>
+            <td>מרווח זמן בשעות בין תזכורות. דוגמה: 8, 24, 48. ערך ברירת מחדל: 24</td>
+        </tr>
+        <tr>
+            <td>iec_Device</td>
+            <td>מזהה המכשיר ממנו בוצע האישור. דוגמה: iPhone13,4-54AF76B1, Windows-PC-765DC24F</td>
+        </tr>
+        <tr>
+            <td>iec_SenderEmail</td>
+            <td>כתובת דוא"ל של המשתמש שהגיש את הבקשה או של המשתמש שעבורו הגישו את הבקשה. דוגמה: avi@iec.co.il</td>
+        </tr>
+        <tr>
+            <td>iec_SenderName</td>
+            <td>שם מלא של המשתמש שהגיש את הבקשה או של המשתמש שעבורו הגישו את הבקשה. דוגמה: אבי כהן</td>
+        </tr>
+        <tr>
+            <td>iec_IndexInt</td>
+            <td>מספר רץ אוטומטי. דוגמה: 1, 2, 3</td>
+        </tr>
+        <tr>
+            <td>iec_Index</td>
+            <td>מספר רץ אוטומטי. דוגמה: 1, 2, 3</td>
+        </tr>
+        <tr>
+            <td>iec_AppStatus</td>
+            <td>סטטוס מאוחד לתהליך - עבור אקשן סנטר. לדוגמה: במידה ושלב 1 אושר אבל 2 נדחה הערך של השדה יהיה "נדחה"</td>
+        </tr>
+        <tr>
+            <td>iec_ApprovalFlowType</td>
+            <td>סוג זרימת האישורים בשלב נתון. ערכים: טורי, מקבילי, מאשר ראשון, רוב, כולם חייבים לדחות<br><br>
+            <strong>טורי</strong> - המאשרים מקבלים את הבקשה בזה אחר זה לפי סדר ה-ApproverOrder. כל מאשר מקבל את הבקשה רק לאחר שהקודם לו אישר.<br><br>
+            <strong>מקבילי</strong> - כל המאשרים בשלב מקבלים את הבקשה בו-זמנית, וכולם חייבים לאשר כדי שהשלב יושלם.<br><br>
+            <strong>מאשר ראשון</strong> - כל המאשרים בשלב מקבלים את הבקשה בו-זמנית, אבל מספיק שאחד מהם יאשר כדי שהשלב יושלם.<br><br>
+            <strong>רוב</strong> - השלב מושלם כאשר רוב המאשרים (מעל 50%) אישרו את הבקשה.<br><br>
+            <strong>כולם חייבים לדחות</strong> - הבקשה נדחית רק אם כל המאשרים דחו אותה. אם אפילו אחד אישר, הבקשה ממשיכה לשלב הבא.<br><br>
+            ערך ברירת מחדל: טורי</td>
+        </tr>
+    </tbody>
+</table>
+</div>
                 
                 <div class="section" id="approver-steps">
                     <span class="anchor" id="approver-steps-anchor"></span>
