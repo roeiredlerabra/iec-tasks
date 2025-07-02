@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>בסיס ידע - מתודולוגיה חח"י</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
+<!-- SheetJS for Excel preview -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <!-- FontAwesome -->
@@ -656,6 +657,227 @@
   .code-block {
     font-size: 0.85rem;
   }
+}
+/* Excel Preview Modal */
+.excel-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.excel-modal-content {
+    background-color: #fefefe;
+    margin: 2% auto;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    width: 95%;
+    height: 90%;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+}
+
+.excel-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--main-color);
+}
+
+.excel-modal-title {
+    color: var(--main-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.excel-modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.3s;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.excel-modal-close:hover {
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+.excel-modal-body {
+    flex: 1;
+    overflow: auto;
+    direction: rtl;
+}
+
+.excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    direction: rtl;
+    background: white;
+}
+
+.excel-table th,
+.excel-table td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: right;
+    vertical-align: top;
+    direction: rtl;
+}
+
+.excel-table th {
+    background-color: var(--main-color);
+    color: white;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.excel-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.excel-table tr:hover {
+    background-color: #e3f2fd;
+}
+
+.excel-modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.excel-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.excel-btn-primary {
+    background: linear-gradient(135deg, var(--main-color), var(--secondary-color));
+    color: white;
+}
+
+.excel-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 86, 179, 0.3);
+}
+
+.excel-btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.excel-btn-secondary:hover {
+    background-color: #545b62;
+    transform: translateY(-2px);
+}
+
+.excel-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 1.2rem;
+    color: var(--main-color);
+}
+
+.excel-error {
+    color: #dc3545;
+    text-align: center;
+    padding: 20px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+/* Sheet tabs */
+.sheet-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.sheet-tab {
+    padding: 8px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.sheet-tab.active {
+    background-color: var(--main-color);
+    color: white;
+    border-color: var(--main-color);
+}
+
+.sheet-tab:hover:not(.active) {
+    background-color: #e9ecef;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .excel-modal-content {
+        width: 98%;
+        height: 95%;
+        margin: 1% auto;
+        padding: 15px;
+    }
+    
+    .excel-table th,
+    .excel-table td {
+        padding: 6px 8px;
+        font-size: 0.9rem;
+    }
+    
+    .excel-modal-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .excel-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
     </style>
 </head>
@@ -1753,9 +1975,18 @@
 
     <h4>הסבר על טבלת Approver החדשה והמורחבת:</h4>
 <p>הטבלה החדשה בשם <code>Approver_{App Number}</code> מספקת יכולות מתקדמות של ניהול תהליכי אישור עם שדות מפורטים לכל היבט של התהליך.</p>
-<a href="files/‪עותק של approvers_fields-Rachely.xlsx" download>
-  <button>Download Excel </button>
-</a>
+<div style="display: flex; gap: 10px; align-items: center; justify-content: center; margin: 20px 0;">
+    <button class="excel-btn excel-btn-primary" onclick="previewExcel('files/‪עותק של approvers_fields-Rachely.xlsx')">
+        <i class="fas fa-eye"></i>
+        תצוגה מקדימה
+    </button>
+    <a href="files/‪עותק של approvers_fields-Rachely.xlsx" download>
+        <button class="excel-btn excel-btn-secondary">
+            <i class="fas fa-download"></i>
+            הורד קובץ
+        </button>
+    </a>
+</div>
 <table>
     <thead>
         <tr>
@@ -2917,7 +3148,192 @@
         });
       });
     });
+    // Excel Preview Functionality
+let currentExcelFile = '';
+
+function previewExcel(filePath) {
+    const modal = document.getElementById('excelModal');
+    const loading = document.getElementById('excelLoading');
+    const error = document.getElementById('excelError');
+    const content = document.getElementById('excelContent');
+    const tabs = document.getElementById('sheetTabs');
+    
+    // Store current file path for download
+    currentExcelFile = filePath;
+    
+    // Show modal and loading
+    modal.style.display = 'block';
+    loading.style.display = 'flex';
+    error.style.display = 'none';
+    content.style.display = 'none';
+    tabs.style.display = 'none';
+    
+    // Fetch and process Excel file
+    fetch(filePath)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.arrayBuffer();
+        })
+        .then(data => {
+            try {
+                const workbook = XLSX.read(data, { type: 'array' });
+                displayExcelData(workbook);
+            } catch (err) {
+                throw new Error('שגיאה בקריאת קובץ Excel: ' + err.message);
+            }
+        })
+        .catch(err => {
+            console.error('Error loading Excel file:', err);
+            loading.style.display = 'none';
+            error.style.display = 'block';
+            error.textContent = 'שגיאה בטעינת הקובץ: ' + err.message;
+        });
+}
+
+function displayExcelData(workbook) {
+    const loading = document.getElementById('excelLoading');
+    const content = document.getElementById('excelContent');
+    const tabs = document.getElementById('sheetTabs');
+    
+    loading.style.display = 'none';
+    
+    // Create sheet tabs if multiple sheets
+    const sheetNames = workbook.SheetNames;
+    if (sheetNames.length > 1) {
+        tabs.style.display = 'flex';
+        tabs.innerHTML = '';
+        
+        sheetNames.forEach((sheetName, index) => {
+            const tab = document.createElement('div');
+            tab.className = 'sheet-tab' + (index === 0 ? ' active' : '');
+            tab.textContent = sheetName;
+            tab.onclick = () => displaySheet(workbook, sheetName, tab);
+            tabs.appendChild(tab);
+        });
+    }
+    
+    // Display first sheet
+    displaySheet(workbook, sheetNames[0]);
+    content.style.display = 'block';
+}
+
+function displaySheet(workbook, sheetName, clickedTab = null) {
+    const content = document.getElementById('excelContent');
+    const worksheet = workbook.Sheets[sheetName];
+    
+    // Update active tab
+    if (clickedTab) {
+        document.querySelectorAll('.sheet-tab').forEach(tab => tab.classList.remove('active'));
+        clickedTab.classList.add('active');
+    }
+    
+    // Convert to HTML table
+    const htmlTable = XLSX.utils.sheet_to_html(worksheet, {
+        id: 'excel-preview-table',
+        editable: false
+    });
+    
+    // Replace the table with our styled version
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlTable;
+    const table = tempDiv.querySelector('table');
+    
+    if (table) {
+        table.className = 'excel-table';
+        table.style.direction = 'rtl';
+        
+        // Ensure proper Hebrew text direction for all cells
+        const cells = table.querySelectorAll('td, th');
+        cells.forEach(cell => {
+            cell.style.direction = 'rtl';
+            cell.style.textAlign = 'right';
+            
+            // If cell contains Hebrew text, ensure proper display
+            if (/[\u0590-\u05FF]/.test(cell.textContent)) {
+                cell.style.unicodeBidi = 'embed';
+            }
+        });
+        
+        content.innerHTML = '';
+        content.appendChild(table);
+    } else {
+        content.innerHTML = '<div class="excel-error">לא ניתן להציג את תוכן הגיליון</div>';
+    }
+}
+
+// Modal event handlers
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('excelModal');
+    const closeBtn = document.getElementById('closeExcelModal');
+    const closeBtn2 = document.getElementById('closeExcelModalBtn');
+    const downloadBtn = document.getElementById('downloadExcelBtn');
+    
+    // Close modal events
+    function closeModal() {
+        modal.style.display = 'none';
+        currentExcelFile = '';
+    }
+    
+    closeBtn.onclick = closeModal;
+    closeBtn2.onclick = closeModal;
+    
+    // Close when clicking outside modal
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+    
+    // Download button
+    downloadBtn.onclick = function() {
+        if (currentExcelFile) {
+            const link = document.createElement('a');
+            link.href = currentExcelFile;
+            link.download = currentExcelFile.split('/').pop();
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+            closeModal();
+        }
+    });
+});
     </script>
+    <!-- Excel Preview Modal -->
+<div id="excelModal" class="excel-modal">
+    <div class="excel-modal-content">
+        <div class="excel-modal-header">
+            <h2 class="excel-modal-title">תצוגה מקדימה של קובץ Excel</h2>
+            <button class="excel-modal-close" id="closeExcelModal">&times;</button>
+        </div>
+        <div class="excel-modal-body">
+            <div id="excelLoading" class="excel-loading">
+                <i class="fas fa-spinner fa-spin" style="margin-left: 10px;"></i>
+                טוען קובץ...
+            </div>
+            <div id="excelError" class="excel-error" style="display: none;"></div>
+            <div id="sheetTabs" class="sheet-tabs" style="display: none;"></div>
+            <div id="excelContent" style="display: none;"></div>
+        </div>
+        <div class="excel-modal-footer">
+            <button id="downloadExcelBtn" class="excel-btn excel-btn-primary">
+                <i class="fas fa-download"></i>
+                הורד קובץ
+            </button>
+            <button id="closeExcelModalBtn" class="excel-btn excel-btn-secondary">
+                <i class="fas fa-times"></i>
+                סגור
+            </button>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>
