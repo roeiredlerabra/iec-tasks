@@ -4384,12 +4384,12 @@
             // מאזין אירועים לכפתור ההתנתקות
             document.getElementById('logoutButton').addEventListener('click', logout);
 
-            // מאזין אירועים לסגירת מודל כאשר לוחצים מחוץ לו
-            document.getElementById('dynamicModal').addEventListener('click', function (event) {
-                if (event.target === this) {
-                    closeModal();
-                }
-            });
+            // מאזין אירועים לסגירת מודל כאשר לוחצים מחוץ לו - מבוטל כדי למנוע אובדן נתונים
+            // document.getElementById('dynamicModal').addEventListener('click', function (event) {
+            //     if (event.target === this) {
+            //         closeModal();
+            //     }
+            // });
         });
 
         // Subscribe to state changes
