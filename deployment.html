@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>מערכת בקשות העברת גרסאות Power Apps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'iec-blue': '#1e87f0',
+                        'iec-green': '#28a745',
+                        'iec-red': '#dc3545',
+                        'iec-orange': '#fd7e14',
+                        'iec-yellow': '#ffc107',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" 
+          integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.3/dist/css/uikit.min.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.3/dist/js/uikit.min.js"></script>
+    <style>
+        /*
+        Icon Libraries Available:
+        
+        1. Font Awesome 6 (Free):
+           Usage: <i class="fas fa-icon-name"></i>
+           Examples: fa-user, fa-envelope, fa-lock, fa-check, fa-times
+           
+        2. Google Material Icons:
+           Usage: <span class="icon-material">icon_name</span>
+           Examples: add, delete, edit, settings, home
+           
+        3. Google Material Symbols Outlined:
+           Usage: <span class="icon-material-outlined">icon_name</span>
+           Examples: add, delete, edit, settings, home
+           
+        4. UIKit Icons (original):
+           Usage: <span uk-icon="icon-name"></span>
+           Examples: user, plus, minus, check, close
+        */
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            direction: rtl;
+            /* Better mobile scrolling */
+            -webkit-overflow-scrolling: touch;
+            /* Disable text selection on mobile for better UX */
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+        }
+
+        .uk-navbar-container {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1e87f0, #0f6ecd);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
+        .nav-mobile {
+            display: none;
+        }
+
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive navbar adjustments */
+        @media (max-width: 768px) {
+            .uk-navbar-center {
+                display: none;
+            }
+            
+            .nav-mobile {
+                display: block;
+                width: 100%;
+                background: #f8f9fa;
+                border-top: 1px solid #e5e5e5;
+                padding: 10px;
+            }
+            
+            .uk-navbar-item .uk-text-large {
+                font-size: 1rem !important;
+            }
+            
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+            
+            .user-controls {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .user-controls button {
+                width: 100%;
+                min-width: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .uk-navbar-item .uk-text-large {
+                display: none;
+            }
+            
+            .uk-navbar-left .uk-navbar-item {
+                padding: 0 10px;
+            }
+        }
+
+        .request-item {
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fff;
+            transition: all 0.2s ease;
+        }
+
+        .request-item:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .urgency-high {
+            border-right: 4px solid #f0506e;
+        }
+
+        .urgency-critical {
+            border-right: 4px solid #8b0000;
+            background: rgba(240, 80, 110, 0.02);
+        }
+
+        .status-pending {
+            background: rgba(255, 181, 0, 0.1);
+            color: #b8860b;
+        }
+
+        .status-approved {
+            background: rgba(50, 207, 115, 0.1);
+            color: #32cf73;
+        }
+
+        .status-rejected {
+            background: rgba(240, 80, 110, 0.1);
+            color: #f0506e;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        @media (max-width: 640px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                margin: 10px 0;
+            }
+        }
+        
+        @media (min-width: 641px) and (max-width: 960px) {
+            .detail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 0.875rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+        }
+        
+        @media (max-width: 640px) {
+            .fab {
+                bottom: 20px;
+                right: 20px;
+                width: 56px;
+                height: 56px;
+            }
+        }
+        
+        /* Header improvements */
+        .main-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+        
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .header-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .admin-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-header {
+                padding: 1.5rem 0;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Remove tab styles - no longer needed */
+        
+        /* Additional responsive improvements */
+        @media (max-width: 640px) {
+            .uk-container {
+                padding: 0 10px;
+            }
+            
+            .uk-card-body {
+                padding: 15px;
+            }
+            
+            .uk-button {
+                min-height: 44px; /* Better touch targets on mobile */
+            }
+            
+            .uk-form-controls {
+                margin-bottom: 15px;
+            }
+            
+            .uk-modal-dialog {
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+            
+            .uk-text-large {
+                font-size: 1.1rem;
+            }
+            
+            /* Enhanced mobile form styling */
+            .uk-form-label {
+                font-size: 0.9rem;
+                font-weight: 600;
+                margin-bottom: 8px;
+                display: block;
+            }
+            
+            .uk-input, .uk-select, .uk-textarea {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 12px;
+                border-radius: 8px;
+            }
+            
+            /* Mobile header improvements */
+            .main-header {
+                padding: 1rem 0;
+            }
+            
+            .header-title {
+                font-size: 1.3rem !important;
+            }
+            
+            .header-subtitle {
+                font-size: 0.85rem !important;
+            }
+            
+            .admin-controls {
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+            }
+            
+            .admin-controls button {
+                width: 100%;
+                justify-content: center;
+                font-size: 0.9rem;
+            }
+            
+            /* Mobile table improvements */
+            .uk-table {
+                font-size: 0.75rem;
+            }
+            
+            .uk-table th,
+            .uk-table td {
+                padding: 8px 4px;
+                vertical-align: middle;
+            }
+            
+            .expand-btn {
+                padding: 2px !important;
+                min-width: 28px !important;
+                min-height: 28px !important;
+            }
+            
+            .uk-button-small {
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+            
+            /* Mobile modal improvements */
+            .uk-modal-title {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+            
+            .uk-modal-body {
+                padding: 20px 15px;
+            }
+            
+            /* Mobile badge adjustments */
+            .uk-badge {
+                font-size: 0.65rem;
+                padding: 2px 6px;
+            }
+            
+            /* Mobile FAB adjustments */
+            .fab {
+                bottom: 15px;
+                right: 15px;
+                width: 52px;
+                height: 52px;
+                font-size: 1.2rem;
+            }
+            
+            /* Mobile card improvements */
+            .uk-card {
+                margin-bottom: 15px;
+                border-radius: 12px;
+            }
+            
+            .uk-card-header {
+                padding: 15px;
+            }
+            
+            .uk-card-title {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (min-width: 641px) and (max-width: 960px) {
+            .uk-container {
+                padding: 0 20px;
+            }
+            
+            /* Tablet-specific adjustments */
+            .admin-controls {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .admin-controls button {
+                min-width: 140px;
+            }
+            
+            .header-title {
+                font-size: 1.6rem;
+            }
+            
+            .uk-table {
+                font-size: 0.85rem;
+            }
+            
+            .uk-modal-dialog {
+                margin: 20px;
+                width: calc(100% - 40px);
+                max-width: 600px;
+            }
+            
+            .fab {
+                width: 56px;
+                height: 56px;
+                bottom: 25px;
+                right: 25px;
+            }
+        }
+        
+        /* Improve form layout on mobile */
+        @media (max-width: 640px) {
+            .uk-grid > * {
+                padding-left: 0;
+            }
+            
+            .uk-form-label {
+                margin-bottom: 5px;
+                font-weight: 600;
+            }
+        }
+        
+        /* Grid Table Styles */
+        .request-row {
+            transition: background-color 0.2s ease;
+        }
+        
+        .request-row:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .request-row.urgency-high {
+            border-left: 4px solid #f0ad4e;
+        }
+        
+        .request-row.urgency-critical {
+            border-left: 4px solid #d9534f;
+        }
+        
+        .expand-btn {
+            transition: transform 0.2s ease;
+            padding: 5px !important;
+            min-width: 30px;
+            min-height: 30px;
+        }
+        
+        .expand-btn:hover {
+            background-color: #f8f9fa;
+            border-radius: 3px;
+        }
+        
+        .details-row {
+            transition: all 0.3s ease;
+        }
+        
+        .details-row td {
+            border-top: none !important;
+        }
+        
+        .details-row .detail-label {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 2px;
+            display: block;
+        }
+        
+        .details-row .detail-value {
+            font-size: 0.9rem;
+            color: #333;
+        }
+        
+        /* Table header improvements */
+        .uk-table th {
+            text-align: center;
+            vertical-align: middle;
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #e5e5e5;
+            font-weight: 600;
+            padding: 12px 8px;
+        }
+        
+        .uk-table td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px 8px;
+        }
+        
+        /* Sortable column headers */
+        .sortable-header {
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+            transition: background-color 0.2s ease;
+        }
+        
+        .sortable-header:hover {
+            background-color: #e9ecef;
+        }
+        
+        .sortable-header.sort-asc::after {
+            content: ' ▲';
+            color: #1e87f0;
+            font-size: 0.8em;
+        }
+        
+        .sortable-header.sort-desc::after {
+            content: ' ▼';
+            color: #1e87f0;
+            font-size: 0.8em;
+        }
+        
+        .sortable-header:not(.sort-asc):not(.sort-desc)::after {
+            content: ' ⇅';
+            color: #999;
+            font-size: 0.8em;
+            opacity: 0.5;
+        }
+        
+        .sortable-header:hover::after {
+            opacity: 1;
+        }
+        
+        /* Icon Styles for Font Awesome and Material Icons */
+        .icon-fa {
+            font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'Font Awesome 6 Pro';
+            font-weight: 900;
+        }
+        
+        .icon-material {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .icon-material-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Button icon spacing */
+        .btn-icon {
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        .btn-icon-right {
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        /* Status icons */
+        .status-icon {
+            font-size: 1.2em;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        
+            .urgency-icon {
+                font-size: 1em;
+                vertical-align: middle;
+                margin-left: 3px;
+            }
+            
+        /* Extra small mobile devices */
+        @media (max-width: 480px) {
+            .main-header {
+                padding: 0.8rem 0;
+            }
+            
+            .header-content {
+                text-align: center;
+            }
+            
+            .logo-section {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .logo-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+                margin: 0 auto;
+            }
+            
+            .header-title {
+                font-size: 1.1rem !important;
+                margin: 0;
+            }
+            
+            .header-subtitle {
+                font-size: 0.8rem !important;
+                margin: 0;
+            }
+            
+            .admin-controls {
+                margin-top: 15px;
+                gap: 6px;
+            }
+            
+            .admin-controls button {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+            
+            /* Ultra compact table for very small screens */
+            .uk-table th:nth-child(n+4),
+            .uk-table td:nth-child(n+4) {
+                display: none;
+            }
+            
+            /* Show only ID, App ID, and Status on very small screens */
+            .uk-table th:nth-child(2),
+            .uk-table td:nth-child(2),
+            .uk-table th:nth-child(3),
+            .uk-table td:nth-child(3),
+            .uk-table th:nth-child(7),
+            .uk-table td:nth-child(7) {
+                display: table-cell;
+            }
+            
+            .uk-table {
+                font-size: 0.7rem;
+            }
+            
+            .uk-modal-dialog {
+                margin: 5px;
+                width: calc(100% - 10px);
+            }
+            
+            .uk-modal-body {
+                padding: 15px 10px;
+            }
+            
+            .fab {
+                width: 48px;
+                height: 48px;
+                bottom: 10px;
+                right: 10px;
+                font-size: 1.1rem;
+            }
+            
+            /* Stack form elements vertically on very small screens */
+            .uk-grid-small > * {
+                width: 100% !important;
+                margin-top: 10px;
+            }
+            
+            .uk-grid-small > *:first-child {
+                margin-top: 0;
+            }
+        }        /* Mobile responsive for table */
+        @media (max-width: 768px) {
+            .uk-table th:nth-child(4),
+            .uk-table td:nth-child(4) {
+                display: none;
+            }
+            
+            .uk-table th:nth-child(7),
+            .uk-table td:nth-child(7) {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .uk-table th:nth-child(3),
+            .uk-table td:nth-child(3),
+            .uk-table th:nth-child(6),
+            .uk-table td:nth-child(6) {
+                display: none;
+            }
+            
+            .uk-table {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Touch-friendly enhancements */
+        @media (hover: none) and (pointer: coarse) {
+            /* Mobile/touch devices */
+            .request-row:hover {
+                background-color: transparent;
+            }
+            
+            .request-row:active {
+                background-color: #f8f9fa;
+            }
+            
+            .expand-btn:hover {
+                background-color: transparent;
+            }
+            
+            .expand-btn:active {
+                background-color: #e9ecef;
+                border-radius: 4px;
+            }
+            
+            .uk-button:hover {
+                transform: none;
+            }
+            
+            .uk-button:active {
+                transform: scale(0.98);
+            }
+            
+            .fab:hover {
+                transform: none;
+            }
+            
+            .fab:active {
+                transform: scale(0.95);
+            }
+        }
+        
+        /* Landscape mobile optimizations */
+        @media (max-width: 960px) and (orientation: landscape) {
+            .main-header {
+                padding: 0.8rem 0;
+            }
+            
+            .header-content {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .admin-controls {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .uk-modal-dialog {
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-inter">
+    <div class="min-h-screen">
+        <!-- Main Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row items-center justify-between py-4 space-y-4 sm:space-y-0">
+                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-iec-blue rounded-lg flex items-center justify-center text-white">
+                                <i class="fas fa-bolt text-lg"></i>
+                            </div>
+                        </div>
+                        <div class="text-center sm:text-right">
+                            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">מערכת בקשות Power Apps</h1>
+                            <p class="text-sm text-gray-600">ניהול העברת גרסאות בין סביבות</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
+                        <div id="user-info" class="hidden text-sm font-medium text-gray-700"></div>
+                        <button id="admin-login-btn" class="uk-button uk-button-default flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 text-sm" onclick="showAdminLogin()">
+                            <i class="fas fa-user"></i>
+                            <span>התחברות מנהל</span>
+                        </button>
+                        <button id="admin-logout-btn" class="uk-button uk-button-danger hidden flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 text-sm" onclick="adminLogout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>התנתק</span>
+                        </button>
+                        <!-- Debug button -->
+                        <button class="uk-button uk-button-secondary flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 text-xs" onclick="console.log('isAdmin:', isAdmin); alert('isAdmin: ' + isAdmin)">
+                            <i class="fas fa-bug"></i>
+                            <span class="hidden sm:inline">Debug</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <!-- Filter and Search Section -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+                <div class="px-4 sm:px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg sm:text-xl font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-list-alt ml-2 text-iec-blue"></i>
+                        כל הבקשות
+                    </h2>
+                    <p class="text-sm text-gray-600 mt-1">צפייה בכל בקשות העברת הגרסאות והסטטוס שלהן</p>
+                </div>
+                <div class="px-4 sm:px-6 py-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">חיפוש</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue text-sm" id="searchInput" placeholder="חפש לפי מזהה, אפליקציה או מבקש..." onkeyup="filterRequests()">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">סינון לפי סטטוס</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue text-sm" id="statusFilter" onchange="loadAllRequests(); filterRequests();">
+                                <option value="">כל הסטטוסים</option>
+                                <option value="pending" selected>ממתין לאישור</option>
+                                <option value="approved">אושר</option>
+                                <option value="rejected">נדחה</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700 sm:hidden">&nbsp;</label>
+                            <button class="w-full sm:w-auto px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md shadow-sm transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm" onclick="loadAllRequests()">
+                                <i class="fas fa-sync-alt"></i>
+                                <span>רענן רשימה</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="allRequests" class="overflow-x-auto"></div>
+                </div>
+            </div>
+            
+            <!-- Floating Action Button -->
+            <button class="fixed bottom-6 right-6 w-14 h-14 bg-iec-blue hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 md:w-16 md:h-16" onclick="showNewRequestModal()" title="הגשת בקשה חדשה">
+                <span class="icon-material text-xl md:text-2xl">add</span>
+            </button>
+        </div>
+
+        <!-- Message Area -->
+        <div id="message" class="fixed top-20 right-4 left-4 z-40 max-w-md mx-auto"></div>
+
+        <!-- New Request Modal -->
+        <div id="newRequestModal" class="uk-modal" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body uk-modal-large max-w-4xl mx-4 sm:mx-auto">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="p-6">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                        <i class="fas fa-plus-circle text-iec-blue ml-2"></i>
+                        הגשת בקשה חדשה
+                    </h2>
+                    <p class="text-gray-600 mb-6">הגש בקשה להעברת Power Apps בין סביבות</p>
+                    
+                    <form id="submitForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700" for="requesterName">שם המבקש *</label>
+                                <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="text" id="requesterName" required>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700" for="requesterEmail">אימייל המבקש *</label>
+                                <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="email" id="requesterEmail" required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700" for="appId">מזהה האפליקציה (App ID) *</label>
+                                <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="text" id="appId" required>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700" for="urgency">דחיפות *</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="urgency" required>
+                                    <option value="low">נמוכה</option>
+                                    <option value="medium" selected>בינונית</option>
+                                    <option value="high">גבוהה</option>
+                                    <option value="critical">קריטית</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700" for="sourceEnv">סביבת מקור *</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="sourceEnv" required>
+                                    <option value="">בחר סביבה</option>
+                                    <option value="dev">פיתוח (Dev)</option>
+                                    <option value="test">בדיקות (Test)</option>
+                                    <option value="prod">ייצור (Prod)</option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-medium text-gray-700" for="targetEnv">סביבת יעד *</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="targetEnv" required>
+                                <option value="">בחר סביבה</option>
+                                <option value="dev">פיתוח (Dev)</option>
+                                <option value="test">בדיקות (Test)</option>
+                                <option value="prod">ייצור (Prod)</option>
+                            </select>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-info-circle text-blue-500 mt-1 ml-2"></i>
+                                <div class="text-sm text-blue-800">
+                                    <div class="font-semibold mb-1">מסלול הקידום האוטומטי:</div>
+                                    <div class="mb-2">פיתוח → בדיקות → ייצור</div>
+                                    <div class="text-xs text-blue-700">סביבת היעד תיבחר אוטומטית בהתאם לסביבת המקור</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700" for="description">תיאור השינויים *</label>
+                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="description" rows="4" required placeholder="תאר את השינויים או הסיבה להעברה"></textarea>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
+                            <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200 uk-modal-close flex items-center justify-center space-x-2 rtl:space-x-reverse" type="button">
+                                <i class="fas fa-times"></i>
+                                <span>ביטול</span>
+                            </button>
+                            <button type="submit" class="px-6 py-2 bg-iec-blue hover:bg-blue-600 text-white rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse">
+                                <span id="submit-text" class="flex items-center space-x-2 rtl:space-x-reverse">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>הגש בקשה</span>
+                                </span>
+                                <div id="submit-spinner" class="hidden" uk-spinner="ratio: 0.5"></div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Login Modal -->
+        <div id="adminLoginModal" class="uk-modal" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body max-w-md mx-4 sm:mx-auto">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-shield-alt text-iec-blue ml-2"></i>
+                        התחברות מנהל
+                    </h2>
+                    <form id="adminLoginForm" class="space-y-4">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700 flex items-center" for="adminEmail">
+                                <i class="fas fa-envelope text-gray-400 ml-2"></i>
+                                אימייל
+                            </label>
+                            <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="email" id="adminEmail" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700 flex items-center" for="adminPassword">
+                                <i class="fas fa-lock text-gray-400 ml-2"></i>
+                                סיסמה
+                            </label>
+                            <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="password" id="adminPassword" required>
+                        </div>
+                        <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse pt-4">
+                            <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200 uk-modal-close flex items-center justify-center space-x-2 rtl:space-x-reverse" type="button">
+                                <i class="fas fa-times"></i>
+                                <span>ביטול</span>
+                            </button>
+                            <button class="px-6 py-2 bg-iec-blue hover:bg-blue-600 text-white rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse" type="submit">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <span>התחבר</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reject Request Modal -->
+        <div id="rejectModal" class="uk-modal" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body max-w-lg mx-4 sm:mx-auto">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-ban text-iec-red ml-2"></i>
+                        דחיית בקשה
+                    </h2>
+                    <form id="rejectForm" class="space-y-4">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700 flex items-center" for="rejectionReason">
+                                <i class="fas fa-comment-dots text-gray-400 ml-2"></i>
+                                סיבת הדחייה *
+                            </label>
+                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue resize-none" id="rejectionReason" rows="4" required placeholder="הסבר את הסיבה לדחיית הבקשה"></textarea>
+                        </div>
+                        <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse pt-4">
+                            <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200 uk-modal-close flex items-center justify-center space-x-2 rtl:space-x-reverse" type="button">
+                                <i class="fas fa-times"></i>
+                                <span>ביטול</span>
+                            </button>
+                            <button class="px-6 py-2 bg-iec-red hover:bg-red-600 text-white rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse" type="submit">
+                                <i class="fas fa-ban"></i>
+                                <span>דחה בקשה</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            SUPABASE_URL: 'https://gxjgomnjtjtughcxawoz.supabase.co',
+            SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4amdvbW5qdGp0dWdoY3hhd296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNjg1OTEsImV4cCI6MjA3MTk0NDU5MX0.PI1gvtRk5BKYr97Eu9lFSpUyfYJindWAwfCBsrjB_bA',
+            ADMIN_PASSWORD: 'IEC_Admin_2025!PowerApps',
+            NTFY_ADMIN_TOPIC: 'request-admin-iec',
+            NTFY_STATUS_TOPIC: 'iec-deployment-status'
+        };
+
+        // Global variables
+        let supabase;
+        let currentUser = null;
+        let isAdmin = false;
+        let currentRejectRequestId = null;
+
+        // Show new request modal
+        function showNewRequestModal() {
+            UIkit.modal('#newRequestModal').show();
+        }
+
+        // Show admin login modal
+        function showAdminLogin() {
+            UIkit.modal('#adminLoginModal').show();
+        }
+
+        // Show reject modal
+        function showRejectModal(requestId) {
+            currentRejectRequestId = requestId;
+            UIkit.modal('#rejectModal').show();
+        }
+
+        // Mobile navigation toggle (kept for compatibility)
+        function closeMobileNav() {
+            // This function is no longer needed but kept for compatibility
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initSupabase();
+            setupEventListeners();
+            checkAuthState();
+            loadAllRequests(); // Load public requests on page load
+        });
+
+        function initSupabase() {
+            try {
+                supabase = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+                console.log('Supabase initialized successfully');
+            } catch (error) {
+                console.error('Error initializing Supabase:', error);
+                showMessage('שגיאה באתחול המערכת. בדוק את הגדרות Supabase.', 'error');
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('submitForm').addEventListener('submit', handleSubmitRequest);
+            document.getElementById('adminLoginForm').addEventListener('submit', handleAdminLogin);
+            document.getElementById('rejectForm').addEventListener('submit', handleRejectRequest);
+            document.getElementById('sourceEnv').addEventListener('change', updateTargetOptions);
+            document.getElementById('targetEnv').addEventListener('change', updateSourceOptions);
+        }
+
+        async function checkAuthState() {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    currentUser = session.user;
+                    isAdmin = true; // Any logged-in user is automatically an admin
+                    updateUI();
+                    loadAllRequests();
+                }
+            } catch (error) {
+                console.error('Error checking auth state:', error);
+            }
+        }
+
+        function updateUI() {
+            const loginBtn = document.getElementById('admin-login-btn');
+            const logoutBtn = document.getElementById('admin-logout-btn');
+            const userInfo = document.getElementById('user-info');
+            
+            if (currentUser) {
+                loginBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+                userInfo.classList.remove('hidden');
+                userInfo.textContent = `מחובר: ${currentUser.email} (מנהל)`;
+            } else {
+                loginBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                userInfo.classList.add('hidden');
+            }
+        }
+
+        async function handleAdminLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) throw error;
+                
+                currentUser = data.user;
+                isAdmin = true; // Any logged-in user is automatically an admin
+                updateUI();
+                hideAdminLogin();
+                
+                showMessage('התחברת בהצלחה כמנהל!', 'success');
+                // Auto-switch to "כל הבקשות" tab
+                UIkit.switcher('#sections').show(1);
+                loadAllRequests();
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage('שגיאה בהתחברות: ' + error.message, 'error');
+            }
+        }
+
+        async function adminLogout() {
+            try {
+                await supabase.auth.signOut();
+                currentUser = null;
+                isAdmin = false;
+                updateUI();
+                showMessage('התנתקת בהצלחה', 'success');
+                // Auto-switch back to submit tab
+                UIkit.switcher('#sections').show(0);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showMessage('שגיאה בהתנתקות: ' + error.message, 'error');
+            }
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected section and activate tab
+            document.getElementById(sectionName + '-section').classList.add('active');
+            document.getElementById(sectionName + '-btn').classList.add('active');
+        }
+
+        function updateTargetOptions() {
+            const sourceEnv = document.getElementById('sourceEnv').value;
+            const targetEnv = document.getElementById('targetEnv');
+            
+            // Auto-set target environment based on source environment progression
+            if (sourceEnv === 'dev') {
+                targetEnv.value = 'test';
+                showEnvironmentFeedback('dev', 'test');
+            } else if (sourceEnv === 'test') {
+                targetEnv.value = 'prod';
+                showEnvironmentFeedback('test', 'prod');
+            } else if (sourceEnv === 'prod') {
+                // From prod, we might go back to dev or test for hotfixes
+                // Let user choose manually, but we'll clear the current selection
+                targetEnv.value = '';
+                showEnvironmentFeedback('prod', null);
+            } else {
+                // No source selected, clear target
+                targetEnv.value = '';
+                hideEnvironmentFeedback();
+            }
+            
+            // Disable the same environment option
+            for (let option of targetEnv.options) {
+                option.disabled = option.value === sourceEnv;
+            }
+        }
+        
+        function showEnvironmentFeedback(source, target) {
+            // Add visual feedback or animation here if needed
+            const targetSelect = document.getElementById('targetEnv');
+            if (target) {
+                targetSelect.classList.add('uk-animation-shake');
+                setTimeout(() => {
+                    targetSelect.classList.remove('uk-animation-shake');
+                }, 500);
+            }
+        }
+        
+        function hideEnvironmentFeedback() {
+            // Hide any feedback UI
+        }
+
+        // Global variables for sorting and filtering
+        let currentSortColumn = 'created_at';
+        let currentSortDirection = 'desc';
+        let filteredRequests = [];
+
+        // Search and filter function
+        function filterRequests() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            if (!window.currentRequestsData) return;
+            
+            filteredRequests = window.currentRequestsData.filter(request => {
+                const matchesSearch = searchTerm === '' || 
+                    request.id.toString().includes(searchTerm) ||
+                    request.app_id.toLowerCase().includes(searchTerm) ||
+                    request.requester_name.toLowerCase().includes(searchTerm) ||
+                    request.requester_email.toLowerCase().includes(searchTerm) ||
+                    request.description.toLowerCase().includes(searchTerm);
+                
+                const matchesStatus = statusFilter === '' || request.status === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+            
+            // Apply current sorting
+            sortRequestsData(filteredRequests, currentSortColumn, currentSortDirection);
+            
+            // Re-render the table with filtered data
+            renderRequestsTable(filteredRequests);
+        }
+
+        // Sort table function
+        function sortTable(column) {
+            // Toggle sort direction if clicking the same column
+            if (currentSortColumn === column) {
+                currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortColumn = column;
+                currentSortDirection = 'asc';
+            }
+            
+            // Update sort indicators
+            updateSortIndicators(column, currentSortDirection);
+            
+            // Get current displayed data (filtered or all)
+            const dataToSort = filteredRequests.length > 0 ? filteredRequests : window.currentRequestsData;
+            
+            if (dataToSort) {
+                sortRequestsData(dataToSort, column, currentSortDirection);
+                renderRequestsTable(dataToSort);
+            }
+        }
+
+        // Sort requests data
+        function sortRequestsData(data, column, direction) {
+            data.sort((a, b) => {
+                let aVal = a[column];
+                let bVal = b[column];
+                
+                // Handle different data types
+                if (column === 'created_at') {
+                    aVal = new Date(aVal);
+                    bVal = new Date(bVal);
+                } else if (column === 'id') {
+                    aVal = parseInt(aVal);
+                    bVal = parseInt(bVal);
+                } else if (typeof aVal === 'string') {
+                    aVal = aVal.toLowerCase();
+                    bVal = bVal.toLowerCase();
+                }
+                
+                if (direction === 'asc') {
+                    return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+                } else {
+                    return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
+                }
+            });
+        }
+
+        // Update sort indicators
+        function updateSortIndicators(activeColumn, direction) {
+            // Remove all sort classes
+            document.querySelectorAll('.sortable-header').forEach(header => {
+                header.classList.remove('sort-asc', 'sort-desc');
+            });
+            
+            // Add sort class to active column
+            const activeHeader = document.querySelector(`[data-sort="${activeColumn}"]`);
+            if (activeHeader) {
+                activeHeader.classList.add(direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            }
+        }
+
+        // Render requests table
+        function renderRequestsTable(requests) {
+            const tbody = document.getElementById('requestsTableBody');
+            if (!tbody) return;
+            
+            let html = '';
+            
+            requests.forEach(request => {
+                const urgencyBorderClass = request.urgency === 'high' ? 'border-r-4 border-orange-400' : 
+                                          request.urgency === 'critical' ? 'border-r-4 border-red-500' : '';
+                
+                let statusBadgeClass = 'bg-yellow-100 text-yellow-800';
+                let urgencyTextClass = 'text-gray-600';
+                
+                if (request.status === 'approved') statusBadgeClass = 'bg-green-100 text-green-800';
+                else if (request.status === 'rejected') statusBadgeClass = 'bg-red-100 text-red-800';
+                
+                if (request.urgency === 'high') urgencyTextClass = 'text-orange-600';
+                else if (request.urgency === 'critical') urgencyTextClass = 'text-red-600';
+                
+                html += `
+                    <tr class="hover:bg-gray-50 transition-colors duration-150 ${urgencyBorderClass}" data-request-id="${request.id}">
+                        <td class="px-3 py-4 whitespace-nowrap text-center">
+                            <button class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors duration-150" 
+                                    onclick="toggleRequestDetails(${request.id})" 
+                                    title="לחץ להרחבת פרטים">
+                                <i class="fas fa-plus text-sm"></i>
+                            </button>
+                        </td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">#${request.id}</td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-900 hidden sm:table-cell">${request.app_id}</td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center hidden md:table-cell">
+                            <div class="text-sm">
+                                <div class="font-medium text-gray-900">${request.requester_name}</div>
+                                <div class="text-gray-500">${request.requester_email}</div>
+                            </div>
+                        </td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center hidden lg:table-cell">
+                            <div class="flex items-center justify-center space-x-2 rtl:space-x-reverse">
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800">
+                                    <i class="fas fa-layer-group ml-1"></i>
+                                    ${request.source_env}
+                                </span>
+                                <i class="fas fa-arrow-left text-gray-400 text-xs"></i>
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800">
+                                    <i class="fas fa-layer-group ml-1"></i>
+                                    ${request.target_env}
+                                </span>
+                            </div>
+                        </td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm ${urgencyTextClass} hidden md:table-cell">
+                            ${getUrgencyText(request.urgency)}
+                        </td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${statusBadgeClass}">
+                                ${getStatusText(request.status)}
+                            </span>
+                        </td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-500 hidden sm:table-cell">
+                            ${new Date(request.created_at).toLocaleDateString('he-IL')}
+                        </td>
+                        ${isAdmin ? `
+                            <td class="px-3 py-4 whitespace-nowrap text-center hidden lg:table-cell">
+                                ${request.status === 'pending' ? `
+                                    <div class="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rtl:space-x-reverse">
+                                        <button class="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                                onclick="testApprove(${request.id})" 
+                                                title="אשר בקשה">
+                                            <i class="fas fa-check"></i>
+                                            <span>אשר</span>
+                                        </button>
+                                        <button class="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                                onclick="testReject(${request.id})" 
+                                                title="דחה בקשה">
+                                            <i class="fas fa-times"></i>
+                                            <span>דחה</span>
+                                        </button>
+                                    </div>
+                                ` : '<span class="text-gray-400 text-sm">-</span>'}
+                            </td>
+                        ` : ''}
+                    </tr>
+                    <tr class="hidden bg-gray-50" id="details-${request.id}">
+                        <td colspan="${isAdmin ? '9' : '8'}" class="px-6 py-4">
+                            <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                                <h5 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                    <i class="fas fa-info-circle text-blue-500 ml-2"></i>
+                                    פרטי הבקשה
+                                </h5>
+                                
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <span class="block text-sm font-medium text-gray-700 mb-1">תיאור השינוי:</span>
+                                            <p class="text-sm text-gray-900 bg-gray-50 p-3 rounded-md">${request.description}</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <span class="block text-sm font-medium text-gray-700">תאריך יצירה:</span>
+                                            <span class="text-sm text-gray-900">${new Date(request.created_at).toLocaleString('he-IL')}</span>
+                                        </div>
+                                        <div>
+                                            <span class="block text-sm font-medium text-gray-700">תאריך עדכון:</span>
+                                            <span class="text-sm text-gray-900">${new Date(request.updated_at).toLocaleString('he-IL')}</span>
+                                        </div>
+                                        ${request.status === 'approved' && request.approved_by ? `
+                                            <div>
+                                                <span class="block text-sm font-medium text-green-700">אושר על ידי:</span>
+                                                <span class="text-sm text-green-900">${request.approved_by}</span>
+                                            </div>
+                                        ` : ''}
+                                        ${request.status === 'approved' && request.approved_at ? `
+                                            <div>
+                                                <span class="block text-sm font-medium text-green-700">תאריך אישור:</span>
+                                                <span class="text-sm text-green-900">${new Date(request.approved_at).toLocaleString('he-IL')}</span>
+                                            </div>
+                                        ` : ''}
+                                        ${request.status === 'rejected' && request.rejected_by ? `
+                                            <div>
+                                                <span class="block text-sm font-medium text-red-700">נדחה על ידי:</span>
+                                                <span class="text-sm text-red-900">${request.rejected_by}</span>
+                                            </div>
+                                        ` : ''}
+                                        ${request.status === 'rejected' && request.rejected_at ? `
+                                            <div>
+                                                <span class="block text-sm font-medium text-red-700">תאריך דחייה:</span>
+                                                <span class="text-sm text-red-900">${new Date(request.rejected_at).toLocaleString('he-IL')}</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                
+                                ${request.rejection_reason ? `
+                                    <div class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                                        <h6 class="text-sm font-semibold text-red-800 mb-2 flex items-center">
+                                            <i class="fas fa-exclamation-triangle ml-1"></i>
+                                            סיבת הדחייה:
+                                        </h6>
+                                        <p class="text-sm text-red-700">${request.rejection_reason}</p>
+                                    </div>
+                                ` : ''}
+                                
+                                ${isAdmin && request.status === 'pending' ? `
+                                    <div class="mt-6 pt-4 border-t border-gray-200">
+                                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
+                                            <button class="px-4 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testApprove(${request.id})">
+                                                <i class="fas fa-check"></i>
+                                                <span>אשר בקשה</span>
+                                            </button>
+                                            <button class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testReject(${request.id})">
+                                                <i class="fas fa-times"></i>
+                                                <span>דחה בקשה</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        function updateSourceOptions() {
+            const targetEnv = document.getElementById('targetEnv').value;
+            const sourceEnv = document.getElementById('sourceEnv');
+            
+            for (let option of sourceEnv.options) {
+                option.disabled = option.value === targetEnv;
+                if (option.value === targetEnv && option.selected) {
+                    sourceEnv.value = '';
+                }
+            }
+        }
+
+        async function handleSubmitRequest(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.querySelector('#submitForm button[type="submit"]');
+            const submitText = document.getElementById('submit-text');
+            const submitSpinner = document.getElementById('submit-spinner');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            const formData = {
+                requester_name: document.getElementById('requesterName').value,
+                requester_email: document.getElementById('requesterEmail').value,
+                app_id: document.getElementById('appId').value,
+                source_env: document.getElementById('sourceEnv').value,
+                target_env: document.getElementById('targetEnv').value,
+                description: document.getElementById('description').value,
+                urgency: document.getElementById('urgency').value,
+                status: 'pending',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+            
+            try {
+                // Create table if it doesn't exist
+                await createTableIfNotExists();
+                
+                // Insert request
+                const { data, error } = await supabase
+                    .from('version_requests')
+                    .insert([formData])
+                    .select();
+                
+                if (error) throw error;
+                
+                const requestId = data[0].id;
+                
+                // Send notification
+                await sendAdminNotification(formData, requestId);
+                
+                // Show success message
+                showMessage(`הבקשה נשלחה בהצלחה! מזהה בקשה: ${requestId}`, 'success');
+                
+                // Reset form
+                document.getElementById('submitForm').reset();
+                
+                // Close modal
+                UIkit.modal('#newRequestModal').hide();
+                
+                // Refresh the public requests list
+                loadAllRequests();
+                
+            } catch (error) {
+                console.error('Error submitting request:', error);
+                showMessage('שגיאה בשליחת הבקשה: ' + error.message, 'error');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        async function createTableIfNotExists() {
+            // This function attempts to create the table if it doesn't exist
+            // Using raw SQL through Supabase RPC function
+            const { error } = await supabase.rpc('create_version_requests_table', {});
+            
+            if (error && !error.message.includes('already exists')) {
+                console.warn('Could not create table automatically:', error);
+            }
+        }
+
+        async function sendAdminNotification(requestData, requestId) {
+            const urgencyEmoji = {
+                'low': '🟢',
+                'medium': '🟡', 
+                'high': '🟠',
+                'critical': '🔴'
+            };
+
+            const message = `${urgencyEmoji[requestData.urgency]} בקשה חדשה להעברת גרסה
+
+🆔 מזהה אפליקציה: ${requestData.app_id}
+👤 מבקש: ${requestData.requester_name}
+🔄 מ-${requestData.source_env} ל-${requestData.target_env}
+⚡ דחיפות: ${requestData.urgency}
+
+מזהה בקשה: ${requestId}`;
+
+            try {
+                await fetch(`https://ntfy.sh/${CONFIG.NTFY_ADMIN_TOPIC}`, {
+                    method: 'POST',
+                    body: message
+                });
+            } catch (error) {
+                console.error('Error sending notification:', error);
+            }
+        }
+
+        async function sendStatusNotification(requestData, status, adminUser, reason = null) {
+            const statusEmoji = {
+                'approved': '✅',
+                'rejected': '❌'
+            };
+
+            const statusText = {
+                'approved': 'בוצעה',
+                'rejected': 'נדחתה'
+            };
+
+            let message = `${statusEmoji[status]} בקשת העברת גרסה ${statusText[status]}
+
+🆔 מזהה בקשה: #${requestData.id}
+📱 אפליקציה: ${requestData.app_id}
+👤 מבקש: ${requestData.requester_name}
+🔄 העברה: ${requestData.source_env} → ${requestData.target_env}
+👨‍💼 ${status === 'approved' ? 'אושר על ידי' : 'נדחה על ידי'}: ${adminUser}
+📅 תאריך: ${new Date().toLocaleString('he-IL')}`;
+
+            if (status === 'rejected' && reason) {
+                message += `\n📝 סיבת דחייה: ${reason}`;
+            }
+
+            try {
+                await fetch(`https://ntfy.sh/${CONFIG.NTFY_STATUS_TOPIC}`, {
+                    method: 'POST',
+                    body: message
+                });
+                console.log('Status notification sent successfully');
+            } catch (error) {
+                console.error('Error sending status notification:', error);
+            }
+        }
+
+        async function loadAllRequests() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const statusFilterElement = document.getElementById('statusFilter');
+            
+            try {
+                let query = supabase
+                    .from('version_requests')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (statusFilter) {
+                    query = query.eq('status', statusFilter);
+                }
+                
+                const { data, error } = await query;
+                
+                if (error) throw error;
+                
+                // Check if we're filtering by "pending" and got no results
+                if (statusFilter === 'pending' && data.length === 0) {
+                    // Auto-switch to "All Statuses" if no pending requests found
+                    statusFilterElement.value = '';
+                    
+                    // Reload with all statuses
+                    const allQuery = supabase
+                        .from('version_requests')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                    
+                    const { data: allData, error: allError } = await allQuery;
+                    
+                    if (allError) throw allError;
+                    
+                    displayPublicRequests(allData);
+                    
+                    // Show informative message
+                    showMessage('לא נמצאו בקשות ממתינות לאישור. מציג את כל הבקשות.', 'warning');
+                } else {
+                    displayPublicRequests(data);
+                }
+                
+            } catch (error) {
+                console.error('Error loading requests:', error);
+                showMessage('שגיאה בטעינת הבקשות: ' + error.message, 'error');
+            }
+        }
+
+        function displayPublicRequests(requests) {
+            const container = document.getElementById('allRequests');
+            
+            console.log('Displaying requests. isAdmin:', isAdmin);
+            console.log('Number of requests:', requests.length);
+            
+            if (requests.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-500 text-2xl mb-2"></i>
+                        <p class="text-yellow-800 font-medium">אין בקשות להצגה</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create responsive table structure
+            let html = `
+                <div class="overflow-x-auto shadow-sm border border-gray-200 rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-16">פרטים</th>
+                                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sortable-header cursor-pointer hover:bg-gray-100 transition-colors" onclick="sortTable('id')" data-sort="id">
+                                    מזהה בקשה
+                                </th>
+                                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sortable-header cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell" onclick="sortTable('app_id')" data-sort="app_id">
+                                    מזהה אפליקציה
+                                </th>
+                                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sortable-header cursor-pointer hover:bg-gray-100 transition-colors hidden md:table-cell" onclick="sortTable('requester_name')" data-sort="requester_name">
+                                    מבקש
+                                </th>
+                                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sortable-header cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell" onclick="sortTable('source_env')" data-sort="source_env">
+                                    העברה
+                                </th>
+                                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sortable-header cursor-pointer hover:bg-gray-100 transition-colors hidden md:table-cell" onclick="sortTable('urgency')" data-sort="urgency">
+                                    דחיפות
+                                </th>
+                                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sortable-header cursor-pointer hover:bg-gray-100 transition-colors" onclick="sortTable('status')" data-sort="status">
+                                    סטטוס
+                                </th>
+                                <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider sortable-header cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell" onclick="sortTable('created_at')" data-sort="created_at">
+                                    תאריך
+                                </th>
+                                ${isAdmin ? '<th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">פעולות</th>' : ''}
+                            </tr>
+                        </thead>
+                        <tbody id="requestsTableBody" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            
+            // Store the current data for sorting and filtering
+            window.currentRequestsData = requests;
+            filteredRequests = [...requests]; // Copy all requests initially
+            
+            // Apply default sorting (by creation date, newest first)
+            sortRequestsData(filteredRequests, 'created_at', 'desc');
+            currentSortColumn = 'created_at';
+            currentSortDirection = 'desc';
+            
+            // Render the table
+            renderRequestsTable(filteredRequests);
+            
+            // Update sort indicators
+            updateSortIndicators('created_at', 'desc');
+        }
+
+        function toggleRequestDetails(requestId) {
+            console.log('Toggle called for request:', requestId);
+            const detailsRow = document.getElementById(`details-${requestId}`);
+            const expandBtn = document.querySelector(`tr[data-request-id="${requestId}"] button`);
+            
+            console.log('Found detailsRow:', detailsRow);
+            console.log('Found expandBtn:', expandBtn);
+            
+            if (!detailsRow || !expandBtn) {
+                console.error('Could not find elements for request:', requestId);
+                alert('שגיאה: לא ניתן למצוא את פרטי הבקשה');
+                return;
+            }
+            
+            if (detailsRow.classList.contains('hidden')) {
+                // Show details
+                detailsRow.classList.remove('hidden');
+                expandBtn.innerHTML = '<i class="fas fa-minus text-sm"></i>';
+                expandBtn.classList.add('text-blue-600', 'bg-blue-50');
+                expandBtn.classList.remove('text-gray-400', 'hover:text-gray-600');
+                console.log('Expanded request:', requestId);
+            } else {
+                // Hide details
+                detailsRow.classList.add('hidden');
+                expandBtn.innerHTML = '<i class="fas fa-plus text-sm"></i>';
+                expandBtn.classList.remove('text-blue-600', 'bg-blue-50');
+                expandBtn.classList.add('text-gray-400', 'hover:text-gray-600');
+                console.log('Collapsed request:', requestId);
+            }
+        }
+
+        // Test functions for admin buttons
+        function testApprove(requestId) {
+            console.log('Approve clicked for request:', requestId);
+            console.log('isAdmin:', isAdmin);
+            approveRequest(requestId);
+        }
+
+        function testReject(requestId) {
+            console.log('Reject clicked for request:', requestId);
+            console.log('isAdmin:', isAdmin);
+            showRejectModal(requestId);
+        }
+
+        function getUrgencyText(urgency) {
+            const urgencyMap = {
+                'low': '<i class="fas fa-flag urgency-icon" style="color: #28a745;"></i> נמוכה',
+                'medium': '<i class="fas fa-flag urgency-icon" style="color: #ffc107;"></i> בינונית',
+                'high': '<i class="fas fa-flag urgency-icon" style="color: #fd7e14;"></i> גבוהה',
+                'critical': '<i class="fas fa-exclamation-triangle urgency-icon" style="color: #dc3545;"></i> קריטית'
+            };
+            return urgencyMap[urgency] || urgency;
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': '<i class="fas fa-clock status-icon" style="color: #ffc107;"></i> ממתין לאישור',
+                'approved': '<i class="fas fa-check-circle status-icon" style="color: #28a745;"></i> אושר',
+                'rejected': '<i class="fas fa-times-circle status-icon" style="color: #dc3545;"></i> נדחה'
+            };
+            return statusMap[status] || status;
+        }
+
+        async function approveRequest(requestId) {
+            if (!confirm('האם אתה בטוח שברצונך לאשר את הבקשה?')) {
+                return;
+            }
+            
+            try {
+                // Get current user
+                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                if (userError) throw userError;
+                
+                if (!user) {
+                    showMessage('שגיאה: יש להתחבר כדי לאשר בקשות', 'error');
+                    return;
+                }
+
+                // First get the request data before updating
+                const { data: requestData, error: fetchError } = await supabase
+                    .from('version_requests')
+                    .select('*')
+                    .eq('id', requestId)
+                    .single();
+
+                if (fetchError) throw fetchError;
+                
+                const { data, error } = await supabase
+                    .from('version_requests')
+                    .update({ 
+                        status: 'approved', 
+                        updated_at: new Date().toISOString(),
+                        approved_by: user.email,
+                        approved_at: new Date().toISOString()
+                    })
+                    .eq('id', requestId)
+                    .select();
+                
+                if (error) throw error;
+                
+                // Send status notification
+                await sendStatusNotification(requestData, 'approved', user.email);
+                
+                showMessage('הבקשה אושרה בהצלחה!', 'success');
+                loadAllRequests(); // Refresh view
+                
+            } catch (error) {
+                console.error('Error approving request:', error);
+                showMessage('שגיאה באישור הבקשה: ' + error.message, 'error');
+            }
+        }
+
+        async function handleRejectRequest(event) {
+            event.preventDefault();
+            
+            const reason = document.getElementById('rejectionReason').value;
+            
+            try {
+                // Get current user
+                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                if (userError) throw userError;
+                
+                if (!user) {
+                    showMessage('שגיאה: יש להתחבר כדי לדחות בקשות', 'error');
+                    return;
+                }
+
+                // First get the request data before updating
+                const { data: requestData, error: fetchError } = await supabase
+                    .from('version_requests')
+                    .select('*')
+                    .eq('id', currentRejectRequestId)
+                    .single();
+
+                if (fetchError) throw fetchError;
+                
+                const { error } = await supabase
+                    .from('version_requests')
+                    .update({ 
+                        status: 'rejected', 
+                        rejection_reason: reason,
+                        updated_at: new Date().toISOString(),
+                        rejected_by: user.email,
+                        rejected_at: new Date().toISOString()
+                    })
+                    .eq('id', currentRejectRequestId);
+                
+                if (error) throw error;
+                
+                // Send status notification with rejection reason
+                await sendStatusNotification(requestData, 'rejected', user.email, reason);
+                
+                showMessage('הבקשה נדחתה בהצלחה!', 'success');
+                
+                // Reset form and close modal
+                document.getElementById('rejectForm').reset();
+                UIkit.modal('#rejectModal').hide();
+                
+                // Refresh views
+                loadAllRequests();
+                
+            } catch (error) {
+                console.error('Error rejecting request:', error);
+                showMessage('שגיאה בדחיית הבקשה: ' + error.message, 'error');
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            let bgClass = 'bg-blue-50 border-blue-200 text-blue-800';
+            let iconClass = 'fas fa-info-circle text-blue-500';
+            
+            if (type === 'success') {
+                bgClass = 'bg-green-50 border-green-200 text-green-800';
+                iconClass = 'fas fa-check-circle text-green-500';
+            } else if (type === 'error') {
+                bgClass = 'bg-red-50 border-red-200 text-red-800';
+                iconClass = 'fas fa-exclamation-circle text-red-500';
+            } else if (type === 'warning') {
+                bgClass = 'bg-yellow-50 border-yellow-200 text-yellow-800';
+                iconClass = 'fas fa-exclamation-triangle text-yellow-500';
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="rounded-lg border p-4 shadow-sm ${bgClass} transition-all duration-300 ease-in-out">
+                    <div class="flex items-start">
+                        <i class="${iconClass} mt-1 ml-2"></i>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium">${message}</p>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600 ml-2">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                const alert = messageDiv.querySelector('div');
+                if (alert) {
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        messageDiv.innerHTML = '';
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // Check URL for request ID parameter and auto-load requests tab
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const requestId = urlParams.get('request');
+            
+        });
+    </script>
+</body>
+</html>
