@@ -864,11 +864,6 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <span>התנתק</span>
                         </button>
-                        <!-- Debug button -->
-                        <button class="uk-button uk-button-secondary flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 text-xs" onclick="console.log('isAdmin:', isAdmin); alert('isAdmin: ' + isAdmin)">
-                            <i class="fas fa-bug"></i>
-                            <span class="hidden sm:inline">Debug</span>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -1380,6 +1375,29 @@
             }
         }
 
+        // Get environment styling
+        function getEnvironmentStyle(env) {
+            const envStyles = {
+                'dev': {
+                    color: 'bg-orange-100 text-orange-800',
+                    icon: 'fas fa-code'
+                },
+                'test': {
+                    color: 'bg-yellow-100 text-yellow-800',
+                    icon: 'fas fa-flask'
+                },
+                'prod': {
+                    color: 'bg-green-100 text-green-800',
+                    icon: 'fas fa-globe'
+                }
+            };
+            
+            return envStyles[env] || {
+                color: 'bg-gray-100 text-gray-800',
+                icon: 'fas fa-layer-group'
+            };
+        }
+
         // Render requests table
         function renderRequestsTable(requests) {
             const tbody = document.getElementById('requestsTableBody');
@@ -1419,13 +1437,13 @@
                         </td>
                         <td class="px-3 py-4 whitespace-nowrap text-center hidden lg:table-cell">
                             <div class="flex items-center justify-center space-x-2 rtl:space-x-reverse">
-                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800">
-                                    <i class="fas fa-layer-group ml-1"></i>
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${getEnvironmentStyle(request.source_env).color}">
+                                    <i class="${getEnvironmentStyle(request.source_env).icon} ml-1"></i>
                                     ${request.source_env}
                                 </span>
                                 <i class="fas fa-arrow-left text-gray-400 text-xs"></i>
-                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800">
-                                    <i class="fas fa-layer-group ml-1"></i>
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${getEnvironmentStyle(request.target_env).color}">
+                                    <i class="${getEnvironmentStyle(request.target_env).icon} ml-1"></i>
                                     ${request.target_env}
                                 </span>
                             </div>
