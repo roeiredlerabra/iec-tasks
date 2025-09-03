@@ -931,11 +931,15 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
                                 <label class="block text-sm font-medium text-gray-700" for="requesterName">שם המבקש *</label>
-                                <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="text" id="requesterName" required>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="requesterName" required onchange="updateRequesterEmail()">
+                                    <option value="">בחר משתמש</option>
+                                </select>
                             </div>
                             <div class="space-y-2">
                                 <label class="block text-sm font-medium text-gray-700" for="requesterEmail">אימייל המבקש *</label>
-                                <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="email" id="requesterEmail" required>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="requesterEmail" required onchange="updateRequesterName()">
+                                    <option value="">בחר אימייל</option>
+                                </select>
                             </div>
                         </div>
 
@@ -1099,6 +1103,19 @@
         let isAdmin = false;
         let currentRejectRequestId = null;
 
+        // Users array for dropdown selection
+        const users = [
+            { name: "מירית בינשטוק", email: "mbinshtock@abra-it.com" },
+            { name: "רואי רדלר", email: "roei.redler@abra-it.com" },
+            { name: "מיכל פישר", email: "michal.fisher@iec.co.il" },
+            { name: "את'יר אברהם", email: "etri.abrahem@iec.co.il" },
+            { name: "שקד אהרון", email: "Shaked.Ah@abra-it.com" },
+            { name: "גדי כהן", email: "Gadi.Cohen@abrait.onmicrosoft.com" },
+            { name: "רחל כץ דגני", email: "Rachel.Katz.Degany@abra-it.com" },
+            { name: "ציפורה שלטי", email: "zshalti@abra-it.com" },
+            { name: "שירי קסירר", email: "Shiri.Kassirer@abra-it.com" }
+        ];
+
         // Show new request modal
         function showNewRequestModal() {
             UIkit.modal('#newRequestModal').show();
@@ -1124,9 +1141,63 @@
         document.addEventListener('DOMContentLoaded', function() {
             initSupabase();
             setupEventListeners();
+            populateUserDropdowns();
             checkAuthState();
             loadAllRequests(); // Load public requests on page load
         });
+
+        // Populate user dropdowns
+        function populateUserDropdowns() {
+            const nameSelect = document.getElementById('requesterName');
+            const emailSelect = document.getElementById('requesterEmail');
+            
+            // Clear existing options (except the first placeholder)
+            nameSelect.innerHTML = '<option value="">בחר משתמש</option>';
+            emailSelect.innerHTML = '<option value="">בחר אימייל</option>';
+            
+            // Populate name dropdown
+            users.forEach(user => {
+                const nameOption = document.createElement('option');
+                nameOption.value = user.name;
+                nameOption.textContent = user.name;
+                nameSelect.appendChild(nameOption);
+                
+                const emailOption = document.createElement('option');
+                emailOption.value = user.email;
+                emailOption.textContent = user.email;
+                emailSelect.appendChild(emailOption);
+            });
+        }
+
+        // Update email when name is selected
+        function updateRequesterEmail() {
+            const selectedName = document.getElementById('requesterName').value;
+            const emailSelect = document.getElementById('requesterEmail');
+            
+            if (selectedName) {
+                const user = users.find(u => u.name === selectedName);
+                if (user) {
+                    emailSelect.value = user.email;
+                }
+            } else {
+                emailSelect.value = '';
+            }
+        }
+
+        // Update name when email is selected
+        function updateRequesterName() {
+            const selectedEmail = document.getElementById('requesterEmail').value;
+            const nameSelect = document.getElementById('requesterName');
+            
+            if (selectedEmail) {
+                const user = users.find(u => u.email === selectedEmail);
+                if (user) {
+                    nameSelect.value = user.name;
+                }
+            } else {
+                nameSelect.value = '';
+            }
+        }
 
         function initSupabase() {
             try {
