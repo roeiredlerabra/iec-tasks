@@ -1265,11 +1265,11 @@
                 currentUser = data.user;
                 isAdmin = true; // Any logged-in user is automatically an admin
                 updateUI();
-                hideAdminLogin();
+                
+                // Close the admin login modal
+                UIkit.modal('#adminLoginModal').hide();
                 
                 showMessage('התחברת בהצלחה כמנהל!', 'success');
-                // Auto-switch to "כל הבקשות" tab
-                UIkit.switcher('#sections').show(1);
                 loadAllRequests();
                 
             } catch (error) {
@@ -1285,8 +1285,7 @@
                 isAdmin = false;
                 updateUI();
                 showMessage('התנתקת בהצלחה', 'success');
-                // Auto-switch back to submit tab
-                UIkit.switcher('#sections').show(0);
+                
             } catch (error) {
                 console.error('Logout error:', error);
                 showMessage('שגיאה בהתנתקות: ' + error.message, 'error');
@@ -1742,7 +1741,11 @@
             try {
                 await fetch(`https://ntfy.sh/${CONFIG.NTFY_ADMIN_TOPIC}`, {
                     method: 'POST',
-                    body: message
+                    body: message,
+                    headers: {
+                        'Title': `בקשה חדשה - ${requestData.app_id}`,
+                        'Priority': 'urgent'
+                    }
                 });
             } catch (error) {
                 console.error('Error sending notification:', error);
@@ -1776,7 +1779,11 @@
             try {
                 await fetch(`https://ntfy.sh/${CONFIG.NTFY_STATUS_TOPIC}`, {
                     method: 'POST',
-                    body: message
+                    body: message,
+                    headers: {
+                        'Title': `עדכון סטטוס - ${requestData.app_id}`,
+                        'Priority': 'urgent'
+                    }
                 });
                 console.log('Status notification sent successfully');
             } catch (error) {
