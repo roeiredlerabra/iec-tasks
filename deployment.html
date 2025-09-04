@@ -649,6 +649,130 @@
             vertical-align: middle;
         }
         
+        /* Dark Mode Styles */
+        .dark {
+            background-color: #1f2937;
+            color: #f9fafb;
+        }
+        
+        .dark body {
+            background-color: #1f2937 !important;
+        }
+        
+        .dark .bg-white {
+            background-color: #374151 !important;
+        }
+        
+        .dark .bg-gray-50 {
+            background-color: #1f2937 !important;
+        }
+        
+        .dark .bg-gray-100 {
+            background-color: #374151 !important;
+        }
+        
+        .dark .text-gray-900 {
+            color: #f9fafb !important;
+        }
+        
+        .dark .text-gray-800 {
+            color: #e5e7eb !important;
+        }
+        
+        .dark .text-gray-700 {
+            color: #d1d5db !important;
+        }
+        
+        .dark .text-gray-600 {
+            color: #9ca3af !important;
+        }
+        
+        .dark .text-gray-500 {
+            color: #6b7280 !important;
+        }
+        
+        .dark .text-gray-400 {
+            color: #9ca3af !important;
+        }
+        
+        .dark .border-gray-200 {
+            border-color: #4b5563 !important;
+        }
+        
+        .dark .border-gray-300 {
+            border-color: #6b7280 !important;
+        }
+        
+        .dark .shadow-sm {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        .dark .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        .dark .hover\:bg-gray-50:hover {
+            background-color: #4b5563 !important;
+        }
+        
+        .dark .hover\:bg-gray-100:hover {
+            background-color: #4b5563 !important;
+        }
+        
+        .dark .hover\:bg-gray-200:hover {
+            background-color: #6b7280 !important;
+        }
+        
+        .dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+            border-color: #4b5563 !important;
+        }
+        
+        .dark input {
+            background-color: #374151 !important;
+            border-color: #6b7280 !important;
+            color: #f9fafb !important;
+        }
+        
+        .dark input:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+        }
+        
+        .dark select {
+            background-color: #374151 !important;
+            border-color: #6b7280 !important;
+            color: #f9fafb !important;
+        }
+        
+        .dark textarea {
+            background-color: #374151 !important;
+            border-color: #6b7280 !important;
+            color: #f9fafb !important;
+        }
+        
+        .dark .uk-modal-dialog {
+            background-color: #374151 !important;
+            color: #f9fafb !important;
+        }
+        
+        .dark .uk-button-default {
+            background-color: #4b5563 !important;
+            color: #f9fafb !important;
+            border-color: #6b7280 !important;
+        }
+        
+        .dark .uk-button-default:hover {
+            background-color: #6b7280 !important;
+        }
+        
+        #dark-mode-toggle {
+            transition: all 0.3s ease;
+        }
+        
+        #dark-mode-toggle:hover {
+            transform: scale(1.05);
+        }
+        
         /* Status icons */
         .status-icon {
             font-size: 1.2em;
@@ -856,6 +980,9 @@
                     
                     <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
                         <div id="user-info" class="hidden text-sm font-medium text-gray-700"></div>
+                        <button id="dark-mode-toggle" class="uk-button uk-button-default flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 text-sm" onclick="toggleDarkMode()" title="החלף מצב תצוגה">
+                            <i id="dark-mode-icon" class="fas fa-moon"></i>
+                        </button>
                         <button id="admin-login-btn" class="uk-button uk-button-default flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 text-sm" onclick="showAdminLogin()">
                             <i class="fas fa-user"></i>
                             <span>התחברות מנהל</span>
@@ -1116,6 +1243,39 @@
             { name: "שירי קסירר", email: "Shiri.Kassirer@abra-it.com" }
         ];
 
+        // Dark mode functions
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('dark-mode-icon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                html.classList.add('dark');
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('darkMode', 'true');
+            }
+        }
+
+        function initDarkMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('dark-mode-icon');
+            const savedMode = localStorage.getItem('darkMode');
+            
+            // Check for system preference if no saved preference
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedMode === 'true' || (savedMode === null && prefersDark)) {
+                html.classList.add('dark');
+                if (icon) icon.className = 'fas fa-sun';
+            } else {
+                html.classList.remove('dark');
+                if (icon) icon.className = 'fas fa-moon';
+            }
+        }
+
         // Show new request modal
         function showNewRequestModal() {
             UIkit.modal('#newRequestModal').show();
@@ -1139,6 +1299,7 @@
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
+            initDarkMode(); // Initialize dark mode first
             initSupabase();
             setupEventListeners();
             populateUserDropdowns();
