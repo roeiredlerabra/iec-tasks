@@ -1745,7 +1745,7 @@
                                         ` : ''}
                                         ${request.status === 'approved' && request.approved_at ? `
                                             <div>
-                                                <span class="block text-sm font-medium text-green-700">תאריך אישור:</span>
+                                                <span class="block text-sm font-medium text-green-700">תאריך ביצוע:</span>
                                                 <span class="text-sm text-green-900">${new Date(request.approved_at).toLocaleString('he-IL')}</span>
                                             </div>
                                         ` : ''}
@@ -2183,7 +2183,7 @@
                                         </div>
                                         ${request.approved_at ? `
                                             <div class="text-sm mt-1">
-                                                <span class="font-medium text-green-700">תאריך אישור:</span>
+                                                <span class="font-medium text-green-700">תאריך ביצוע:</span>
                                                 <span class="text-green-900">${new Date(request.approved_at).toLocaleString('he-IL')}</span>
                                             </div>
                                         ` : ''}
@@ -2342,7 +2342,7 @@
                 
             } catch (error) {
                 console.error('Error approving request:', error);
-                showMessage('שגיאה באישור הבקשה: ' + error.message, 'error');
+                showMessage('שגיאה בביצוע הבקשה: ' + error.message, 'error');
             }
         }
 
