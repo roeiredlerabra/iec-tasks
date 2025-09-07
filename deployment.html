@@ -1749,6 +1749,15 @@
             document.getElementById('newRequestModal').classList.add('hidden');
             document.body.style.overflow = ''; // Restore background scrolling
             
+            // Reset the form
+            document.getElementById('submitForm').reset();
+            
+            // Reset the environment visual flow
+            resetEnvironmentVisuals();
+            
+            // Hide validation messages and environment feedback
+            hideEnvironmentFeedback();
+            
             // Reset the drag interface when modal closes
             setTimeout(() => {
                 resetDragInterface();
