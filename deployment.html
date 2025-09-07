@@ -338,11 +338,6 @@
                 margin-bottom: 15px;
             }
             
-            .uk-modal-dialog {
-                margin: 10px;
-                width: calc(100% - 20px);
-            }
-            
             .uk-text-large {
                 font-size: 1.1rem;
             }
@@ -408,16 +403,6 @@
                 font-size: 0.7rem;
             }
             
-            /* Mobile modal improvements */
-            .uk-modal-title {
-                font-size: 1.2rem;
-                margin-bottom: 1rem;
-            }
-            
-            .uk-modal-body {
-                padding: 20px 15px;
-            }
-            
             /* Mobile badge adjustments */
             .uk-badge {
                 font-size: 0.65rem;
@@ -469,12 +454,6 @@
             
             .uk-table {
                 font-size: 0.85rem;
-            }
-            
-            .uk-modal-dialog {
-                margin: 20px;
-                width: calc(100% - 40px);
-                max-width: 600px;
             }
             
             .fab {
@@ -651,118 +630,145 @@
         
         /* Dark Mode Styles */
         .dark {
-            background-color: #1f2937;
+            background-color: #111827;
             color: #f9fafb;
         }
         
         .dark body {
-            background-color: #1f2937 !important;
+            background-color: #111827;
         }
         
-        .dark .bg-white {
-            background-color: #374151 !important;
-        }
-        
+        /* Background overrides for dark mode */
         .dark .bg-gray-50 {
-            background-color: #1f2937 !important;
+            background-color: #1f2937;
         }
         
         .dark .bg-gray-100 {
-            background-color: #374151 !important;
+            background-color: #374151;
         }
         
+        .dark .bg-gray-200 {
+            background-color: #4b5563;
+        }
+        
+        .dark .bg-white {
+            background-color: #1f2937;
+        }
+        
+        /* Text color overrides for dark mode */
         .dark .text-gray-900 {
-            color: #f9fafb !important;
+            color: #f9fafb;
         }
         
         .dark .text-gray-800 {
-            color: #e5e7eb !important;
+            color: #e5e7eb;
         }
         
         .dark .text-gray-700 {
-            color: #d1d5db !important;
+            color: #d1d5db;
         }
         
         .dark .text-gray-600 {
-            color: #9ca3af !important;
+            color: #9ca3af;
         }
         
         .dark .text-gray-500 {
-            color: #6b7280 !important;
+            color: #6b7280;
         }
         
         .dark .text-gray-400 {
-            color: #9ca3af !important;
+            color: #9ca3af;
         }
         
+        /* Border color overrides for dark mode */
         .dark .border-gray-200 {
-            border-color: #4b5563 !important;
+            border-color: #4b5563;
         }
         
         .dark .border-gray-300 {
-            border-color: #6b7280 !important;
+            border-color: #6b7280;
         }
         
+        .dark .border-gray-400 {
+            border-color: #9ca3af;
+        }
+        
+        /* Shadow overrides for dark mode */
         .dark .shadow-sm {
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
         }
         
         .dark .shadow-lg {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
         }
         
+        .dark .shadow-xl {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Hover effects for dark mode */
         .dark .hover\:bg-gray-50:hover {
-            background-color: #4b5563 !important;
+            background-color: #374151;
         }
         
         .dark .hover\:bg-gray-100:hover {
-            background-color: #4b5563 !important;
+            background-color: #4b5563;
         }
         
         .dark .hover\:bg-gray-200:hover {
-            background-color: #6b7280 !important;
+            background-color: #6b7280;
         }
         
+        /* Divide colors for dark mode */
         .dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
-            border-color: #4b5563 !important;
+            border-color: #4b5563;
         }
         
-        .dark input {
-            background-color: #374151 !important;
-            border-color: #6b7280 !important;
-            color: #f9fafb !important;
-        }
-        
-        .dark input:focus {
-            border-color: #3b82f6 !important;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
-        }
-        
-        .dark select {
-            background-color: #374151 !important;
-            border-color: #6b7280 !important;
-            color: #f9fafb !important;
-        }
-        
-        .dark textarea {
-            background-color: #374151 !important;
-            border-color: #6b7280 !important;
-            color: #f9fafb !important;
-        }
-        
-        .dark .uk-modal-dialog {
-            background-color: #374151 !important;
-            color: #f9fafb !important;
-        }
-        
+        /* UIKit button overrides for dark mode */
         .dark .uk-button-default {
-            background-color: #4b5563 !important;
-            color: #f9fafb !important;
-            border-color: #6b7280 !important;
+            background-color: #4b5563;
+            color: #f9fafb;
+            border-color: #6b7280;
         }
         
         .dark .uk-button-default:hover {
-            background-color: #6b7280 !important;
+            background-color: #6b7280;
+            color: #f9fafb;
+        }
+        
+        /* Form elements dark mode */
+        .dark input, 
+        .dark select, 
+        .dark textarea {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #f9fafb;
+        }
+        
+        .dark input:focus, 
+        .dark select:focus, 
+        .dark textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Drag submit dark mode */
+        .dark .drag-submit-track {
+            background: linear-gradient(90deg, #374151 0%, #4b5563 100%);
+            border-color: #6b7280;
+        }
+        
+        .dark .drag-submit-track.disabled {
+            background: linear-gradient(90deg, #1f2937 0%, #374151 100%);
+        }
+        
+        .dark .drag-submit-text {
+            color: #d1d5db;
+        }
+        
+        .dark .drag-submit-text.disabled,
+        .dark .drag-submit-text-disabled {
+            color: #6b7280;
         }
         
         #dark-mode-toggle {
@@ -848,14 +854,6 @@
                 font-size: 0.7rem;
             }
             
-            .uk-modal-dialog {
-                margin: 5px;
-                width: calc(100% - 10px);
-            }
-            
-            .uk-modal-body {
-                padding: 15px 10px;
-            }
             
             .fab {
                 width: 48px;
@@ -897,6 +895,132 @@
             
             .uk-table {
                 font-size: 0.8rem;
+            }
+        }
+        
+        /* Environment Selection Enhancements */
+        #environmentFlow {
+            transition: all 0.3s ease;
+        }
+        
+        #environmentFlow:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        /* Environment circles animation */
+        .env-circle {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .env-circle:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Arrow animations */
+        #arrow-1, #arrow-2 {
+            transition: all 0.3s ease;
+        }
+        
+        /* Flow status animation */
+        #flowStatus {
+            animation: slideInFromTop 0.4s ease-out;
+        }
+        
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Environment validation messages */
+        #environmentValidation > div {
+            animation: fadeInScale 0.3s ease-out;
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        /* Warning flow styles for dev->prod */
+        .warning-flow-arrow {
+            color: #f97316 !important; /* orange-500 */
+            filter: drop-shadow(0 2px 4px rgba(249, 115, 22, 0.3));
+        }
+        
+        .warning-flow-test {
+            border-color: #fed7aa !important; /* orange-200 */
+            background-color: rgba(255, 237, 213, 0.5) !important; /* orange-50 with opacity */
+        }
+        
+        /* Enhanced arrow animations */
+        @keyframes bounceWarning {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            40% {
+                transform: translateY(-4px) scale(1.1);
+            }
+            60% {
+                transform: translateY(-2px) scale(1.05);
+            }
+        }
+        
+        .animate-bounce-warning {
+            animation: bounceWarning 1s ease-in-out infinite;
+        }
+        
+        /* Environment selector enhancements */
+        #sourceEnv:focus, #targetEnv:focus {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 3px rgba(30, 135, 240, 0.1);
+        }
+        
+        /* Help text animation */
+        #sourceEnvHelp, #targetEnvHelp {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Environment flow responsive */
+        @media (max-width: 640px) {
+            #environmentFlow .flex {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            #environmentFlow .flex > div {
+                margin-bottom: 1rem;
+            }
+            
+            #arrow-1, #arrow-2 {
+                transform: rotate(90deg);
+                margin: 0.5rem 0;
+            }
+            
+            #environmentFlow {
+                padding: 1rem;
             }
         }
         
@@ -952,11 +1076,179 @@
                 flex-direction: row;
                 flex-wrap: wrap;
             }
-            
-            .uk-modal-dialog {
-                max-height: 90vh;
-                overflow-y: auto;
+        }
+        
+        /* Swipe Animation Button */
+        .submit-btn-swipe {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .submit-btn-swipe:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .submit-btn-swipe:active {
+            transform: translateY(0);
+        }
+        
+        .submit-btn-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1d4ed8, #2563eb);
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .submit-btn-swipe:hover .submit-btn-bg {
+            transform: translateX(0);
+        }
+        
+        .submit-btn-swipe:hover .fas.fa-paper-plane {
+            animation: plane-fly 0.6s ease-in-out;
+        }
+        
+        @keyframes plane-fly {
+            0% {
+                transform: translateX(0) rotate(0deg);
             }
+            50% {
+                transform: translateX(8px) rotate(-10deg);
+            }
+            100% {
+                transform: translateX(0) rotate(0deg);
+            }
+        }
+        
+        /* Ripple effect on click */
+        .submit-btn-swipe:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Drag to Submit Styles */
+        .drag-submit-container {
+            position: relative;
+            user-select: none;
+        }
+        
+        .drag-submit-track {
+            position: relative;
+            background: linear-gradient(90deg, #e5e7eb 0%, #d1d5db 100%);
+            border: 2px solid #d1d5db;
+            transition: all 0.3s ease;
+        }
+        
+        .drag-submit-track.dragging {
+            background: linear-gradient(90deg, #dbeafe 0%, #bfdbfe 100%);
+            border-color: #3b82f6;
+        }
+        
+        .drag-submit-track.completed {
+            background: linear-gradient(90deg, #dcfce7 0%, #bbf7d0 100%);
+            border-color: #10b981;
+        }
+        
+        .drag-submit-button {
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        
+        .drag-submit-button:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .drag-submit-button.dragging {
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .drag-submit-text {
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .drag-submit-text.fading {
+            opacity: 0.5;
+            transform: translateX(10px);
+        }
+        
+        .drag-submit-success {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            animation: success-bounce 0.6s ease-out;
+        }
+        
+        @keyframes success-bounce {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        .drag-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border-radius: inherit;
+            transition: width 0.1s ease;
+            pointer-events: none;
+        }
+        
+        /* Disabled drag state */
+        .drag-submit-track.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 100%);
+        }
+        
+        .drag-submit-button.disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .drag-submit-button.disabled:hover {
+            transform: translateY(-50%) scale(1);
+            box-shadow: none;
+        }
+        
+        .drag-submit-text.disabled {
+            color: #9ca3af;
         }
     </style>
 </head>
@@ -1008,7 +1300,7 @@
                     <p class="text-sm text-gray-600 mt-1">צפייה בכל בקשות העברת הגרסאות והסטטוס שלהן</p>
                 </div>
                 <div class="px-4 sm:px-6 py-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-6">
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-gray-700">חיפוש</label>
                             <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue text-sm" id="searchInput" placeholder="חפש לפי מזהה, אפליקציה או מבקש..." onkeyup="filterRequests()">
@@ -1021,6 +1313,23 @@
                                 <option value="approved">בוצע</option>
                                 <option value="rejected">נדחה</option>
                             </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">סינון לפי תאריך</label>
+                            <div class="flex gap-2">
+                                <button class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md transition-colors duration-200 focus:ring-iec-blue focus:border-iec-blue" 
+                                        id="todayFilterBtn" 
+                                        onclick="toggleDateFilter(true)"
+                                        style="background-color: #3B82F6; color: white; border-color: #3B82F6;">
+                                    רק היום
+                                </button>
+                                <button class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md transition-colors duration-200 focus:ring-iec-blue focus:border-iec-blue" 
+                                        id="allDatesBtn" 
+                                        onclick="toggleDateFilter(false)"
+                                        style="background-color: #F3F4F6; color: #374151;">
+                                    כל התאריכים
+                                </button>
+                            </div>
                         </div>
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-gray-700 sm:hidden">&nbsp;</label>
@@ -1044,27 +1353,29 @@
         <div id="message" class="fixed top-20 right-4 left-4 z-40 max-w-md mx-auto"></div>
 
         <!-- New Request Modal -->
-        <div id="newRequestModal" class="uk-modal" uk-modal>
-            <div class="uk-modal-dialog uk-modal-body uk-modal-large max-w-4xl mx-4 sm:mx-auto">
-                <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div id="newRequestModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-4xl max-h-screen overflow-y-auto">
+                <button class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 transition-colors" type="button" onclick="closeNewRequestModal()">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
                 <div class="p-6">
-                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 flex items-center">
                         <i class="fas fa-plus-circle text-iec-blue ml-2"></i>
                         הגשת בקשה חדשה
                     </h2>
-                    <p class="text-gray-600 mb-6">הגש בקשה להעברת Power Apps בין סביבות</p>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">הגש בקשה להעברת Power Apps בין סביבות</p>
                     
                     <form id="submitForm" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700" for="requesterName">שם המבקש *</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="requesterName" required onchange="updateRequesterEmail()">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="requesterName">שם המבקש *</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="requesterName" required onchange="updateRequesterEmail()">
                                     <option value="">בחר משתמש</option>
                                 </select>
                             </div>
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700" for="requesterEmail">אימייל המבקש *</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="requesterEmail" required onchange="updateRequesterName()">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="requesterEmail">אימייל המבקש *</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="requesterEmail" required onchange="updateRequesterName()">
                                     <option value="">בחר אימייל</option>
                                 </select>
                             </div>
@@ -1072,12 +1383,12 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700" for="appId">מזהה האפליקציה (App ID) *</label>
-                                <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="text" id="appId" required>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="appId">מזהה האפליקציה (App ID) *</label>
+                                <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="text" id="appId" required>
                             </div>
                             <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700" for="urgency">דחיפות *</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="urgency" required>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="urgency">דחיפות *</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="urgency" required>
                                     <option value="low">נמוכה</option>
                                     <option value="medium" selected>בינונית</option>
                                     <option value="high">גבוהה</option>
@@ -1086,54 +1397,159 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700" for="sourceEnv">סביבת מקור *</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="sourceEnv" required>
-                                    <option value="">בחר סביבה</option>
-                                    <option value="dev">פיתוח (Dev)</option>
-                                    <option value="test">בדיקות (Test)</option>
-                                    <option value="prod">ייצור (Prod)</option>
-                                </select>
+                        <!-- Environment Selection with Visual Feedback -->
+                        <div class="space-y-4">
+                            <div class="text-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">בחירת סביבות העברה</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">בחר את סביבת המקור והיעד להעברת האפליקציה</p>
                             </div>
-                            <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700" for="targetEnv">סביבת יעד *</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="targetEnv" required>
-                                <option value="">בחר סביבה</option>
-                                <option value="dev">פיתוח (Dev)</option>
-                                <option value="test">בדיקות (Test)</option>
-                                <option value="prod">ייצור (Prod)</option>
-                            </select>
+                            
+                            <!-- Environment Visual Flow -->
+                            <div id="environmentFlow" class="bg-gradient-to-r from-blue-50 to-green-50 border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4">
+                                <div class="flex items-center justify-center space-x-8 rtl:space-x-reverse">
+                                    <!-- Dev Environment -->
+                                    <div id="env-dev" class="flex flex-col items-center space-y-2 transition-all duration-300 opacity-50">
+                                        <div class="w-16 h-16 bg-gray-100 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-code text-gray-600 text-xl"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-700">פיתוח</span>
+                                        <span class="text-xs text-gray-500">Dev</span>
+                                    </div>
+                                    
+                                    <!-- Arrow 1 -->
+                                    <div id="arrow-1" class="text-gray-400 text-2xl transition-all duration-300">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </div>
+                                    
+                                    <!-- Test Environment -->
+                                    <div id="env-test" class="flex flex-col items-center space-y-2 transition-all duration-300 opacity-50">
+                                        <div class="w-16 h-16 bg-gray-100 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-flask text-gray-600 text-xl"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-700">בדיקות</span>
+                                        <span class="text-xs text-gray-500">Test</span>
+                                    </div>
+                                    
+                                    <!-- Arrow 2 -->
+                                    <div id="arrow-2" class="text-gray-400 text-2xl transition-all duration-300">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </div>
+                                    
+                                    <!-- Prod Environment -->
+                                    <div id="env-prod" class="flex flex-col items-center space-y-2 transition-all duration-300 opacity-50">
+                                        <div class="w-16 h-16 bg-gray-100 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-globe text-gray-600 text-xl"></i>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-700">ייצור</span>
+                                        <span class="text-xs text-gray-500">Prod</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Dynamic Status Message -->
+                                <div id="flowStatus" class="text-center mt-4 hidden">
+                                    <div class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-full shadow-sm">
+                                        <i class="fas fa-route text-blue-500 ml-2"></i>
+                                        <span id="flowStatusText" class="text-sm font-medium text-gray-700"></span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
-                            <div class="flex items-start">
-                                <i class="fas fa-info-circle text-blue-500 mt-1 ml-2"></i>
-                                <div class="text-sm text-blue-800">
-                                    <div class="font-semibold mb-1">מסלול הקידום האוטומטי:</div>
-                                    <div class="mb-2">פיתוח ← בדיקות ← ייצור</div>
-                                    <div class="text-xs text-blue-700">סביבת היעד תיבחר אוטומטית בהתאם לסביבת המקור</div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="sourceEnv">
+                                        <i class="fas fa-upload text-gray-400 ml-1"></i>
+                                        סביבת מקור *
+                                    </label>
+                                    <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue transition-all duration-200" id="sourceEnv" required>
+                                        <option value="">בחר סביבת מקור</option>
+                                        <option value="dev">🧑‍💻 פיתוח (Development)</option>
+                                        <option value="test">🧪 בדיקות (Test)</option>
+                                    </select>
+                                    <div id="sourceEnvHelp" class="text-xs text-gray-500 hidden">
+                                        <i class="fas fa-info-circle ml-1"></i>
+                                        <span>זוהי הסביבה בה האפליקציה נמצאת כעת</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="targetEnv">
+                                        <i class="fas fa-download text-gray-400 ml-1"></i>
+                                        סביבת יעד *
+                                    </label>
+                                    <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue transition-all duration-200" id="targetEnv" required>
+                                        <option value="">בחר סביבת יעד</option>
+                                        <option value="test">🧪 בדיקות (Test)</option>
+                                        <option value="prod">🌐 ייצור (Production)</option>
+                                    </select>
+                                    <div id="targetEnvHelp" class="text-xs text-gray-500 hidden">
+                                        <i class="fas fa-info-circle ml-1"></i>
+                                        <span>זוהי הסביבה אליה תועבר האפליקציה</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Validation Messages -->
+                            <div id="environmentValidation" class="hidden">
+                                <!-- Success Message -->
+                                <div id="validCombination" class="bg-green-50 border border-green-200 rounded-md p-3 hidden">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mt-0.5 ml-2"></i>
+                                        <div class="text-sm text-green-800">
+                                            <div class="font-semibold">✅ בחירה תקינה!</div>
+                                            <div id="validCombinationText" class="mt-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Warning Message -->
+                                <div id="invalidCombination" class="bg-red-50 border border-red-200 rounded-md p-3 hidden">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-exclamation-triangle text-red-500 mt-0.5 ml-2"></i>
+                                        <div class="text-sm text-red-800">
+                                            <div class="font-semibold">⚠️ בחירה לא תקינה!</div>
+                                            <div id="invalidCombinationText" class="mt-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Info Message -->
+                                <div id="recommendedFlow" class="bg-blue-50 border border-blue-200 rounded-md p-3 hidden">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-lightbulb text-blue-500 mt-0.5 ml-2"></i>
+                                        <div class="text-sm text-blue-800">
+                                            <div class="font-semibold">💡 המלצה:</div>
+                                            <div class="mt-1">מסלול הקידום המומלץ: פיתוח → בדיקות → ייצור</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700" for="description">תיאור השינויים *</label>
-                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="description" rows="4" required placeholder="תאר את השינויים או הסיבה להעברה"></textarea>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="description">תיאור השינויים *</label>
+                            <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="description" rows="4" required placeholder="תאר את השינויים או הסיבה להעברה"></textarea>
                         </div>
 
-                        <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
-                            <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200 uk-modal-close flex items-center justify-center space-x-2 rtl:space-x-reverse" type="button">
+                        <div class="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
+                            <!-- Drag to Submit Button -->
+                            <div class="drag-submit-container relative">
+                                <div class="drag-submit-track bg-gray-200 rounded-full h-12 flex items-center justify-between px-2 min-w-[200px]">
+                                    <div class="drag-submit-button bg-iec-blue rounded-full w-10 h-10 flex items-center justify-center cursor-grab active:cursor-grabbing transition-all duration-200 shadow-md">
+                                        <i class="fas fa-paper-plane text-white text-sm"></i>
+                                    </div>
+                                    <span class="drag-submit-text text-gray-600 text-sm font-medium ml-4">גרור לשליחה</span>
+                                    <span class="drag-submit-text-disabled hidden text-gray-500 text-sm font-medium ml-4">השלם את השדות הנדרשים</span>
+                                </div>
+                                <div class="drag-submit-success hidden bg-green-500 rounded-full h-12 flex items-center justify-center min-w-[200px]">
+                                    <span class="text-white font-medium flex items-center space-x-2 rtl:space-x-reverse">
+                                        <i class="fas fa-check"></i>
+                                        <span>נשלח!</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse" type="button" onclick="closeNewRequestModal()">
                                 <i class="fas fa-times"></i>
                                 <span>ביטול</span>
-                            </button>
-                            <button type="submit" class="px-6 py-2 bg-iec-blue hover:bg-blue-600 text-white rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse">
-                                <span id="submit-text" class="flex items-center space-x-2 rtl:space-x-reverse">
-                                    <i class="fas fa-paper-plane"></i>
-                                    <span>הגש בקשה</span>
-                                </span>
-                                <div id="submit-spinner" class="hidden" uk-spinner="ratio: 0.5"></div>
                             </button>
                         </div>
                     </form>
@@ -1219,7 +1635,7 @@
         const CONFIG = {
             SUPABASE_URL: 'https://gxjgomnjtjtughcxawoz.supabase.co',
             SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4amdvbW5qdGp0dWdoY3hhd296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNjg1OTEsImV4cCI6MjA3MTk0NDU5MX0.PI1gvtRk5BKYr97Eu9lFSpUyfYJindWAwfCBsrjB_bA',
-            ADMIN_PASSWORD: 'IEC_Admin_2025!PowerApps',
+            
             NTFY_ADMIN_TOPIC: 'request-admin-iec',
             NTFY_STATUS_TOPIC: 'iec-deployment-status'
         };
@@ -1229,6 +1645,7 @@
         let currentUser = null;
         let isAdmin = false;
         let currentRejectRequestId = null;
+        let showTodayOnly = true; // Default to showing only today's requests
 
         // Users array for dropdown selection
         const users = [
@@ -1257,6 +1674,20 @@
                 icon.className = 'fas fa-sun';
                 localStorage.setItem('darkMode', 'true');
             }
+            
+            // Update skeleton if currently visible
+            updateSkeletonTheme();
+        }
+
+        // Update skeleton theme when dark mode is toggled
+        function updateSkeletonTheme() {
+            const container = document.getElementById('allRequests');
+            const mobileSkeleton = document.getElementById('mobileSkeleton');
+            
+            // Only update if skeleton is currently visible
+            if (container && (mobileSkeleton || container.querySelector('.animate-pulse'))) {
+                showSkeletonLoading(); // Refresh the skeleton with current theme
+            }
         }
 
         function initDarkMode() {
@@ -1264,10 +1695,8 @@
             const icon = document.getElementById('dark-mode-icon');
             const savedMode = localStorage.getItem('darkMode');
             
-            // Check for system preference if no saved preference
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
-            if (savedMode === 'true' || (savedMode === null && prefersDark)) {
+            // Only check saved preference, default to light mode
+            if (savedMode === 'true') {
                 html.classList.add('dark');
                 if (icon) icon.className = 'fas fa-sun';
             } else {
@@ -1276,9 +1705,54 @@
             }
         }
 
+        // Toggle date filter between today only and all dates
+        function toggleDateFilter(showToday) {
+            showTodayOnly = showToday;
+            
+            const todayBtn = document.getElementById('todayFilterBtn');
+            const allDatesBtn = document.getElementById('allDatesBtn');
+            
+            if (showToday) {
+                // Active state for "today only"
+                todayBtn.style.backgroundColor = '#3B82F6';
+                todayBtn.style.color = 'white';
+                todayBtn.style.borderColor = '#3B82F6';
+                
+                // Inactive state for "all dates"
+                allDatesBtn.style.backgroundColor = '#F3F4F6';
+                allDatesBtn.style.color = '#374151';
+                allDatesBtn.style.borderColor = '#D1D5DB';
+            } else {
+                // Inactive state for "today only"
+                todayBtn.style.backgroundColor = '#F3F4F6';
+                todayBtn.style.color = '#374151';
+                todayBtn.style.borderColor = '#D1D5DB';
+                
+                // Active state for "all dates"
+                allDatesBtn.style.backgroundColor = '#3B82F6';
+                allDatesBtn.style.color = 'white';
+                allDatesBtn.style.borderColor = '#3B82F6';
+            }
+            
+            // Reload the requests with the new filter
+            loadAllRequests();
+        }
+
         // Show new request modal
         function showNewRequestModal() {
-            UIkit.modal('#newRequestModal').show();
+            document.getElementById('newRequestModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        // Close new request modal
+        function closeNewRequestModal() {
+            document.getElementById('newRequestModal').classList.add('hidden');
+            document.body.style.overflow = ''; // Restore background scrolling
+            
+            // Reset the drag interface when modal closes
+            setTimeout(() => {
+                resetDragInterface();
+            }, 100);
         }
 
         // Show admin login modal
@@ -1371,11 +1845,406 @@
         }
 
         function setupEventListeners() {
+            console.log('Setting up event listeners...'); // Debug log
+            
             document.getElementById('submitForm').addEventListener('submit', handleSubmitRequest);
             document.getElementById('adminLoginForm').addEventListener('submit', handleAdminLogin);
             document.getElementById('rejectForm').addEventListener('submit', handleRejectRequest);
-            document.getElementById('sourceEnv').addEventListener('change', updateTargetOptions);
-            document.getElementById('targetEnv').addEventListener('change', updateSourceOptions);
+            
+            // Single unified function for all environment changes
+            const handleEnvironmentChange = function() {
+                console.log('🔄 Environment change detected - checking current state');
+                checkAndUpdateEnvironmentFlow();
+            };
+            
+            // Source environment listeners
+            const sourceEnv = document.getElementById('sourceEnv');
+            if (sourceEnv) {
+                console.log('Setting up source environment listeners');
+                sourceEnv.addEventListener('change', handleEnvironmentChange);
+                sourceEnv.addEventListener('input', handleEnvironmentChange);
+                sourceEnv.addEventListener('click', handleEnvironmentChange);
+            }
+            
+            // Target environment listeners
+            const targetEnv = document.getElementById('targetEnv');
+            if (targetEnv) {
+                console.log('Setting up target environment listeners');
+                targetEnv.addEventListener('change', handleEnvironmentChange);
+                targetEnv.addEventListener('input', handleEnvironmentChange);
+                targetEnv.addEventListener('click', handleEnvironmentChange);
+            }
+            
+            // Modal event listeners
+            const modal = document.getElementById('newRequestModal');
+            if (modal) {
+                // Close modal when clicking outside
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeNewRequestModal();
+                    }
+                });
+                
+                // Close modal when pressing Escape
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                        closeNewRequestModal();
+                    }
+                });
+            }
+            
+            // Setup drag-to-submit functionality
+            setupDragToSubmit();
+            
+            console.log('Event listeners setup complete');
+        }
+
+        // Drag to Submit functionality
+        function setupDragToSubmit() {
+            const container = document.querySelector('.drag-submit-container');
+            const track = document.querySelector('.drag-submit-track');
+            const button = document.querySelector('.drag-submit-button');
+            const text = document.querySelector('.drag-submit-text');
+            const textDisabled = document.querySelector('.drag-submit-text-disabled');
+            const successElement = document.querySelector('.drag-submit-success');
+            
+            if (!container || !track || !button || !text) {
+                console.error('Drag to submit elements not found');
+                return;
+            }
+            
+            let isDragging = false;
+            let startX = 0;
+            let currentX = 0;
+            let maxDistance = 0;
+            let progressElement = null;
+            
+            // Validate required fields
+            function validateRequiredFields() {
+                const requiredFields = [
+                    'requesterName',
+                    'requesterEmail', 
+                    'appId',
+                    'urgency',
+                    'sourceEnv',
+                    'targetEnv',
+                    'description'
+                ];
+                
+                for (let fieldId of requiredFields) {
+                    const field = document.getElementById(fieldId);
+                    if (!field || !field.value.trim()) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            
+            // Update drag button state based on validation
+            function updateDragButtonState() {
+                const isValid = validateRequiredFields();
+                
+                if (isValid) {
+                    // Enable drag
+                    track.classList.remove('disabled');
+                    button.classList.remove('disabled');
+                    text.classList.remove('disabled');
+                    text.classList.remove('hidden');
+                    textDisabled.classList.add('hidden');
+                } else {
+                    // Disable drag
+                    track.classList.add('disabled');
+                    button.classList.add('disabled');
+                    text.classList.add('disabled');
+                    text.classList.add('hidden');
+                    textDisabled.classList.remove('hidden');
+                }
+                
+                return isValid;
+            }
+            
+            // Initial state check
+            updateDragButtonState();
+            
+            // Add listeners to all required fields to update state
+            const requiredFields = ['requesterName', 'requesterEmail', 'appId', 'urgency', 'sourceEnv', 'targetEnv', 'description'];
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('input', updateDragButtonState);
+                    field.addEventListener('change', updateDragButtonState);
+                }
+            });
+            
+            // Create progress indicator
+            function createProgressIndicator() {
+                if (!progressElement) {
+                    progressElement = document.createElement('div');
+                    progressElement.className = 'drag-progress';
+                    track.appendChild(progressElement);
+                }
+            }
+            
+            // Update progress (RTL: progress fills from left to right)
+            function updateProgress(distance) {
+                if (progressElement) {
+                    const percentage = Math.min((distance / maxDistance) * 100, 100);
+                    progressElement.style.width = percentage + '%';
+                }
+            }
+            
+            // Mouse events
+            button.addEventListener('mousedown', startDrag);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', endDrag);
+            
+            // Touch events for mobile
+            button.addEventListener('touchstart', startDrag, { passive: false });
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', endDrag);
+            
+            function startDrag(e) {
+                // Check if form is valid before allowing drag
+                if (!updateDragButtonState()) {
+                    e.preventDefault();
+                    // Show a message about missing fields
+                    showMessage('אנא השלם את כל השדות הנדרשים לפני השליחה', 'error');
+                    return;
+                }
+                
+                e.preventDefault();
+                isDragging = true;
+                
+                const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+                startX = clientX;
+                
+                // Calculate max distance (track width - button width - padding)
+                maxDistance = track.offsetWidth - button.offsetWidth - 8;
+                
+                createProgressIndicator();
+                
+                track.classList.add('dragging');
+                button.classList.add('dragging');
+                text.classList.add('fading');
+                
+                // Change cursor
+                document.body.style.cursor = 'grabbing';
+            }
+            
+            function drag(e) {
+                if (!isDragging) return;
+                
+                e.preventDefault();
+                const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+                currentX = clientX - startX;
+                
+                // Constrain movement (RTL: positive movement to the right)
+                currentX = Math.max(0, Math.min(currentX, maxDistance));
+                
+                // Move button (RTL: move from left to right)
+                button.style.transform = `translateY(-50%) translateX(${currentX}px)`;
+                
+                // Update progress
+                updateProgress(currentX);
+                
+                // Update text opacity based on progress
+                const progress = currentX / maxDistance;
+                text.style.opacity = 1 - progress;
+            }
+            
+            function endDrag(e) {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                document.body.style.cursor = '';
+                
+                const progress = currentX / maxDistance;
+                
+                if (progress >= 0.8) {
+                    // Double-check validation before submission
+                    if (validateRequiredFields()) {
+                        completeSubmission();
+                    } else {
+                        showMessage('אנא השלם את כל השדות הנדרשים', 'error');
+                        resetDragButton();
+                    }
+                } else {
+                    // Reset to original position
+                    resetDragButton();
+                }
+            }
+            
+            function completeSubmission() {
+                // Hide track and show success
+                track.style.display = 'none';
+                successElement.classList.remove('hidden');
+                
+                // Show immediate success feedback
+                successElement.innerHTML = `
+                    <span class="text-white font-medium flex items-center space-x-2 rtl:space-x-reverse">
+                        <i class="fas fa-check"></i>
+                        <span>הבקשה נשלחה!</span>
+                    </span>
+                `;
+                
+                // Wait a moment to show success, then trigger form submission
+                setTimeout(() => {
+                    const form = document.getElementById('submitForm');
+                    if (form) {
+                        // Create a custom submit event
+                        const submitEvent = new Event('submit', {
+                            bubbles: true,
+                            cancelable: true
+                        });
+                        form.dispatchEvent(submitEvent);
+                    }
+                }, 800); // Increased delay to show success feedback
+            }
+            
+            function resetDragButton() {
+                // Animate back to original position (RTL: back to left side)
+                button.style.transition = 'transform 0.3s ease';
+                button.style.transform = 'translateY(-50%) translateX(0)';
+                
+                // Reset classes and progress
+                track.classList.remove('dragging');
+                button.classList.remove('dragging');
+                text.classList.remove('fading');
+                text.style.opacity = '';
+                
+                if (progressElement) {
+                    progressElement.style.width = '0%';
+                }
+                
+                // Remove transition after animation
+                setTimeout(() => {
+                    button.style.transition = '';
+                }, 300);
+            }
+        }
+
+        // Unified function that always checks current state and updates visuals
+        function checkAndUpdateEnvironmentFlow() {
+            const sourceEnv = document.getElementById('sourceEnv');
+            const targetEnv = document.getElementById('targetEnv');
+            
+            if (!sourceEnv || !targetEnv) {
+                console.error('Environment elements not found');
+                return;
+            }
+            
+            const sourceValue = sourceEnv.value;
+            const targetValue = targetEnv.value;
+            
+            console.log(`🔍 Current state: Source="${sourceValue}", Target="${targetValue}"`);
+            
+            // Always reset visuals first
+            resetEnvironmentVisuals();
+            
+            // Disable same environment options
+            updateEnvironmentOptions(sourceValue, targetValue);
+            
+            // Check current state and update visuals accordingly
+            if (sourceValue && targetValue) {
+                console.log(`✅ Both selected: ${sourceValue} -> ${targetValue}`);
+                handleBothEnvironmentsSelected(sourceValue, targetValue);
+            } else if (sourceValue && !targetValue) {
+                console.log(`📤 Only source selected: ${sourceValue}`);
+                handleOnlySourceSelected(sourceValue);
+            } else if (!sourceValue && targetValue) {
+                console.log(`📥 Only target selected: ${targetValue}`);
+                handleOnlyTargetSelected(targetValue);
+            } else {
+                console.log('❌ Neither selected');
+                hideEnvironmentFeedback();
+            }
+        }
+
+        // Handle when both environments are selected
+        function handleBothEnvironmentsSelected(source, target) {
+            // Show the visual flow
+            showEnvironmentFlow(source, target);
+            
+            // Show appropriate validation message based on combination
+            if (source === target) {
+                showValidationMessage('invalid', 'לא ניתן להעביר אפליקציה לאותה סביבה. אנא בחר סביבת יעד שונה.');
+            } else if (source === 'dev' && target === 'test') {
+                showValidationMessage('valid', '✅ מעולה! זהו המסלול הטבעי מפיתוח לבדיקות.');
+            } else if (source === 'test' && target === 'prod') {
+                showValidationMessage('valid', '✅ מעולה! זהו המסלול הטבעי מבדיקות לייצור.');
+            } else if (source === 'dev' && target === 'prod') {
+                console.log('🚨 DEV->PROD detected - showing warning');
+                showValidationMessage('invalid', '⚠️ לא מומלץ להעביר ישירות מפיתוח לייצור! עבור דרך סביבת הבדיקות תחילה.');
+            } else if (source === 'prod') {
+                showValidationMessage('recommend', 'העברה מייצור - וודא שזה נדרש (תיקון חם).');
+            } else {
+                showValidationMessage('recommend', 'צירוף סביבות לא שגרתי. וודא שזה נדרש.');
+            }
+            
+            // Show help text
+            showEnvironmentHelp('source', source);
+            showEnvironmentHelp('target', target);
+        }
+
+        // Handle when only source is selected
+        function handleOnlySourceSelected(source) {
+            const targetEnv = document.getElementById('targetEnv');
+            
+            // Auto-suggest target based on best practice
+            if (source === 'dev') {
+                targetEnv.value = 'test';
+                handleBothEnvironmentsSelected(source, 'test');
+            } else if (source === 'test') {
+                targetEnv.value = 'prod';
+                handleBothEnvironmentsSelected(source, 'prod');
+            } else if (source === 'prod') {
+                // Don't auto-suggest for prod, show only source
+                const sourceEl = document.getElementById(`env-${source}`);
+                if (sourceEl) {
+                    sourceEl.classList.remove('opacity-50');
+                    sourceEl.classList.add('opacity-100');
+                    applyEnvironmentColor(source, 'source');
+                }
+                showValidationMessage('recommend', 'ייצור הוא סביבת היעד הסופית. בחר סביבת יעד.');
+            }
+            
+            showEnvironmentHelp('source', source);
+        }
+
+        // Handle when only target is selected
+        function handleOnlyTargetSelected(target) {
+            const targetEl = document.getElementById(`env-${target}`);
+            if (targetEl) {
+                targetEl.classList.remove('opacity-50');
+                targetEl.classList.add('opacity-100');
+                applyEnvironmentColor(target, 'target');
+            }
+            
+            const flowStatus = document.getElementById('flowStatus');
+            const flowStatusText = document.getElementById('flowStatusText');
+            if (flowStatus && flowStatusText) {
+                flowStatus.classList.remove('hidden');
+                flowStatusText.textContent = `העברה ל${getEnvironmentName(target)} - בחר סביבת מקור`;
+            }
+            
+            showValidationMessage('recommend', 'בחר סביבת מקור כדי לראות את מסלול ההעברה המלא.');
+            showEnvironmentHelp('target', target);
+        }
+
+        // Update environment options (disable same environment)
+        function updateEnvironmentOptions(sourceValue, targetValue) {
+            const sourceEnv = document.getElementById('sourceEnv');
+            const targetEnv = document.getElementById('targetEnv');
+            
+            // Disable same environment in target options
+            for (let option of targetEnv.options) {
+                option.disabled = option.value === sourceValue;
+            }
+            
+            // Disable same environment in source options
+            for (let option of sourceEnv.options) {
+                option.disabled = option.value === targetValue;
+            }
         }
 
         async function checkAuthState() {
@@ -1469,48 +2338,398 @@
             document.getElementById(sectionName + '-btn').classList.add('active');
         }
 
+        // Legacy functions kept for compatibility, now just call the unified function
         function updateTargetOptions() {
-            const sourceEnv = document.getElementById('sourceEnv').value;
-            const targetEnv = document.getElementById('targetEnv');
+            console.log('updateTargetOptions called - redirecting to unified function');
+            checkAndUpdateEnvironmentFlow();
+        }
+        
+        function updateSourceOptions() {
+            console.log('updateSourceOptions called - redirecting to unified function');
+            checkAndUpdateEnvironmentFlow();
+        }
+        
+        function showEnvironmentFlow(source, target) {
+            console.log(`showEnvironmentFlow called: ${source} -> ${target}`); // Debug log
             
-            // Auto-set target environment based on source environment progression
-            if (sourceEnv === 'dev') {
-                targetEnv.value = 'test';
-                showEnvironmentFeedback('dev', 'test');
-            } else if (sourceEnv === 'test') {
-                targetEnv.value = 'prod';
-                showEnvironmentFeedback('test', 'prod');
-            } else if (sourceEnv === 'prod') {
-                // From prod, we might go back to dev or test for hotfixes
-                // Let user choose manually, but we'll clear the current selection
-                targetEnv.value = '';
-                showEnvironmentFeedback('prod', null);
-            } else {
-                // No source selected, clear target
-                targetEnv.value = '';
-                hideEnvironmentFeedback();
+            // Reset all environments
+            resetEnvironmentVisuals();
+            
+            // Validate that the DOM elements exist
+            const sourceEl = document.getElementById(`env-${source}`);
+            const targetEl = target ? document.getElementById(`env-${target}`) : null;
+            
+            if (!sourceEl) {
+                console.error(`Source environment element not found: env-${source}`);
+                return;
             }
             
-            // Disable the same environment option
-            for (let option of targetEnv.options) {
-                option.disabled = option.value === sourceEnv;
+            // Highlight source environment with its specific color
+            sourceEl.classList.remove('opacity-50');
+            sourceEl.classList.add('opacity-100');
+            applyEnvironmentColor(source, 'source');
+            
+            // Highlight target environment and show flow
+            if (target && targetEl) {
+                targetEl.classList.remove('opacity-50');
+                targetEl.classList.add('opacity-100');
+                applyEnvironmentColor(target, 'target');
+                
+                // Animate the flow arrows
+                animateFlow(source, target);
+                
+                // Show flow status
+                const flowStatus = document.getElementById('flowStatus');
+                const flowStatusText = document.getElementById('flowStatusText');
+                if (flowStatus && flowStatusText) {
+                    flowStatus.classList.remove('hidden');
+                    flowStatusText.textContent = `העברה מ${getEnvironmentName(source)} ל${getEnvironmentName(target)}`;
+                    
+                    // Add special styling for warning flows
+                    if (source === 'dev' && target === 'prod') {
+                        flowStatus.className = flowStatus.className.replace('bg-white', 'bg-orange-50');
+                        flowStatus.className = flowStatus.className.replace('border-gray-200', 'border-orange-200');
+                        flowStatusText.innerHTML = `⚠️ העברה מ${getEnvironmentName(source)} ל${getEnvironmentName(target)} - לא מומלץ!`;
+                    } else {
+                        flowStatus.className = flowStatus.className.replace('bg-orange-50', 'bg-white');
+                        flowStatus.className = flowStatus.className.replace('border-orange-200', 'border-gray-200');
+                    }
+                } else {
+                    console.error('Flow status elements not found');
+                }
             }
         }
         
-        function showEnvironmentFeedback(source, target) {
-            // Add visual feedback or animation here if needed
-            const targetSelect = document.getElementById('targetEnv');
-            if (target) {
-                targetSelect.classList.add('uk-animation-shake');
-                setTimeout(() => {
-                    targetSelect.classList.remove('uk-animation-shake');
-                }, 500);
+        function animateFlow(source, target) {
+            console.log(`animateFlow called: ${source} -> ${target}`); // Debug log
+            
+            const envOrder = ['dev', 'test', 'prod'];
+            const sourceIndex = envOrder.indexOf(source);
+            const targetIndex = envOrder.indexOf(target);
+            
+            console.log(`Indices: source=${sourceIndex}, target=${targetIndex}`); // Debug log
+            
+            // Determine if this is a valid or warning flow
+            const isValidFlow = (source === 'dev' && target === 'test') || 
+                               (source === 'test' && target === 'prod') ||
+                               (source === 'prod');
+            const isWarningFlow = (source === 'dev' && target === 'prod');
+            
+            console.log(`Flow type: valid=${isValidFlow}, warning=${isWarningFlow}`); // Debug log
+            
+            // Choose arrow colors and animations based on flow type
+            const arrowColor = isWarningFlow ? 'warning-flow-arrow' : 'text-blue-500';
+            const pulseClass = isWarningFlow ? 'animate-bounce-warning' : 'animate-pulse';
+            
+            // For dev->prod, animate through test environment to show the full path
+            if (source === 'dev' && target === 'prod') {
+                console.log('Handling dev->prod special case'); // Debug log
+                
+                // Highlight the intermediate test environment with a warning indication
+                const testEl = document.getElementById('env-test');
+                if (testEl) {
+                    testEl.classList.remove('opacity-50');
+                    testEl.classList.add('opacity-75');
+                    const testBorder = testEl.querySelector('.border-2');
+                    if (testBorder) {
+                        testBorder.classList.add('border-dashed');
+                        testBorder.classList.add('warning-flow-test');
+                    }
+                } else {
+                    console.error('Test environment element not found');
+                }
+                
+                // Animate both arrows with warning style
+                [1, 2].forEach((arrowNum, index) => {
+                    const arrow = document.getElementById(`arrow-${arrowNum}`);
+                    if (arrow) {
+                        console.log(`Animating arrow ${arrowNum}`); // Debug log
+                        arrow.classList.remove('text-gray-400');
+                        arrow.classList.add(arrowColor, pulseClass);
+                        
+                        // Add a slight delay for each arrow
+                        setTimeout(() => {
+                            arrow.style.transform = 'scale(1.2)';
+                            setTimeout(() => {
+                                arrow.style.transform = 'scale(1)';
+                            }, 200);
+                        }, index * 150);
+                    } else {
+                        console.error(`Arrow ${arrowNum} element not found`);
+                    }
+                });
+            } else {
+                console.log('Handling standard flow'); // Debug log
+                
+                // Standard flow animation
+                for (let i = sourceIndex; i < targetIndex; i++) {
+                    const arrow = document.getElementById(`arrow-${i + 1}`);
+                    if (arrow) {
+                        console.log(`Animating standard arrow ${i + 1}`); // Debug log
+                        arrow.classList.remove('text-gray-400');
+                        arrow.classList.add(arrowColor, pulseClass);
+                        
+                        // Add a slight delay for each arrow
+                        setTimeout(() => {
+                            arrow.style.transform = 'scale(1.2)';
+                            setTimeout(() => {
+                                arrow.style.transform = 'scale(1)';
+                            }, 200);
+                        }, i * 100);
+                    } else {
+                        console.error(`Standard arrow ${i + 1} element not found`);
+                    }
+                }
             }
+        }
+        
+        function resetEnvironmentVisuals() {
+            // Reset all environment circles to gray
+            ['dev', 'test', 'prod'].forEach(env => {
+                const envEl = document.getElementById(`env-${env}`);
+                envEl.classList.remove('opacity-100', 'opacity-75');
+                envEl.classList.add('opacity-50');
+                const border = envEl.querySelector('.border-2');
+                border.classList.remove('border-4', 'shadow-lg', 'ring-2', 'ring-blue-300', 'ring-green-300', 'border-dashed', 'border-orange-300', 'warning-flow-test');
+                
+                // Reset to gray colors
+                resetEnvironmentToGray(env);
+            });
+            
+            // Reset arrows
+            [1, 2].forEach(num => {
+                const arrow = document.getElementById(`arrow-${num}`);
+                arrow.classList.remove('text-blue-500', 'text-orange-500', 'warning-flow-arrow', 'animate-pulse', 'animate-bounce', 'animate-bounce-warning');
+                arrow.classList.add('text-gray-400');
+                arrow.style.transform = 'scale(1)';
+            });
+            
+            // Hide flow status
+            document.getElementById('flowStatus').classList.add('hidden');
+        }
+        
+        function resetEnvironmentToGray(env) {
+            const envEl = document.getElementById(`env-${env}`);
+            if (!envEl) return;
+            
+            const circle = envEl.querySelector('.w-16.h-16');
+            const icon = circle.querySelector('i');
+            const label = envEl.querySelector('.text-sm.font-medium');
+            
+            // Reset to gray styling
+            circle.className = 'w-16 h-16 bg-gray-100 border-2 border-gray-300 rounded-full flex items-center justify-center';
+            icon.className = `fas ${getEnvironmentIcon(env)} text-gray-600 text-xl`;
+            label.className = 'text-sm font-medium text-gray-700';
+        }
+        
+        function applyEnvironmentColor(env, type = 'source') {
+            const envEl = document.getElementById(`env-${env}`);
+            if (!envEl) return;
+            
+            const circle = envEl.querySelector('.w-16.h-16');
+            const icon = circle.querySelector('i');
+            const label = envEl.querySelector('.text-sm.font-medium');
+            
+            const colors = getEnvironmentColors(env);
+            const ringColor = type === 'source' ? 'ring-blue-300' : 'ring-green-300';
+            
+            // Apply environment-specific colors
+            circle.className = `w-16 h-16 ${colors.bg} border-2 ${colors.border} rounded-full flex items-center justify-center`;
+            icon.className = `fas ${getEnvironmentIcon(env)} ${colors.text} text-xl`;
+            label.className = `text-sm font-medium ${colors.labelText}`;
+            
+            // Add ring effect
+            circle.classList.add('border-4', 'shadow-lg', 'ring-2', ringColor);
+        }
+        
+        function getEnvironmentColors(env) {
+            const colors = {
+                'dev': {
+                    bg: 'bg-orange-100',
+                    border: 'border-orange-300',
+                    text: 'text-orange-600',
+                    labelText: 'text-orange-700'
+                },
+                'test': {
+                    bg: 'bg-yellow-100',
+                    border: 'border-yellow-300',
+                    text: 'text-yellow-600',
+                    labelText: 'text-yellow-700'
+                },
+                'prod': {
+                    bg: 'bg-green-100',
+                    border: 'border-green-300',
+                    text: 'text-green-600',
+                    labelText: 'text-green-700'
+                }
+            };
+            return colors[env] || {
+                bg: 'bg-gray-100',
+                border: 'border-gray-300',
+                text: 'text-gray-600',
+                labelText: 'text-gray-700'
+            };
+        }
+        
+        function getEnvironmentIcon(env) {
+            const icons = {
+                'dev': 'fa-code',
+                'test': 'fa-flask',
+                'prod': 'fa-globe'
+            };
+            return icons[env] || 'fa-layer-group';
+        }
+        
+        function showEnvironmentHelp(type, env) {
+            const helpId = type === 'source' ? 'sourceEnvHelp' : 'targetEnvHelp';
+            const helpEl = document.getElementById(helpId);
+            
+            if (env) {
+                helpEl.classList.remove('hidden');
+            } else {
+                helpEl.classList.add('hidden');
+            }
+        }
+        
+        function validateEnvironmentCombination(source, target) {
+            const validationEl = document.getElementById('environmentValidation');
+            const validEl = document.getElementById('validCombination');
+            const invalidEl = document.getElementById('invalidCombination');
+            const recommendEl = document.getElementById('recommendedFlow');
+            const validText = document.getElementById('validCombinationText');
+            const invalidText = document.getElementById('invalidCombinationText');
+            
+            // Hide all validation messages first
+            [validEl, invalidEl, recommendEl].forEach(el => el.classList.add('hidden'));
+            
+            if (source === target) {
+                validationEl.classList.remove('hidden');
+                invalidEl.classList.remove('hidden');
+                invalidText.textContent = 'לא ניתן להעביר אפליקציה לאותה סביבה. אנא בחר סביבת יעד שונה.';
+                return;
+            }
+            
+            const validCombinations = {
+                'dev': ['test'],
+                'test': ['prod'],
+                'prod': ['dev', 'test'] // For hotfixes
+            };
+            
+            validationEl.classList.remove('hidden');
+            
+            if (validCombinations[source]?.includes(target)) {
+                validEl.classList.remove('hidden');
+                if (source === 'dev' && target === 'test') {
+                    validText.textContent = 'מעולה! זהו המסלול הטבעי מפיתוח לבדיקות.';
+                } else if (source === 'test' && target === 'prod') {
+                    validText.textContent = 'מעולה! זהו המסלול הטבעי מבדיקות לייצור.';
+                } else if (source === 'prod') {
+                    validText.textContent = 'העברה חריגה מייצור. וודא שזה נדרש (תיקון חם).';
+                }
+            } else {
+                invalidEl.classList.remove('hidden');
+                if (source === 'dev' && target === 'prod') {
+                    invalidText.textContent = 'לא מומלץ להעביר ישירות מפיתוח לייצור! עבור דרך סביבת הבדיקות תחילה.';
+                } else {
+                    invalidText.textContent = 'צירוף סביבות לא שגרתי. וודא שזה נדרש.';
+                }
+                recommendEl.classList.remove('hidden');
+            }
+        }
+        
+        function showValidationMessage(type, message) {
+            const validationEl = document.getElementById('environmentValidation');
+            const validEl = document.getElementById('validCombination');
+            const invalidEl = document.getElementById('invalidCombination');
+            const recommendEl = document.getElementById('recommendedFlow');
+            
+            // Hide all first
+            [validEl, invalidEl, recommendEl].forEach(el => el.classList.add('hidden'));
+            
+            validationEl.classList.remove('hidden');
+            
+            if (type === 'valid') {
+                validEl.classList.remove('hidden');
+                document.getElementById('validCombinationText').textContent = message;
+            } else if (type === 'invalid') {
+                invalidEl.classList.remove('hidden');
+                document.getElementById('invalidCombinationText').textContent = message;
+            } else if (type === 'recommend') {
+                recommendEl.classList.remove('hidden');
+            }
+        }
+        
+        function getEnvironmentName(env) {
+            const names = {
+                'dev': 'פיתוח',
+                'test': 'בדיקות',
+                'prod': 'ייצור'
+            };
+            return names[env] || env;
         }
         
         function hideEnvironmentFeedback() {
-            // Hide any feedback UI
+            resetEnvironmentVisuals();
+            document.getElementById('environmentValidation').classList.add('hidden');
+            showEnvironmentHelp('source', '');
+            showEnvironmentHelp('target', '');
         }
+
+        // Test function for debugging - can be called from browser console
+        window.testEnvironmentFlow = function(source, target) {
+            console.log(`🧪 Testing flow: ${source} -> ${target}`);
+            document.getElementById('sourceEnv').value = source;
+            document.getElementById('targetEnv').value = target;
+            checkAndUpdateEnvironmentFlow(); // Use the unified function
+        };
+
+        // Manual trigger function for when automatic detection fails
+        window.refreshEnvironmentFlow = function() {
+            console.log(`🔄 Manual refresh called`);
+            checkAndUpdateEnvironmentFlow();
+        };
+
+        // Quick test for dev->prod specifically
+        window.testDevToProd = function() {
+            console.log('🚨 Testing DEV->PROD flow specifically');
+            document.getElementById('sourceEnv').value = 'dev';
+            document.getElementById('targetEnv').value = 'prod';
+            checkAndUpdateEnvironmentFlow();
+        };
+
+        // Test all combinations
+        window.testAllCombinations = function() {
+            const combinations = [
+                ['dev', 'test'],
+                ['dev', 'prod'],
+                ['test', 'prod'],
+                ['prod', 'dev'],
+                ['prod', 'test']
+            ];
+            
+            let index = 0;
+            const testNext = () => {
+                if (index < combinations.length) {
+                    const [source, target] = combinations[index];
+                    console.log(`Testing combination ${index + 1}: ${source} -> ${target}`);
+                    testEnvironmentFlow(source, target);
+                    index++;
+                    setTimeout(testNext, 2000); // Wait 2 seconds between tests
+                }
+            };
+            testNext();
+        };
+
+        // Add keyboard event listener for manual refresh (Ctrl+R in the form)
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'r') {
+                const activeElement = document.activeElement;
+                if (activeElement && (activeElement.id === 'sourceEnv' || activeElement.id === 'targetEnv')) {
+                    event.preventDefault();
+                    window.refreshEnvironmentFlow();
+                }
+            }
+        });
 
         // Global variables for sorting and filtering
         let currentSortColumn = 'created_at';
@@ -1812,14 +3031,19 @@
         async function handleSubmitRequest(event) {
             event.preventDefault();
             
-            const submitBtn = document.querySelector('#submitForm button[type="submit"]');
-            const submitText = document.getElementById('submit-text');
-            const submitSpinner = document.getElementById('submit-spinner');
+            // Check if this is a drag-initiated submission
+            const dragContainer = document.querySelector('.drag-submit-container');
+            const successElement = document.querySelector('.drag-submit-success');
             
-            // Show loading state
-            submitBtn.disabled = true;
-            submitText.classList.add('hidden');
-            submitSpinner.classList.remove('hidden');
+            // Show loading state in the success element
+            if (successElement && !successElement.classList.contains('hidden')) {
+                successElement.innerHTML = `
+                    <span class="text-white font-medium flex items-center space-x-2 rtl:space-x-reverse">
+                        <div uk-spinner="ratio: 0.5" class="text-white"></div>
+                        <span>שולח...</span>
+                    </span>
+                `;
+            }
             
             const formData = {
                 requester_name: document.getElementById('requesterName').value,
@@ -1858,7 +3082,7 @@
                 document.getElementById('submitForm').reset();
                 
                 // Close modal
-                UIkit.modal('#newRequestModal').hide();
+                closeNewRequestModal();
                 
                 // Refresh the public requests list
                 loadAllRequests();
@@ -1866,11 +3090,70 @@
             } catch (error) {
                 console.error('Error submitting request:', error);
                 showMessage('שגיאה בשליחת הבקשה: ' + error.message, 'error');
+                
+                // Reset drag interface on error
+                resetDragInterface();
             } finally {
-                // Reset button state
-                submitBtn.disabled = false;
-                submitText.classList.remove('hidden');
-                submitSpinner.classList.add('hidden');
+                // Reset any remaining button states
+                const submitBtn = document.querySelector('#submitForm button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                }
+            }
+        }
+        
+        // Helper function to reset drag interface
+        function resetDragInterface() {
+            const track = document.querySelector('.drag-submit-track');
+            const successElement = document.querySelector('.drag-submit-success');
+            const button = document.querySelector('.drag-submit-button');
+            const text = document.querySelector('.drag-submit-text');
+            const textDisabled = document.querySelector('.drag-submit-text-disabled');
+            
+            if (track && successElement) {
+                // Reset visual states
+                track.style.display = 'flex';
+                successElement.classList.add('hidden');
+                
+                // Reset button position and state
+                if (button) {
+                    button.style.transform = 'translateY(-50%) translateX(0)';
+                    button.style.transition = '';
+                }
+                
+                // Reset text states
+                if (text) {
+                    text.style.opacity = '';
+                    text.classList.remove('fading');
+                }
+                
+                // Reset success element content
+                successElement.innerHTML = `
+                    <span class="text-white font-medium flex items-center space-x-2 rtl:space-x-reverse">
+                        <i class="fas fa-check"></i>
+                        <span>נשלח!</span>
+                    </span>
+                `;
+                
+                // Remove any progress indicators
+                const progressElement = track.querySelector('.drag-progress');
+                if (progressElement) {
+                    progressElement.remove();
+                }
+                
+                // Reset classes
+                track.classList.remove('dragging', 'completed');
+                if (button) {
+                    button.classList.remove('dragging');
+                }
+                
+                // Re-validate and update button state
+                setTimeout(() => {
+                    const setupDragToSubmitInstance = window.setupDragToSubmitInstance;
+                    if (setupDragToSubmitInstance && typeof setupDragToSubmitInstance.updateDragButtonState === 'function') {
+                        setupDragToSubmitInstance.updateDragButtonState();
+                    }
+                }, 100);
             }
         }
 
@@ -1956,47 +3239,274 @@
             const statusFilter = document.getElementById('statusFilter').value;
             const statusFilterElement = document.getElementById('statusFilter');
             
+            // Show skeleton loading immediately
+            showSkeletonLoading();
+            const startTime = Date.now();
+            
             try {
                 let query = supabase
                     .from('version_requests')
                     .select('*')
                     .order('created_at', { ascending: false });
                 
+                // Apply status filter if selected
                 if (statusFilter) {
                     query = query.eq('status', statusFilter);
+                }
+                
+                // Apply date filter if showing today only
+                if (showTodayOnly) {
+                    const today = new Date();
+                    const startOfDay = new Date(today.setHours(0, 0, 0, 0)).toISOString();
+                    const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString();
+                    
+                    query = query.gte('created_at', startOfDay).lte('created_at', endOfDay);
                 }
                 
                 const { data, error } = await query;
                 
                 if (error) throw error;
                 
-                // Check if we're filtering by "pending" and got no results
-                if (statusFilter === 'pending' && data.length === 0) {
-                    // Auto-switch to "All Statuses" if no pending requests found
-                    statusFilterElement.value = '';
-                    
-                    // Reload with all statuses
-                    const allQuery = supabase
-                        .from('version_requests')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-                    
-                    const { data: allData, error: allError } = await allQuery;
-                    
-                    if (allError) throw allError;
-                    
-                    displayPublicRequests(allData);
-                    
-                    // Show informative message
-                    showMessage('לא נמצאו בקשות ממתינות לביצוע. מציג את כל הבקשות.', 'warning');
-                } else {
-                    displayPublicRequests(data);
-                }
+                // Ensure minimum 2 second loading time for better UX
+                const elapsedTime = Date.now() - startTime;
+                const remainingTime = Math.max(0, 2000 - elapsedTime);
+                
+                setTimeout(() => {
+                    // Check if we're filtering by "pending" and got no results
+                    if (statusFilter === 'pending' && data.length === 0) {
+                        // Auto-switch to "All Statuses" if no pending requests found
+                        statusFilterElement.value = '';
+                        
+                        // Reload with all statuses but keep the date filter
+                        let allQuery = supabase
+                            .from('version_requests')
+                            .select('*')
+                            .order('created_at', { ascending: false });
+                        
+                        // Apply date filter to the "all statuses" query too
+                        if (showTodayOnly) {
+                            const today = new Date();
+                            const startOfDay = new Date(today.setHours(0, 0, 0, 0)).toISOString();
+                            const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString();
+                            
+                            allQuery = allQuery.gte('created_at', startOfDay).lte('created_at', endOfDay);
+                        }
+                        
+                        allQuery.then(({ data: allData, error: allError }) => {
+                            if (allError) throw allError;
+                            
+                            displayPublicRequestsWithTransition(allData);
+                            
+                            // Show informative message
+                            const timeFilter = showTodayOnly ? ' מהיום' : '';
+                            showMessage(`לא נמצאו בקשות ממתינות לביצוע${timeFilter}. מציג את כל הבקשות${timeFilter}.`, 'warning');
+                        });
+                    } else {
+                        displayPublicRequestsWithTransition(data);
+                        
+                        // Show filter status message if we have results
+                        if (data.length > 0 && showTodayOnly) {
+                            showMessage(`מציג ${data.length} בקשות מהיום בלבד`, 'success');
+                        } else if (data.length === 0 && showTodayOnly) {
+                            showMessage('לא נמצאו בקשות מהיום. נסה לבחור "כל התאריכים" כדי לראות בקשות מתאריכים קודמים.', 'info');
+                        }
+                    }
+                }, remainingTime);
                 
             } catch (error) {
-                console.error('Error loading requests:', error);
-                showMessage('שגיאה בטעינת הבקשות: ' + error.message, 'error');
+                // Ensure minimum loading time even on error
+                const elapsedTime = Date.now() - startTime;
+                const remainingTime = Math.max(0, 2000 - elapsedTime);
+                
+                setTimeout(() => {
+                    console.error('Error loading requests:', error);
+                    const container = document.getElementById('allRequests');
+                    hideSkeletonWithTransition(`
+                        <div class="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg p-4 text-center">
+                            <i class="fas fa-exclamation-circle text-red-500 text-2xl mb-2"></i>
+                            <p class="text-red-800 dark:text-red-200 font-medium">שגיאה בטעינת הבקשות</p>
+                        </div>
+                    `);
+                    showMessage('שגיאה בטעינת הבקשות: ' + error.message, 'error');
+                }, remainingTime);
             }
+        }
+
+        // Display requests with smooth transition from skeleton
+        function displayPublicRequestsWithTransition(requests) {
+            // Create a temporary container to build the content
+            const tempContainer = document.createElement('div');
+            tempContainer.id = 'allRequests';
+            
+            // Call the original display function with the temp container
+            const originalContainer = document.getElementById('allRequests');
+            document.body.appendChild(tempContainer);
+            
+            // Temporarily override the container reference
+            const originalGetElement = document.getElementById;
+            document.getElementById = function(id) {
+                if (id === 'allRequests') return tempContainer;
+                return originalGetElement.call(document, id);
+            };
+            
+            // Generate the content
+            displayPublicRequests(requests);
+            
+            // Restore the original getElementById
+            document.getElementById = originalGetElement;
+            
+            // Get the generated content
+            const newContent = tempContainer.innerHTML;
+            
+            // Clean up temp container
+            document.body.removeChild(tempContainer);
+            
+            // Apply the transition
+            hideSkeletonWithTransition(newContent);
+        }
+
+        // Generate the HTML content for requests (extracted from displayPublicRequests)
+        function generateRequestsHTML(requests) {
+            if (requests.length === 0) {
+                return `
+                    <div class="bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4 text-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-500 text-2xl mb-2"></i>
+                        <p class="text-yellow-800 dark:text-yellow-200 font-medium">אין בקשות להצגה</p>
+                    </div>
+                `;
+            }
+            
+            // This will be implemented based on the existing displayPublicRequests structure
+            return '';
+        }
+
+        // Show skeleton loading animation
+        function showSkeletonLoading() {
+            const container = document.getElementById('allRequests');
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            // Dynamic theme classes based on current mode
+            const cardBg = isDark ? 'bg-gray-800' : 'bg-white';
+            const cardBorder = isDark ? 'border-gray-700' : 'border-gray-200';
+            const skeletonColor = isDark ? 'bg-gray-600' : 'bg-gray-300';
+            const tableBg = isDark ? 'bg-gray-900' : 'bg-white';
+            const tableHeaderBg = isDark ? 'bg-gray-800' : 'bg-gray-50';
+            const tableBorder = isDark ? 'border-gray-700' : 'border-gray-200';
+            const tableDivide = isDark ? 'divide-gray-700' : 'divide-gray-200';
+            const hoverBg = isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-50';
+            
+            const skeletonHTML = `
+                <!-- Mobile Skeleton Cards (visible on small screens) -->
+                <div class="block md:hidden space-y-4 animate-pulse" id="mobileSkeleton">
+                    ${Array(3).fill().map(() => `
+                        <div class="${cardBg} rounded-lg shadow-sm border ${cardBorder} p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="h-4 ${skeletonColor} rounded w-24"></div>
+                                <div class="h-6 ${skeletonColor} rounded-full w-16"></div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="h-4 ${skeletonColor} rounded w-3/4"></div>
+                                <div class="h-4 ${skeletonColor} rounded w-1/2"></div>
+                                <div class="h-4 ${skeletonColor} rounded w-2/3"></div>
+                            </div>
+                            <div class="flex justify-between items-center mt-4">
+                                <div class="h-4 ${skeletonColor} rounded w-20"></div>
+                                <div class="h-8 ${skeletonColor} rounded w-16"></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <!-- Desktop Skeleton Table (hidden on small screens) -->
+                <div class="hidden md:block overflow-x-auto shadow-sm border ${tableBorder} rounded-lg animate-pulse">
+                    <table class="min-w-full divide-y ${tableDivide}">
+                        <thead class="${tableHeaderBg}">
+                            <tr>
+                                <th class="px-3 py-3 text-center">
+                                    <div class="h-4 ${skeletonColor} rounded w-12 mx-auto"></div>
+                                </th>
+                                <th class="px-3 py-3 text-center">
+                                    <div class="h-4 ${skeletonColor} rounded w-20 mx-auto"></div>
+                                </th>
+                                <th class="px-3 py-3 text-center">
+                                    <div class="h-4 ${skeletonColor} rounded w-24 mx-auto"></div>
+                                </th>
+                                <th class="px-3 py-3 text-center">
+                                    <div class="h-4 ${skeletonColor} rounded w-16 mx-auto"></div>
+                                </th>
+                                <th class="px-3 py-3 text-center">
+                                    <div class="h-4 ${skeletonColor} rounded w-16 mx-auto"></div>
+                                </th>
+                                <th class="px-3 py-3 text-center">
+                                    <div class="h-4 ${skeletonColor} rounded w-12 mx-auto"></div>
+                                </th>
+                                <th class="px-3 py-3 text-center">
+                                    <div class="h-4 ${skeletonColor} rounded w-16 mx-auto"></div>
+                                </th>
+                                <th class="px-3 py-3 text-center">
+                                    <div class="h-4 ${skeletonColor} rounded w-20 mx-auto"></div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="${tableBg} divide-y ${tableDivide}">
+                            ${Array(5).fill().map((_, index) => `
+                                <tr class="${hoverBg}">
+                                    <td class="px-3 py-4 text-center">
+                                        <div class="h-6 ${skeletonColor} rounded w-8 mx-auto"></div>
+                                    </td>
+                                    <td class="px-3 py-4 text-center">
+                                        <div class="h-4 ${skeletonColor} rounded w-16 mx-auto"></div>
+                                    </td>
+                                    <td class="px-3 py-4 text-center">
+                                        <div class="h-4 ${skeletonColor} rounded w-20 mx-auto"></div>
+                                    </td>
+                                    <td class="px-3 py-4 text-center">
+                                        <div class="h-4 ${skeletonColor} rounded w-24 mx-auto"></div>
+                                    </td>
+                                    <td class="px-3 py-4 text-center">
+                                        <div class="flex items-center justify-center space-x-1 rtl:space-x-reverse">
+                                            <div class="h-6 ${skeletonColor} rounded w-12"></div>
+                                            <div class="h-4 ${skeletonColor} rounded w-4"></div>
+                                            <div class="h-6 ${skeletonColor} rounded w-12"></div>
+                                        </div>
+                                    </td>
+                                    <td class="px-3 py-4 text-center">
+                                        <div class="h-6 ${skeletonColor} rounded-full w-16 mx-auto"></div>
+                                    </td>
+                                    <td class="px-3 py-4 text-center">
+                                        <div class="h-4 ${skeletonColor} rounded w-20 mx-auto"></div>
+                                    </td>
+                                    <td class="px-3 py-4 text-center">
+                                        <div class="h-8 ${skeletonColor} rounded w-16 mx-auto"></div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = skeletonHTML;
+        }
+
+        // Hide skeleton with smooth transition and show actual content
+        function hideSkeletonWithTransition(actualContent) {
+            const container = document.getElementById('allRequests');
+            
+            // First, fade out the skeleton
+            container.style.opacity = '0.5';
+            container.style.transition = 'opacity 0.3s ease-in-out';
+            
+            setTimeout(() => {
+                // Replace content
+                container.innerHTML = actualContent;
+                container.style.opacity = '0';
+                
+                // Fade in the new content
+                setTimeout(() => {
+                    container.style.opacity = '1';
+                }, 50);
+            }, 150);
         }
 
         function displayPublicRequests(requests) {
