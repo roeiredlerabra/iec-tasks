@@ -2084,6 +2084,20 @@
             }
             
             function completeSubmission() {
+                // Capture form values immediately at drag completion
+                const formData = {
+                    requesterName: document.getElementById('requesterName')?.value || '',
+                    requesterEmail: document.getElementById('requesterEmail')?.value || '',
+                    appId: document.getElementById('appId')?.value || '',
+                    urgency: document.getElementById('urgency')?.value || '',
+                    sourceEnv: document.getElementById('sourceEnv')?.value || '',
+                    targetEnv: document.getElementById('targetEnv')?.value || '',
+                    description: document.getElementById('description')?.value || ''
+                };
+                
+                console.log('=== DRAG COMPLETION DEBUG ===');
+                console.log('Form values at drag completion:', formData);
+                
                 // Hide track and show success
                 track.style.display = 'none';
                 successElement.classList.remove('hidden');
@@ -2098,19 +2112,27 @@
                 
                 // Wait a moment to show success, then trigger form submission
                 setTimeout(() => {
-                    const form = document.getElementById('submitForm');
-                    if (form) {
-                        // Create a custom submit event
-                        const submitEvent = new Event('submit', {
-                            bubbles: true,
-                            cancelable: true
-                        });
-                        form.dispatchEvent(submitEvent);
-                    }
+                    console.log('=== BEFORE DIRECT SUBMIT DEBUG ===');
+                    console.log('Captured form data for submission:', formData);
+                    
+                    // Call the submit handler directly with captured data
+                    handleSubmitRequestWithData(formData);
                 }, 800); // Increased delay to show success feedback
+            }
             }
             
             function resetDragButton() {
+                // Get elements (in case they're not in scope)
+                const button = document.querySelector('.drag-submit-button');
+                const track = document.querySelector('.drag-submit-track');
+                const text = document.querySelector('.drag-submit-text');
+                const progressElement = document.querySelector('.drag-progress');
+                
+                if (!button || !track || !text) {
+                    console.warn('Drag elements not found for reset');
+                    return;
+                }
+                
                 // Animate back to original position (RTL: back to left side)
                 button.style.transition = 'transform 0.3s ease';
                 button.style.transform = 'translateY(-50%) translateX(0)';
@@ -2130,7 +2152,6 @@
                     button.style.transition = '';
                 }, 300);
             }
-        }
 
         // Unified function that always checks current state and updates visuals
         function checkAndUpdateEnvironmentFlow() {
@@ -3035,6 +3056,119 @@
                     sourceEnv.value = '';
                 }
             }
+        }
+
+        // Handle form submission with pre-captured data (for drag-to-submit)
+        async function handleSubmitRequestWithData(formData) {
+            try {
+                showSkeletonLoading();
+                
+                console.log('=== HANDLING SUBMIT WITH CAPTURED DATA ===');
+                console.log('Using captured form data:', formData);
+                
+                // Validate the captured data
+                const requiredFields = ['requesterName', 'requesterEmail', 'appId', 'urgency', 'sourceEnv', 'targetEnv', 'description'];
+                for (let field of requiredFields) {
+                    if (!formData[field] || !formData[field].trim()) {
+                        throw new Error(`Missing required field: ${field}`);
+                    }
+                }
+                
+                // Validate environment combination using captured data (simple validation)
+                const envValidation = validateEnvironmentCombinationForSubmission(formData.sourceEnv, formData.targetEnv);
+                if (!envValidation.isValid) {
+                    throw new Error(`Invalid environment combination: ${envValidation.message}`);
+                }
+                
+                // Create request object from captured data
+                const request = {
+                    requester_name: formData.requesterName.trim(),
+                    requester_email: formData.requesterEmail.trim(),
+                    app_id: formData.appId.trim(),
+                    urgency: formData.urgency,
+                    source_env: formData.sourceEnv,
+                    target_env: formData.targetEnv,
+                    description: formData.description.trim(),
+                    status: 'pending'
+                    // created_at will be set automatically by the database default
+                };
+                
+                console.log('Submitting to Supabase:', request);
+                
+                // Submit to Supabase
+                const { data, error } = await supabase
+                    .from('version_requests')
+                    .insert([request])
+                    .select();
+                
+                if (error) {
+                    console.error('Supabase error:', error);
+                    throw error;
+                }
+                
+                console.log('Successfully submitted:', data);
+                showMessage('הבקשה נשלחה בהצלחה!', 'success');
+                
+                // Reset form and close modal
+                document.getElementById('submitForm').reset();
+                closeNewRequestModal();
+                
+                // Refresh the requests display
+                loadAllRequests();
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                showMessage(`שגיאה בשליחת הבקשה: ${error.message}`, 'error');
+                
+                // Reset drag button state
+                resetDragButton();
+                
+                // Reset drag interface elements
+                const track = document.querySelector('.drag-submit-track');
+                const successElement = document.querySelector('.drag-submit-success');
+                
+                if (track) track.style.display = 'block';
+                if (successElement) successElement.classList.add('hidden');
+            } finally {
+                hideSkeletonLoading();
+            }
+        }
+
+        // Simple environment validation function for form submission (returns result object)
+        function validateEnvironmentCombinationForSubmission(source, target) {
+            if (source === target) {
+                return {
+                    isValid: false,
+                    message: 'Cannot deploy to the same environment'
+                };
+            }
+            
+            const validCombinations = {
+                'dev': ['test'],
+                'test': ['prod'],
+                'prod': ['dev', 'test'] // For hotfixes
+            };
+            
+            if (validCombinations[source]?.includes(target)) {
+                return {
+                    isValid: true,
+                    message: 'Valid environment combination'
+                };
+            } else {
+                // Allow but warn for unusual combinations
+                return {
+                    isValid: true,
+                    message: 'Unusual combination but allowed'
+                };
+            }
+        }
+
+        // Hide skeleton loading function
+        function hideSkeletonLoading() {
+            // This function is called from the submission handler
+            // The actual skeleton hiding is handled by hideSkeletonWithTransition
+            // in the loadAllRequests context, so we can leave this empty
+            // or add any cleanup needed after submission
         }
 
         async function handleSubmitRequest(event) {
