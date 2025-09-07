@@ -3269,7 +3269,7 @@
                 
                 // Ensure minimum 2 second loading time for better UX
                 const elapsedTime = Date.now() - startTime;
-                const remainingTime = Math.max(0, 2000 - elapsedTime);
+                const remainingTime = Math.max(0, 1200 - elapsedTime);
                 
                 setTimeout(() => {
                     // Check if we're filtering by "pending" and got no results
