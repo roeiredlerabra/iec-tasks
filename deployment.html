@@ -3055,17 +3055,42 @@
             }
             
             const formData = {
-                requester_name: document.getElementById('requesterName').value,
-                requester_email: document.getElementById('requesterEmail').value,
-                app_id: document.getElementById('appId').value,
-                source_env: document.getElementById('sourceEnv').value,
-                target_env: document.getElementById('targetEnv').value,
-                description: document.getElementById('description').value,
+                requester_name: document.getElementById('requesterName').value.trim(),
+                requester_email: document.getElementById('requesterEmail').value.trim(),
+                app_id: document.getElementById('appId').value.trim(),
+                source_env: document.getElementById('sourceEnv').value.trim(),
+                target_env: document.getElementById('targetEnv').value.trim(),
+                description: document.getElementById('description').value.trim(),
                 urgency: document.getElementById('urgency').value,
                 status: 'pending',
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             };
+            
+            // Validate required fields
+            if (!formData.source_env || formData.source_env === '') {
+                showMessage('שגיאה: יש לבחור סביבת מקור', 'error');
+                resetDragInterface();
+                return;
+            }
+            
+            if (!formData.target_env || formData.target_env === '') {
+                showMessage('שגיאה: יש לבחור סביבת יעד', 'error');
+                resetDragInterface();
+                return;
+            }
+            
+            if (!formData.requester_name || formData.requester_name === '') {
+                showMessage('שגיאה: יש למלא שם מבקש', 'error');
+                resetDragInterface();
+                return;
+            }
+            
+            if (!formData.app_id || formData.app_id === '') {
+                showMessage('שגיאה: יש למלא מזהה אפליקציה', 'error');
+                resetDragInterface();
+                return;
+            }
             
             try {
                 // Create table if it doesn't exist
