@@ -3107,7 +3107,12 @@
                 }
                 
                 console.log('Successfully submitted:', data);
-                showMessage('הבקשה נשלחה בהצלחה!', 'success');
+                
+                // Get the request ID and send notification
+                const requestId = data[0].id;
+                await sendAdminNotification(formData, requestId);
+                
+                showMessage(`הבקשה נשלחה בהצלחה! מזהה בקשה: ${requestId}`, 'success');
                 
                 // Reset form and close modal
                 document.getElementById('submitForm').reset();
