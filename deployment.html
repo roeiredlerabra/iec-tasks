@@ -3040,6 +3040,23 @@
         async function handleSubmitRequest(event) {
             event.preventDefault();
             
+            // IMMEDIATELY capture form values before any other operations
+            const sourceEnvValue = document.getElementById('sourceEnv').value;
+            const targetEnvValue = document.getElementById('targetEnv').value;
+            const requesterNameValue = document.getElementById('requesterName').value;
+            const requesterEmailValue = document.getElementById('requesterEmail').value;
+            const appIdValue = document.getElementById('appId').value;
+            const descriptionValue = document.getElementById('description').value;
+            const urgencyValue = document.getElementById('urgency').value;
+            
+            // Debug logging
+            console.log('=== CAPTURED VALUES ===');
+            console.log('Source Env Value:', sourceEnvValue);
+            console.log('Target Env Value:', targetEnvValue);
+            console.log('Requester Name:', requesterNameValue);
+            console.log('App ID:', appIdValue);
+            console.log('========================');
+            
             // Check if this is a drag-initiated submission
             const dragContainer = document.querySelector('.drag-submit-container');
             const successElement = document.querySelector('.drag-submit-success');
@@ -3055,13 +3072,13 @@
             }
             
             const formData = {
-                requester_name: document.getElementById('requesterName').value.trim(),
-                requester_email: document.getElementById('requesterEmail').value.trim(),
-                app_id: document.getElementById('appId').value.trim(),
-                source_env: document.getElementById('sourceEnv').value.trim(),
-                target_env: document.getElementById('targetEnv').value.trim(),
-                description: document.getElementById('description').value.trim(),
-                urgency: document.getElementById('urgency').value,
+                requester_name: requesterNameValue.trim(),
+                requester_email: requesterEmailValue.trim(),
+                app_id: appIdValue.trim(),
+                source_env: sourceEnvValue.trim(),
+                target_env: targetEnvValue.trim(),
+                description: descriptionValue.trim(),
+                urgency: urgencyValue,
                 status: 'pending',
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
@@ -3070,12 +3087,14 @@
             // Validate required fields
             if (!formData.source_env || formData.source_env === '') {
                 showMessage('שגיאה: יש לבחור סביבת מקור', 'error');
+                console.log('Source env validation failed. Value was:', sourceEnvValue);
                 resetDragInterface();
                 return;
             }
             
             if (!formData.target_env || formData.target_env === '') {
                 showMessage('שגיאה: יש לבחור סביבת יעד', 'error');
+                console.log('Target env validation failed. Value was:', targetEnvValue);
                 resetDragInterface();
                 return;
             }
