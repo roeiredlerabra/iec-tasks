@@ -2957,6 +2957,12 @@
                                             <i class="fas fa-times"></i>
                                             <span>דחה</span>
                                         </button>
+                                        <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                                onclick="testDelete(${request.id})" 
+                                                title="מחק בקשה">
+                                            <i class="fas fa-trash"></i>
+                                            <span>מחק</span>
+                                        </button>
                                     </div>
                                 ` : '<span class="text-gray-400 text-sm">-</span>'}
                             </td>
@@ -3033,6 +3039,10 @@
                                             <button class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testReject(${request.id})">
                                                 <i class="fas fa-times"></i>
                                                 <span>דחה בקשה</span>
+                                            </button>
+                                            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testDelete(${request.id})">
+                                                <i class="fas fa-trash"></i>
+                                                <span>מחק בקשה</span>
                                             </button>
                                         </div>
                                     </div>
@@ -3360,6 +3370,10 @@
         }
 
         async function sendAdminNotification(requestData, requestId) {
+            console.log('=== SEND ADMIN NOTIFICATION DEBUG ===');
+            console.log('requestData:', requestData);
+            console.log('requestId:', requestId);
+            
             const urgencyEmoji = {
                 'low': '🟢',
                 'medium': '🟡', 
@@ -3367,14 +3381,31 @@
                 'critical': '🔴'
             };
 
-            const message = `${urgencyEmoji[requestData.urgency]} בקשה חדשה להעברת גרסה
+            // Handle both formData format (from drag) and database format
+            const appId = requestData.app_id || requestData.appId;
+            const requesterName = requestData.requester_name || requestData.requesterName;
+            const sourceEnv = requestData.source_env || requestData.sourceEnv;
+            const targetEnv = requestData.target_env || requestData.targetEnv;
+            const urgency = requestData.urgency;
 
-🆔 מזהה אפליקציה: ${requestData.app_id}
-👤 מבקש: ${requestData.requester_name}
-🔄 מ-${requestData.source_env} ל-${requestData.target_env}
-⚡ דחיפות: ${requestData.urgency}
+            console.log('Extracted values:');
+            console.log('- appId:', appId);
+            console.log('- requesterName:', requesterName);
+            console.log('- sourceEnv:', sourceEnv);
+            console.log('- targetEnv:', targetEnv);
+            console.log('- urgency:', urgency);
 
-מזהה בקשה: ${requestId}`;
+            const message = `${urgencyEmoji[urgency]} בקשה חדשה להעברת גרסה
+
+🆔 מזהה אפליקציה: ${appId}
+👤 מבקש: ${requesterName}
+🔄 מ-${sourceEnv} ל-${targetEnv}
+⚡ דחיפות: ${urgency}
+
+מזהה בקשה: ${requestId}
+${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
+
+            console.log('Final notification message:', message);
 
             try {
                 await fetch(`https://ntfy.sh/${CONFIG.NTFY_ADMIN_TOPIC}`, {
@@ -3849,18 +3880,24 @@
                         
                         <!-- Admin actions for pending requests -->
                         ${isAdmin && request.status === 'pending' ? `
-                            <div class="flex space-x-2 rtl:space-x-reverse mb-3">
-                                <button class="flex-1 px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
+                            <div class="grid grid-cols-3 gap-2 mb-3">
+                                <button class="px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
                                         onclick="testApprove(${request.id})" 
                                         title="אשר בקשה">
                                     <i class="fas fa-check"></i>
                                     <span>אשר</span>
                                 </button>
-                                <button class="flex-1 px-3 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
+                                <button class="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
                                         onclick="testReject(${request.id})" 
                                         title="דחה בקשה">
                                     <i class="fas fa-times"></i>
                                     <span>דחה</span>
+                                </button>
+                                <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
+                                        onclick="testDelete(${request.id})" 
+                                        title="מחק בקשה">
+                                    <i class="fas fa-trash"></i>
+                                    <span>מחק</span>
                                 </button>
                             </div>
                         ` : ''}
@@ -3978,6 +4015,62 @@
             console.log('Reject clicked for request:', requestId);
             console.log('isAdmin:', isAdmin);
             showRejectModal(requestId);
+        }
+
+        function testDelete(requestId) {
+            console.log('Delete clicked for request:', requestId);
+            console.log('isAdmin:', isAdmin);
+            deleteRequest(requestId);
+        }
+
+        async function deleteRequest(requestId) {
+            // Show confirmation dialog
+            const confirmed = confirm('האם אתה בטוח שברצונך למחוק את הבקשה לצמיתות?\n\nפעולה זו לא ניתנת לביטול!');
+            
+            if (!confirmed) {
+                return;
+            }
+            
+            try {
+                // Get current user
+                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                if (userError) throw userError;
+                
+                if (!user) {
+                    showMessage('שגיאה: יש להתחבר כדי למחוק בקשות', 'error');
+                    return;
+                }
+
+                // First get the request data for logging/notification
+                const { data: requestData, error: fetchError } = await supabase
+                    .from('version_requests')
+                    .select('*')
+                    .eq('id', requestId)
+                    .single();
+
+                if (fetchError) throw fetchError;
+
+                // Check if request is still pending
+                if (requestData.status !== 'pending') {
+                    showMessage('ניתן למחוק רק בקשות ממתינות לביצוע', 'error');
+                    return;
+                }
+                
+                // Delete the request
+                const { error } = await supabase
+                    .from('version_requests')
+                    .delete()
+                    .eq('id', requestId);
+                
+                if (error) throw error;
+                
+                showMessage(`הבקשה מספר ${requestId} נמחקה בהצלחה!`, 'success');
+                loadAllRequests(); // Refresh view
+                
+            } catch (error) {
+                console.error('Error deleting request:', error);
+                showMessage('שגיאה במחיקת הבקשה: ' + error.message, 'error');
+            }
         }
 
         function getUrgencyText(urgency) {
