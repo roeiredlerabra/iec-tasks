@@ -1,0 +1,53 @@
+name: Daily Supabase Version Requests Check
+
+on:
+  schedule:
+    # Run daily at 8:00 AM UTC (10:00 AM Israel time)
+    - cron: '0 8 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  check-version-requests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Query Supabase version_requests table
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          echo "Querying version_requests table..."
+          
+          # Query the version_requests table
+          response=$(curl -s -X GET \
+            "${SUPABASE_URL}/rest/v1/version_requests?select=*" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json")
+          
+          echo "Response from Supabase:"
+          echo "$response" | jq '.'
+          
+          # Count the number of records
+          count=$(echo "$response" | jq 'length')
+          echo "Total version requests: $count"
+          
+          # Save to artifact
+          echo "$response" | jq '.' > version_requests_report.json
+          echo "Report saved to version_requests_report.json"
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: version-requests-report-${{ github.run_number }}
+          path: version_requests_report.json
+          retention-days: 30
+
+      - name: Send notification (optional)
+        if: success()
+        run: |
+          echo "Daily version requests check completed successfully"
+          # Add notification logic here if needed (e.g., to ntfy.sh)
