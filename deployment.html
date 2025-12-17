@@ -2216,7 +2216,7 @@
                     Swal.fire({
                         icon: 'info',
                         title: 'שים לב!',
-                        html: '<div style="text-align: right; direction: rtl;">כאשר תבחר להעביר ישירות מפיתוח לייצור, המערכת תיצור אוטומטית שתי בקשות נפרדות:<br><br><strong>1️⃣ בקשה ראשונה:</strong> פיתוח → בדיקות<br><strong>2️⃣ בקשה שנייה:</strong> בדיקות → ייצור<br><br>זה מבטיח שהאפליקציה תעבור את כל שלבי הבדיקה הנדרשים.</div>',
+                        html: '<div style="text-align: right; direction: rtl;">כאשר תבחר להעביר ישירות מפיתוח לייצור, המערכת תיצור אוטומטית שתי בקשות נפרדות:<br><br><strong>1️⃣ בקשה ראשונה:</strong> פיתוח ← בדיקות<br><strong>2️⃣ בקשה שנייה:</strong> בדיקות ← ייצור<br><br>זה מבטיח שהאפליקציה תעבור את כל שלבי הבדיקה הנדרשים.</div>',
                         confirmButtonText: 'הבנתי',
                         confirmButtonColor: '#1e87f0'
                     });
@@ -3217,7 +3217,7 @@
                     await sendAdminNotification({...formData, sourceEnv: 'dev', targetEnv: 'test'}, requestId1);
                     await sendAdminNotification({...formData, sourceEnv: 'test', targetEnv: 'prod'}, requestId2);
                     
-                    showMessage('✅ שתי בקשות נוצרו בהצלחה: פיתוח→בדיקות ובדיקות→ייצור', 'success');
+                    showMessage('✅ שתי בקשות נוצרו בהצלחה: פיתוח←בדיקות ובדיקות←ייצור', 'success');
                     
                 } else {
                     // Single request for all other cases
@@ -3314,7 +3314,7 @@
                 const result = await Swal.fire({
                     icon: 'warning',
                     title: 'אזהרה!',
-                    html: '<div style="text-align: right; direction: rtl;">אתה עומד להעביר ישירות מסביבת פיתוח לסביבת ייצור.<br><br>זה לא מומלץ ועלול להוביל לבעיות!<br>מומלץ להעביר תחילה לסביבת בדיקות.<br><br><strong>המערכת תיצור שתי בקשות נפרדות:</strong><br>1. פיתוח → בדיקות<br>2. בדיקות → ייצור<br><br>האם אתה בטוח שברצונך להמשיך?</div>',
+                    html: '<div style="text-align: right; direction: rtl;">אתה עומד להעביר ישירות מסביבת פיתוח לסביבת ייצור.<br><br>זה לא מומלץ ועלול להוביל לבעיות!<br>מומלץ להעביר תחילה לסביבת בדיקות.<br><br><strong>המערכת תיצור שתי בקשות נפרדות:</strong><br>1. פיתוח ← בדיקות<br>2. בדיקות ← ייצור<br><br>האם אתה בטוח שברצונך להמשיך?</div>',
                     showCancelButton: true,
                     confirmButtonText: 'כן, המשך',
                     cancelButtonText: 'ביטול',
@@ -3436,7 +3436,7 @@
                     await sendAdminNotification(firstRequest, requestId1);
                     await sendAdminNotification(secondRequest, requestId2);
                     
-                    showMessage('✅ שתי בקשות נוצרו בהצלחה: פיתוח→בדיקות ובדיקות→ייצור', 'success');
+                    showMessage('✅ שתי בקשות נוצרו בהצלחה: פיתוח←בדיקות ובדיקות←ייצור', 'success');
                     
                 } else {
                     // Single request for all other cases
