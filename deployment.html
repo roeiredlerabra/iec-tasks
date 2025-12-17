@@ -1641,7 +1641,7 @@
         };
 
         // Global variables
-        let supabase;
+        let supabaseClient;
         let currentUser = null;
         let isAdmin = false;
         let currentRejectRequestId = null;
@@ -1845,7 +1845,7 @@
 
         function initSupabase() {
             try {
-                supabase = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+                supabaseClient = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
                 console.log('Supabase initialized successfully');
             } catch (error) {
                 console.error('Error initializing Supabase:', error);
@@ -1887,12 +1887,12 @@
             // Modal event listeners
             const modal = document.getElementById('newRequestModal');
             if (modal) {
-                // Close modal when clicking outside
-                modal.addEventListener('click', function(e) {
-                    if (e.target === modal) {
-                        closeNewRequestModal();
-                    }
-                });
+                // Clicking outside modal will NOT close it (disabled for better UX)
+                // modal.addEventListener('click', function(e) {
+                //     if (e.target === modal) {
+                //         closeNewRequestModal();
+                //     }
+                // });
                 
                 // Close modal when pressing Escape
                 document.addEventListener('keydown', function(e) {
@@ -2279,7 +2279,7 @@
 
         async function checkAuthState() {
             try {
-                const { data: { session } } = await supabase.auth.getSession();
+                const { data: { session } } = await supabaseClient.auth.getSession();
                 if (session) {
                     currentUser = session.user;
                     isAdmin = true; // Any logged-in user is automatically an admin
@@ -2315,7 +2315,7 @@
             const password = document.getElementById('adminPassword').value;
             
             try {
-                const { data, error } = await supabase.auth.signInWithPassword({
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
                     email: email,
                     password: password
                 });
@@ -2340,7 +2340,7 @@
 
         async function adminLogout() {
             try {
-                await supabase.auth.signOut();
+                await supabaseClient.auth.signOut();
                 currentUser = null;
                 isAdmin = false;
                 updateUI();
@@ -3106,7 +3106,7 @@
                 console.log('Submitting to Supabase:', request);
                 
                 // Submit to Supabase
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('version_requests')
                     .insert([request])
                     .select();
@@ -3265,7 +3265,7 @@
                 await createTableIfNotExists();
                 
                 // Insert request
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('version_requests')
                     .insert([formData])
                     .select();
@@ -3362,7 +3362,7 @@
         async function createTableIfNotExists() {
             // This function attempts to create the table if it doesn't exist
             // Using raw SQL through Supabase RPC function
-            const { error } = await supabase.rpc('create_version_requests_table', {});
+            const { error } = await supabaseClient.rpc('create_version_requests_table', {});
             
             if (error && !error.message.includes('already exists')) {
                 console.warn('Could not create table automatically:', error);
@@ -3467,7 +3467,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             const startTime = Date.now();
             
             try {
-                let query = supabase
+                let query = supabaseClient
                     .from('version_requests')
                     .select('*')
                     .order('created_at', { ascending: false });
@@ -3501,7 +3501,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                         statusFilterElement.value = '';
                         
                         // Reload with all statuses but keep the date filter
-                        let allQuery = supabase
+                        let allQuery = supabaseClient
                             .from('version_requests')
                             .select('*')
                             .order('created_at', { ascending: false });
@@ -4033,7 +4033,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             
             try {
                 // Get current user
-                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
                 if (userError) throw userError;
                 
                 if (!user) {
@@ -4042,7 +4042,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 }
 
                 // First get the request data for logging/notification
-                const { data: requestData, error: fetchError } = await supabase
+                const { data: requestData, error: fetchError } = await supabaseClient
                     .from('version_requests')
                     .select('*')
                     .eq('id', requestId)
@@ -4057,7 +4057,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 }
                 
                 // Delete the request
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('version_requests')
                     .delete()
                     .eq('id', requestId);
@@ -4099,7 +4099,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             
             try {
                 // Get current user
-                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
                 if (userError) throw userError;
                 
                 if (!user) {
@@ -4108,7 +4108,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 }
 
                 // First get the request data before updating
-                const { data: requestData, error: fetchError } = await supabase
+                const { data: requestData, error: fetchError } = await supabaseClient
                     .from('version_requests')
                     .select('*')
                     .eq('id', requestId)
@@ -4116,7 +4116,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
 
                 if (fetchError) throw fetchError;
                 
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('version_requests')
                     .update({ 
                         status: 'approved', 
@@ -4148,7 +4148,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             
             try {
                 // Get current user
-                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
                 if (userError) throw userError;
                 
                 if (!user) {
@@ -4157,7 +4157,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 }
 
                 // First get the request data before updating
-                const { data: requestData, error: fetchError } = await supabase
+                const { data: requestData, error: fetchError } = await supabaseClient
                     .from('version_requests')
                     .select('*')
                     .eq('id', currentRejectRequestId)
@@ -4165,7 +4165,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
 
                 if (fetchError) throw fetchError;
                 
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('version_requests')
                     .update({ 
                         status: 'rejected', 
