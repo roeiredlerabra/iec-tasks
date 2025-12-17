@@ -39,6 +39,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.3/dist/css/uikit.min.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.3/dist/js/uikit.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /*
         Icon Libraries Available:
@@ -1256,7 +1260,7 @@
     <div class="min-h-screen">
         <!-- Main Header -->
         <header class="bg-white shadow-sm border-b border-gray-200">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col sm:flex-row items-center justify-between py-4 space-y-4 sm:space-y-0">
                     <div class="flex items-center space-x-4 rtl:space-x-reverse">
                         <div class="flex-shrink-0">
@@ -1517,7 +1521,7 @@
                                         <i class="fas fa-lightbulb text-blue-500 mt-0.5 ml-2"></i>
                                         <div class="text-sm text-blue-800">
                                             <div class="font-semibold">💡 המלצה:</div>
-                                            <div class="mt-1">מסלול הקידום המומלץ: פיתוח → בדיקות → ייצור</div>
+                                            <div class="mt-1">מסלול הקידום המומלץ: פיתוח ← בדיקות ← ייצור</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1644,6 +1648,7 @@
         let supabaseClient;
         let currentUser = null;
         let isAdmin = false;
+        let autoRefreshInterval = null;
         let currentRejectRequestId = null;
         let showTodayOnly = true; // Default to showing only today's requests
 
@@ -2204,7 +2209,18 @@
                 showValidationMessage('valid', '✅ מעולה! זהו המסלול הטבעי מבדיקות לייצור.');
             } else if (source === 'dev' && target === 'prod') {
                 console.log('🚨 DEV->PROD detected - showing warning');
-                showValidationMessage('invalid', '⚠️ לא מומלץ להעביר ישירות מפיתוח לייצור! עבור דרך סביבת הבדיקות תחילה.');
+                showValidationMessage('recommend', '⚠️ אזהרה: העברה ישירה מפיתוח לייצור! מומלץ לעבור דרך סביבת הבדיקות תחילה, אך ניתן להמשיך בזהירות.');
+                
+                // Show popup informing user that two requests will be created
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'שים לב!',
+                        html: '<div style="text-align: right; direction: rtl;">כאשר תבחר להעביר ישירות מפיתוח לייצור, המערכת תיצור אוטומטית שתי בקשות נפרדות:<br><br><strong>1️⃣ בקשה ראשונה:</strong> פיתוח → בדיקות<br><strong>2️⃣ בקשה שנייה:</strong> בדיקות → ייצור<br><br>זה מבטיח שהאפליקציה תעבור את כל שלבי הבדיקה הנדרשים.</div>',
+                        confirmButtonText: 'הבנתי',
+                        confirmButtonColor: '#1e87f0'
+                    });
+                }, 500);
             } else if (source === 'prod') {
                 showValidationMessage('recommend', 'העברה מייצור - וודא שזה נדרש (תיקון חם).');
             } else {
@@ -2285,6 +2301,7 @@
                     isAdmin = true; // Any logged-in user is automatically an admin
                     updateUI();
                     loadAllRequests();
+                    startAutoRefresh();
                 }
             } catch (error) {
                 console.error('Error checking auth state:', error);
@@ -2331,6 +2348,7 @@
                 
                 showMessage('התחברת בהצלחה כמנהל!', 'success');
                 loadAllRequests();
+                startAutoRefresh();
                 
             } catch (error) {
                 console.error('Login error:', error);
@@ -2343,12 +2361,40 @@
                 await supabaseClient.auth.signOut();
                 currentUser = null;
                 isAdmin = false;
+                stopAutoRefresh();
                 updateUI();
                 showMessage('התנתקת בהצלחה', 'success');
                 
             } catch (error) {
                 console.error('Logout error:', error);
                 showMessage('שגיאה בהתנתקות: ' + error.message, 'error');
+            }
+        }
+
+        // Auto-refresh functions
+        function startAutoRefresh() {
+            // Clear any existing interval first
+            stopAutoRefresh();
+            
+            // Set up auto-refresh every 1 minute (60000 ms)
+            autoRefreshInterval = setInterval(() => {
+                if (isAdmin && currentUser) {
+                    console.log('Auto-refreshing requests...');
+                    loadAllRequests();
+                } else {
+                    // Stop auto-refresh if user is no longer logged in
+                    stopAutoRefresh();
+                }
+            }, 60000); // 60000 ms = 1 minute
+            
+            console.log('Auto-refresh started (every 1 minute)');
+        }
+        
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+                console.log('Auto-refresh stopped');
             }
         }
 
@@ -2417,12 +2463,30 @@
                     
                     // Add special styling for warning flows
                     if (source === 'dev' && target === 'prod') {
-                        flowStatus.className = flowStatus.className.replace('bg-white', 'bg-orange-50');
-                        flowStatus.className = flowStatus.className.replace('border-gray-200', 'border-orange-200');
+                        // Get the inner div that contains the icon and text
+                        const innerDiv = flowStatus.querySelector('.inline-flex');
+                        if (innerDiv) {
+                            innerDiv.className = 'inline-flex items-center px-4 py-2 bg-red-600 border border-red-700 rounded-full shadow-sm';
+                        }
+                        // Change icon color to white
+                        const icon = flowStatus.querySelector('.fas');
+                        if (icon) {
+                            icon.className = 'fas fa-route text-white ml-2';
+                        }
+                        // Change text color to white
+                        flowStatusText.className = 'text-sm font-medium text-white';
                         flowStatusText.innerHTML = `⚠️ העברה מ${getEnvironmentName(source)} ל${getEnvironmentName(target)} - לא מומלץ!`;
                     } else {
-                        flowStatus.className = flowStatus.className.replace('bg-orange-50', 'bg-white');
-                        flowStatus.className = flowStatus.className.replace('border-orange-200', 'border-gray-200');
+                        // Reset to default styling
+                        const innerDiv = flowStatus.querySelector('.inline-flex');
+                        if (innerDiv) {
+                            innerDiv.className = 'inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-full shadow-sm';
+                        }
+                        const icon = flowStatus.querySelector('.fas');
+                        if (icon) {
+                            icon.className = 'fas fa-route text-blue-500 ml-2';
+                        }
+                        flowStatusText.className = 'text-sm font-medium text-gray-700';
                     }
                 } else {
                     console.error('Flow status elements not found');
@@ -3105,24 +3169,76 @@
                 
                 console.log('Submitting to Supabase:', request);
                 
-                // Submit to Supabase
-                const { data, error } = await supabaseClient
-                    .from('version_requests')
-                    .insert([request])
-                    .select();
-                
-                if (error) {
-                    console.error('Supabase error:', error);
-                    throw error;
+                // Check if this is a dev->prod deployment (requires two requests)
+                if (formData.sourceEnv === 'dev' && formData.targetEnv === 'prod') {
+                    // Create first request: dev -> test
+                    const firstRequest = {
+                        ...request,
+                        source_env: 'dev',
+                        target_env: 'test',
+                        description: `[1/2] ${request.description}\n\n(בקשה אוטומטית - חלק ראשון מתהליך העברה מפיתוח לייצור)`
+                    };
+                    
+                    const { data: data1, error: error1 } = await supabaseClient
+                        .from('version_requests')
+                        .insert([firstRequest])
+                        .select();
+                    
+                    if (error1) {
+                        console.error('Supabase error (first request):', error1);
+                        throw error1;
+                    }
+                    
+                    const requestId1 = data1[0].id;
+                    console.log('Successfully submitted first request:', data1);
+                    
+                    // Create second request: test -> prod
+                    const secondRequest = {
+                        ...request,
+                        source_env: 'test',
+                        target_env: 'prod',
+                        description: `[2/2] ${request.description}\n\n(בקשה אוטומטית - חלק שני מתהליך העברה מפיתוח לייצור)`
+                    };
+                    
+                    const { data: data2, error: error2 } = await supabaseClient
+                        .from('version_requests')
+                        .insert([secondRequest])
+                        .select();
+                    
+                    if (error2) {
+                        console.error('Supabase error (second request):', error2);
+                        throw error2;
+                    }
+                    
+                    const requestId2 = data2[0].id;
+                    console.log('Successfully submitted second request:', data2);
+                    
+                    // Send notifications for both requests
+                    await sendAdminNotification({...formData, sourceEnv: 'dev', targetEnv: 'test'}, requestId1);
+                    await sendAdminNotification({...formData, sourceEnv: 'test', targetEnv: 'prod'}, requestId2);
+                    
+                    showMessage('✅ שתי בקשות נוצרו בהצלחה: פיתוח→בדיקות ובדיקות→ייצור', 'success');
+                    
+                } else {
+                    // Single request for all other cases
+                    const { data, error } = await supabaseClient
+                        .from('version_requests')
+                        .insert([request])
+                        .select();
+                    
+                    if (error) {
+                        console.error('Supabase error:', error);
+                        throw error;
+                    }
+                    
+                    console.log('Successfully submitted:', data);
+                    
+                    // Get the request ID and send notification
+                    const requestId = data[0].id;
+                    await sendAdminNotification(formData, requestId);
+                    
+                    showMessage(`הבקשה נשלחה בהצלחה! מזהה בקשה: ${requestId}`, 'success');
                 }
-                
-                console.log('Successfully submitted:', data);
-                
-                // Get the request ID and send notification
-                const requestId = data[0].id;
-                await sendAdminNotification(formData, requestId);
-                
-                showMessage(`הבקשה נשלחה בהצלחה! מזהה בקשה: ${requestId}`, 'success');
                 
                 // Reset form and close modal
                 document.getElementById('submitForm').reset();
@@ -3192,6 +3308,24 @@
             // IMMEDIATELY capture form values before any other operations
             const sourceEnvValue = document.getElementById('sourceEnv').value;
             const targetEnvValue = document.getElementById('targetEnv').value;
+            
+            // Alert for dev->prod deployment
+            if (sourceEnvValue === 'dev' && targetEnvValue === 'prod') {
+                const result = await Swal.fire({
+                    icon: 'warning',
+                    title: 'אזהרה!',
+                    html: '<div style="text-align: right; direction: rtl;">אתה עומד להעביר ישירות מסביבת פיתוח לסביבת ייצור.<br><br>זה לא מומלץ ועלול להוביל לבעיות!<br>מומלץ להעביר תחילה לסביבת בדיקות.<br><br><strong>המערכת תיצור שתי בקשות נפרדות:</strong><br>1. פיתוח → בדיקות<br>2. בדיקות → ייצור<br><br>האם אתה בטוח שברצונך להמשיך?</div>',
+                    showCancelButton: true,
+                    confirmButtonText: 'כן, המשך',
+                    cancelButtonText: 'ביטול',
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    reverseButtons: true
+                });
+                if (!result.isConfirmed) {
+                    return; // Cancel submission
+                }
+            }
             const requesterNameValue = document.getElementById('requesterName').value;
             const requesterEmailValue = document.getElementById('requesterEmail').value;
             const appIdValue = document.getElementById('appId').value;
@@ -3264,21 +3398,62 @@
                 // Create table if it doesn't exist
                 await createTableIfNotExists();
                 
-                // Insert request
-                const { data, error } = await supabaseClient
-                    .from('version_requests')
-                    .insert([formData])
-                    .select();
-                
-                if (error) throw error;
-                
-                const requestId = data[0].id;
-                
-                // Send notification
-                await sendAdminNotification(formData, requestId);
-                
-                // Show success message
-                showMessage(`הבקשה נשלחה בהצלחה! מזהה בקשה: ${requestId}`, 'success');
+                // Check if this is a dev->prod deployment (requires two requests)
+                if (sourceEnvValue === 'dev' && targetEnvValue === 'prod') {
+                    // Create first request: dev -> test
+                    const firstRequest = {
+                        ...formData,
+                        source_env: 'dev',
+                        target_env: 'test',
+                        description: `[1/2] ${formData.description}\n\n(בקשה אוטומטית - חלק ראשון מתהליך העברה מפיתוח לייצור)`
+                    };
+                    
+                    const { data: data1, error: error1 } = await supabaseClient
+                        .from('version_requests')
+                        .insert([firstRequest])
+                        .select();
+                    
+                    if (error1) throw error1;
+                    const requestId1 = data1[0].id;
+                    
+                    // Create second request: test -> prod
+                    const secondRequest = {
+                        ...formData,
+                        source_env: 'test',
+                        target_env: 'prod',
+                        description: `[2/2] ${formData.description}\n\n(בקשה אוטומטית - חלק שני מתהליך העברה מפיתוח לייצור)`
+                    };
+                    
+                    const { data: data2, error: error2 } = await supabaseClient
+                        .from('version_requests')
+                        .insert([secondRequest])
+                        .select();
+                    
+                    if (error2) throw error2;
+                    const requestId2 = data2[0].id;
+                    
+                    // Send notifications for both requests
+                    await sendAdminNotification(firstRequest, requestId1);
+                    await sendAdminNotification(secondRequest, requestId2);
+                    
+                    showMessage('✅ שתי בקשות נוצרו בהצלחה: פיתוח→בדיקות ובדיקות→ייצור', 'success');
+                    
+                } else {
+                    // Single request for all other cases
+                    const { data, error } = await supabaseClient
+                        .from('version_requests')
+                        .insert([formData])
+                        .select();
+                    
+                    if (error) throw error;
+                    
+                    const requestId = data[0].id;
+                    
+                    // Send notification
+                    await sendAdminNotification(formData, requestId);
+                    
+                    showMessage('הבקשה נשלחה בהצלחה!', 'success');
+                }
                 
                 // Reset form
                 document.getElementById('submitForm').reset();
