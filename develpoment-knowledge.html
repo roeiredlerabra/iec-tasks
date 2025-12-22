@@ -852,6 +852,9 @@
                     <a href="#ad-groups"
                         class="section-link block py-2 px-4 pr-8 text-sm text-gray-600 hover:text-ms-blue hover:bg-blue-50 border-r-2 border-transparent hover:border-ms-blue transition-all"
                         data-section="ad-groups">5.3 קבוצות AD (Entra ID)</a>
+                    <a href="#row-level-security"
+                        class="section-link block py-2 px-4 pr-8 text-sm text-gray-600 hover:text-ms-blue hover:bg-blue-50 border-r-2 border-transparent hover:border-ms-blue transition-all"
+                        data-section="row-level-security">5.4 ניהול הרשאות ברמת שורה</a>
                 </div>
             </div>
 
@@ -2707,6 +2710,105 @@
                                     <div class="image-container">
                                         <img src="img/13.png" alt="קבוצות AD (Entra ID)">
                                         <img src="img/14.png" alt="EntraID-USER">
+                                    </div>
+                                </div>
+
+                                <div class="section" id="row-level-security">
+                                    <span class="anchor" id="row-level-security-anchor"></span>
+                                    <h3>5.4 ניהול הרשאות ברמת שורה (Row Level Security)</h3>
+                                    
+                                    <h4>מבנה כללי</h4>
+                                    <p>לכל מערכת יש מספר טבלאות מרכזיות:</p>
+                                    <ul>
+                                        <li><strong>טבלת המערכת</strong> - לדוגמא: הלוואות, היריון, וכו.</li>
+                                        <li><strong>טבלת המאשרים</strong> - טבלת האישורים לאותה מערכת</li>
+                                        <li><strong>טבלת מסמכים</strong> - מסמכים הקשורים למערכת</li>
+                                    </ul>
+                                    
+                                    <p>אנחנו רוצים לוודא שרק מי שקשור לשורה מסוימת יוכל לראות את השורה. להלן השלבים והכללים:</p>
+
+                                    <h4>בעת יצירת שורה בטבלת המערכת</h4>
+                                    <ol>
+                                        <li><strong>שיתוף העובד:</strong> נשתף את העובד עבורו נוצרה הבקשה בטבלת המערכת בהרשאת קריאה (בהתאם לדרישה העסקית נוסיף גם הרשאת עריכה).
+                                            <div class="note">
+                                                <strong>חשוב:</strong> צריך לחפש לפי המייל של העובד ולא לפי יוצר השורה, כי לפעמים מרכז ליאור יוצר עבור העובד ולא העובד יוצר עבור עצמו.
+                                            </div>
+                                        </li>
+                                        <li><strong>הגדרת בעלים לטבלת המערכת:</strong> נגדיר את הבעלים של השורה בטבלת המערכת להיות המאשר הראשון בסבב האישורים.</li>
+                                        <li><strong>הגדרת בעלים לשורת המאשר הראשונה:</strong> נגדיר את הבעלים של שורת המאשר הראשונה להיות המשתמש או הקבוצה של המאשר הראשון.</li>
+                                        <li><strong>שיתוף העובד בשורות האישורים:</strong> נשתף את העובד עבורו נוצרה הבקשה בהרשאת קריאה לכל שורות האישורים עבור הבקשה שלו.</li>
+                                        <li><strong>שיתוף המסמכים:</strong> נשתף את המסמכים עם כל גורמי האישור הרלוונטים.</li>
+                                    </ol>
+
+                                    <h4>בכל אישור של מאשר - באוטומציה שמעבירה את הבקשה למאשר הבא</h4>
+                                    <ol>
+                                        <li><strong>העברת בעלות המאשר הנוכחי:</strong> נעביר את הבעלים של המאשר הנוכחי להיות המשתמש האפליקטיבי או האדמין לפי הדרישות העסקיות.</li>
+                                        <li><strong>הגדרת המאשר הבא כבעלים בטבלת המערכת:</strong> נהפוך את המאשר הבא לבעלים של שורת טבלת המערכת.</li>
+                                        <li><strong>הגדרת בעלים לשורת המאשר הבא:</strong> נהפוך את הבעלים של שורת המאשר הבא להיות המאשר הבא - משתמש או קבוצה.</li>
+                                    </ol>
+
+                                    <h4>בסיום תפקיד שורת Approver</h4>
+                                    <p>ככל ששורת Approver סיימה את תפקידה (אושר, נדחה, בוטל) הבעלים יעבור להיות המשתמש האפליקטיבי או האדמין הנבחר לפי הדרישות העסקיות.</p>
+                                    <div class="note">
+                                        <strong>הערה:</strong> האדמין הנבחר (משתמש או קבוצה) ישמר כמשתנה סביבה עם השם <code>DefaultAdmin</code>
+                                    </div>
+
+                                    <h4>יישום טכני - שיתוף באוטומציה</h4>
+                                    
+                                    <h5>שיתוף עם הרשאת צפיה או עריכה</h5>
+                                    <p>בשביל לשתף באוטומציה עם הרשאת צפיה או עריכה, יש להשתמש ב-<code>unbound</code> action.</p>
+
+                                    <h5>שינוי בעלים של השורה</h5>
+                                    <p>בשביל לשנות את הבעלים, זה נעשה בשורת יצירה או עדכון הרגילה של הטבלה:</p>
+                                    
+                                    <h6>אם מחליפים למשתמש:</h6>
+                                    <ol>
+                                        <li>יש לחפש את ה-GUID של המשתמש בתוך המשתמשים של הסביבה הנוכחית לפי המייל</li>
+                                        <li>לאחר מכן לשים בנוסחה הבאה:
+                                            <pre><code>Systemusers(GUID)</code></pre>
+                                        </li>
+                                    </ol>
+
+                                    <h6>אם מחליפים לקבוצה:</h6>
+                                    <ol>
+                                        <li>יש לחפש את ה-GUID של הקבוצה המקומית בסביבה לפי ה-GUID של ה-Entra ID</li>
+                                        <li>לאחר מכן לשים בנוסחה הבאה:
+                                            <pre><code>teams(GUID)</code></pre>
+                                        </li>
+                                    </ol>
+
+                                    <h4>דיאגרמת זרימה - דוגמה עם 2 מאשרים</h4>
+                                    <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 2rem; border-radius: 10px; margin: 1.5rem 0;">
+                                        <div style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                            <h5 style="color: #0078D4; margin: 0 0 1rem 0;">שלב 1: יצירת בקשה</h5>
+                                            <table style="font-size: 0.9rem;">
+                                                <tr><td><strong>טבלת המערכת</strong></td><td>בעלים: מאשר 1</td></tr>
+                                                <tr><td><strong>שורת מאשר 1</strong></td><td>בעלים: מאשר 1 (משתמש/קבוצה)</td></tr>
+                                                <tr><td><strong>שיתופים</strong></td><td>העובד: קריאה לטבלת המערכת ולכל שורות האישורים</td></tr>
+                                            </table>
+                                        </div>
+                                        <div style="text-align: center; margin: 0.5rem 0;">⬇️</div>
+                                        <div style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                            <h5 style="color: #10b981; margin: 0 0 1rem 0;">שלב 2: מאשר 1 אישר</h5>
+                                            <table style="font-size: 0.9rem;">
+                                                <tr><td><strong>טבלת המערכת</strong></td><td>בעלים: מאשר 2</td></tr>
+                                                <tr><td><strong>שורת מאשר 1</strong></td><td>בעלים: DefaultAdmin</td></tr>
+                                                <tr><td><strong>שורת מאשר 2</strong></td><td>בעלים: מאשר 2 (משתמש/קבוצה)</td></tr>
+                                            </table>
+                                        </div>
+                                        <div style="text-align: center; margin: 0.5rem 0;">⬇️</div>
+                                        <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                            <h5 style="color: #10b981; margin: 0 0 1rem 0;">שלב 3: מאשר 2 אישר - תהליך הסתיים</h5>
+                                            <table style="font-size: 0.9rem;">
+                                                <tr><td><strong>טבלת המערכת</strong></td><td>בעלים: DefaultAdmin (או משתמש אפליקטיבי)</td></tr>
+                                                <tr><td><strong>שורת מאשר 1</strong></td><td>בעלים: DefaultAdmin</td></tr>
+                                                <tr><td><strong>שורת מאשר 2</strong></td><td>בעלים: DefaultAdmin</td></tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="note">
+                                        <p><strong>שימו לב:</strong> דיאגרמה זו ממחישה את התהליך הבסיסי. בפרויקטים מורכבים יותר עם מספר מאשרים, יש לחזור על תהליך העברת הבעלות בכל שלב אישור.</p>
                                     </div>
                                 </div>
                             </div>
