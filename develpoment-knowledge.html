@@ -17,6 +17,10 @@
     <!-- Tippy.js for tooltips -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.umd.min.js"></script>
+    <!-- GSAP for advanced animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- Particles.js for background effects -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -2817,37 +2821,676 @@
                                     </ol>
 
                                     <h4>דיאגרמת זרימה - דוגמה עם 2 מאשרים</h4>
-                                    <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 2rem; border-radius: 10px; margin: 1.5rem 0;">
-                                        <div style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                            <h5 style="color: #0078D4; margin: 0 0 1rem 0;">שלב 1: יצירת בקשה</h5>
-                                            <table style="font-size: 0.9rem;">
-                                                <tr><td><strong>טבלת המערכת</strong></td><td>בעלים: מאשר 1</td></tr>
-                                                <tr><td><strong>שורת מאשר 1</strong></td><td>בעלים: מאשר 1 (משתמש/קבוצה)</td></tr>
-                                                <tr><td><strong>שיתופים</strong></td><td>העובד: קריאה לטבלת המערכת ולכל שורות האישורים</td></tr>
+                                    
+                                    <style>
+                                        @keyframes shimmer {
+                                            0% { background-position: -1000px 0; }
+                                            100% { background-position: 1000px 0; }
+                                        }
+                                        
+                                        @keyframes pulse-ring {
+                                            0% { transform: scale(0.5); opacity: 1; }
+                                            100% { transform: scale(1.5); opacity: 0; }
+                                        }
+                                        
+                                        .flow-diagram {
+                                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                            padding: 2rem;
+                                            border-radius: 15px;
+                                            margin: 1.5rem 0;
+                                            position: relative;
+                                            overflow: hidden;
+                                        }
+                                        
+                                        .flow-diagram::before {
+                                            content: '';
+                                            position: absolute;
+                                            top: -50%;
+                                            left: -50%;
+                                            width: 200%;
+                                            height: 200%;
+                                            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+                                            animation: shimmer 3s infinite;
+                                        }
+                                        
+                                        #particles-js {
+                                            position: absolute;
+                                            width: 100%;
+                                            height: 100%;
+                                            top: 0;
+                                            left: 0;
+                                            z-index: 1;
+                                        }
+                                        
+                                        .flow-content {
+                                            position: relative;
+                                            z-index: 2;
+                                        }
+                                        
+                                        .flow-step {
+                                            background: white;
+                                            padding: 1.5rem;
+                                            border-radius: 12px;
+                                            margin-bottom: 1rem;
+                                            transform-origin: center;
+                                            opacity: 0;
+                                            position: relative;
+                                            overflow: hidden;
+                                        }
+                                        
+                                        .flow-step::before {
+                                            content: '';
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            width: 100%;
+                                            height: 100%;
+                                            background: linear-gradient(90deg, transparent, rgba(0, 120, 212, 0.1), transparent);
+                                            transform: translateX(-100%);
+                                        }
+                                        
+                                        .flow-arrow {
+                                            text-align: center;
+                                            margin: 0.5rem 0;
+                                            font-size: 2.5rem;
+                                            position: relative;
+                                            opacity: 0;
+                                        }
+                                        
+                                        .flow-arrow::before {
+                                            content: '';
+                                            position: absolute;
+                                            top: 50%;
+                                            left: 50%;
+                                            transform: translate(-50%, -50%);
+                                            width: 40px;
+                                            height: 40px;
+                                            border: 3px solid rgba(0, 120, 212, 0.3);
+                                            border-radius: 50%;
+                                            animation: pulse-ring 1.5s infinite;
+                                        }
+                                        
+                                        .flow-title {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 0.75rem;
+                                            margin: 0 0 1rem 0;
+                                            font-size: 1.2rem;
+                                            font-weight: 600;
+                                        }
+                                        
+                                        .flow-icon {
+                                            font-size: 1.5rem;
+                                            display: inline-block;
+                                        }
+                                        
+                                        .owner-row {
+                                            transition: all 0.5s ease;
+                                        }
+                                        
+                                        .step-explanation {
+                                            background: rgba(0, 120, 212, 0.08);
+                                            padding: 1rem;
+                                            border-radius: 8px;
+                                            margin-top: 1rem;
+                                            border-right: 4px solid #0078D4;
+                                            font-size: 0.9rem;
+                                            opacity: 0;
+                                        }
+                                        
+                                        .permission-badge {
+                                            display: inline-block;
+                                            padding: 0.25rem 0.75rem;
+                                            border-radius: 12px;
+                                            font-size: 0.85rem;
+                                            font-weight: 600;
+                                            margin: 0.25rem;
+                                            transition: all 0.3s ease;
+                                        }
+                                        
+                                        .permission-badge:hover {
+                                            transform: scale(1.1) translateY(-2px);
+                                            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                                        }
+                                        
+                                        .badge-read {
+                                            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+                                            color: #1565c0;
+                                        }
+                                        
+                                        .badge-owner {
+                                            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+                                            color: #e65100;
+                                        }
+                                        
+                                        .badge-admin {
+                                            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+                                            color: #6a1b9a;
+                                        }
+                                        
+                                        .progress-bar {
+                                            position: absolute;
+                                            top: 0;
+                                            right: 0;
+                                            height: 4px;
+                                            background: linear-gradient(90deg, #0078D4, #00BCF2);
+                                            width: 0%;
+                                            border-radius: 0 12px 0 0;
+                                        }
+                                        
+                                        .step-number {
+                                            position: absolute;
+                                            top: -10px;
+                                            right: -10px;
+                                            background: linear-gradient(135deg, #0078D4, #00BCF2);
+                                            color: white;
+                                            width: 40px;
+                                            height: 40px;
+                                            border-radius: 50%;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-weight: bold;
+                                            font-size: 1.2rem;
+                                            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                                            z-index: 10;
+                                        }
+                                        
+                                        .control-buttons {
+                                            text-align: center;
+                                            margin: 1.5rem 0;
+                                            display: flex;
+                                            gap: 1rem;
+                                            justify-content: center;
+                                            flex-wrap: wrap;
+                                        }
+                                        
+                                        .control-btn {
+                                            background: linear-gradient(135deg, #0078D4, #005A9E);
+                                            color: white;
+                                            border: none;
+                                            padding: 0.75rem 1.5rem;
+                                            border-radius: 25px;
+                                            cursor: pointer;
+                                            font-weight: 600;
+                                            font-size: 1rem;
+                                            display: inline-flex;
+                                            align-items: center;
+                                            gap: 0.5rem;
+                                            transition: all 0.3s ease;
+                                            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                                        }
+                                        
+                                        .control-btn:hover {
+                                            transform: translateY(-2px);
+                                            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+                                        }
+                                        
+                                        .control-btn:active {
+                                            transform: translateY(0);
+                                        }
+                                        
+                                        .control-btn.pause {
+                                            background: linear-gradient(135deg, #f59e0b, #d97706);
+                                        }
+                                        
+                                        .control-btn.reset {
+                                            background: linear-gradient(135deg, #dc2626, #991b1b);
+                                        }
+                                        
+                                        .thought-bubble {
+                                            position: relative;
+                                            background: linear-gradient(135deg, #fff9c4, #fff59d);
+                                            border: 3px solid #f57f17;
+                                            border-radius: 25px;
+                                            padding: 1.5rem;
+                                            margin: 1.5rem 0;
+                                            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+                                            opacity: 0;
+                                            transform: scale(0.5);
+                                        }
+                                        
+                                        .thought-bubble::before,
+                                        .thought-bubble::after {
+                                            content: '';
+                                            position: absolute;
+                                            background: #fff59d;
+                                            border: 3px solid #f57f17;
+                                            border-radius: 50%;
+                                        }
+                                        
+                                        .thought-bubble::before {
+                                            width: 30px;
+                                            height: 30px;
+                                            bottom: -20px;
+                                            right: 30px;
+                                        }
+                                        
+                                        .thought-bubble::after {
+                                            width: 15px;
+                                            height: 15px;
+                                            bottom: -35px;
+                                            right: 20px;
+                                        }
+                                        
+                                        .thought-bubble-content {
+                                            display: flex;
+                                            align-items: flex-start;
+                                            gap: 1rem;
+                                        }
+                                        
+                                        .thought-icon {
+                                            font-size: 2rem;
+                                            flex-shrink: 0;
+                                        }
+                                        
+                                        .thought-text {
+                                            flex: 1;
+                                        }
+                                        
+                                        .thought-text h6 {
+                                            margin: 0 0 0.5rem 0;
+                                            color: #f57f17;
+                                            font-size: 1.1rem;
+                                            font-weight: 700;
+                                        }
+                                        
+                                        .thought-text p {
+                                            margin: 0.5rem 0;
+                                            line-height: 1.6;
+                                            color: #5d4037;
+                                        }
+                                    </style>
+                                    
+                                    <div class="control-buttons">
+                                        <button class="control-btn play" onclick="startFlowAnimation()">
+                                            <i class="fas fa-play"></i> הפעל אנימציה
+                                        </button>
+                                        <button class="control-btn pause" onclick="pauseFlowAnimation()">
+                                            <i class="fas fa-pause"></i> עצור
+                                        </button>
+                                        <button class="control-btn reset" onclick="resetFlowAnimation()">
+                                            <i class="fas fa-redo"></i> אפס
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="flow-diagram">
+                                        <div id="particles-js"></div>
+                                        <div class="flow-content">
+                                        <!-- שלב 1 -->
+                                        <div class="flow-step">
+                                            <h5 class="flow-title" style="color: #0078D4;">
+                                                <i class="fas fa-play-circle flow-icon"></i>
+                                                שלב 1: יצירת בקשה ושיתוף ראשוני
+                                            </h5>
+                                            <table style="font-size: 0.9rem; width: 100%;">
+                                                <thead>
+                                                    <tr style="background: #f8f9fa;">
+                                                        <th style="text-align: right; padding: 0.5rem;">רכיב</th>
+                                                        <th style="text-align: right; padding: 0.5rem;">בעלות והרשאות</th>
+                                                        <th style="text-align: right; padding: 0.5rem;">הסבר</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="owner-row">
+                                                        <td style="padding: 0.5rem;"><strong>📋 טבלת המערכת</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-owner">בעלים: מאשר 1</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;">הבקשה שייכת למאשר הראשון</td>
+                                                    </tr>
+                                                    <tr class="owner-row">
+                                                        <td style="padding: 0.5rem;"><strong>✅ שורת מאשר 1</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-owner">בעלים: מאשר 1</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;">המאשר הראשון רואה את המשימה שלו</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 0.5rem;"><strong>👤 העובד</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-read">הרשאת קריאה</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;">העובד רואה את הבקשה שלו ואת כל שלבי האישור</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 0.5rem;"><strong>📁 מסמכים</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-read">משותף עם מאשר 1</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;">המאשר הראשון רואה את המסמכים הרלוונטיים</td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
+                                            <div class="step-explanation">
+                                                <strong><i class="fas fa-info-circle"></i> מה קורה כאן?</strong><br>
+                                                • נוצרת שורה חדשה בטבלת המערכת<br>
+                                                • מאשר 1 הופך לבעלים של השורה ושל שורת האישור שלו<br>
+                                                • העובד מקבל הרשאת קריאה לכל הרלוונטי (חיפוש לפי מייל!)<br>
+                                                • מסמכים משותפים עם המאשר הפעיל
+                                            </div>
+                                            
+                                            <div class="thought-bubble">
+                                                <div class="thought-bubble-content">
+                                                    <div class="thought-icon">💭</div>
+                                                    <div class="thought-text">
+                                                        <h6>מחשבה של המערכת...</h6>
+                                                        <p><strong>"עכשיו אני יוצרת בקשה חדשה!"</strong></p>
+                                                        <p>🎯 אני מגדירה את <strong>מאשר 1</strong> כבעלים של הבקשה והשורה שלו</p>
+                                                        <p>📧 אני נותנת ל<strong>עובד</strong> הרשאת קריאה (לפי מייל שלו!)</p>
+                                                        <p>📎 אני משתפת את המסמכים עם מאשר 1</p>
+                                                        <p>✅ <em>כל המערכת מוכנה לאישור ראשון!</em></p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div style="text-align: center; margin: 0.5rem 0;">⬇️</div>
-                                        <div style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                            <h5 style="color: #10b981; margin: 0 0 1rem 0;">שלב 2: מאשר 1 אישר</h5>
-                                            <table style="font-size: 0.9rem;">
-                                                <tr><td><strong>טבלת המערכת</strong></td><td>בעלים: מאשר 2</td></tr>
-                                                <tr><td><strong>שורת מאשר 1</strong></td><td>בעלים: DefaultAdmin</td></tr>
-                                                <tr><td><strong>שורת מאשר 2</strong></td><td>בעלים: מאשר 2 (משתמש/קבוצה)</td></tr>
+                                        
+                                        <div class="flow-arrow">⬇️</div>
+                                        
+                                        <!-- שלב 2 -->
+                                        <div class="flow-step">
+                                            <h5 class="flow-title" style="color: #10b981;">
+                                                <i class="fas fa-check-circle flow-icon"></i>
+                                                שלב 2: מאשר 1 אישר - מעבר בעלות למאשר 2
+                                            </h5>
+                                            <table style="font-size: 0.9rem; width: 100%;">
+                                                <thead>
+                                                    <tr style="background: #f8f9fa;">
+                                                        <th style="text-align: right; padding: 0.5rem;">רכיב</th>
+                                                        <th style="text-align: right; padding: 0.5rem;">בעלות והרשאות</th>
+                                                        <th style="text-align: right; padding: 0.5rem;">שינוי מהשלב הקודם</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="owner-row">
+                                                        <td style="padding: 0.5rem;"><strong>📋 טבלת המערכת</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-owner">בעלים: מאשר 2</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;"><i class="fas fa-arrow-left"></i> השתנה ממאשר 1 למאשר 2</td>
+                                                    </tr>
+                                                    <tr class="owner-row">
+                                                        <td style="padding: 0.5rem;"><strong>✅ שורת מאשר 1</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-admin">בעלים: DefaultAdmin</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;"><i class="fas fa-arrow-left"></i> השתנה לאדמין (משימה הושלמה)</td>
+                                                    </tr>
+                                                    <tr class="owner-row">
+                                                        <td style="padding: 0.5rem;"><strong>✅ שורת מאשר 2</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-owner">בעלים: מאשר 2</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;"><i class="fas fa-plus"></i> נוצרה עכשיו</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 0.5rem;"><strong>📁 מסמכים</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-read">משותף עם מאשר 2</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;"><i class="fas fa-share"></i> שיתוף חדש למאשר 2</td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
+                                            <div class="step-explanation">
+                                                <strong><i class="fas fa-cogs"></i> מה קורה באוטומציה?</strong><br>
+                                                • מעבירים את בעלות טבלת המערכת למאשר הבא (מאשר 2)<br>
+                                                • שורת מאשר 1 עוברת לבעלות DefaultAdmin (כי סיים את תפקידו)<br>
+                                                • נוצרת שורת מאשר 2 עם בעלות של מאשר 2<br>
+                                                • משתפים את המסמכים עם מאשר 2
+                                            </div>
+                                            
+                                            <div class="thought-bubble">
+                                                <div class="thought-bubble-content">
+                                                    <div class="thought-icon">🔄</div>
+                                                    <div class="thought-text">
+                                                        <h6>מעבר בין שלבים - המערכת חושבת...</h6>
+                                                        <p><strong>"מאשר 1 אישר! זמן להעביר את הכדור הלאה"</strong></p>
+                                                        <p>🎭 אני <strong>משנה את הבעלות</strong> של הבקשה למאשר 2</p>
+                                                        <p>🏁 שורת מאשר 1 עברה ל-DefaultAdmin (תפקיד הושלם!)</p>
+                                                        <p>✨ יוצרת שורה חדשה למאשר 2 עם בעלות מלאה</p>
+                                                        <p>📂 משתפת את המסמכים עם המאשר החדש</p>
+                                                        <p>🔔 <em>מאשר 2 עכשיו רואה את המשימה ב-My Tasks!</em></p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div style="text-align: center; margin: 0.5rem 0;">⬇️</div>
-                                        <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                            <h5 style="color: #10b981; margin: 0 0 1rem 0;">שלב 3: מאשר 2 אישר - תהליך הסתיים</h5>
-                                            <table style="font-size: 0.9rem;">
-                                                <tr><td><strong>טבלת המערכת</strong></td><td>בעלים: DefaultAdmin (או משתמש אפליקטיבי)</td></tr>
-                                                <tr><td><strong>שורת מאשר 1</strong></td><td>בעלים: DefaultAdmin</td></tr>
-                                                <tr><td><strong>שורת מאשר 2</strong></td><td>בעלים: DefaultAdmin</td></tr>
+                                        
+                                        <div class="flow-arrow">⬇️</div>
+                                        
+                                        <!-- שלב 3 -->
+                                        <div class="flow-step">
+                                            <h5 class="flow-title" style="color: #10b981;">
+                                                <i class="fas fa-flag-checkered flow-icon"></i>
+                                                שלב 3: מאשר 2 אישר - תהליך הסתיים
+                                            </h5>
+                                            <table style="font-size: 0.9rem; width: 100%;">
+                                                <thead>
+                                                    <tr style="background: #f8f9fa;">
+                                                        <th style="text-align: right; padding: 0.5rem;">רכיב</th>
+                                                        <th style="text-align: right; padding: 0.5rem;">בעלות והרשאות</th>
+                                                        <th style="text-align: right; padding: 0.5rem;">מצב סופי</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="owner-row">
+                                                        <td style="padding: 0.5rem;"><strong>📋 טבלת המערכת</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-admin">בעלים: DefaultAdmin</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;">הבקשה אושרה - בשליטת אדמין</td>
+                                                    </tr>
+                                                    <tr class="owner-row">
+                                                        <td style="padding: 0.5rem;"><strong>✅ שורת מאשר 1</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-admin">בעלים: DefaultAdmin</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;">שלב הושלם - אדמין שולט</td>
+                                                    </tr>
+                                                    <tr class="owner-row">
+                                                        <td style="padding: 0.5rem;"><strong>✅ שורת מאשר 2</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-admin">בעלים: DefaultAdmin</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;">שלב הושלם - אדמין שולט</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 0.5rem;"><strong>👤 העובד</strong></td>
+                                                        <td style="padding: 0.5rem;"><span class="permission-badge badge-read">הרשאת קריאה</span></td>
+                                                        <td style="padding: 0.5rem; font-size: 0.85rem;">ממשיך לראות את הבקשה המאושרת</td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
+                                            <div class="step-explanation">
+                                                <strong><i class="fas fa-trophy"></i> סיום התהליך:</strong><br>
+                                                • כל הרשומות עוברות לבעלות DefaultAdmin<br>
+                                                • התהליך הושלם בהצלחה<br>
+                                                • העובד ממשיך לראות את הבקשה והיסטוריית האישורים<br>
+                                                • אדמין/משתמש אפליקטיבי יכולים לנהל את הרשומות
+                                            </div>
+                                            
+                                            <div class="thought-bubble">
+                                                <div class="thought-bubble-content">
+                                                    <div class="thought-icon">🎉</div>
+                                                    <div class="thought-text">
+                                                        <h6>סיום מוצלח - המערכת חוגגת!</h6>
+                                                        <p><strong>"מאשר 2 גם אישר! התהליך הושלם!"</strong></p>
+                                                        <p>🎯 כל השורות עוברות ל-<strong>DefaultAdmin</strong></p>
+                                                        <p>📊 הבקשה במצב <strong>אושרה</strong></p>
+                                                        <p>👀 העובד ממשיך לראות את כל ההיסטוריה (הרשאת קריאה!)</p>
+                                                        <p>🔧 אדמין יכול לנהל ולעדכן במידת הצורך</p>
+                                                        <p>✅ <em>זהו! הבקשה עברה בהצלחה את כל שלבי האישור!</em></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         </div>
                                     </div>
+                                    
+                                    <script>
+                                        let flowTimeline;
+                                        
+                                        // Initialize particles.js
+                                        if (typeof particlesJS !== 'undefined') {
+                                            particlesJS('particles-js', {
+                                                particles: {
+                                                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                                                    color: { value: '#ffffff' },
+                                                    shape: { type: 'circle' },
+                                                    opacity: { value: 0.5, random: false },
+                                                    size: { value: 3, random: true },
+                                                    line_linked: {
+                                                        enable: true,
+                                                        distance: 150,
+                                                        color: '#ffffff',
+                                                        opacity: 0.4,
+                                                        width: 1
+                                                    },
+                                                    move: {
+                                                        enable: true,
+                                                        speed: 2,
+                                                        direction: 'none',
+                                                        random: false,
+                                                        straight: false,
+                                                        out_mode: 'out',
+                                                        bounce: false
+                                                    }
+                                                },
+                                                interactivity: {
+                                                    detect_on: 'canvas',
+                                                    events: {
+                                                        onhover: { enable: true, mode: 'repulse' },
+                                                        onclick: { enable: true, mode: 'push' },
+                                                        resize: true
+                                                    }
+                                                },
+                                                retina_detect: true
+                                            });
+                                        }
+                                        
+                                        function createFlowTimeline() {
+                                            const tl = gsap.timeline({ paused: true });
+                                            const steps = document.querySelectorAll('.flow-step');
+                                            const arrows = document.querySelectorAll('.flow-arrow');
+                                            
+                                            steps.forEach((step, index) => {
+                                                // Step entrance animation
+                                                tl.to(step, {
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                    duration: 1.5,
+                                                    ease: 'back.out(1.7)',
+                                                }, index * 5);
+                                                
+                                                // Step number pop
+                                                tl.fromTo(step.querySelector('.step-number'),
+                                                    { scale: 0, rotation: -180 },
+                                                    { scale: 1, rotation: 0, duration: 1, ease: 'elastic.out(1, 0.5)' },
+                                                    index * 5 + 0.5
+                                                );
+                                                
+                                                // Icon rotation
+                                                tl.fromTo(step.querySelector('.flow-icon'),
+                                                    { rotation: -360, scale: 0 },
+                                                    { rotation: 0, scale: 1, duration: 1.2, ease: 'back.out(1.7)' },
+                                                    index * 5 + 0.8
+                                                );
+                                                
+                                                // Progress bar fill
+                                                tl.to(step.querySelector('.progress-bar'),
+                                                    { width: '100%', duration: 2, ease: 'power2.out' },
+                                                    index * 5 + 1.5
+                                                );
+                                                
+                                                // Shimmer effect on card
+                                                tl.to(step.querySelector('.flow-step::before'),
+                                                    { x: '100%', duration: 2 },
+                                                    index * 5 + 1.5
+                                                );
+                                                
+                                                // Owner rows highlight
+                                                const ownerRows = step.querySelectorAll('.owner-row');
+                                                ownerRows.forEach((row, rowIndex) => {
+                                                    tl.to(row, {
+                                                        backgroundColor: 'rgba(255, 235, 59, 0.4)',
+                                                        duration: 0.6,
+                                                        yoyo: true,
+                                                        repeat: 1,
+                                                        ease: 'power2.inOut'
+                                                    }, index * 5 + 2.5 + (rowIndex * 0.3));
+                                                });
+                                                
+                                                // Explanation fade in
+                                                tl.to(step.querySelector('.step-explanation'),
+                                                    { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
+                                                    index * 5 + 3.5
+                                                );
+                                                
+                                                // Thought bubble animation
+                                                const thoughtBubble = step.querySelector('.thought-bubble');
+                                                if (thoughtBubble) {
+                                                    tl.to(thoughtBubble, {
+                                                        opacity: 1,
+                                                        scale: 1,
+                                                        duration: 1,
+                                                        ease: 'elastic.out(1, 0.6)'
+                                                    }, index * 5 + 4.2);
+                                                    
+                                                    // Pulse effect on thought bubble
+                                                    tl.to(thoughtBubble, {
+                                                        scale: 1.05,
+                                                        duration: 0.5,
+                                                        yoyo: true,
+                                                        repeat: 1,
+                                                        ease: 'power1.inOut'
+                                                    }, index * 5 + 5);
+                                                }
+                                                
+                                                // Arrow animation
+                                                if (arrows[index]) {
+                                                    tl.to(arrows[index], {
+                                                        opacity: 1,
+                                                        y: 10,
+                                                        duration: 0.8,
+                                                        ease: 'power2.inOut',
+                                                        repeat: 2,
+                                                        yoyo: true
+                                                    }, index * 5 + 4);
+                                                }
+                                            });
+                                            
+                                            return tl;
+                                        }
+                                        
+                                        function startFlowAnimation() {
+                                            if (!flowTimeline) {
+                                                flowTimeline = createFlowTimeline();
+                                            }
+                                            flowTimeline.restart();
+                                        }
+                                        
+                                        function pauseFlowAnimation() {
+                                            if (flowTimeline) {
+                                                flowTimeline.pause();
+                                            }
+                                        }
+                                        
+                                        function resetFlowAnimation() {
+                                            if (flowTimeline) {
+                                                flowTimeline.seek(0);
+                                                flowTimeline.pause();
+                                            }
+                                        }
+                                        
+                                        // Initialize on page load
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            // Add step numbers
+                                            const steps = document.querySelectorAll('.flow-step');
+                                            steps.forEach((step, index) => {
+                                                const stepNumber = document.createElement('div');
+                                                stepNumber.className = 'step-number';
+                                                stepNumber.textContent = index + 1;
+                                                step.style.position = 'relative';
+                                                step.appendChild(stepNumber);
+                                                
+                                                const progressBar = document.createElement('div');
+                                                progressBar.className = 'progress-bar';
+                                                step.appendChild(progressBar);
+                                            });
+                                            
+                                            // Auto-play animation on load
+                                            setTimeout(() => {
+                                                startFlowAnimation();
+                                            }, 500);
+                                        });
+                                    </script>
 
                                     <div class="note">
-                                        <p><strong>שימו לב:</strong> דיאגרמה זו ממחישה את התהליך הבסיסי. בפרויקטים מורכבים יותר עם מספר מאשרים, יש לחזור על תהליך העברת הבעלות בכל שלב אישור.</p>
+                                        <p><strong><i class="fas fa-lightbulb"></i> נקודות חשובות:</strong></p>
+                                        <ul style="margin-top: 0.5rem;">
+                                            <li><strong>חיפוש לפי מייל:</strong> תמיד חפשו את העובד לפי מייל ולא לפי יוצר השורה</li>
+                                            <li><strong>משתנה סביבה:</strong> DefaultAdmin שמור כמשתנה סביבה ומוגדר מראש</li>
+                                            <li><strong>מסמכים:</strong> יש לשתף מסמכים בכל שלב עם המאשר הפעיל</li>
+                                            <li><strong>בפרויקטים מורכבים:</strong> חזרו על תהליך זה לכל מאשר נוסף בשרשרת</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
