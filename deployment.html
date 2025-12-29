@@ -1421,7 +1421,26 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="appId">מזהה האפליקציה (App ID) *</label>
-                                <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="text" id="appId" required>
+                                <div class="relative">
+                                    <input class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" 
+                                           type="text" 
+                                           id="appId" 
+                                           required 
+                                           autocomplete="off"
+                                           oninput="handleAppIdInput(this.value)"
+                                           onfocus="showAppIdDropdown()"
+                                           onblur="hideAppIdDropdown()"
+                                           placeholder="הקלד או בחר מזהה אפליקציה">
+                                    <!-- Status icon (existing/new indicator) -->
+                                    <div id="appIdStatusIcon" class="absolute left-3 top-1/2 transform -translate-y-1/2 hidden">
+                                        <!-- Will be populated dynamically -->
+                                    </div>
+                                    <!-- Dropdown for suggestions -->
+                                    <div id="appIdDropdown" class="hidden absolute z-50 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                                        <!-- Will be populated dynamically -->
+                                    </div>
+                                </div>
+                                <p id="appIdHint" class="text-xs text-gray-500 dark:text-gray-400 hidden"></p>
                             </div>
                             <div class="space-y-2">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="urgency">דחיפות *</label>
@@ -1685,6 +1704,7 @@
         let currentRejectRequestId = null;
         let showTodayOnly = true; // Default to showing only today's requests
         let devToProdPopupShown = false; // Track if dev->prod popup was already shown
+        let existingAppIds = []; // Store all unique app IDs from database
 
         // Users array for dropdown selection
         const users = [
@@ -1825,6 +1845,17 @@
             // Reset the dev->prod popup flag
             devToProdPopupShown = false;
             
+            // Reset app ID status icon and hint
+            const appIdStatusIcon = document.getElementById('appIdStatusIcon');
+            const appIdHint = document.getElementById('appIdHint');
+            const appIdDropdown = document.getElementById('appIdDropdown');
+            if (appIdStatusIcon) {
+                appIdStatusIcon.classList.add('hidden');
+                appIdStatusIcon.innerHTML = '';
+            }
+            if (appIdHint) appIdHint.classList.add('hidden');
+            if (appIdDropdown) appIdDropdown.classList.add('hidden');
+            
             // Reset the drag interface when modal closes
             setTimeout(() => {
                 resetDragInterface();
@@ -1856,6 +1887,7 @@
             checkAuthState();
             loadAllRequests(); // Load public requests on page load
             loadPendingProductionDeployments(); // Load pending production deployments
+            loadExistingAppIds(); // Load all unique app IDs for autocomplete
         });
 
         // Populate user dropdowns
@@ -1879,6 +1911,179 @@
                 emailOption.textContent = user.email;
                 emailSelect.appendChild(emailOption);
             });
+        }
+
+        // Load all unique app IDs from database
+        async function loadExistingAppIds() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('version_requests')
+                    .select('app_id')
+                    .order('app_id', { ascending: true });
+                
+                if (error) throw error;
+                
+                // Get unique app IDs
+                const uniqueIds = [...new Set(data.map(item => item.app_id))].filter(id => id);
+                
+                // Sort: numbers first (smallest to largest), then text alphabetically
+                existingAppIds = uniqueIds.sort((a, b) => {
+                    const aIsNumeric = !isNaN(a) && !isNaN(parseFloat(a));
+                    const bIsNumeric = !isNaN(b) && !isNaN(parseFloat(b));
+                    
+                    if (aIsNumeric && bIsNumeric) {
+                        // Both are numbers - sort numerically
+                        return parseFloat(a) - parseFloat(b);
+                    } else if (aIsNumeric && !bIsNumeric) {
+                        // a is number, b is text - numbers come first
+                        return -1;
+                    } else if (!aIsNumeric && bIsNumeric) {
+                        // a is text, b is number - numbers come first
+                        return 1;
+                    } else {
+                        // Both are text - sort alphabetically
+                        return a.localeCompare(b, 'he');
+                    }
+                });
+                
+                console.log(`Loaded ${existingAppIds.length} unique app IDs`);
+                
+            } catch (error) {
+                console.error('Error loading app IDs:', error);
+            }
+        }
+
+        // Handle app ID input - show filtered dropdown and status icon
+        function handleAppIdInput(value) {
+            const dropdown = document.getElementById('appIdDropdown');
+            const statusIcon = document.getElementById('appIdStatusIcon');
+            const hint = document.getElementById('appIdHint');
+            
+            const trimmedValue = value.trim();
+            
+            // Update status icon based on whether value exists
+            if (trimmedValue.length > 0) {
+                const exists = existingAppIds.some(id => id.toLowerCase() === trimmedValue.toLowerCase());
+                statusIcon.classList.remove('hidden');
+                
+                if (exists) {
+                    // Green check - existing app ID
+                    statusIcon.innerHTML = '<i class="fas fa-check-circle text-green-500 text-lg"></i>';
+                    hint.textContent = '✓ מזהה אפליקציה קיים במערכת';
+                    hint.className = 'text-xs text-green-600 dark:text-green-400';
+                    hint.classList.remove('hidden');
+                } else {
+                    // Yellow plus - new app ID
+                    statusIcon.innerHTML = '<i class="fas fa-plus-circle text-yellow-500 text-lg"></i>';
+                    hint.textContent = '+ מזהה אפליקציה חדש';
+                    hint.className = 'text-xs text-yellow-600 dark:text-yellow-400';
+                    hint.classList.remove('hidden');
+                }
+            } else {
+                statusIcon.classList.add('hidden');
+                statusIcon.innerHTML = '';
+                hint.classList.add('hidden');
+            }
+            
+            // Filter and show dropdown
+            if (trimmedValue.length > 0) {
+                const filtered = existingAppIds.filter(id => 
+                    id.toLowerCase().includes(trimmedValue.toLowerCase())
+                );
+                renderAppIdDropdown(filtered, trimmedValue);
+            } else {
+                // Show all when empty
+                renderAppIdDropdown(existingAppIds, '');
+            }
+        }
+
+        // Render app ID dropdown with suggestions
+        function renderAppIdDropdown(appIds, searchTerm) {
+            const dropdown = document.getElementById('appIdDropdown');
+            
+            if (appIds.length === 0) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+            
+            let html = '';
+            appIds.forEach(appId => {
+                // Highlight matching text
+                let displayText = appId;
+                if (searchTerm) {
+                    const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi');
+                    displayText = appId.replace(regex, '<span class="bg-yellow-200 dark:bg-yellow-700">$1</span>');
+                }
+                
+                html += `
+                    <div class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer flex items-center justify-between"
+                         onclick="selectAppId('${escapeHtml(appId)}')">
+                        <span class="text-gray-900 dark:text-white">${displayText}</span>
+                        <i class="fas fa-check-circle text-green-500 text-sm"></i>
+                    </div>
+                `;
+            });
+            
+            dropdown.innerHTML = html;
+            dropdown.classList.remove('hidden');
+        }
+
+        // Show app ID dropdown
+        function showAppIdDropdown() {
+            const input = document.getElementById('appId');
+            const value = input.value.trim();
+            
+            if (existingAppIds.length === 0) {
+                // If not loaded yet, load now
+                loadExistingAppIds().then(() => {
+                    handleAppIdInput(value);
+                });
+            } else {
+                handleAppIdInput(value);
+            }
+        }
+
+        // Hide app ID dropdown
+        function hideAppIdDropdown() {
+            const dropdown = document.getElementById('appIdDropdown');
+            // Delay hiding to allow click on dropdown item
+            setTimeout(() => {
+                dropdown.classList.add('hidden');
+            }, 200);
+        }
+
+        // Select app ID from dropdown
+        function selectAppId(appId) {
+            const input = document.getElementById('appId');
+            input.value = appId;
+            
+            // Update status icon to green check
+            const statusIcon = document.getElementById('appIdStatusIcon');
+            const hint = document.getElementById('appIdHint');
+            
+            statusIcon.classList.remove('hidden');
+            statusIcon.innerHTML = '<i class="fas fa-check-circle text-green-500 text-lg"></i>';
+            hint.textContent = '✓ מזהה אפליקציה קיים במערכת';
+            hint.className = 'text-xs text-green-600 dark:text-green-400';
+            hint.classList.remove('hidden');
+            
+            // Hide dropdown
+            document.getElementById('appIdDropdown').classList.add('hidden');
+            
+            // Trigger change event for validation
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Helper function to escape regex special characters
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
 
         // Update email when name is selected
@@ -3320,6 +3525,7 @@
                 // Refresh the requests display
                 loadAllRequests();
                 loadPendingProductionDeployments();
+                loadExistingAppIds(); // Refresh app IDs list with new app
                 
             } catch (error) {
                 console.error('Submission error:', error);
@@ -3538,6 +3744,7 @@
                 // Refresh the public requests list
                 loadAllRequests();
                 loadPendingProductionDeployments();
+                loadExistingAppIds(); // Refresh app IDs list with new app
                 
             } catch (error) {
                 console.error('Error submitting request:', error);
