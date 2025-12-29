@@ -1337,7 +1337,7 @@
                         </div>
                         <div class="space-y-2">
                             <label class="block text-sm font-medium text-gray-700 sm:hidden">&nbsp;</label>
-                            <button class="w-full sm:w-auto px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md shadow-sm transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm" onclick="loadAllRequests()">
+                            <button class="w-full sm:w-auto px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md shadow-sm transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm" onclick="loadAllRequests(); loadPendingProductionDeployments();">
                                 <i class="fas fa-sync-alt"></i>
                                 <span>רענן רשימה</span>
                             </button>
@@ -1351,7 +1351,40 @@
             <button class="fixed bottom-6 right-6 w-14 h-14 bg-iec-blue hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 md:w-16 md:h-16" onclick="showNewRequestModal()" title="הגשת בקשה חדשה">
                 <span class="icon-material text-xl md:text-2xl">add</span>
             </button>
+
+            <!-- Pending Production Sidebar Toggle Button -->
+            <button id="pendingProdSidebarToggle" class="fixed bottom-24 right-6 w-14 h-14 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 md:w-16 md:h-16 hidden" onclick="togglePendingProdSidebar()" title="ממתינים להעברה לייצור">
+                <i class="fas fa-exclamation-triangle text-xl md:text-2xl"></i>
+                <span id="pendingProdBadge" class="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center hidden">0</span>
+            </button>
         </div>
+
+        <!-- Pending Production Deployments Sidebar -->
+        <div id="pendingProdSidebar" class="fixed top-0 left-0 h-full w-full md:w-96 shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out z-[1000]" style="background-color: #ffffff;">
+            <!-- Sidebar Header -->
+            <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-triangle text-white text-xl ml-3"></i>
+                    <div>
+                        <h2 class="text-lg font-bold text-white">ממתינים להעברה לייצור</h2>
+                        <p class="text-orange-100 text-xs">אפליקציות שטרם הושלמו ל-Production</p>
+                    </div>
+                </div>
+                <button onclick="togglePendingProdSidebar()" class="text-white hover:bg-orange-600 p-2 rounded-full transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Sidebar Content -->
+            <div id="pendingProdSidebarWrapper" class="h-[calc(100%-80px)] overflow-y-auto p-4" style="background-color: #f9fafb;">
+                <div id="pendingProdSidebarContent">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Backdrop -->
+        <div id="pendingProdBackdrop" class="fixed inset-0 bg-black bg-opacity-50 z-[999] hidden" onclick="togglePendingProdSidebar()"></div>
 
         <!-- Message Area -->
         <div id="message" class="fixed top-20 right-4 left-4 z-40 max-w-md mx-auto"></div>
@@ -1651,6 +1684,7 @@
         let autoRefreshInterval = null;
         let currentRejectRequestId = null;
         let showTodayOnly = true; // Default to showing only today's requests
+        let devToProdPopupShown = false; // Track if dev->prod popup was already shown
 
         // Users array for dropdown selection
         const users = [
@@ -1682,6 +1716,28 @@
             
             // Update skeleton if currently visible
             updateSkeletonTheme();
+            
+            // Update sidebar theme
+            updateSidebarTheme();
+        }
+
+        // Update sidebar theme colors
+        function updateSidebarTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const sidebar = document.getElementById('pendingProdSidebar');
+            const sidebarWrapper = document.getElementById('pendingProdSidebarWrapper');
+            
+            if (sidebar) {
+                sidebar.style.backgroundColor = isDark ? '#1f2937' : '#ffffff';
+            }
+            if (sidebarWrapper) {
+                sidebarWrapper.style.backgroundColor = isDark ? '#111827' : '#f9fafb';
+            }
+            
+            // Re-render cards with correct theme if data is available
+            if (window.pendingProdRequestsData && window.pendingProdRequestsData.length > 0) {
+                renderPendingProdSidebar(window.pendingProdRequestsData);
+            }
         }
 
         // Update skeleton theme when dark mode is toggled
@@ -1708,6 +1764,9 @@
                 html.classList.remove('dark');
                 if (icon) icon.className = 'fas fa-moon';
             }
+            
+            // Update sidebar theme on init
+            updateSidebarTheme();
         }
 
         // Toggle date filter between today only and all dates
@@ -1763,6 +1822,9 @@
             // Hide validation messages and environment feedback
             hideEnvironmentFeedback();
             
+            // Reset the dev->prod popup flag
+            devToProdPopupShown = false;
+            
             // Reset the drag interface when modal closes
             setTimeout(() => {
                 resetDragInterface();
@@ -1793,6 +1855,7 @@
             populateUserDropdowns();
             checkAuthState();
             loadAllRequests(); // Load public requests on page load
+            loadPendingProductionDeployments(); // Load pending production deployments
         });
 
         // Populate user dropdowns
@@ -2202,28 +2265,36 @@
             
             // Show appropriate validation message based on combination
             if (source === target) {
+                devToProdPopupShown = false; // Reset flag when selection changes
                 showValidationMessage('invalid', 'לא ניתן להעביר אפליקציה לאותה סביבה. אנא בחר סביבת יעד שונה.');
             } else if (source === 'dev' && target === 'test') {
+                devToProdPopupShown = false; // Reset flag when selection changes
                 showValidationMessage('valid', '✅ מעולה! זהו המסלול הטבעי מפיתוח לבדיקות.');
             } else if (source === 'test' && target === 'prod') {
+                devToProdPopupShown = false; // Reset flag when selection changes
                 showValidationMessage('valid', '✅ מעולה! זהו המסלול הטבעי מבדיקות לייצור.');
             } else if (source === 'dev' && target === 'prod') {
                 console.log('🚨 DEV->PROD detected - showing warning');
                 showValidationMessage('recommend', '⚠️ אזהרה: העברה ישירה מפיתוח לייצור! מומלץ לעבור דרך סביבת הבדיקות תחילה, אך ניתן להמשיך בזהירות.');
                 
-                // Show popup informing user that two requests will be created
-                setTimeout(() => {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'שים לב!',
-                        html: '<div style="text-align: right; direction: rtl;">כאשר תבחר להעביר ישירות מפיתוח לייצור, המערכת תיצור אוטומטית שתי בקשות נפרדות:<br><br><strong>1️⃣ בקשה ראשונה:</strong> פיתוח ← בדיקות<br><strong>2️⃣ בקשה שנייה:</strong> בדיקות ← ייצור<br><br>זה מבטיח שהאפליקציה תעבור את כל שלבי הבדיקה הנדרשים.</div>',
-                        confirmButtonText: 'הבנתי',
-                        confirmButtonColor: '#1e87f0'
-                    });
-                }, 500);
+                // Show popup only once per selection (not on every click)
+                if (!devToProdPopupShown) {
+                    devToProdPopupShown = true;
+                    setTimeout(() => {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'שים לב!',
+                            html: '<div style="text-align: right; direction: rtl;">כאשר תבחר להעביר ישירות מפיתוח לייצור, המערכת תיצור אוטומטית שתי בקשות נפרדות:<br><br><strong>1️⃣ בקשה ראשונה:</strong> פיתוח ← בדיקות<br><strong>2️⃣ בקשה שנייה:</strong> בדיקות ← ייצור<br><br>זה מבטיח שהאפליקציה תעבור את כל שלבי הבדיקה הנדרשים.</div>',
+                            confirmButtonText: 'הבנתי',
+                            confirmButtonColor: '#1e87f0'
+                        });
+                    }, 500);
+                }
             } else if (source === 'prod') {
+                devToProdPopupShown = false; // Reset flag when selection changes
                 showValidationMessage('recommend', 'העברה מייצור - וודא שזה נדרש (תיקון חם).');
             } else {
+                devToProdPopupShown = false; // Reset flag when selection changes
                 showValidationMessage('recommend', 'צירוף סביבות לא שגרתי. וודא שזה נדרש.');
             }
             
@@ -2843,7 +2914,7 @@
                     request.app_id.toLowerCase().includes(searchTerm) ||
                     request.requester_name.toLowerCase().includes(searchTerm) ||
                     request.requester_email.toLowerCase().includes(searchTerm) ||
-                    request.description.toLowerCase().includes(searchTerm);
+                    (request.description && request.description.toLowerCase().includes(searchTerm));
                 
                 const matchesStatus = statusFilter === '' || request.status === statusFilter;
                 
@@ -2853,9 +2924,10 @@
             // Apply current sorting
             sortRequestsData(filteredRequests, currentSortColumn, currentSortDirection);
             
-            // Re-render the table with filtered data
-            renderRequestsTable(filteredRequests);
-            renderMobileCards(filteredRequests);
+            // Group by date and re-render with date grouping
+            const groupedRequests = groupRequestsByDate(filteredRequests);
+            renderRequestsTableGrouped(groupedRequests);
+            renderMobileCardsGrouped(groupedRequests);
         }
 
         // Sort table function
@@ -2876,8 +2948,9 @@
             
             if (dataToSort) {
                 sortRequestsData(dataToSort, column, currentSortDirection);
-                renderRequestsTable(dataToSort);
-                renderMobileCards(dataToSort);
+                const groupedRequests = groupRequestsByDate(dataToSort);
+                renderRequestsTableGrouped(groupedRequests);
+                renderMobileCardsGrouped(groupedRequests);
             }
         }
 
@@ -3246,6 +3319,7 @@
                 
                 // Refresh the requests display
                 loadAllRequests();
+                loadPendingProductionDeployments();
                 
             } catch (error) {
                 console.error('Submission error:', error);
@@ -3463,6 +3537,7 @@
                 
                 // Refresh the public requests list
                 loadAllRequests();
+                loadPendingProductionDeployments();
                 
             } catch (error) {
                 console.error('Error submitting request:', error);
@@ -3979,6 +4054,214 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             return Object.values(grouped).sort((a, b) => b.date - a.date);
         }
 
+        // Toggle pending production sidebar
+        function togglePendingProdSidebar() {
+            const sidebar = document.getElementById('pendingProdSidebar');
+            const backdrop = document.getElementById('pendingProdBackdrop');
+            
+            if (sidebar && backdrop) {
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    // Open sidebar
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                    backdrop.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    // Close sidebar
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                    backdrop.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+
+        // Load and display pending production deployments
+        async function loadPendingProductionDeployments() {
+            const sidebarContent = document.getElementById('pendingProdSidebarContent');
+            const toggleBtn = document.getElementById('pendingProdSidebarToggle');
+            const badge = document.getElementById('pendingProdBadge');
+            if (!sidebarContent) return;
+            
+            try {
+                // Get all completed dev->test requests
+                const { data: devToTestRequests, error: error1 } = await supabaseClient
+                    .from('version_requests')
+                    .select('*')
+                    .eq('source_env', 'dev')
+                    .eq('target_env', 'test')
+                    .eq('status', 'approved')
+                    .order('created_at', { ascending: false });
+                
+                if (error1) throw error1;
+                
+                // Get all completed test->prod requests
+                const { data: testToProdRequests, error: error2 } = await supabaseClient
+                    .from('version_requests')
+                    .select('*')
+                    .eq('source_env', 'test')
+                    .eq('target_env', 'prod')
+                    .eq('status', 'approved')
+                    .order('created_at', { ascending: false });
+                
+                if (error2) throw error2;
+                
+                // Find apps that have completed dev->test but NOT completed test->prod after that
+                const pendingProdApps = [];
+                
+                devToTestRequests.forEach(devToTest => {
+                    const appId = devToTest.app_id;
+                    const devToTestDate = new Date(devToTest.created_at);
+                    
+                    // Check if there's a completed test->prod request for this app AFTER the dev->test completion
+                    const hasCompletedProdDeployment = testToProdRequests.some(testToProd => {
+                        return testToProd.app_id === appId && 
+                               new Date(testToProd.created_at) >= devToTestDate;
+                    });
+                    
+                    if (!hasCompletedProdDeployment) {
+                        // Check if we already have a more recent dev->test for this app
+                        const alreadyAdded = pendingProdApps.some(p => p.app_id === appId && 
+                            new Date(p.created_at) > devToTestDate);
+                        
+                        if (!alreadyAdded) {
+                            // Remove any older entry for this app
+                            const existingIndex = pendingProdApps.findIndex(p => p.app_id === appId);
+                            if (existingIndex !== -1) {
+                                pendingProdApps.splice(existingIndex, 1);
+                            }
+                            pendingProdApps.push(devToTest);
+                        }
+                    }
+                });
+                
+                // Update floating button and badge visibility
+                if (toggleBtn && badge) {
+                    if (pendingProdApps.length > 0) {
+                        toggleBtn.classList.remove('hidden');
+                        badge.textContent = pendingProdApps.length;
+                        badge.classList.remove('hidden');
+                    } else {
+                        toggleBtn.classList.add('hidden');
+                        badge.classList.add('hidden');
+                    }
+                }
+                
+                // Store data for theme updates
+                window.pendingProdRequestsData = pendingProdApps;
+                
+                // Render the pending production deployments in sidebar
+                renderPendingProdSidebar(pendingProdApps);
+                
+            } catch (error) {
+                console.error('Error loading pending production deployments:', error);
+                const sidebarContent = document.getElementById('pendingProdSidebarContent');
+                if (sidebarContent) {
+                    sidebarContent.innerHTML = `
+                        <div class="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg p-4 text-center">
+                            <i class="fas fa-exclamation-circle text-red-500 text-2xl mb-2"></i>
+                            <p class="text-red-800 dark:text-red-200 font-medium">שגיאה בטעינת הנתונים</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Render pending production deployments in sidebar
+        function renderPendingProdSidebar(requests) {
+            const container = document.getElementById('pendingProdSidebarContent');
+            if (!container) return;
+            
+            const isDark = document.documentElement.classList.contains('dark');
+            const cardBg = isDark ? '#374151' : '#ffffff';
+            const textPrimary = isDark ? '#ffffff' : '#111827';
+            const textSecondary = isDark ? '#9ca3af' : '#6b7280';
+            const borderColor = isDark ? '#4b5563' : '#e5e7eb';
+            
+            if (requests.length === 0) {
+                const emptyBg = isDark ? '#14532d' : '#f0fdf4';
+                const emptyBorder = isDark ? '#166534' : '#bbf7d0';
+                const emptyText = isDark ? '#bbf7d0' : '#166534';
+                const emptyTextSecondary = isDark ? '#86efac' : '#22c55e';
+                
+                container.innerHTML = `
+                    <div style="background-color: ${emptyBg}; border: 1px solid ${emptyBorder};" class="rounded-lg p-4 text-center">
+                        <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
+                        <p style="color: ${emptyText};" class="font-medium">כל האפליקציות השלימו את תהליך ה-ALM! 🎉</p>
+                        <p style="color: ${emptyTextSecondary};" class="text-sm mt-1">אין אפליקציות הממתינות להעברה לייצור</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `<div class="space-y-3">`;
+            
+            requests.forEach(request => {
+                const daysSince = Math.floor((new Date() - new Date(request.created_at)) / (1000 * 60 * 60 * 24));
+                const urgencyBorderColor = daysSince > 7 ? '#ef4444' : daysSince > 3 ? '#fb923c' : '#facc15';
+                const urgencyText = daysSince > 7 ? 'דחוף מאוד' : daysSince > 3 ? 'דחוף' : 'ממתין';
+                const urgencyBadgeBg = daysSince > 7 ? (isDark ? '#7f1d1d' : '#fee2e2') : 
+                                       daysSince > 3 ? (isDark ? '#7c2d12' : '#ffedd5') : 
+                                       (isDark ? '#713f12' : '#fef9c3');
+                const urgencyBadgeText = daysSince > 7 ? (isDark ? '#fecaca' : '#991b1b') : 
+                                         daysSince > 3 ? (isDark ? '#fed7aa' : '#9a3412') : 
+                                         (isDark ? '#fef08a' : '#854d0e');
+                const daysColor = daysSince > 7 ? (isDark ? '#f87171' : '#dc2626') : 
+                                  daysSince > 3 ? (isDark ? '#fb923c' : '#ea580c') : 
+                                  (isDark ? '#facc15' : '#ca8a04');
+                
+                const greenBadgeBg = isDark ? '#14532d' : '#dcfce7';
+                const greenBadgeText = isDark ? '#bbf7d0' : '#166534';
+                const orangeBadgeBg = isDark ? '#7c2d12' : '#ffedd5';
+                const orangeBadgeText = isDark ? '#fed7aa' : '#9a3412';
+                
+                html += `
+                    <div style="background-color: ${cardBg}; border-right: 4px solid ${urgencyBorderColor};" class="rounded-lg shadow-sm p-3">
+                        <div class="flex justify-between items-start mb-2">
+                            <span style="color: ${textPrimary};" class="font-semibold text-sm">${request.app_id}</span>
+                            <span style="background-color: ${urgencyBadgeBg}; color: ${urgencyBadgeText};" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium">
+                                ${urgencyText}
+                            </span>
+                        </div>
+                        <div class="space-y-1 text-xs">
+                            <div class="flex items-center justify-between">
+                                <span style="color: ${textSecondary};">מבקש:</span>
+                                <span style="color: ${textPrimary};">${request.requester_name}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span style="color: ${textSecondary};">הועבר לבדיקות:</span>
+                                <span style="color: ${textPrimary};">${new Date(request.created_at).toLocaleDateString('he-IL')}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span style="color: ${textSecondary};">ימים בהמתנה:</span>
+                                <span style="color: ${daysColor};" class="font-medium">${daysSince} ימים</span>
+                            </div>
+                        </div>
+                        <div style="border-top: 1px solid ${borderColor};" class="mt-2 pt-2">
+                            <div class="flex items-center justify-center space-x-1 rtl:space-x-reverse text-xs">
+                                <span style="background-color: ${greenBadgeBg}; color: ${greenBadgeText};" class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium">
+                                    <i class="fas fa-check ml-1 text-[10px]"></i> dev→test (#${request.id})
+                                </span>
+                                <i style="color: ${textSecondary};" class="fas fa-arrow-left text-[10px]"></i>
+                                <span style="background-color: ${orangeBadgeBg}; color: ${orangeBadgeText};" class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium">
+                                    <i class="fas fa-clock ml-1 text-[10px]"></i> test→prod
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // Render pending production deployments (legacy - keeping for compatibility)
+        function renderPendingProdDeployments(requests) {
+            // Now handled by renderPendingProdSidebar
+            renderPendingProdSidebar(requests);
+        }
+
         // Render requests table with date grouping
         function renderRequestsTableGrouped(groupedRequests) {
             const container = document.getElementById('desktopTableContainer');
@@ -3989,18 +4272,18 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             groupedRequests.forEach((group, groupIndex) => {
                 // Date header (collapsible)
                 html += `
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 border-b border-gray-200 cursor-pointer hover:from-blue-100 hover:to-indigo-100 transition-colors" 
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 px-4 py-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:from-blue-100 hover:to-indigo-100 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-colors" 
                              onclick="toggleDateGroup('date-group-desktop-${groupIndex}')">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                                    <i class="fas fa-calendar-day text-blue-600 text-lg"></i>
-                                    <h3 class="text-lg font-semibold text-gray-900">${group.dateKey}</h3>
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <i class="fas fa-calendar-day text-blue-600 dark:text-blue-400 text-lg"></i>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">${group.dateKey}</h3>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                                         ${group.requests.length} בקשות
                                     </span>
                                 </div>
-                                <i class="fas fa-chevron-up text-gray-400 transition-transform" id="date-group-desktop-${groupIndex}-icon"></i>
+                                <i class="fas fa-chevron-up text-gray-400 dark:text-gray-300 transition-transform" id="date-group-desktop-${groupIndex}-icon"></i>
                             </div>
                         </div>
                         <div id="date-group-desktop-${groupIndex}" class="">
@@ -4213,18 +4496,18 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             groupedRequests.forEach((group, groupIndex) => {
                 // Date header (collapsible)
                 html += `
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 border-b border-gray-200 cursor-pointer active:bg-blue-100 transition-colors" 
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 px-4 py-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer active:bg-blue-100 dark:active:bg-gray-500 transition-colors" 
                              onclick="toggleDateGroup('date-group-mobile-${groupIndex}')">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                                    <i class="fas fa-calendar-day text-blue-600 text-lg"></i>
-                                    <h3 class="text-base font-semibold text-gray-900">${group.dateKey}</h3>
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <i class="fas fa-calendar-day text-blue-600 dark:text-blue-400 text-lg"></i>
+                                    <h3 class="text-base font-semibold text-gray-900 dark:text-white">${group.dateKey}</h3>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                                         ${group.requests.length}
                                     </span>
                                 </div>
-                                <i class="fas fa-chevron-up text-gray-400 transition-transform" id="date-group-mobile-${groupIndex}-icon"></i>
+                                <i class="fas fa-chevron-up text-gray-400 dark:text-gray-300 transition-transform" id="date-group-mobile-${groupIndex}-icon"></i>
                             </div>
                         </div>
                         <div id="date-group-mobile-${groupIndex}" class="p-4 space-y-4">
@@ -4724,6 +5007,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 
                 showMessage('הבקשה בוצעה בהצלחה!', 'success');
                 loadAllRequests(); // Refresh view
+                loadPendingProductionDeployments(); // Refresh pending production section
                 
             } catch (error) {
                 console.error('Error approving request:', error);
@@ -4779,6 +5063,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 
                 // Refresh views
                 loadAllRequests();
+                loadPendingProductionDeployments();
                 
             } catch (error) {
                 console.error('Error rejecting request:', error);
