@@ -23,6 +23,8 @@
             --warning-color: #f72585;
             --info-color: #4895ef;
             --danger-color: #f94144;
+            --excel-color: #217346;
+            --excel-hover: #185c37;
             --light-color: #f8f9fa;
             --dark-color: #343a40;
             --bg-color: #f5f7ff;
@@ -36,6 +38,9 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             transition: all var(--transition-speed) ease;
             scroll-behavior: smooth;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .group:hover .group-hover\:opacity-100 {
@@ -121,6 +126,18 @@
 
         .btn-success:hover {
             background-color: #3bb4d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-excel {
+            background-color: var(--excel-color);
+            border: none;
+            color: white;
+        }
+
+        .btn-excel:hover {
+            background-color: var(--excel-hover);
             transform: translateY(-2px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
@@ -340,7 +357,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.0);
             backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
@@ -352,7 +369,7 @@
         }
 
         .loader-container.active {
-            opacity: 1;
+            opacity: 0.5;
             visibility: visible;
         }
 
@@ -369,6 +386,159 @@
             to {
                 transform: rotate(360deg);
             }
+        }
+
+        /* Skeleton Loading Styles */
+        .skeleton-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            z-index: 1999;
+            padding: 5rem 2rem 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .loader-container.active ~ .skeleton-overlay,
+        .loader-container.active ~ * .skeleton-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .skeleton {
+            background: linear-gradient(
+                110deg,
+                #d1d5db 8%,
+                #e5e7eb 18%,
+                #f3f4f6 33%,
+                #e5e7eb 50%,
+                #d1d5db 62%
+            );
+            background-size: 200% 100%;
+            animation: skeleton-shimmer 1.2s ease-in-out infinite;
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skeleton::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0,
+                rgba(255, 255, 255, 0.3) 20%,
+                rgba(255, 255, 255, 0.6) 60%,
+                rgba(255, 255, 255, 0)
+            );
+            animation: skeleton-wave 1.5s infinite;
+        }
+
+        @keyframes skeleton-shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes skeleton-wave {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .skeleton-header {
+            height: 45px;
+            margin-bottom: 1rem;
+            animation: skeleton-pulse 1.5s ease-in-out infinite;
+        }
+
+        .skeleton-button {
+            width: 120px;
+            height: 42px;
+            border-radius: 0.5rem;
+            animation: skeleton-pulse 1.5s ease-in-out infinite 0.2s;
+        }
+
+        .skeleton-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            animation: skeleton-fade-in 0.6s ease-out;
+        }
+
+        @keyframes skeleton-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes skeleton-pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .skeleton-line {
+            height: 22px;
+            margin-bottom: 1.2rem;
+            border-radius: 6px;
+        }
+
+        .skeleton-line-short {
+            width: 65%;
+        }
+
+        .skeleton-table-header {
+            height: 55px;
+            margin-bottom: 0.75rem;
+            border-radius: 8px;
+        }
+
+        .skeleton-table-row {
+            height: 65px;
+            margin-bottom: 0.75rem;
+            border-radius: 6px;
+            animation: skeleton-pulse 1.5s ease-in-out infinite;
+        }
+
+        .skeleton-table-row:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .skeleton-table-row:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .skeleton-table-row:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .skeleton-table-row:nth-child(5) {
+            animation-delay: 0.4s;
         }
 
         /* Animations */
@@ -732,16 +902,19 @@
         /* Issues table styles */
         .issues-table-container {
             overflow-x: auto;
+            overflow-y: auto;
             margin-top: 1.5rem;
             border-radius: var(--border-radius);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             min-height: 20rem;
+            position: relative;
         }
 
         .issues-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
+            min-width: 1100px;
         }
 
         .issues-table th {
@@ -753,6 +926,50 @@
             font-weight: 600;
             color: #64748b;
             border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        /* Freeze first two columns for RTL */
+        .issues-table th:nth-child(1),
+        .issues-table td:nth-child(1) {
+            position: sticky;
+            right: 0;
+            background-color: #f8fafc;
+            z-index: 11;
+            min-width: 120px;
+        }
+
+        .issues-table th:nth-child(2),
+        .issues-table td:nth-child(2) {
+            position: sticky;
+            right: 120px;
+            background-color: #f8fafc;
+            z-index: 11;
+            min-width: 200px;
+        }
+
+        .issues-table td:nth-child(1),
+        .issues-table td:nth-child(2) {
+            background-color: #ffffff;
+        }
+
+        /* Shadow only on second column (leftmost frozen column in RTL) */
+        .issues-table th:nth-child(2),
+        .issues-table td:nth-child(2) {
+            box-shadow: -3px 0 8px -3px rgba(0, 0, 0, 0.15);
+        }
+
+        .issues-table tr:hover td:nth-child(1),
+        .issues-table tr:hover td:nth-child(2) {
+            background-color: #f1f5f9;
+        }
+
+        .issues-table th:nth-child(1) {
+            z-index: 12;
+        }
+
+        .issues-table th:nth-child(2) {
+            z-index: 12;
         }
 
         .issues-table td {
@@ -762,6 +979,124 @@
 
         .issues-table tr:hover td {
             background-color: #f1f5f9;
+        }
+
+        /* Mobile: Disable sticky columns on small screens */
+        @media (max-width: 767px) {
+            .issues-table th:nth-child(1),
+            .issues-table td:nth-child(1),
+            .issues-table th:nth-child(2),
+            .issues-table td:nth-child(2) {
+                position: relative;
+                right: auto;
+                min-width: auto;
+                box-shadow: none;
+            }
+
+            .issues-table th:nth-child(1),
+            .issues-table th:nth-child(2) {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+        }
+
+        /* Iframe Modal */
+        .iframe-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .iframe-modal-overlay.active {
+            display: flex;
+        }
+
+        .iframe-modal-container {
+            position: relative;
+            width: 60vw;
+            height: 75vh;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .iframe-modal-header {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .iframe-modal-header h3 {
+            margin: 0;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .iframe-modal-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .iframe-modal-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .iframe-modal-btn-open {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .iframe-modal-btn-open:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .iframe-modal-btn-close {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 0.5rem;
+            width: 2rem;
+            height: 2rem;
+            justify-content: center;
+        }
+
+        .iframe-modal-btn-close:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .iframe-modal-content {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .iframe-modal-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .truncated-text {
@@ -1062,49 +1397,127 @@
         <div class="loader"></div>
     </div>
 
+    <!-- Skeleton Loading Overlay -->
+    <div class="skeleton-overlay">
+        <!-- Skeleton Navbar -->
+        <nav class="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+            <div class="w-full px-2 sm:px-3 py-3">
+                <div class="flex items-center justify-between gap-2 sm:gap-4">
+                    <div class="flex items-center gap-3 flex-shrink-0">
+                        <div class="skeleton" style="width: 40px; height: 40px; border-radius: 0.5rem;"></div>
+                        <div class="skeleton" style="width: 200px; height: 25px;"></div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="skeleton skeleton-button" style="width: 100px; height: 35px;"></div>
+                        <div class="skeleton skeleton-button" style="width: 100px; height: 35px;"></div>
+                        <div class="skeleton" style="width: 120px; height: 40px; border-radius: 20px;"></div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="w-full px-2 sm:px-3 py-6" style="margin-top: 5rem;">
+            <!-- Skeleton Number Gallery -->
+            <div class="flex flex-wrap justify-between items-center mb-6">
+                <div class="flex gap-3 flex-grow mb-4 md:mb-0 flex-wrap">
+                    <div class="skeleton skeleton-button" style="width: 50px; height: 50px; border-radius: 50%;"></div>
+                    <div class="skeleton skeleton-button" style="width: 50px; height: 50px; border-radius: 50%;"></div>
+                    <div class="skeleton skeleton-button" style="width: 50px; height: 50px; border-radius: 50%;"></div>
+                    <div class="skeleton skeleton-button" style="width: 50px; height: 50px; border-radius: 50%;"></div>
+                    <div class="skeleton skeleton-button" style="width: 50px; height: 50px; border-radius: 50%;"></div>
+                    <div class="skeleton skeleton-button" style="width: 50px; height: 50px; border-radius: 50%;"></div>
+                    <div class="skeleton skeleton-button" style="width: 50px; height: 50px; border-radius: 50%;"></div>
+                    <div class="skeleton skeleton-button" style="width: 50px; height: 50px; border-radius: 50%;"></div>
+                </div>
+                <div class="skeleton skeleton-button"></div>
+            </div>
+
+            <!-- Skeleton Cards Grid -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                <!-- Skeleton Case Info -->
+                <div class="skeleton-card" style="max-height: 730px;">
+                    <div class="skeleton skeleton-header mb-4"></div>
+                    <div class="skeleton skeleton-line"></div>
+                    <div class="skeleton skeleton-line"></div>
+                    <div class="skeleton skeleton-line skeleton-line-short"></div>
+                    <div class="skeleton skeleton-line"></div>
+                    <div class="skeleton skeleton-line skeleton-line-short"></div>
+                    <div class="skeleton skeleton-line"></div>
+                    <div class="skeleton skeleton-line"></div>
+                    <div class="skeleton skeleton-line skeleton-line-short"></div>
+                </div>
+
+                <!-- Skeleton Issues Table -->
+                <div class="skeleton-card" style="max-height: 90vh;">
+                    <div class="skeleton skeleton-header mb-4"></div>
+                    <div class="skeleton skeleton-table-header"></div>
+                    <div class="skeleton skeleton-table-row"></div>
+                    <div class="skeleton skeleton-table-row"></div>
+                    <div class="skeleton skeleton-table-row"></div>
+                    <div class="skeleton skeleton-table-row"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skeleton Footer -->
+        <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-4">
+            <div class="w-full px-2 sm:px-3">
+                <div class="flex justify-center items-center gap-4">
+                    <div class="skeleton" style="width: 150px; height: 20px;"></div>
+                    <div class="skeleton" style="width: 100px; height: 20px;"></div>
+                    <div class="skeleton" style="width: 120px; height: 20px;"></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
     <!-- Navbar -->
-    <nav class="navbar sticky top-0 z-50 p-4">
-        <div class="container mx-auto">
-            <div class="flex items-center justify-between">
+    <nav class="navbar top-0 z-50 shadow-md">
+        <div class="w-full px-2 sm:px-3 py-3">
+            <div class="flex items-center justify-between gap-2 sm:gap-4">
                 <!-- Logo & App Title -->
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center gap-3 flex-shrink-0">
                     <img src="https://www.abra-it.com/wp-content/uploads/2021/12/logo-big.svg" alt="Logo"
-                        class="w-12 h-12 object-contain">
-                    <h1 class="text-xl font-bold text-gray-800 hidden md:block">מערכת מעקב תהליכים דיגיטליים</h1>
+                        class="w-10 h-10 object-contain">
+                    <h1 class="text-lg font-bold text-gray-800 hidden lg:block whitespace-nowrap">מעקב תהליכים דיגיטליים</h1>
                 </div>
 
                 <!-- Search & Filter -->
-                <div id="searchFilterContainer" class="flex-1 max-w-md mx-4"></div>
+                <div id="searchFilterContainer" class="hidden md:flex flex-1 max-w-2xl"></div>
 
-                <!-- Navigation Items -->
-                <div class="flex items-center space-x-4">
-                    <a href="deployment.html"
-    id="deployRequestButton"
-    class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-green-600 transition duration-300">
-    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 4v5h.582M20 20v-5h-.581M5.418 9A7 7 0 0119 12h1M18.582 15A7 7 0 015 12H4" />
-    </svg>
-    העברת גרסה
-</a>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-2">
+                    <!-- Primary Actions -->
+                    <button
+                        id="deployRequestButton"
+                        onclick="openIframeModal('deployment.html')"
+                        class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition duration-300 shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582M20 20v-5h-.581M5.418 9A7 7 0 0119 12h1M18.582 15A7 7 0 715 12H4" />
+                        </svg>
+                        <span class="hidden lg:inline">העברת גרסה</span>
+                    </button>
 
-
-
-                    <!-- Dashboard Button -->
                     <button id="dashboardButton"
-                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 transition duration-300">
-                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
                             </path>
                         </svg>
-                        דשבורד
+                        <span class="hidden lg:inline">דשבורד</span>
                     </button>
+
+                    <!-- Divider -->
+                    <div class="h-8 w-px bg-gray-300"></div>
 
                     <!-- Info Button -->
                     <div class="relative group">
                         <button id="infoButton"
-                            class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 transition duration-300">
+                            class="flex items-center justify-center w-10 h-10 text-gray-700 hover:bg-gray-100 rounded-lg transition duration-300"
+                            title="מידע על טכנולוגיות">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -1112,7 +1525,7 @@
                         </button>
                         <!-- Info Dropdown -->
                         <div
-                            class="absolute right-0 w-80 p-4 mt-2 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300 z-50 transform origin-top-right scale-95 group-hover:scale-100">
+                            class="absolute left-0 w-80 p-4 mt-2 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300 z-50 transform origin-top-left scale-95 group-hover:scale-100">
                             <h3 class="text-lg font-semibold mb-3 text-blue-600">טכנולוגיות באתר</h3>
                             <ul class="text-sm space-y-3" dir="ltr">
                                 <li class="flex items-start">
@@ -1177,32 +1590,31 @@
 
                     <!-- User Menu -->
                     <div id="userDisplay" class="relative group">
-                        <div class="user-menu">
-                            <div class="user-avatar">
-                                <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                        <button class="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg transition duration-300 shadow-sm">
+                            <div class="flex items-center justify-center w-7 h-7 bg-white bg-opacity-20 rounded-full">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
                             </div>
-                            <span id="userEmail" class="text-white text-sm font-medium mr-1 ml-2"></span>
-                            <svg class="w-3 h-3 text-white transition duration-200 group-hover:rotate-180" fill="none"
+                            <span id="userEmail" class="text-white text-sm font-medium hidden xl:inline max-w-[150px] truncate"></span>
+                            <svg class="w-4 h-4 text-white transition duration-200 group-hover:rotate-180" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7"></path>
                             </svg>
-                        </div>
+                        </button>
 
                         <!-- User Dropdown -->
                         <div
-                            class="dropdown-menu absolute right-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300 z-50 transform origin-top-right scale-95 group-hover:scale-100">
+                            class="dropdown-menu absolute left-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300 z-50 transform origin-top-left scale-95 group-hover:scale-100">
                             <div class="p-4 border-b border-gray-100">
                                 <p class="text-xs text-gray-500">מחובר כ:</p>
                                 <p id="userEmailDropdown" class="text-sm font-medium text-gray-800 truncate"></p>
                             </div>
                             <button id="logoutButton"
-                                class="w-full flex items-center px-4 py-3 text-sm text-gray-600 hover:bg-red-50 hover:text-red-500 transition duration-200">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 hover:bg-red-50 hover:text-red-500 transition duration-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
                                     </path>
@@ -1212,12 +1624,84 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="md:hidden flex items-center justify-center w-10 h-10 text-gray-700 hover:bg-gray-100 rounded-lg transition duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobileMenu" class="md:hidden hidden mt-4 pb-4 border-t border-gray-200 animate-fadeIn">
+                <!-- Mobile Search -->
+                <div id="mobileSearchFilterContainer" class="mt-4"></div>
+                
+                <!-- Mobile Navigation Items -->
+                <div class="mt-4 space-y-2">
+                    <a href="deployment.html"
+                        class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-green-50 hover:text-green-600 rounded-lg transition duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582M20 20v-5h-.581M5.418 9A7 7 0 0119 12h1M18.582 15A7 7 0 015 12H4" />
+                        </svg>
+                        העברת גרסה
+                    </a>
+
+                    <button id="dashboardButtonMobile"
+                        class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                            </path>
+                        </svg>
+                        דשבורד
+                    </button>
+
+                    <button id="logoutButtonMobile"
+                        class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-500 rounded-lg transition duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                            </path>
+                        </svg>
+                        התנתק מהמערכת
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
+    <!-- Iframe Modal -->
+    <div id="iframeModal" class="iframe-modal-overlay" onclick="closeIframeModalOnOverlay(event)">
+        <div class="iframe-modal-container">
+            <div class="iframe-modal-header">
+                <h3>העברת גרסה</h3>
+                <div class="iframe-modal-buttons">
+                    <button class="iframe-modal-btn iframe-modal-btn-open" onclick="openIframeInNewTab()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        <span>פתח בכרטיסייה חדשה</span>
+                    </button>
+                    <button class="iframe-modal-btn iframe-modal-btn-close" onclick="closeIframeModal()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="iframe-modal-content">
+                <iframe id="iframeContent" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
     <!-- Login Container -->
-    <div id="loginContainer" class="login-container">
+    <div id="loginContainer" class="login-container" style="flex: 1;">
         <div class="login-card animate__animated animate__fadeIn">
             <div class="login-header">
                 <img src="https://www.abra-it.com/wp-content/uploads/2021/12/logo-big.svg" alt="Abra Logo"
@@ -1275,7 +1759,7 @@
     </div>
 
     <!-- Main Content Container -->
-    <div id="mainContentContainer" class="container mx-auto px-4 py-6 hidden">
+    <div id="mainContentContainer" class="w-full px-2 sm:px-3 py-6 hidden" style="flex: 1;">
         <!-- Number Gallery -->
         <div class="flex flex-wrap justify-between items-center mb-6">
             <div id="number-gallery" class="number-gallery flex-grow mb-4 md:mb-0"></div>
@@ -1287,10 +1771,12 @@
             </button>
         </div>
 
-        <!-- Case Information -->
-        <div id="case-info" class="card mb-8 hidden">
-            <!-- Case Header -->
-            <div class="case-header">
+        <!-- Case Info and Issues Container - Side by Side on Desktop -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <!-- Case Information -->
+            <div id="case-info" class="card hidden flex flex-col" style="max-height: 730px;">
+                <!-- Case Header -->
+                <div class="case-header flex-shrink-0">
                 <div class="flex flex-wrap md:flex-nowrap items-center justify-between">
                     <div class="flex items-center space-x-4 rtl:space-x-reverse mb-4 md:mb-0">
                         <h2 class="text-lg font-semibold">טופס #<span id="case-number"></span></h2>
@@ -1319,7 +1805,7 @@
             </div>
 
             <!-- Case Details -->
-            <div class="case-body p-6">
+            <div class="case-body p-6 flex-grow overflow-y-auto">
                 <!-- Main Content Grid with Timeline and Content -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
                     <!-- Timeline Section - Vertical Container Left Side -->
@@ -1473,7 +1959,7 @@
                     </div>
 
                     <button onclick="downloadCaseToExcel()"
-                        class="btn btn-success flex items-center px-4 py-2 rounded-lg">
+                        class="btn btn-excel flex items-center px-4 py-2 rounded-lg">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -1484,12 +1970,46 @@
             </div>
         </div>
 
-        <!-- Issues Table -->
-        <div id="issues-table-container" class="card p-6 hidden">
-            <h3 class="text-xl font-semibold mb-6">משימות</h3>
+            <!-- Issues Table -->
+            <div id="issues-table-container" class="card hidden flex flex-col" style="max-height: 90vh;">
+            <!-- Issues Header -->
+            <div class="case-header flex-shrink-0">
+                <div class="flex flex-wrap md:flex-nowrap items-center justify-between">
+                    <div class="flex items-center space-x-4 rtl:space-x-reverse mb-2 md:mb-0">
+                        <h3 class="text-xl font-semibold">משימות</h3>
+                        <div class="h-5 w-px bg-blue-300"></div>
+                        <span id="issues-header-subtitle" class="text-sm font-medium">ניהול משימות ואתגרים</span>
+                    </div>
+                    <div id="issues-stats" class="flex items-center gap-3 text-sm">
+                        <div class="flex items-center bg-yellow-50 px-3 py-1.5 rounded-lg border border-yellow-200">
+                            <svg class="w-4 h-4 text-yellow-600 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="font-medium text-yellow-700 ml-1">בעבודה:</span>
+                            <span id="stat-in-progress" class="font-bold text-yellow-800">0</span>
+                        </div>
+                        <div class="flex items-center bg-green-50 px-3 py-1.5 rounded-lg border border-green-200">
+                            <svg class="w-4 h-4 text-green-600 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="font-medium text-green-700 ml-1">הושלם:</span>
+                            <span id="stat-completed" class="font-bold text-green-800">0</span>
+                        </div>
+                        <div class="flex items-center bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200">
+                            <svg class="w-4 h-4 text-blue-600 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="font-medium text-blue-700 ml-1">בהמתנה:</span>
+                            <span id="stat-waiting" class="font-bold text-blue-800">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Table Content -->
+            <div class="p-6 flex-grow flex flex-col overflow-hidden">
             <!-- Filter Controls -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 flex-shrink-0">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">תאריך יצירה</label>
                     <select class="form-control column-filter w-full" data-column="createdDate">
@@ -1519,7 +2039,7 @@
             </div>
 
             <!-- Table -->
-            <div class="issues-table-container">
+            <div class="issues-table-container flex-grow overflow-y-auto mb-4">
                 <table id="issues-table" class="issues-table">
                     <thead>
                         <tr>
@@ -1537,13 +2057,16 @@
             </div>
 
             <!-- Add Issue Button -->
-            <button onclick="openModal('issue', 'add')" class="btn btn-primary flex items-center px-4 py-2 rounded-lg">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="openModal('issue', 'add')" class="btn btn-primary flex items-center px-4 py-2 rounded-lg flex-shrink-0" style="max-width: 165px;">
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
                 הוספת משימה
             </button>
+            </div>
         </div>
+        </div>
+        <!-- End of Case Info and Issues Grid -->
     </div>
 
     <!-- Modal -->
@@ -1668,7 +2191,7 @@
         </div>
     </div>
 
-    <footer class="bg-white border-t border-gray-200 mt-12 py-6">
+    <footer class="bg-white border-t border-gray-200 py-6" style="margin-top: auto;">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <!-- Left: Copyright -->
           <p class="text-gray-600 text-sm text-center md:text-left">
@@ -1718,7 +2241,8 @@
             selectedCase: null,
             searchQuery: '',
             filterStatus: 'all',
-            user: null
+            user: null,
+            sortByColor: false
         });
         // =========================================================
         // Work Queue System
@@ -1730,7 +2254,7 @@
             isProcessing: false,
 
             // Add a new operation to the queue
-            add(operation) {
+            add(operation, changes = []) {
                 const queueItem = {
                     id: this.generateId(),
                     type: operation.type,
@@ -1743,7 +2267,8 @@
                     startedAt: null,
                     completedAt: null,
                     error: null,
-                    data: operation
+                    data: operation,
+                    changes: changes
                 };
 
                 this.items.push(queueItem);
@@ -1971,6 +2496,19 @@
                     const listItem = document.createElement('div');
                     listItem.className = `border-b border-gray-200 last:border-b-0 p-4 ${item.status === 'failed' ? 'bg-red-50' : ''}`;
 
+                    const changesHtml = item.changes && item.changes.length > 0 ? `
+                        <div class="mt-3 p-2 bg-blue-50 rounded text-xs">
+                            <div class="font-semibold text-gray-700 mb-1">שינויים:</div>
+                            ${item.changes.map(change => `
+                                <div class="mb-1 pb-1 border-b border-blue-100 last:border-b-0">
+                                    <span class="font-medium text-gray-700">${change.field}:</span><br/>
+                                    <span class="text-red-600">← ${change.oldValue}</span><br/>
+                                    <span class="text-green-600">→ ${change.newValue}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : '';
+
                     listItem.innerHTML = `
                 <div class="flex items-start">
                     <div class="flex-shrink-0 pt-1">
@@ -1992,6 +2530,7 @@
                                 item.status === 'completed' ? 'הושלם' : 'נכשל'}
                             </span>
                         </div>
+                        ${changesHtml}
                         ${item.error ? `<p class="text-xs text-red-600 mt-2">${item.error}</p>` : ''}
                     </div>
                 </div>
@@ -2307,8 +2846,19 @@
             const numberGallery = document.getElementById('number-gallery');
             numberGallery.innerHTML = '';
 
-            // Sort cases by number
-            const sortedCases = cases.sort((a, b) => a.number - b.number);
+            // Sort cases by number or color based on state
+            const sortByColor = store.getState().sortByColor;
+            const sortedCases = sortByColor 
+                ? cases.sort((a, b) => {
+                    const colorA = a.color || '#FFFFFF';
+                    const colorB = b.color || '#FFFFFF';
+                    // Sort by color hex value, then by number
+                    if (colorA === colorB) {
+                        return a.number - b.number;
+                    }
+                    return colorA.localeCompare(colorB);
+                  })
+                : cases.sort((a, b) => a.number - b.number);
 
             sortedCases.forEach(c => {
                 const div = document.createElement('div');
@@ -2351,6 +2901,9 @@
             setFieldValue('case-title-display', selectedCase.title);
             setFieldValue('case-responsible-display', selectedCase.responsible);
             setFieldValue('case-description-display', selectedCase.description);
+            
+            // Update issues header subtitle with case info
+            document.getElementById('issues-header-subtitle').textContent = `ניהול משימות ואתגרים עבור טופס #${selectedCase.number} ${selectedCase.title}`;
             setFieldValue('case-dev-start-date-display', formatDate(selectedCase.developmentStartDate));
             setFieldValue('case-open-issues-display', selectedCase.openIssuesAtStart);
 
@@ -2860,6 +3413,21 @@
         function renderIssuesTable(issues) {
             const issuesTableBody = document.getElementById('issues-tbody');
             issuesTableBody.innerHTML = '';
+            
+            // Calculate and update status stats
+            const stats = {
+                'בעבודה': 0,
+                'הושלם': 0,
+                'בהמתנה': 0
+            };
+            issues.forEach(issue => {
+                if (stats.hasOwnProperty(issue.status)) {
+                    stats[issue.status]++;
+                }
+            });
+            document.getElementById('stat-in-progress').textContent = stats['בעבודה'];
+            document.getElementById('stat-completed').textContent = stats['הושלם'];
+            document.getElementById('stat-waiting').textContent = stats['בהמתנה'];
 
             if (issues.length === 0) {
                 const emptyRow = document.createElement('tr');
@@ -3131,23 +3699,126 @@
                             </section>
                             
                             <section class="bg-gray-50 p-6 rounded-lg">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">סטטוס פיתוח</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    ${createFormField('פיתוח ל-HD', 'select', 'modal-case-hd-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
-                                    ${createFormField('פיתוח לפטופ', 'select', 'modal-case-laptop-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
-                                    ${createFormField('פיתוח מובייל', 'select', 'modal-case-mobile-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
-                                    ${createFormField('מסך מאשרים', 'select', 'modal-case-approvers-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
-                                </div>
-                            </section>
-                            
-                            <section class="bg-gray-50 p-6 rounded-lg">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">תכונות נוספות</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    ${createFormField('התייחסות ב-ACTION CENTER', 'select', 'modal-case-action-center-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
-                                    ${createFormField('חיווי על כשלון אוטומציה', 'select', 'modal-case-automation-failure-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
-                                    ${createFormField('מייל תזכורות', 'select', 'modal-case-reminder-email-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
-                                    ${createFormField('עדכון תפקידי אבטחה', 'select', 'modal-case-security-roles-status', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
-                                    ${createFormField('הלבנת קבצים', 'select', 'modal-case-CDR', true, false, ['טרם החל', 'בפיתוח', 'הושלם', 'לא נדרש'])}
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">מטריצת סטטוס</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full border-collapse" style="background: white; border: 1px solid #e2e8f0;">
+                                        <thead>
+                                            <tr style="background: #f8fafc;">
+                                                <th style="border: 1px solid #e2e8f0; padding: 12px; text-align: right; font-weight: 600; color: #334155; width: 50%;">שדה</th>
+                                                <th style="border: 1px solid #e2e8f0; padding: 12px; text-align: right; font-weight: 600; color: #334155; width: 50%;">סטטוס</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                                <td style="border: 1px solid #e2e8f0; padding: 12px; background: #fafafa;">פיתוח ל-HD</td>
+                                                <td style="border: 1px solid #e2e8f0; padding: 8px;">
+                                                    <select id="modal-case-hd-status" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                                        <option value="">בחר סטטוס</option>
+                                                        <option value="טרם החל">טרם החל</option>
+                                                        <option value="בפיתוח">בפיתוח</option>
+                                                        <option value="הושלם">הושלם</option>
+                                                        <option value="לא נדרש">לא נדרש</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                                <td style="border: 1px solid #e2e8f0; padding: 12px; background: #fafafa;">פיתוח לפטופ</td>
+                                                <td style="border: 1px solid #e2e8f0; padding: 8px;">
+                                                    <select id="modal-case-laptop-status" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                                        <option value="">בחר סטטוס</option>
+                                                        <option value="טרם החל">טרם החל</option>
+                                                        <option value="בפיתוח">בפיתוח</option>
+                                                        <option value="הושלם">הושלם</option>
+                                                        <option value="לא נדרש">לא נדרש</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                                <td style="border: 1px solid #e2e8f0; padding: 12px; background: #fafafa;">פיתוח מובייל</td>
+                                                <td style="border: 1px solid #e2e8f0; padding: 8px;">
+                                                    <select id="modal-case-mobile-status" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                                        <option value="">בחר סטטוס</option>
+                                                        <option value="טרם החל">טרם החל</option>
+                                                        <option value="בפיתוח">בפיתוח</option>
+                                                        <option value="הושלם">הושלם</option>
+                                                        <option value="לא נדרש">לא נדרש</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                                <td style="border: 1px solid #e2e8f0; padding: 12px; background: #fafafa;">מסך מאשרים</td>
+                                                <td style="border: 1px solid #e2e8f0; padding: 8px;">
+                                                    <select id="modal-case-approvers-status" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                                        <option value="">בחר סטטוס</option>
+                                                        <option value="טרם החל">טרם החל</option>
+                                                        <option value="בפיתוח">בפיתוח</option>
+                                                        <option value="הושלם">הושלם</option>
+                                                        <option value="לא נדרש">לא נדרש</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                                <td style="border: 1px solid #e2e8f0; padding: 12px; background: #fafafa;">התייחסות ב-ACTION CENTER</td>
+                                                <td style="border: 1px solid #e2e8f0; padding: 8px;">
+                                                    <select id="modal-case-action-center-status" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                                        <option value="">בחר סטטוס</option>
+                                                        <option value="טרם החל">טרם החל</option>
+                                                        <option value="בפיתוח">בפיתוח</option>
+                                                        <option value="הושלם">הושלם</option>
+                                                        <option value="לא נדרש">לא נדרש</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                                <td style="border: 1px solid #e2e8f0; padding: 12px; background: #fafafa;">חיווי על כשלון אוטומציה</td>
+                                                <td style="border: 1px solid #e2e8f0; padding: 8px;">
+                                                    <select id="modal-case-automation-failure-status" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                                        <option value="">בחר סטטוס</option>
+                                                        <option value="טרם החל">טרם החל</option>
+                                                        <option value="בפיתוח">בפיתוח</option>
+                                                        <option value="הושלם">הושלם</option>
+                                                        <option value="לא נדרש">לא נדרש</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                                <td style="border: 1px solid #e2e8f0; padding: 12px; background: #fafafa;">מייל תזכורות</td>
+                                                <td style="border: 1px solid #e2e8f0; padding: 8px;">
+                                                    <select id="modal-case-reminder-email-status" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                                        <option value="">בחר סטטוס</option>
+                                                        <option value="טרם החל">טרם החל</option>
+                                                        <option value="בפיתוח">בפיתוח</option>
+                                                        <option value="הושלם">הושלם</option>
+                                                        <option value="לא נדרש">לא נדרש</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                                <td style="border: 1px solid #e2e8f0; padding: 12px; background: #fafafa;">עדכון תפקידי אבטחה</td>
+                                                <td style="border: 1px solid #e2e8f0; padding: 8px;">
+                                                    <select id="modal-case-security-roles-status" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                                        <option value="">בחר סטטוס</option>
+                                                        <option value="טרם החל">טרם החל</option>
+                                                        <option value="בפיתוח">בפיתוח</option>
+                                                        <option value="הושלם">הושלם</option>
+                                                        <option value="לא נדרש">לא נדרש</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                                <td style="border: 1px solid #e2e8f0; padding: 12px; background: #fafafa;">הלבנת קבצים</td>
+                                                <td style="border: 1px solid #e2e8f0; padding: 8px;">
+                                                    <select id="modal-case-CDR" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                                        <option value="">בחר סטטוס</option>
+                                                        <option value="טרם החל">טרם החל</option>
+                                                        <option value="בפיתוח">בפיתוח</option>
+                                                        <option value="הושלם">הושלם</option>
+                                                        <option value="לא נדרש">לא נדרש</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </section>
                         </div>
@@ -3420,6 +4091,13 @@
                 prodUrl: ''
             };
 
+            // Track changes for update action
+            let changes = [];
+            let oldCase = null;
+            if (action === 'update') {
+                oldCase = store.getState().selectedCase;
+            }
+
             // Check permissions
             if (action === 'add' && !checkPermission('create')) {
                 showNotification('אין לך הרשאות ליצור', 'error');
@@ -3459,6 +4137,44 @@
                 data.testUrl = document.getElementById('modal-case-test-url').value;
                 data.prodUrl = document.getElementById('modal-case-prod-url').value;
 
+                // Track changes if updating
+                if (action === 'update' && oldCase) {
+                    const fieldLabels = {
+                        title: 'כותרת טופס',
+                        responsible: 'אחראי על הטופס',
+                        description: 'תיאור טופס',
+                        generalStatus: 'סטטוס טופס כללי',
+                        developmentStartDate: 'תאריך התחלת פיתוח',
+                        testTransferDate: 'תאריך העברה לטסט',
+                        productionTransferDate: 'תאריך העברה לייצור',
+                        openIssuesAtStart: 'נושאים פתוחים באפיון',
+                        hdDevelopmentStatus: 'פיתוח ל-HD',
+                        laptopDevelopmentStatus: 'פיתוח לפטופ',
+                        mobileDevelopmentStatus: 'פיתוח מובייל',
+                        approversScreenStatus: 'מסך מאשרים',
+                        actionCenterStatus: 'התייחסות ב-ACTION CENTER',
+                        automationFailureIndicatorStatus: 'חיווי על כשלון אוטומציה',
+                        reminderEmailStatus: 'מייל תזכורות',
+                        securityRolesUpdateStatus: 'עדכון תפקידי אבטחה',
+                        CDR: 'הלבנת קבצים',
+                        devUrl: 'כתובת URL לפיתוח',
+                        testUrl: 'כתובת URL לבדיקות',
+                        prodUrl: 'כתובת URL לייצור'
+                    };
+
+                    Object.keys(fieldLabels).forEach(field => {
+                        const oldValue = oldCase[field] || '';
+                        const newValue = data[field] || '';
+                        if (oldValue !== newValue) {
+                            changes.push({
+                                field: fieldLabels[field],
+                                oldValue: oldValue || '(ריק)',
+                                newValue: newValue || '(ריק)'
+                            });
+                        }
+                    });
+                }
+
                 // Validate data
                 const errors = validateCaseData(data);
                 if (errors.length > 0) {
@@ -3468,7 +4184,7 @@
             }
 
             // Add to queue instead of sending directly
-            workQueue.add(data);
+            workQueue.add(data, changes);
 
             // Show notification that operation is queued
             showNotification(`פעולת ${action === 'add' ? 'הוספת' : action === 'update' ? 'עדכון' : 'מחיקת'} הטופס נוספה לתור העבודה`, 'info');
@@ -3493,6 +4209,13 @@
                 responsible: ''
             };
 
+            // Track changes for update action
+            let changes = [];
+            let oldIssue = null;
+            if (action === 'update') {
+                oldIssue = selectedCase.issues[index];
+            }
+
             // Check permissions
             if (action === 'add' && !checkPermission('create')) {
                 showNotification('אין לך הרשאות ליצור', 'error');
@@ -3515,6 +4238,29 @@
                 data.status = document.getElementById('modal-issue-status').value;
                 data.responsible = document.getElementById('modal-issue-responsible').value;
 
+                // Track changes if updating
+                if (action === 'update' && oldIssue) {
+                    const fieldLabels = {
+                        issue: 'משימה',
+                        challenge: 'אתגר',
+                        notes: 'הערות',
+                        status: 'סטטוס',
+                        responsible: 'אחראי'
+                    };
+
+                    Object.keys(fieldLabels).forEach(field => {
+                        const oldValue = oldIssue[field] || '';
+                        const newValue = data[field] || '';
+                        if (oldValue !== newValue) {
+                            changes.push({
+                                field: fieldLabels[field],
+                                oldValue: oldValue || '(ריק)',
+                                newValue: newValue || '(ריק)'
+                            });
+                        }
+                    });
+                }
+
                 // Validate data
                 const errors = validateIssueData(data);
                 if (errors.length > 0) {
@@ -3524,7 +4270,7 @@
             }
 
             // Add to queue instead of sending directly
-            workQueue.add(data);
+            workQueue.add(data, changes);
 
             // Show notification that operation is queued
             showNotification(`פעולת ${action === 'add' ? 'הוספת' : action === 'update' ? 'עדכון' : 'מחיקת'} המשימה נוספה לתור העבודה`, 'info');
@@ -3970,24 +4716,27 @@
         // =========================================================
         function renderSearchAndFilterBar() {
             const container = document.querySelector('#searchFilterContainer');
+            const mobileContainer = document.querySelector('#mobileSearchFilterContainer');
 
             if (container.querySelector('#searchInput')) {
                 return;
             }
 
-            container.innerHTML = `
-                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
-<div class="relative flex-grow">
-    <input 
-        type="text" 
-        id="searchInput" 
-        placeholder="חיפוש טפסים..." 
-        class="form-control w-full pl-10 pr-4"  aria-label="חיפוש טפסים">
-    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"> <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
-    </div>
-</div>
+            const searchFilterHTML = `
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <div class="relative flex-grow">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="חיפוש טפסים..." 
+                            class="form-control w-full pl-10 pr-4"  
+                            aria-label="חיפוש טפסים">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
                     <select 
                         id="statusFilter" 
                         class="form-control"
@@ -4001,14 +4750,81 @@
                         <option value="ייצור HD+LAPTOP">ייצור HD+LAPTOP</option>
                         <option value="בהמתנה">בהמתנה</option>
                     </select>
+                    <button 
+                        id="colorSortButton" 
+                        onclick="toggleColorSort()"
+                        class="btn btn-outline flex items-center gap-2 whitespace-nowrap"
+                        aria-label="מיון לפי צבעים"
+                        title="מיון לפי צבעים">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                        </svg>
+                        <span id="colorSortText">מיון לפי צבע</span>
+                    </button>
                 </div>
             `;
+
+            container.innerHTML = searchFilterHTML;
+            if (mobileContainer) {
+                mobileContainer.innerHTML = searchFilterHTML.replace('id="searchInput"', 'id="searchInputMobile"')
+                    .replace('id="statusFilter"', 'id="statusFilterMobile"')
+                    .replace('id="colorSortButton"', 'id="colorSortButtonMobile"')
+                    .replace('id="colorSortText"', 'id="colorSortTextMobile"');
+            }
 
             const searchInput = document.getElementById('searchInput');
             const statusFilter = document.getElementById('statusFilter');
 
             searchInput.addEventListener('input', updateSearchAndFilter);
             statusFilter.addEventListener('change', updateSearchAndFilter);
+
+            // Mobile event listeners
+            const searchInputMobile = document.getElementById('searchInputMobile');
+            const statusFilterMobile = document.getElementById('statusFilterMobile');
+            
+            if (searchInputMobile) searchInputMobile.addEventListener('input', updateSearchAndFilter);
+            if (statusFilterMobile) statusFilterMobile.addEventListener('change', updateSearchAndFilter);
+        }
+
+        // Mobile Menu Toggle
+        function initializeMobileMenu() {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    
+                    // Update icon
+                    const icon = mobileMenuButton.querySelector('svg');
+                    if (mobileMenu.classList.contains('hidden')) {
+                        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
+                    } else {
+                        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+                    }
+                });
+            }
+        }
+
+        function toggleColorSort() {
+            const currentState = store.getState().sortByColor;
+            store.setState({ sortByColor: !currentState });
+            
+            // Update button appearance
+            const button = document.getElementById('colorSortButton');
+            const buttonText = document.getElementById('colorSortText');
+            if (!currentState) {
+                button.classList.add('btn-primary');
+                button.classList.remove('btn-outline');
+                buttonText.textContent = 'מיון לפי מספר';
+            } else {
+                button.classList.remove('btn-primary');
+                button.classList.add('btn-outline');
+                buttonText.textContent = 'מיון לפי צבע';
+            }
+            
+            // Re-render with current filters
+            updateSearchAndFilter();
         }
 
         function updateSearchAndFilter() {
@@ -4346,6 +5162,14 @@
                 appInitialized = true;
 
                 hideLoader();
+
+                // Automatically click the first case in the gallery
+                setTimeout(() => {
+                    const firstCase = document.querySelector('#number-gallery .number-icon');
+                    if (firstCase) {
+                        firstCase.click();
+                    }
+                }, 100);
             } catch (error) {
                 console.error('Error initializing app:', error);
                 showNotification('אירעה שגיאה בטעינת הנתונים', 'error');
@@ -4373,7 +5197,13 @@
 
                 // הוספת מאזיני אירועים נוספים שצריכים להתווסף לאחר האתחול
                 document.getElementById('dashboardButton').addEventListener('click', openDashboard);
+                if (document.getElementById('dashboardButtonMobile')) {
+                    document.getElementById('dashboardButtonMobile').addEventListener('click', openDashboard);
+                }
                 document.getElementById('closeDashboard').addEventListener('click', closeDashboard);
+
+                // Initialize mobile menu
+                initializeMobileMenu();
 
                 // הוספת מאזין לסגירת תור העבודה עם מקש Escape
                 document.addEventListener('keydown', function (event) {
@@ -4383,6 +5213,40 @@
                         closeDashboard();
                     }
                 });
+            };
+
+            // Iframe Modal Functions
+            window.currentIframeUrl = '';
+
+            window.openIframeModal = function(url) {
+                window.currentIframeUrl = url;
+                const modal = document.getElementById('iframeModal');
+                const iframe = document.getElementById('iframeContent');
+                iframe.src = url;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            window.closeIframeModal = function() {
+                const modal = document.getElementById('iframeModal');
+                const iframe = document.getElementById('iframeContent');
+                modal.classList.remove('active');
+                iframe.src = '';
+                window.currentIframeUrl = '';
+                document.body.style.overflow = '';
+            };
+
+            window.closeIframeModalOnOverlay = function(event) {
+                if (event.target.id === 'iframeModal') {
+                    window.closeIframeModal();
+                }
+            };
+
+            window.openIframeInNewTab = function() {
+                if (window.currentIframeUrl) {
+                    window.open(window.currentIframeUrl, '_blank');
+                    window.closeIframeModal();
+                }
             };
 
             // אתחול התחברות
@@ -4395,6 +5259,9 @@
 
             // מאזין אירועים לכפתור ההתנתקות
             document.getElementById('logoutButton').addEventListener('click', logout);
+            if (document.getElementById('logoutButtonMobile')) {
+                document.getElementById('logoutButtonMobile').addEventListener('click', logout);
+            }
 
             // מאזין אירועים לסגירת מודל כאשר לוחצים מחוץ לו - מבוטל כדי למנוע אובדן נתונים
             // document.getElementById('dynamicModal').addEventListener('click', function (event) {
