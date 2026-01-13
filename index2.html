@@ -914,7 +914,7 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            min-width: 1100px;
+            table-layout: fixed;
         }
 
         .issues-table th {
@@ -922,58 +922,14 @@
             top: 0;
             background-color: #f8fafc;
             z-index: 10;
-            padding: 1rem;
+            padding: 0.75rem;
             font-weight: 600;
             color: #64748b;
             border-bottom: 1px solid #e2e8f0;
-            white-space: nowrap;
-        }
-
-        /* Freeze first two columns for RTL */
-        .issues-table th:nth-child(1),
-        .issues-table td:nth-child(1) {
-            position: sticky;
-            right: 0;
-            background-color: #f8fafc;
-            z-index: 11;
-            min-width: 120px;
-        }
-
-        .issues-table th:nth-child(2),
-        .issues-table td:nth-child(2) {
-            position: sticky;
-            right: 120px;
-            background-color: #f8fafc;
-            z-index: 11;
-            min-width: 200px;
-        }
-
-        .issues-table td:nth-child(1),
-        .issues-table td:nth-child(2) {
-            background-color: #ffffff;
-        }
-
-        /* Shadow only on second column (leftmost frozen column in RTL) */
-        .issues-table th:nth-child(2),
-        .issues-table td:nth-child(2) {
-            box-shadow: -3px 0 8px -3px rgba(0, 0, 0, 0.15);
-        }
-
-        .issues-table tr:hover td:nth-child(1),
-        .issues-table tr:hover td:nth-child(2) {
-            background-color: #f1f5f9;
-        }
-
-        .issues-table th:nth-child(1) {
-            z-index: 12;
-        }
-
-        .issues-table th:nth-child(2) {
-            z-index: 12;
         }
 
         .issues-table td {
-            padding: 1rem;
+            padding: 0.75rem;
             border-bottom: 1px solid #e2e8f0;
         }
 
@@ -983,18 +939,7 @@
 
         /* Mobile: Disable sticky columns on small screens */
         @media (max-width: 767px) {
-            .issues-table th:nth-child(1),
-            .issues-table td:nth-child(1),
-            .issues-table th:nth-child(2),
-            .issues-table td:nth-child(2) {
-                position: relative;
-                right: auto;
-                min-width: auto;
-                box-shadow: none;
-            }
-
-            .issues-table th:nth-child(1),
-            .issues-table th:nth-child(2) {
+            .issues-table th {
                 position: sticky;
                 top: 0;
                 z-index: 10;
@@ -2045,8 +1990,6 @@
                         <tr>
                             <th class="text-right">תאריך יצירה</th>
                             <th class="text-right">משימה</th>
-                            <th class="text-right">אתגר</th>
-                            <th class="text-right">הערות</th>
                             <th class="text-right">סטאטוס</th>
                             <th class="text-right">אחראי</th>
                             <th class="text-right">פעולות</th>
@@ -3432,7 +3375,7 @@
             if (issues.length === 0) {
                 const emptyRow = document.createElement('tr');
                 emptyRow.innerHTML = `
-                    <td colspan="7" class="text-center py-8 text-gray-500">
+                    <td colspan="5" class="text-center py-8 text-gray-500">
                         <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
@@ -3450,14 +3393,6 @@
                 row.innerHTML = `
                     <td data-label="תאריך יצירה" class="text-sm text-gray-600">${formatDate(issue.createdDate)}</td>
                     <td data-label="משימה" class="font-medium">${issue.issue}</td>
-                    <td data-label="אתגר" class="truncated-text-container">
-                        <div class="truncated-text">${issue.challenge}</div>
-                        ${issue.challenge.length > 100 ? `<div class="full-text">${issue.challenge}</div>` : ''}
-                    </td>
-                    <td data-label="הערות" class="truncated-text-container">
-                        <div class="truncated-text">${formatNotes(issue.notes)}</div>
-                        ${issue.notes.length > 100 ? `<div class="full-text">${issue.notes}</div>` : ''}
-                    </td>
                     <td data-label="סטאטוס">
                         <span class="${getIssueStatusClass(issue.status)}">${issue.status}</span>
                     </td>
