@@ -4176,9 +4176,14 @@
                 }
 
                 // Validate data
-                const errors = validateCaseData(data);
+                const errors = validateCaseData(data, action);
                 if (errors.length > 0) {
-                    showNotification(errors.join('\n'), 'error');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'שגיאת אימות',
+                        html: errors.map(e => `<p>${e}</p>`).join(''),
+                        confirmButtonText: 'הבנתי'
+                    });
                     return;
                 }
             }
@@ -4465,9 +4470,14 @@
                 data.prodUrl = document.getElementById('modal-case-prod-url').value;
 
                 // Validate data
-                const errors = validateCaseData(data);
+                const errors = validateCaseData(data, action);
                 if (errors.length > 0) {
-                    showNotification(errors.join('\n'), 'error');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'שגיאת אימות',
+                        html: errors.map(e => `<p>${e}</p>`).join(''),
+                        confirmButtonText: 'הבנתי'
+                    });
                     enableButtons();
                     return;
                 }
@@ -4615,11 +4625,19 @@
             });
         }
 
-        function validateCaseData(data) {
+        function validateCaseData(data, action = 'add') {
             const errors = [];
 
             if (!data.caseNumber || isNaN(data.caseNumber)) {
                 errors.push('מספר הטופס חייב להיות מספר תקין');
+            }
+
+            // Check for duplicate case number when adding
+            if (action === 'add' && data.caseNumber) {
+                const existingCase = store.getState().cases.find(c => c.number === data.caseNumber);
+                if (existingCase) {
+                    errors.push(`טופס עם מספר ${data.caseNumber} כבר קיים במערכת`);
+                }
             }
 
             if (!data.title || data.title.trim().length === 0) {
