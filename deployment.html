@@ -1581,8 +1581,20 @@
                         </div>
 
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="description">תיאור השינויים *</label>
+                            <div class="flex items-center justify-between">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="description">תיאור השינויים *</label>
+                                <button type="button" 
+                                        onclick="expandDescriptionWithAI()" 
+                                        id="aiExpandBtn"
+                                        class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-md transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                                        title="הרחב את התיאור עם AI">
+                                    <i class="fas fa-magic mr-1.5"></i>
+                                    <span id="aiExpandBtnText">הרחב עם AI</span>
+                                    <i class="fas fa-spinner fa-spin mr-1.5 hidden" id="aiExpandSpinner"></i>
+                                </button>
+                            </div>
                             <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="description" rows="4" required placeholder="תאר את השינויים או הסיבה להעברה"></textarea>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">טיפ: כתוב תיאור קצר ולחץ "הרחב עם AI" לקבלת תיאור מפורט יותר</p>
                         </div>
 
                         <div class="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
@@ -1693,7 +1705,8 @@
             SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4amdvbW5qdGp0dWdoY3hhd296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNjg1OTEsImV4cCI6MjA3MTk0NDU5MX0.PI1gvtRk5BKYr97Eu9lFSpUyfYJindWAwfCBsrjB_bA',
             
             NTFY_ADMIN_TOPIC: 'request-admin-iec',
-            NTFY_STATUS_TOPIC: 'iec-deployment-status'
+            NTFY_STATUS_TOPIC: 'iec-deployment-status',
+            GEMINI_API_KEY: 'AIzaSyDqZx-z7fke1gKHigCiAxh3PRyWMvCsoxU'
         };
 
         // Global variables
@@ -1705,6 +1718,7 @@
         let showTodayOnly = true; // Default to showing only today's requests
         let devToProdPopupShown = false; // Track if dev->prod popup was already shown
         let existingAppIds = []; // Store all unique app IDs from database
+        let currentRequests = []; // Store current requests for delta comparison
 
         // Users array for dropdown selection
         const users = [
@@ -1719,6 +1733,119 @@
             { name: "שירי קסירר", email: "Shiri.Kassirer@abra-it.com" },
             { name: "מיטל רובינוב", email: "Meital.Robinov@abra-it.com" }
         ];
+
+        // AI Description Expansion
+        async function expandDescriptionWithAI() {
+            const descriptionField = document.getElementById('description');
+            const appIdField = document.getElementById('appId');
+            const sourceEnvField = document.getElementById('sourceEnv');
+            const targetEnvField = document.getElementById('targetEnv');
+            const aiBtn = document.getElementById('aiExpandBtn');
+            const btnText = document.getElementById('aiExpandBtnText');
+            const spinner = document.getElementById('aiExpandSpinner');
+            
+            // Get current values
+            const currentDescription = descriptionField.value.trim();
+            const appId = appIdField.value.trim();
+            const sourceEnv = sourceEnvField.value;
+            const targetEnv = targetEnvField.value;
+            
+            // Validation
+            if (!currentDescription) {
+                showMessage('אנא כתוב תיאור קצר לפני השימוש ב-AI', 'warning');
+                return;
+            }
+            
+            if (!appId) {
+                showMessage('אנא הזן מזהה אפליקציה לפני השימוש ב-AI', 'warning');
+                return;
+            }
+            
+            if (!sourceEnv || !targetEnv) {
+                showMessage('אנא בחר סביבת מקור ויעד לפני השימוש ב-AI', 'warning');
+                return;
+            }
+            
+            // Disable button and show loading
+            aiBtn.disabled = true;
+            btnText.textContent = 'מעבד...';
+            spinner.classList.remove('hidden');
+            
+            try {
+                // Prepare the prompt
+                const prompt = `תרחיב את התיאור הבא:
+${currentDescription}
+
+בנוגע להעברת גרסה של פתרון: ${appId}
+מסביבה: ${sourceEnv}
+לסביבה: ${targetEnv}
+
+התוצאה תהיה קצרה עד 40 מילים, בעברית, מפורטת ומקצועית.
+החזר את התשובה בפורמט JSON בלבד:
+{"response": "התיאור המורחב"}`;
+                
+                // Call Gemini API with gemini-flash-lite-latest model
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${CONFIG.GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }],
+                        generationConfig: {
+                            temperature: 0.7,
+                            maxOutputTokens: 200,
+                        }
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Extract the response text
+                let expandedText = data.candidates[0].content.parts[0].text;
+                
+                // Try to parse as JSON if it's in JSON format
+                try {
+                    const jsonMatch = expandedText.match(/\{[^}]+\}/);
+                    if (jsonMatch) {
+                        const parsed = JSON.parse(jsonMatch[0]);
+                        expandedText = parsed.response || expandedText;
+                    }
+                } catch (e) {
+                    // If not JSON, use the text as is
+                    expandedText = expandedText.replace(/```json|```|\{"response":"|"\}/g, '').trim();
+                }
+                
+                // Update the description field
+                descriptionField.value = expandedText;
+                
+                // Flash animation to show update
+                descriptionField.style.transition = 'background-color 0.5s ease';
+                descriptionField.style.backgroundColor = '#dcfce7';
+                setTimeout(() => {
+                    descriptionField.style.backgroundColor = '';
+                }, 1000);
+                
+                showMessage('התיאור הורחב בהצלחה!', 'success');
+                
+            } catch (error) {
+                console.error('AI expansion error:', error);
+                showMessage('שגיאה בהרחבת התיאור: ' + error.message, 'error');
+            } finally {
+                // Re-enable button
+                aiBtn.disabled = false;
+                btnText.textContent = 'הרחב עם AI';
+                spinner.classList.add('hidden');
+            }
+        }
 
         // Dark mode functions
         function toggleDarkMode() {
@@ -1885,8 +2012,21 @@
             initSupabase();
             setupEventListeners();
             populateUserDropdowns();
-            checkAuthState();
-            loadAllRequests(); // Load public requests on page load
+            
+            // Set default filter values explicitly before loading
+            const statusFilterElement = document.getElementById('statusFilter');
+            if (statusFilterElement) {
+                statusFilterElement.value = 'pending'; // Set to pending explicitly
+            }
+            
+            // First check auth state, then load requests
+            checkAuthState().then(() => {
+                // Only load if not already loaded by checkAuthState (when admin is logged in)
+                if (!isAdmin) {
+                    loadAllRequests(); // Load public requests on page load for non-admin
+                }
+            });
+            
             loadPendingProductionDeployments(); // Load pending production deployments
             loadExistingAppIds(); // Load all unique app IDs for autocomplete
         });
@@ -2653,18 +2793,18 @@
             // Clear any existing interval first
             stopAutoRefresh();
             
-            // Set up auto-refresh every 1 minute (60000 ms)
+            // Set up auto-refresh every 1 minute (60000 ms) in quiet mode
             autoRefreshInterval = setInterval(() => {
                 if (isAdmin && currentUser) {
-                    console.log('Auto-refreshing requests...');
-                    loadAllRequests();
+                    console.log('Auto-refreshing requests (quiet mode)...');
+                    loadAllRequests(true); // Use quiet mode for auto-refresh
                 } else {
                     // Stop auto-refresh if user is no longer logged in
                     stopAutoRefresh();
                 }
             }, 60000); // 60000 ms = 1 minute
             
-            console.log('Auto-refresh started (every 1 minute)');
+            console.log('Auto-refresh started (every 1 minute, quiet mode)');
         }
         
         function stopAutoRefresh() {
@@ -3107,6 +3247,307 @@
         let currentSortDirection = 'desc';
         let filteredRequests = [];
 
+        // Calculate delta between old and new requests
+        function calculateDelta(oldRequests, newRequests) {
+            const oldMap = new Map(oldRequests.map(r => [r.id, r]));
+            const newMap = new Map(newRequests.map(r => [r.id, r]));
+            
+            const added = newRequests.filter(r => !oldMap.has(r.id));
+            const deleted = oldRequests.filter(r => !newMap.has(r.id));
+            const updated = newRequests.filter(r => {
+                if (!oldMap.has(r.id)) return false;
+                const oldReq = oldMap.get(r.id);
+                return JSON.stringify(oldReq) !== JSON.stringify(r);
+            });
+            
+            return { added, deleted, updated };
+        }
+
+        // Apply delta updates to the DOM
+        function applyDeltaUpdates(oldRequests, newRequests) {
+            // Safety checks
+            if (!oldRequests) oldRequests = [];
+            if (!newRequests) newRequests = [];
+            
+            const delta = calculateDelta(oldRequests, newRequests);
+            
+            // Handle deleted items
+            delta.deleted.forEach(request => {
+                const rowElement = document.querySelector(`tr[data-request-id="${request.id}"]`);
+                const cardElement = document.querySelector(`.request-card[data-request-id="${request.id}"]`);
+                
+                if (rowElement) {
+                    rowElement.style.transition = 'opacity 0.3s ease-out';
+                    rowElement.style.opacity = '0';
+                    setTimeout(() => rowElement.remove(), 300);
+                }
+                if (cardElement) {
+                    cardElement.style.transition = 'opacity 0.3s ease-out';
+                    cardElement.style.opacity = '0';
+                    setTimeout(() => cardElement.remove(), 300);
+                }
+            });
+            
+            // Handle updated items
+            delta.updated.forEach(request => {
+                updateRequestInDOM(request);
+            });
+            
+            // Handle added items
+            if (delta.added.length > 0) {
+                // Re-render to insert new items in correct position
+                displayPublicRequests(newRequests);
+            }
+            
+            // If there were only updates/deletes and no adds, we're done
+            if (delta.added.length === 0 && (delta.updated.length > 0 || delta.deleted.length > 0)) {
+                console.log(`Quiet update: ${delta.updated.length} updated, ${delta.deleted.length} deleted`);
+            }
+        }
+
+        // Update a single request in the DOM
+        function updateRequestInDOM(request) {
+            // Update table row status
+            const rowElement = document.querySelector(`tr[data-request-id="${request.id}"]`);
+            if (rowElement) {
+                // Update status cell using data-cell-type attribute
+                const statusCell = rowElement.querySelector('td[data-cell-type="status"]');
+                if (statusCell) {
+                    statusCell.innerHTML = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusClass(request.status)}">${getStatusText(request.status)}</span>`;
+                }
+                
+                // Update action buttons cell if admin (using data-cell-type)
+                if (isAdmin) {
+                    const actionsCell = rowElement.querySelector('td[data-cell-type="actions"]');
+                    if (actionsCell) {
+                        if (request.status === 'pending') {
+                            // Show action buttons for pending requests
+                            actionsCell.innerHTML = `
+                                <div class="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rtl:space-x-reverse">
+                                    <button class="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                            onclick="testApprove(${request.id})" 
+                                            title="אשר בקשה">
+                                        <i class="fas fa-check"></i>
+                                        <span>אשר</span>
+                                    </button>
+                                    <button class="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                            onclick="testReject(${request.id})" 
+                                            title="דחה בקשה">
+                                        <i class="fas fa-times"></i>
+                                        <span>דחה</span>
+                                    </button>
+                                    <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                            onclick="testDelete(${request.id})" 
+                                            title="מחק בקשה">
+                                        <i class="fas fa-trash"></i>
+                                        <span>מחק</span>
+                                    </button>
+                                </div>
+                            `;
+                        } else {
+                            // Show dash for approved/rejected requests
+                            actionsCell.innerHTML = '<span class="text-gray-400 text-sm">-</span>';
+                        }
+                    }
+                }
+                
+                // Flash animation to indicate update
+                rowElement.style.transition = 'background-color 0.5s ease';
+                const originalBg = rowElement.style.backgroundColor;
+                rowElement.style.backgroundColor = '#fef3c7';
+                setTimeout(() => {
+                    rowElement.style.backgroundColor = originalBg;
+                }, 500);
+                
+                // Update expanded details row if it exists
+                const detailsRow = document.getElementById(`details-${request.id}`);
+                if (detailsRow) {
+                    updateDetailsRow(detailsRow, request);
+                }
+            }
+            
+            // Update mobile card
+            const cardElement = document.querySelector(`.request-card[data-request-id="${request.id}"]`);
+            if (cardElement) {
+                // Update status badge
+                const statusElement = cardElement.querySelector('.status-badge');
+                if (statusElement) {
+                    statusElement.className = `status-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusClass(request.status)}`;
+                    statusElement.textContent = getStatusText(request.status);
+                }
+                
+                // Update or remove admin action buttons
+                updateMobileCardActions(cardElement, request);
+                
+                // Update expanded details if visible
+                const mobileDetailsSection = cardElement.querySelector(`#mobile-card-${request.id}`);
+                if (mobileDetailsSection) {
+                    updateMobileCardDetails(mobileDetailsSection, request);
+                }
+                
+                // Flash animation
+                cardElement.style.transition = 'background-color 0.5s ease';
+                const originalBg = cardElement.style.backgroundColor;
+                cardElement.style.backgroundColor = '#fef3c7';
+                setTimeout(() => {
+                    cardElement.style.backgroundColor = originalBg;
+                }, 500);
+            }
+        }
+        
+        // Update the details row content (admin buttons, approved/rejected info)
+        function updateDetailsRow(detailsRow, request) {
+            const detailsCell = detailsRow.querySelector('td');
+            if (!detailsCell) return;
+            
+            const detailsContent = detailsCell.querySelector('.bg-white.rounded-lg');
+            if (!detailsContent) return;
+            
+            // Find and update/remove the admin actions section
+            const existingActionsDiv = detailsContent.querySelector('.mt-6.pt-4.border-t');
+            
+            if (request.status === 'pending' && isAdmin) {
+                // Status is still pending, actions should remain
+                if (!existingActionsDiv) {
+                    // Add actions if they don't exist
+                    const actionsHTML = `
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
+                                <button class="px-4 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testApprove(${request.id})">
+                                    <i class="fas fa-check"></i>
+                                    <span>אשר בקשה</span>
+                                </button>
+                                <button class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testReject(${request.id})">
+                                    <i class="fas fa-times"></i>
+                                    <span>דחה בקשה</span>
+                                </button>
+                                <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testDelete(${request.id})">
+                                    <i class="fas fa-trash"></i>
+                                    <span>מחק בקשה</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    detailsContent.insertAdjacentHTML('beforeend', actionsHTML);
+                }
+            } else {
+                // Status is approved/rejected, remove action buttons
+                if (existingActionsDiv) {
+                    existingActionsDiv.remove();
+                }
+                
+                // Add approved/rejected info if needed
+                updateApprovalRejectionInfo(detailsContent, request);
+            }
+        }
+        
+        // Update approval/rejection information in details
+        function updateApprovalRejectionInfo(container, request) {
+            const statusInfoDiv = container.querySelector('.space-y-3');
+            if (!statusInfoDiv) return;
+            
+            // Remove old approval/rejection info
+            const oldApprovedBy = statusInfoDiv.querySelector('[class*="text-green-700"]')?.parentElement;
+            const oldRejectedBy = statusInfoDiv.querySelector('[class*="text-red-700"]')?.parentElement;
+            if (oldApprovedBy) oldApprovedBy.remove();
+            if (oldRejectedBy) oldRejectedBy.remove();
+            
+            // Add new info based on status
+            if (request.status === 'approved' && request.approved_by) {
+                const approvedInfoHTML = `
+                    <div>
+                        <span class="block text-sm font-medium text-green-700">בוצע על ידי:</span>
+                        <span class="text-sm text-green-900">${request.approved_by}</span>
+                    </div>
+                    ${request.approved_at ? `
+                        <div>
+                            <span class="block text-sm font-medium text-green-700">תאריך ביצוע:</span>
+                            <span class="text-sm text-green-900">${new Date(request.approved_at).toLocaleString('he-IL')}</span>
+                        </div>
+                    ` : ''}
+                `;
+                statusInfoDiv.insertAdjacentHTML('beforeend', approvedInfoHTML);
+            } else if (request.status === 'rejected' && request.rejected_by) {
+                const rejectedInfoHTML = `
+                    <div>
+                        <span class="block text-sm font-medium text-red-700">נדחה על ידי:</span>
+                        <span class="text-sm text-red-900">${request.rejected_by}</span>
+                    </div>
+                    ${request.rejected_at ? `
+                        <div>
+                            <span class="block text-sm font-medium text-red-700">תאריך דחייה:</span>
+                            <span class="text-sm text-red-900">${new Date(request.rejected_at).toLocaleString('he-IL')}</span>
+                        </div>
+                    ` : ''}
+                `;
+                statusInfoDiv.insertAdjacentHTML('beforeend', rejectedInfoHTML);
+            }
+        }
+        
+        // Update mobile card action buttons
+        function updateMobileCardActions(cardElement, request) {
+            // Find existing action buttons container
+            const existingActions = cardElement.querySelector('.grid.grid-cols-3.gap-2');
+            
+            if (request.status === 'pending' && isAdmin) {
+                // Ensure buttons exist for pending requests
+                if (!existingActions) {
+                    const actionsHTML = `
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button class="px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
+                                    onclick="testApprove(${request.id})" 
+                                    title="אשר בקשה">
+                                <i class="fas fa-check"></i>
+                                <span>אשר</span>
+                            </button>
+                            <button class="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
+                                    onclick="testReject(${request.id})" 
+                                    title="דחה בקשה">
+                                <i class="fas fa-times"></i>
+                                <span>דחה</span>
+                            </button>
+                            <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
+                                    onclick="testDelete(${request.id})" 
+                                    title="מחק בקשה">
+                                <i class="fas fa-trash"></i>
+                                <span>מחק</span>
+                            </button>
+                        </div>
+                    `;
+                    // Insert before the collapsible section
+                    const collapsibleDiv = cardElement.querySelector(`#mobile-card-${request.id}`);
+                    if (collapsibleDiv) {
+                        collapsibleDiv.insertAdjacentHTML('beforebegin', actionsHTML);
+                    }
+                }
+            } else {
+                // Remove action buttons for non-pending requests
+                if (existingActions) {
+                    existingActions.remove();
+                }
+            }
+        }
+        
+        // Update mobile card details section
+        function updateMobileCardDetails(detailsSection, request) {
+            // Update approval/rejection info in mobile details
+            if (request.status === 'approved' || request.status === 'rejected') {
+                // This would require similar logic as updateApprovalRejectionInfo
+                // For now, the main status badge update is sufficient
+            }
+        }
+
+        // Helper function to get status class
+        function getStatusClass(status) {
+            const classes = {
+                'pending': 'bg-yellow-100 text-yellow-800',
+                'approved': 'bg-green-100 text-green-800',
+                'rejected': 'bg-red-100 text-red-800',
+                'completed': 'bg-blue-100 text-blue-800'
+            };
+            return classes[status] || 'bg-gray-100 text-gray-800';
+        }
+
         // Search and filter function
         function filterRequests() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -3162,7 +3603,16 @@
 
         // Sort requests data
         function sortRequestsData(data, column, direction) {
-            data.sort((a, b) => {
+            // Safety check
+            if (!data || !Array.isArray(data)) {
+                console.warn('sortRequestsData called with invalid data:', data);
+                return [];
+            }
+            
+            // Create a copy to avoid mutating the original
+            const sortedData = [...data];
+            
+            sortedData.sort((a, b) => {
                 let aVal = a[column];
                 let bVal = b[column];
                 
@@ -3184,6 +3634,8 @@
                     return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
                 }
             });
+            
+            return sortedData;
         }
 
         // Update sort indicators
@@ -3245,22 +3697,22 @@
                 
                 html += `
                     <tr class="hover:bg-gray-50 transition-colors duration-150 ${urgencyBorderClass}" data-request-id="${request.id}">
-                        <td class="px-3 py-4 whitespace-nowrap text-center">
+                        <td class="px-3 py-4 whitespace-nowrap text-center" data-cell-type="expand">
                             <button class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors duration-150" 
                                     onclick="toggleRequestDetails(${request.id})" 
                                     title="לחץ להרחבת פרטים">
                                 <i class="fas fa-plus text-sm"></i>
                             </button>
                         </td>
-                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">#${request.id}</td>
-                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-900 hidden sm:table-cell">${request.app_id}</td>
-                        <td class="px-3 py-4 whitespace-nowrap text-center hidden md:table-cell">
+                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900" data-cell-type="id">#${request.id}</td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-900 hidden sm:table-cell" data-cell-type="app-id">${request.app_id}</td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center hidden md:table-cell" data-cell-type="requester">
                             <div class="text-sm">
                                 <div class="font-medium text-gray-900">${request.requester_name}</div>
                                 <div class="text-gray-500">${request.requester_email}</div>
                             </div>
                         </td>
-                        <td class="px-3 py-4 whitespace-nowrap text-center hidden lg:table-cell">
+                        <td class="px-3 py-4 whitespace-nowrap text-center hidden lg:table-cell" data-cell-type="environments">
                             <div class="flex items-center justify-center space-x-2 rtl:space-x-reverse">
                                 <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${getEnvironmentStyle(request.source_env).color}">
                                     <i class="${getEnvironmentStyle(request.source_env).icon} ml-1"></i>
@@ -3273,19 +3725,19 @@
                                 </span>
                             </div>
                         </td>
-                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm ${urgencyTextClass} hidden md:table-cell">
+                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm ${urgencyTextClass} hidden md:table-cell" data-cell-type="urgency">
                             ${getUrgencyText(request.urgency)}
                         </td>
-                        <td class="px-3 py-4 whitespace-nowrap text-center">
+                        <td class="px-3 py-4 whitespace-nowrap text-center" data-cell-type="status">
                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${statusBadgeClass}">
                                 ${getStatusText(request.status)}
                             </span>
                         </td>
-                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-500 hidden sm:table-cell">
+                        <td class="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-500 hidden sm:table-cell" data-cell-type="date">
                             ${new Date(request.created_at).toLocaleDateString('he-IL')}
                         </td>
                         ${isAdmin ? `
-                            <td class="px-3 py-4 whitespace-nowrap text-center hidden lg:table-cell">
+                            <td class="px-3 py-4 whitespace-nowrap text-center hidden lg:table-cell" data-cell-type="actions">
                                 ${request.status === 'pending' ? `
                                     <div class="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rtl:space-x-reverse">
                                         <button class="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
@@ -3916,12 +4368,16 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             }
         }
 
-        async function loadAllRequests() {
-            const statusFilter = document.getElementById('statusFilter').value;
+        async function loadAllRequests(quietMode = false) {
+            const statusFilter = document.getElementById('statusFilter')?.value || '';
             const statusFilterElement = document.getElementById('statusFilter');
             
-            // Show skeleton loading immediately
-            showSkeletonLoading();
+            console.log('loadAllRequests called - quietMode:', quietMode, 'statusFilter:', statusFilter, 'showTodayOnly:', showTodayOnly);
+            
+            // Show skeleton loading only if not in quiet mode
+            if (!quietMode) {
+                showSkeletonLoading();
+            }
             const startTime = Date.now();
             
             try {
@@ -3948,13 +4404,19 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 
                 if (error) throw error;
                 
+                // Safety check for data
+                const safeData = data || [];
+                
+                console.log('Query completed - found', safeData.length, 'requests');
+                
                 // Ensure minimum 2 second loading time for better UX
                 const elapsedTime = Date.now() - startTime;
                 const remainingTime = Math.max(0, 1200 - elapsedTime);
                 
                 setTimeout(() => {
+                    console.log('Processing results - safeData length:', safeData.length, 'statusFilter:', statusFilter);
                     // Check if we're filtering by "pending" and got no results
-                    if (statusFilter === 'pending' && data.length === 0) {
+                    if (statusFilter === 'pending' && safeData.length === 0) {
                         // Auto-switch to "All Statuses" if no pending requests found
                         statusFilterElement.value = '';
                         
@@ -3976,20 +4438,39 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                         allQuery.then(({ data: allData, error: allError }) => {
                             if (allError) throw allError;
                             
-                            displayPublicRequestsWithTransition(allData);
+                            // Sort the fallback data
+                            const sortedAllData = sortRequestsData(allData || [], currentSortColumn, currentSortDirection);
+                            filteredRequests = sortedAllData;
+                            currentRequests = sortedAllData;
+                            
+                            displayPublicRequestsWithTransition(sortedAllData);
                             
                             // Show informative message
                             const timeFilter = showTodayOnly ? ' מהיום' : '';
                             showMessage(`לא נמצאו בקשות ממתינות לביצוע${timeFilter}. מציג את כל הבקשות${timeFilter}.`, 'warning');
                         });
                     } else {
-                        displayPublicRequestsWithTransition(data);
+                        // Sort data before processing
+                        const sortedRequests = sortRequestsData(safeData, currentSortColumn, currentSortDirection);
                         
-                        // Show filter status message if we have results
-                        if (data.length > 0 && showTodayOnly) {
-                            showMessage(`מציג ${data.length} בקשות מהיום בלבד`, 'success');
-                        } else if (data.length === 0 && showTodayOnly) {
-                            showMessage('לא נמצאו בקשות מהיום. נסה לבחור "כל התאריכים" כדי לראות בקשות מתאריכים קודמים.', 'info');
+                        // Store filtered requests globally
+                        filteredRequests = sortedRequests;
+                        
+                        if (quietMode) {
+                            // Quiet mode: calculate and apply delta updates
+                            applyDeltaUpdates(currentRequests, sortedRequests);
+                            currentRequests = sortedRequests;
+                        } else {
+                            // Normal mode: show with transition
+                            displayPublicRequestsWithTransition(sortedRequests);
+                            currentRequests = sortedRequests;
+                            
+                            // Show filter status message if we have results
+                            if (sortedRequests && sortedRequests.length > 0 && showTodayOnly) {
+                                showMessage(`מציג ${sortedRequests.length} בקשות מהיום בלבד`, 'success');
+                            } else if (sortedRequests && sortedRequests.length === 0 && showTodayOnly) {
+                                showMessage('לא נמצאו בקשות מהיום. נסה לבחור "כל התאריכים" כדי לראות בקשות מתאריכים קודמים.', 'info');
+                            }
                         }
                     }
                 }, remainingTime);
@@ -4015,6 +4496,14 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
 
         // Display requests with smooth transition from skeleton
         function displayPublicRequestsWithTransition(requests) {
+            // Safety check for undefined requests
+            if (!requests) {
+                console.error('displayPublicRequestsWithTransition called with undefined requests');
+                requests = [];
+            }
+            
+            console.log('displayPublicRequestsWithTransition called with', requests.length, 'requests');
+            
             // Create a temporary container to build the content
             const tempContainer = document.createElement('div');
             tempContainer.id = 'allRequests';
@@ -4193,6 +4682,12 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
         function displayPublicRequests(requests) {
             const container = document.getElementById('allRequests');
             
+            // Safety check for undefined requests
+            if (!requests) {
+                console.error('displayPublicRequests called with undefined requests');
+                requests = [];
+            }
+            
             console.log('Displaying requests. isAdmin:', isAdmin);
             console.log('Number of requests:', requests.length);
             
@@ -4211,12 +4706,15 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             filteredRequests = [...requests]; // Copy all requests initially
             
             // Apply default sorting (by creation date, newest first)
-            sortRequestsData(filteredRequests, 'created_at', 'desc');
+            const sortedData = sortRequestsData(filteredRequests, 'created_at', 'desc');
+            filteredRequests = sortedData; // Update with sorted data
             currentSortColumn = 'created_at';
             currentSortDirection = 'desc';
             
             // Group requests by date
             const groupedRequests = groupRequestsByDate(filteredRequests);
+            
+            console.log('Grouped requests:', Object.keys(groupedRequests).length, 'groups');
             
             // Create responsive layout: cards for mobile, table for desktop with date grouping
             let html = `
@@ -4231,9 +4729,13 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             
             container.innerHTML = html;
             
+            console.log('Rendering table and cards...');
+            
             // Render both table and cards with date grouping
             renderRequestsTableGrouped(groupedRequests);
             renderMobileCardsGrouped(groupedRequests);
+            
+            console.log('Render complete');
             
             // Update sort indicators
             updateSortIndicators('created_at', 'desc');
@@ -4473,7 +4975,12 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
         // Render requests table with date grouping
         function renderRequestsTableGrouped(groupedRequests) {
             const container = document.getElementById('desktopTableContainer');
-            if (!container) return;
+            if (!container) {
+                console.error('desktopTableContainer not found!');
+                return;
+            }
+            
+            console.log('renderRequestsTableGrouped - rendering', groupedRequests.length, 'date groups');
             
             let html = '';
             
@@ -4697,7 +5204,12 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
         // Render mobile cards with date grouping
         function renderMobileCardsGrouped(groupedRequests) {
             const container = document.getElementById('mobileCardsContainer');
-            if (!container) return;
+            if (!container) {
+                console.error('mobileCardsContainer not found!');
+                return;
+            }
+            
+            console.log('renderMobileCardsGrouped - rendering', groupedRequests.length, 'date groups');
             
             let html = '';
             
@@ -4911,12 +5423,12 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 else if (request.urgency === 'critical') urgencyTextClass = 'text-red-600';
                 
                 html += `
-                    <div class="bg-white rounded-lg shadow-sm border ${urgencyBorderClass} p-4 hover:shadow-md transition-shadow duration-150">
+                    <div class="bg-white rounded-lg shadow-sm border ${urgencyBorderClass} p-4 hover:shadow-md transition-shadow duration-150 request-card" data-request-id="${request.id}">
                         <!-- Header with request ID and status -->
                         <div class="flex justify-between items-start mb-3">
                             <div class="flex items-center space-x-2 rtl:space-x-reverse">
                                 <span class="text-lg font-semibold text-gray-900">#${request.id}</span>
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${statusBadgeClass}">
+                                <span class="status-badge inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${statusBadgeClass}">
                                     ${getStatusText(request.status)}
                                 </span>
                             </div>
