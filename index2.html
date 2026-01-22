@@ -3976,7 +3976,23 @@
                         const issue = selectedCase.issues[index];
                         document.getElementById('modal-issue-text').value = issue.issue;
                         document.getElementById('modal-issue-challenge').value = issue.challenge;
-                        document.getElementById('modal-issue-notes').value = issue.notes;
+                        
+                        // Auto-append today's date for documentation if not already present
+                        const notesField = document.getElementById('modal-issue-notes');
+                        let notesValue = issue.notes || '';
+                        const today = new Date();
+                        const todayFormatted = String(today.getDate()).padStart(2, '0') + '/' + 
+                                               String(today.getMonth() + 1).padStart(2, '0') + '/' + 
+                                               today.getFullYear();
+                        
+                        // Check if today's date exists at the START of a line (documentation entry)
+                        // This regex checks for the date at the beginning of text or after a newline
+                        const dateAtLineStartRegex = new RegExp('(^|\\n)' + todayFormatted.replace(/\//g, '\\/') + ':');
+                        if (!dateAtLineStartRegex.test(notesValue)) {
+                            notesValue = notesValue.trimEnd() + (notesValue ? '\n' : '') + todayFormatted + ': ';
+                        }
+                        notesField.value = notesValue;
+                        
                         document.getElementById('modal-issue-status').value = issue.status;
                         document.getElementById('modal-issue-responsible').value = issue.responsible;
                     }
