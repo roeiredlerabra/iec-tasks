@@ -2172,7 +2172,8 @@
                                     </tr>
                                     <tr>
                                         <td>iec_IsApprovalRequestSent</td>
-                                        <td>האם נשלחה התראה. ערכים: Yes, No. אם תאריך שליחה מלא, אז סמן בכן אחרת לא</td>
+                                        <td>האם נשלחה התראה. ערכים: Yes, No. <strong>סוג: formula</strong><br>
+                                            <strong>Formula:</strong> If(!IsBlank(ApprovalRequestSentTime),true,false)</td>
                                     </tr>
                                     <tr>
                                         <td>iec_ApprovalRequestSentTime</td>
@@ -2228,7 +2229,8 @@
                                     </tr>
                                     <tr>
                                         <td>iec_IndexInt</td>
-                                        <td>מספר רץ אוטומטי. דוגמה: 1, 2, 3</td>
+                                        <td>מספר רץ אוטומטי. דוגמה: 1, 2, 3. <strong>סוג: formula</strong><br>
+                                            <strong>Formula:</strong> Int(Index)</td>
                                     </tr>
                                     <tr>
                                         <td>iec_Index</td>
