@@ -952,6 +952,38 @@
                         data-section="useful-links">7.4 לינקים שימושיים</a>
                 </div>
             </div>
+
+            <!-- 8. מערכת בקשות העברת גרסאות -->
+            <div class="chapter-group">
+                <button
+                    class="chapter-toggle w-full text-right px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-blue-50 flex items-center justify-between chapter-nav-btn"
+                    data-chapter="deployment-system">
+                    <span>8. מערכת בקשות העברת גרסאות</span>
+                    <svg class="w-4 h-4 transform transition-transform chapter-chevron rotate-180" fill="currentColor"
+                        viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <div id="ch8" class="chapter-sections max-h-0 overflow-hidden transition-all duration-300">
+                    <a href="#deployment-intro"
+                        class="section-link block py-2 px-4 pr-8 text-sm text-gray-600 hover:text-ms-blue hover:bg-blue-50 border-r-2 border-transparent hover:border-ms-blue transition-all"
+                        data-section="deployment-intro">8.1 מבוא למערכת</a>
+                    <a href="#deployment-submit"
+                        class="section-link block py-2 px-4 pr-8 text-sm text-gray-600 hover:text-ms-blue hover:bg-blue-50 border-r-2 border-transparent hover:border-ms-blue transition-all"
+                        data-section="deployment-submit">8.2 הגשת בקשה חדשה</a>
+                    <a href="#deployment-environments"
+                        class="section-link block py-2 px-4 pr-8 text-sm text-gray-600 hover:text-ms-blue hover:bg-blue-50 border-r-2 border-transparent hover:border-ms-blue transition-all"
+                        data-section="deployment-environments">8.3 סביבות העברה</a>
+                    <a href="#deployment-tracking"
+                        class="section-link block py-2 px-4 pr-8 text-sm text-gray-600 hover:text-ms-blue hover:bg-blue-50 border-r-2 border-transparent hover:border-ms-blue transition-all"
+                        data-section="deployment-tracking">8.4 מעקב אחר בקשות</a>
+                    <a href="#deployment-admin"
+                        class="section-link block py-2 px-4 pr-8 text-sm text-gray-600 hover:text-ms-blue hover:bg-blue-50 border-r-2 border-transparent hover:border-ms-blue transition-all"
+                        data-section="deployment-admin">8.5 ממשק מנהל</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -3612,6 +3644,185 @@
                             </div>
                         </div>
                     </div>
+
+                <!-- 8. מערכת בקשות העברת גרסאות -->
+                <div class="chapter-section" id="deployment-system-chapter">
+                    <div class="section" id="deployment-system">
+                        <span class="anchor" id="deployment-system-anchor"></span>
+                        <h2>8. מערכת בקשות העברת גרסאות Power Apps</h2>
+
+                        <div class="section" id="deployment-intro">
+                            <span class="anchor" id="deployment-intro-anchor"></span>
+                            <h3>8.1 מבוא למערכת</h3>
+                            <p>מערכת בקשות העברת גרסאות היא כלי מרכזי לניהול תהליך העברת אפליקציות Power Apps בין סביבות העבודה השונות (פיתוח, בדיקות, ייצור).</p>
+                            <p><strong>קישור למערכת:</strong> <a href="deployment.html" target="_blank">מערכת בקשות העברת גרסאות</a></p>
+                            
+                            <h4>יתרונות המערכת:</h4>
+                            <ul>
+                                <li><strong>מעקב מסודר:</strong> צפייה בכל הבקשות וסטטוס הטיפול בהן</li>
+                                <li><strong>תקשורת שקופה:</strong> כל חברי הצוות רואים את מצב הבקשות</li>
+                                <li><strong>היסטוריה מתועדת:</strong> שמירת כל הבקשות לצורך מעקב ובקרה</li>
+                                <li><strong>התראות אוטומטיות:</strong> המערכת שולחת התראות על בקשות חדשות ושינויי סטטוס</li>
+                            </ul>
+                        </div>
+
+                        <div class="section" id="deployment-submit">
+                            <span class="anchor" id="deployment-submit-anchor"></span>
+                            <h3>8.2 הגשת בקשה חדשה</h3>
+                            <p>להגשת בקשה חדשה להעברת גרסה, יש ללחוץ על כפתור <strong>"+"</strong> הצף בפינה הימנית התחתונה של המסך.</p>
+                            
+                            <h4>שדות הטופס:</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>שדה</th>
+                                        <th>תיאור</th>
+                                        <th>חובה</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>שם המבקש</td>
+                                        <td>בחירת שם המפתח המגיש את הבקשה מתוך רשימה</td>
+                                        <td>✓</td>
+                                    </tr>
+                                    <tr>
+                                        <td>אימייל המבקש</td>
+                                        <td>כתובת האימייל של המבקש (מתעדכן אוטומטית)</td>
+                                        <td>✓</td>
+                                    </tr>
+                                    <tr>
+                                        <td>מזהה האפליקציה (App ID)</td>
+                                        <td>שם הסולושן או מזהה ייחודי של האפליקציה</td>
+                                        <td>✓</td>
+                                    </tr>
+                                    <tr>
+                                        <td>דחיפות</td>
+                                        <td>רמת הדחיפות: נמוכה, בינונית, גבוהה, קריטית</td>
+                                        <td>✓</td>
+                                    </tr>
+                                    <tr>
+                                        <td>סביבת מקור</td>
+                                        <td>הסביבה ממנה מועברת הגרסה (Dev/Test)</td>
+                                        <td>✓</td>
+                                    </tr>
+                                    <tr>
+                                        <td>סביבת יעד</td>
+                                        <td>הסביבה אליה מועברת הגרסה (Test/Prod)</td>
+                                        <td>✓</td>
+                                    </tr>
+                                    <tr>
+                                        <td>תיאור השינויים</td>
+                                        <td>פירוט השינויים או הסיבה להעברה</td>
+                                        <td>✓</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="note">
+                                <strong>💡 טיפ:</strong> ניתן להשתמש בכפתור "הרחב עם AI" כדי לקבל תיאור מפורט יותר של השינויים באופן אוטומטי.
+                            </div>
+                            
+                            <h4>שליחת הבקשה:</h4>
+                            <p>לאחר מילוי כל השדות, יש <strong>לגרור</strong> את כפתור השליחה ימינה כדי להגיש את הבקשה. שיטה זו מונעת שליחות בטעות.</p>
+                        </div>
+
+                        <div class="section" id="deployment-environments">
+                            <span class="anchor" id="deployment-environments-anchor"></span>
+                            <h3>8.3 סביבות העברה</h3>
+                            <p>המערכת תומכת בהעברות בין שלוש סביבות:</p>
+                            
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>סביבה</th>
+                                        <th>סימול</th>
+                                        <th>תיאור</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>🧑‍💻 פיתוח (Development)</td>
+                                        <td>Dev</td>
+                                        <td>סביבת פיתוח ראשונית לבניית האפליקציה</td>
+                                    </tr>
+                                    <tr>
+                                        <td>🧪 בדיקות (Test)</td>
+                                        <td>Test</td>
+                                        <td>סביבת בדיקות לאימות ובדיקת איכות</td>
+                                    </tr>
+                                    <tr>
+                                        <td>🌐 ייצור (Production)</td>
+                                        <td>Prod</td>
+                                        <td>סביבת הייצור - גרסה פעילה למשתמשים</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <h4>מסלולי העברה תקינים:</h4>
+                            <ul>
+                                <li><strong>Dev → Test:</strong> העברה מפיתוח לבדיקות</li>
+                                <li><strong>Test → Prod:</strong> העברה מבדיקות לייצור</li>
+                            </ul>
+                            
+                            <div class="note">
+                                <strong>⚠️ חשוב:</strong> המסלול המומלץ הוא: פיתוח ← בדיקות ← ייצור. אין לדלג על שלב הבדיקות!
+                            </div>
+                        </div>
+
+                        <div class="section" id="deployment-tracking">
+                            <span class="anchor" id="deployment-tracking-anchor"></span>
+                            <h3>8.4 מעקב אחר בקשות</h3>
+                            <p>המסך הראשי מציג את כל הבקשות בטבלה מרכזית עם אפשרויות סינון:</p>
+                            
+                            <h4>סטטוסים אפשריים:</h4>
+                            <ul>
+                                <li><strong style="color: #f59e0b;">⏳ ממתין לביצוע:</strong> הבקשה התקבלה ומחכה לטיפול</li>
+                                <li><strong style="color: #10b981;">✅ בוצע:</strong> הבקשה אושרה והועברה</li>
+                                <li><strong style="color: #ef4444;">❌ נדחה:</strong> הבקשה נדחתה (עם סיבה)</li>
+                            </ul>
+                            
+                            <h4>אפשרויות סינון:</h4>
+                            <ul>
+                                <li><strong>חיפוש חופשי:</strong> חיפוש לפי מזהה, אפליקציה או מבקש</li>
+                                <li><strong>סינון לפי סטטוס:</strong> הצגת בקשות לפי מצב הטיפול</li>
+                                <li><strong>סינון לפי תאריך:</strong> הצגת בקשות של היום בלבד או כל התאריכים</li>
+                            </ul>
+                            
+                            <h4>כפתור ממתינים לייצור:</h4>
+                            <p>הכפתור הכתום בפינה הימנית התחתונה מציג רשימה של כל הבקשות שממתינות להעברה לסביבת הייצור.</p>
+                        </div>
+
+                        <div class="section" id="deployment-admin">
+                            <span class="anchor" id="deployment-admin-anchor"></span>
+                            <h3>8.5 ממשק מנהל</h3>
+                            <p>לצורך אישור או דחיית בקשות, נדרשת התחברות כמנהל.</p>
+                            
+                            <div class="note" style="background-color: #dbeafe; border-color: #93c5fd; color: #1e40af;">
+                                <strong>🔐 פרטי התחברות למנהל:</strong><br><br>
+                                <strong>אימייל:</strong> admin@iec.co.il<br>
+                                <strong>סיסמה:</strong> to6ed=5d!
+                            </div>
+                            
+                            <h4>פעולות מנהל:</h4>
+                            <ul>
+                                <li><strong>אישור בקשה:</strong> לחיצה על כפתור ה-✓ הירוק לאישור והעברת הגרסה</li>
+                                <li><strong>דחיית בקשה:</strong> לחיצה על כפתור ה-✕ האדום. נדרש למלא סיבת דחייה</li>
+                                <li><strong>מחיקת בקשה:</strong> לחיצה על כפתור פח האשפה למחיקת בקשה</li>
+                            </ul>
+                            
+                            <h4>התחברות:</h4>
+                            <ol>
+                                <li>לחץ על כפתור "התחברות מנהל" בפינה העליונה</li>
+                                <li>הזן את פרטי ההתחברות (אימייל וסיסמה)</li>
+                                <li>לאחר התחברות מוצלחת, יופיעו כפתורי הפעולה בכל שורת בקשה</li>
+                            </ol>
+                            
+                            <h4>התנתקות:</h4>
+                            <p>לחץ על כפתור "התנתק" בפינה העליונה כדי לצאת ממצב מנהל.</p>
+                        </div>
+                    </div>
+                </div>
 
                     <nav class="flex justify-between mt-10 pt-6 border-t border-gray-200">
                         <button id="prev-chapter"
