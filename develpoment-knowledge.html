@@ -96,24 +96,25 @@
         }
 
         h3 {
-            font-size: 1.5rem; /* 24px */
-            font-weight: 600;
-            color: #374151;
-            padding-left: 2rem;
+            font-size: 1.35rem; /* 24px */
+            font-weight: 700;
+            color: #005A9E;
             position: relative;
-            border-bottom: 2px solid transparent;
-            border-image: linear-gradient(to left, #0078D4, #00BCF2, #50E6FF) 1;
-            padding-bottom: 0.5rem;
+            margin-top: 2.25rem;
             margin-bottom: 1rem;
+            padding: 0.55rem 1rem 0.55rem 2.5rem;
+            background: linear-gradient(to left, transparent, #eff6ff);
+            border-right: 4px solid #0078D4;
+            border-radius: 0 6px 6px 0;
         }
 
         h3::before {
             content: "\f15b";
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
-            margin-right: 0.75rem;
+            margin-right: 0.6rem;
             color: #0078D4;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         h4 {
@@ -982,6 +983,9 @@
                     <a href="#deployment-admin"
                         class="section-link block py-2 px-4 pr-8 text-sm text-gray-600 hover:text-ms-blue hover:bg-blue-50 border-r-2 border-transparent hover:border-ms-blue transition-all"
                         data-section="deployment-admin">8.5 ממשק מנהל</a>
+                    <a href="#deployment-process"
+                        class="section-link block py-2 px-4 pr-8 text-sm text-gray-600 hover:text-ms-blue hover:bg-blue-50 border-r-2 border-transparent hover:border-ms-blue transition-all"
+                        data-section="deployment-process">8.6 תהליך העברת גרסה בפועל</a>
                 </div>
             </div>
         </div>
@@ -3820,6 +3824,126 @@
                             
                             <h4>התנתקות:</h4>
                             <p>לחץ על כפתור "התנתק" בפינה העליונה כדי לצאת ממצב מנהל.</p>
+                        </div>
+
+                        <div class="section" id="deployment-process">
+                            <span class="anchor" id="deployment-process-anchor"></span>
+                            <h3>8.6 תהליך העברת גרסה בפועל (Import/Export)</h3>
+                            <p>העברת סולושן בין סביבות מתבצעת באמצעות מנגנון הייצוא והייבוא של Power Apps. יש לפעול לפי הסדר הקבוע הבא.</p>
+
+                            <!-- Step 1 -->
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#eff6ff);border-right:4px solid #0078D4;border-radius:0 6px 6px 0;">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">1</span>
+                                <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-upload" style="margin-left:0.4rem;"></i>ייצוא הפתרון מסביבת המקור</span>
+                            </div>
+                            <ol>
+                                <li>התחבר לסביבת המקור במנגנון Power Apps</li>
+                                <li>פתח את הסולושן הרלוונטי</li>
+                                <li>לחץ על <strong>Export</strong> ובחר <strong>Managed</strong> (מנוהל)</li>
+                                <li>המתן להורדת קובץ ה-ZIP</li>
+                            </ol>
+
+                            <!-- Step 2 -->
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#eff6ff);border-right:4px solid #0078D4;border-radius:0 6px 6px 0;">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">2</span>
+                                <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-folder-open" style="margin-left:0.4rem;"></i>שמירת הקובץ להיסטוריה</span>
+                            </div>
+                            <div class="note">
+                                <strong>📂 שמירת היסטוריה:</strong> שמור את קובץ ה-ZIP שיוצר בתיקיית <strong>G:\</strong> בתוך התיקייה של הפתרון הרלוונטי.<br>
+                                לדוגמה: <code>G:\[SolutionName]\solution_v1.2_2026-02-18.zip</code><br>
+                                זאת מאפשרת מעקב של כל הגרסאות שהועברו לאורך זמן.
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#eff6ff);border-right:4px solid #0078D4;border-radius:0 6px 6px 0;">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">3</span>
+                                <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-download" style="margin-left:0.4rem;"></i>ייבוא לסביבת היעד</span>
+                            </div>
+                            <div class="note" style="background-color:#fef3c7;border-color:#fcd34d;color:#92400e;">
+                                <strong>⚠️ חשוב מאוד:</strong> הייבוא חייב להתבצע <strong>אך ורק</strong> עם <strong>המשתמש האפליקטיבי של סביבת היעד</strong>:
+                                <ul style="margin-top:0.5rem;">
+                                    <li>העברה ל-<strong>Test</strong>: <code>Pplatform_T-SVC@iec.co.il</code></li>
+                                    <li>העברה ל-<strong>Prod</strong>: <code>Pplatform_P-SVC@iec.co.il</code></li>
+                                </ul>
+                            </div>
+                            <ol>
+                                <li>התחבר לסביבת היעד עם המשתמש האפליקטיבי המתאים</li>
+                                <li>במנגנון Power Apps פתח את <strong>Solutions</strong></li>
+                                <li>לחץ על <strong>Import Solution</strong> והעלה את קובץ ה-ZIP</li>
+                                <li>בחר <strong>Upgrade</strong> (לא Override) כדי לנקות שדות ישנים לאחר הייבוא</li>
+                                <li>אשר את הייבוא והמתן לסיום</li>
+                            </ol>
+
+                            <!-- Step 4 -->
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#eff6ff);border-right:4px solid #0078D4;border-radius:0 6px 6px 0;">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">4</span>
+                                <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-plug" style="margin-left:0.4rem;"></i>אימות Connection References</span>
+                            </div>
+                            <ul>
+                                <li>פתח את הסולושן המיובא בסביבת היעד</li>
+                                <li>נווט אל <strong>Connection References</strong> בתפריט הסולושן</li>
+                                <li>ודא שכל חיבור מציג את <strong>המשתמש האפליקטיבי הנכון</strong> ולא משתמש אישי</li>
+                                <li>אם יש חיבור שגוי או לא פעיל — עדכן אותו למשתמש הנכון</li>
+                            </ul>
+
+                            <!-- Step 5 -->
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#eff6ff);border-right:4px solid #0078D4;border-radius:0 6px 6px 0;">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">5</span>
+                                <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-bolt" style="margin-left:0.4rem;"></i>אימות אוטומציות (Cloud Flows)</span>
+                            </div>
+                            <div class="note" style="background-color:#dcfce7;border-color:#86efac;color:#14532d;">
+                                <strong>✅ בדיקה חיונית:</strong> לאחר הייבוא, יש לוודא שכל ה-Cloud Flows בסולושן <strong>דלוקות (On)</strong>.
+                            </div>
+                            <ul>
+                                <li>פתח את הסולושן בסביבת היעד ונווט אל <strong>Cloud Flows</strong></li>
+                                <li>ודא שכל Flow בסטטוס <strong>On</strong> (פעיל)</li>
+                                <li>אם יש Flow כבוי — הפעל אותו ידנית</li>
+                            </ul>
+
+                            <!-- Step 6 -->
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#eff6ff);border-right:4px solid #0078D4;border-radius:0 6px 6px 0;">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">6</span>
+                                <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-database" style="margin-left:0.4rem;"></i>העברת DATA בין סביבות</span>
+                            </div>
+                            <div class="note" style="background-color:#fef3c7;border-color:#fcd34d;color:#92400e;">
+                                <strong>📊 העברת נתונים:</strong> במידה ונדרש להעביר נתונים מטבלאות, יש לבצע זאת <strong>לפני או אחרי</strong> הייבוא בהתאם לסוג הנתונים.
+                            </div>
+                            <ul>
+                                <li>השתמש בכלי <strong>Configuration Migration Tool</strong> להעברת נתוני קונפיגורציה</li>
+                                <li>לטבלאות קטנות — ייצוא/ייבוא ידני עם Excel</li>
+                                <li>ודא שהנתונים לא ידרסו נתונים קיימים בסביבת היעד</li>
+                                <li>בדוק תקינות הנתונים לאחר ההעברה</li>
+                            </ul>
+
+                            <!-- Step 7 -->
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#f0fdf4);border-right:4px solid #10b981;border-radius:0 6px 6px 0;">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">7</span>
+                                <span style="font-size:1.05rem;font-weight:700;color:#059669;"><i class="fas fa-check-circle" style="margin-left:0.4rem;"></i>סימון במערכת העברת הפתרונות</span>
+                            </div>
+                            <div class="note" style="background-color:#dcfce7;border-color:#86efac;color:#14532d;">
+                                <strong>✅ סיום תהליך:</strong> לאחר שההעברה הושלמה, יש לעדכן את הבקשה ב-<a href="deployment.html" target="_blank">מערכת העברת הפתרונות</a> לסטטוס <strong>"בוצע"</strong> לשמירת היסטוריה סדורה.
+                            </div>
+
+                            <!-- Summary table -->
+                            <h4 style="margin-top:2rem;">סיכום תהליך העברה:</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>שלב</th>
+                                        <th>פעולה</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>1</td><td>ייצוא</td><td>Export Managed מסביבת המקור</td></tr>
+                                    <tr><td>2</td><td>שמירה</td><td>שמירת ZIP בתיקיית G:\ של הפתרון</td></tr>
+                                    <tr><td>3</td><td>ייבוא</td><td>Import + Upgrade עם משתמש אפליקטיבי של סביבת היעד</td></tr>
+                                    <tr><td>4</td><td>Connection References</td><td>וידוא חיבורים על משתמש אפליקטיבי</td></tr>
+                                    <tr><td>5</td><td>אוטומציות</td><td>וידוא שכל ה-Flows דלוקים</td></tr>
+                                    <tr><td>6</td><td>DATA</td><td>העברת נתונים בטבלאות אם נדרש</td></tr>
+                                    <tr><td>7</td><td>סימון</td><td>עדכון בקשה לסטטוס "בוצע" במערכת העברת הפתרונות</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
