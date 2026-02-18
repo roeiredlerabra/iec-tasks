@@ -684,6 +684,51 @@
                 max-width: 100%;
             }
         }
+
+        /* Copy button */
+        .copy-btn {
+            background: none;
+            border: 1px solid #0078D4;
+            border-radius: 4px;
+            color: #0078D4;
+            cursor: pointer;
+            padding: 2px 8px;
+            font-size: 0.78rem;
+            margin-right: 6px;
+            vertical-align: middle;
+            transition: background 0.2s, color 0.2s;
+            line-height: 1.4;
+        }
+        .copy-btn:hover {
+            background-color: #0078D4;
+            color: white;
+        }
+        .copy-btn.copied {
+            border-color: #16a34a;
+            color: #16a34a;
+        }
+        .copy-btn.copied:hover {
+            background-color: #16a34a;
+            color: white;
+        }
+        .credential-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.35rem 0;
+            flex-wrap: wrap;
+        }
+        .credential-value {
+            font-family: 'Courier New', monospace;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.9rem;
+            color: #1e293b;
+            direction: ltr;
+            display: inline-block;
+        }
     </style>
 </head>
 
@@ -1054,12 +1099,45 @@
                             <img src="img/12.png" alt="סביבות עבודה" class="img">
 
                             <h4>משתמשי מערכת לפי סביבות:</h4>
-                            <p><strong>משתמש dev:</strong> Pplatform_D-SVC@iec.co.il<br>
-                                *סיסמה*</p>
-                            <p><strong>משתמש test:</strong> Pplatform_T-SVC@iec.co.il<br>
-                                *סיסמה*</p>
-                            <p><strong>משתמש prod:</strong> Pplatform_P-SVC@iec.co.il<br>
-                                *סיסמה*</p>
+
+                            <!-- dev -->
+                            <p style="margin-bottom:0.25rem;"><strong>משתמש dev:</strong></p>
+                            <div class="credential-row">
+                                <span style="min-width:5rem;">שם משתמש:</span>
+                                <span class="credential-value">Pplatform_D-SVC@iec.co.il</span>
+                                <button class="copy-btn" onclick="copyToClipboard('Pplatform_D-SVC@iec.co.il', this)" title="העתק שם משתמש"><i class="fas fa-copy"></i> העתק</button>
+                            </div>
+                            <div class="credential-row" style="margin-bottom:0.75rem;">
+                                <span style="min-width:5rem;">סיסמה:</span>
+                                <span class="credential-value">*סיסמה*</span>
+                                <button class="copy-btn" onclick="copyToClipboard('*סיסמה*', this)" title="העתק סיסמה"><i class="fas fa-copy"></i> העתק</button>
+                            </div>
+
+                            <!-- test -->
+                            <p style="margin-bottom:0.25rem;"><strong>משתמש test:</strong></p>
+                            <div class="credential-row">
+                                <span style="min-width:5rem;">שם משתמש:</span>
+                                <span class="credential-value">Pplatform_T-SVC@iec.co.il</span>
+                                <button class="copy-btn" onclick="copyToClipboard('Pplatform_T-SVC@iec.co.il', this)" title="העתק שם משתמש"><i class="fas fa-copy"></i> העתק</button>
+                            </div>
+                            <div class="credential-row" style="margin-bottom:0.75rem;">
+                                <span style="min-width:5rem;">סיסמה:</span>
+                                <span class="credential-value">*סיסמה*</span>
+                                <button class="copy-btn" onclick="copyToClipboard('*סיסמה*', this)" title="העתק סיסמה"><i class="fas fa-copy"></i> העתק</button>
+                            </div>
+
+                            <!-- prod -->
+                            <p style="margin-bottom:0.25rem;"><strong>משתמש prod:</strong></p>
+                            <div class="credential-row">
+                                <span style="min-width:5rem;">שם משתמש:</span>
+                                <span class="credential-value">Pplatform_P-SVC@iec.co.il</span>
+                                <button class="copy-btn" onclick="copyToClipboard('Pplatform_P-SVC@iec.co.il', this)" title="העתק שם משתמש"><i class="fas fa-copy"></i> העתק</button>
+                            </div>
+                            <div class="credential-row" style="margin-bottom:0.75rem;">
+                                <span style="min-width:5rem;">סיסמה:</span>
+                                <span class="credential-value">*סיסמה*</span>
+                                <button class="copy-btn" onclick="copyToClipboard('*סיסמה*', this)" title="העתק סיסמה"><i class="fas fa-copy"></i> העתק</button>
+                            </div>
                         </div>
 
                         <div class="section" id="version-control">
@@ -3612,8 +3690,16 @@
                                     <p>הדיילי והתקשורת בתוך חח"ח מתקיימת ב- webex.</p>
                                     <p>צריך לקבל משתמש לאתר המעקב תהליכים דיגיטליים מרואי.</p>
                                     <p>העיצוב של כל התהליכים נמצא ב- figma.</p>
-                                    <p>סיסמא: abra1234##</p>
-                                    <p>שם משתמש: abra-iec@outlook.com</p>
+                                    <div class="credential-row">
+                                        <span style="min-width:5.5rem;">שם משתמש:</span>
+                                        <span class="credential-value">abra-iec@outlook.com</span>
+                                        <button class="copy-btn" onclick="copyToClipboard('abra-iec@outlook.com', this)" title="העתק שם משתמש"><i class="fas fa-copy"></i> העתק</button>
+                                    </div>
+                                    <div class="credential-row">
+                                        <span style="min-width:5.5rem;">סיסמא:</span>
+                                        <span class="credential-value">abra1234##</span>
+                                        <button class="copy-btn" onclick="copyToClipboard('abra1234##', this)" title="העתק סיסמה"><i class="fas fa-copy"></i> העתק</button>
+                                    </div>
                                     <p>בעיצובים בפיגמה, גודל הטקסט מופיע ב- px. במערכת ה-PA יש להמיר אותם ל-pt. מצורף
                                         לינק להמרה.<br>
                                         בטימס של היוזר של חברת החשמל, יש קבוצה בשם power apps. כל המסמכים הרלוונטים
@@ -3804,8 +3890,16 @@
                             
                             <div class="note" style="background-color: #dbeafe; border-color: #93c5fd; color: #1e40af;">
                                 <strong>🔐 פרטי התחברות למנהל:</strong><br><br>
-                                <strong>אימייל:</strong> admin@iec.co.il<br>
-                                <strong>סיסמה:</strong> to6ed=5d!
+                                <div class="credential-row" style="margin-top:0.5rem;">
+                                    <span style="min-width:4rem;"><strong>אימייל:</strong></span>
+                                    <span class="credential-value" style="background:#e0f2fe;border-color:#7dd3fc;">admin@iec.co.il</span>
+                                    <button class="copy-btn" onclick="copyToClipboard('admin@iec.co.il', this)" title="העתק אימייל"><i class="fas fa-copy"></i> העתק</button>
+                                </div>
+                                <div class="credential-row">
+                                    <span style="min-width:4rem;"><strong>סיסמה:</strong></span>
+                                    <span class="credential-value" style="background:#e0f2fe;border-color:#7dd3fc;">to6ed=5d!</span>
+                                    <button class="copy-btn" onclick="copyToClipboard('to6ed=5d!', this)" title="העתק סיסמה"><i class="fas fa-copy"></i> העתק</button>
+                                </div>
                             </div>
                             
                             <h4>פעולות מנהל:</h4>
@@ -4715,6 +4809,38 @@
                 });
             }
         });
+
+        // Copy to clipboard helper
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(function () {
+                var icon = btn.querySelector('i');
+                var originalClass = icon.className;
+                icon.className = 'fas fa-check';
+                btn.classList.add('copied');
+                setTimeout(function () {
+                    icon.className = originalClass;
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(function () {
+                // Fallback for older browsers
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                var icon = btn.querySelector('i');
+                var originalClass = icon.className;
+                icon.className = 'fas fa-check';
+                btn.classList.add('copied');
+                setTimeout(function () {
+                    icon.className = originalClass;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
     </script>
     <!-- Excel Preview Modal -->
     <div id="excelModal" class="excel-modal">
