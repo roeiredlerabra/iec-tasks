@@ -3930,11 +3930,24 @@
                                 <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">1</span>
                                 <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-upload" style="margin-left:0.4rem;"></i>ייצוא הפתרון מסביבת המקור</span>
                             </div>
+                            <div class="note" style="background-color:#fef3c7;border-color:#fcd34d;color:#92400e;">
+                                <strong>⚠️ לפני הייצוא — בדוק את הדברים הבאים:</strong>
+                                <ul style="margin-top:0.5rem;">
+                                    <li>הסולושן ב-<strong>Managed</strong> ולא Unmanaged — יש לוודא שאתה מייצא את הגרסה הנכונה</li>
+                                    <li>מספר הגרסה (Version) עודכן לפני הייצוא (לדוג' מ-1.0.0.1 ל-1.0.0.2)</li>
+                                    <li>כל השינויים בסביבת ה-Dev נשמרו ופורסמו (Publish All Customizations)</li>
+                                    <li>אין שגיאות פתוחות בסביבת המקור שעלולות לגרום לכשל בייבוא</li>
+                                </ul>
+                            </div>
+                            <p style="margin-top:0.75rem;font-weight:600;color:#374151;">שלבי הייצוא:</p>
                             <ol>
-                                <li>התחבר לסביבת המקור במנגנון Power Apps</li>
-                                <li>פתח את הסולושן הרלוונטי</li>
-                                <li>לחץ על <strong>Export</strong> ובחר <strong>Managed</strong> (מנוהל)</li>
-                                <li>המתן להורדת קובץ ה-ZIP</li>
+                                <li>התחבר ל-<a href="https://make.powerapps.com" target="_blank">make.powerapps.com</a> ובחר את <strong>סביבת המקור</strong> (Dev) מהתפריט העליון</li>
+                                <li>נווט אל <strong>Solutions</strong> בתפריט הצד השמאלי</li>
+                                <li>אתר את הסולושן הרלוונטי ולחץ על שלוש הנקודות (<strong>...</strong>) מימין לשמו</li>
+                                <li>בחר <strong>Export Solution</strong></li>
+                                <li>בחלון שנפתח בחר <strong>Managed</strong> (לא Unmanaged) ולחץ <strong>Next</strong></li>
+                                <li>ודא שמספר הגרסה (Version number) תקין ולחץ <strong>Export</strong></li>
+                                <li>המתן לסיום — קובץ ZIP יורד אוטומטית למחשב</li>
                             </ol>
 
                             <!-- Step 2 -->
@@ -3943,8 +3956,8 @@
                                 <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-folder-open" style="margin-left:0.4rem;"></i>שמירת הקובץ להיסטוריה</span>
                             </div>
                             <div class="note">
-                                <strong>📂 שמירת היסטוריה:</strong> שמור את קובץ ה-ZIP שיוצר בתיקיית <strong>G:\</strong> בתוך התיקייה של הפתרון הרלוונטי.<br>
-                                לדוגמה: <code>G:\[SolutionName]\solution_v1.2_2026-02-18.zip</code><br>
+                                <strong>📂 שמירת היסטוריה:</strong> שמור את קובץ ה-ZIP שיוצר בתיקיית <strong>G:\תחום פיתוח בסביבות פתוחות\Power Apps\Solutions</strong> בתוך התיקייה של הפתרון הרלוונטי.<br>
+                                לדוגמה: <code>G:\תחום פיתוח בסביבות פתוחות\Power Apps\Solutions\[SolutionName]\solution_v1.2_2026-02-18.zip</code><br>
                                 זאת מאפשרת מעקב של כל הגרסאות שהועברו לאורך זמן.
                             </div>
 
@@ -3961,11 +3974,14 @@
                                 </ul>
                             </div>
                             <ol>
-                                <li>התחבר לסביבת היעד עם המשתמש האפליקטיבי המתאים</li>
-                                <li>במנגנון Power Apps פתח את <strong>Solutions</strong></li>
-                                <li>לחץ על <strong>Import Solution</strong> והעלה את קובץ ה-ZIP</li>
-                                <li>בחר <strong>Upgrade</strong> (לא Override) כדי לנקות שדות ישנים לאחר הייבוא</li>
-                                <li>אשר את הייבוא והמתן לסיום</li>
+                                <li>התחבר ל-<a href="https://make.powerapps.com" target="_blank">make.powerapps.com</a> עם <strong>המשתמש האפליקטיבי המתאים</strong> ובחר את סביבת היעד</li>
+                                <li>נווט אל <strong>Solutions</strong> בתפריט הצד</li>
+                                <li>לחץ על <strong>Import Solution</strong> בפס העליון</li>
+                                <li>לחץ <strong>Browse</strong> ובחר את קובץ ה-ZIP שיוצא</li>
+                                <li>לחץ <strong>Next</strong> — המערכת תנתח את הסולושן</li>
+                                <li>בחר <strong>Upgrade</strong> (ולא Override!) — אפשרות זו מנקה קומפוננטות ישנות שהוסרו מהסולושן</li>
+                                <li>לחץ <strong>Import</strong> והמתן לסיום התהליך (עשוי לקחת מספר דקות)</li>
+                                <li>ודא שהסיום הסתיים ללא שגיאות — בדוק את רשימת הקומפוננטות המיובאות</li>
                             </ol>
 
                             <!-- Step 4 -->
@@ -3977,41 +3993,72 @@
                                 <li>פתח את הסולושן המיובא בסביבת היעד</li>
                                 <li>נווט אל <strong>Connection References</strong> בתפריט הסולושן</li>
                                 <li>ודא שכל חיבור מציג את <strong>המשתמש האפליקטיבי הנכון</strong> ולא משתמש אישי</li>
-                                <li>אם יש חיבור שגוי או לא פעיל — עדכן אותו למשתמש הנכון</li>
+                                <li>אם יש חיבור שגוי או לא פעיל — לחץ עליו ועדכן לחיבור של המשתמש הנכון</li>
                             </ul>
 
-                            <!-- Step 5 -->
+                            <!-- Step 5 - Environment Variables -->
                             <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#eff6ff);border-right:4px solid #0078D4;border-radius:0 6px 6px 0;">
                                 <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">5</span>
+                                <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-sliders-h" style="margin-left:0.4rem;"></i>אימות משתני סביבה (Environment Variables)</span>
+                            </div>
+                            <div class="note" style="background-color:#fef3c7;border-color:#fcd34d;color:#92400e;">
+                                <strong>⚠️ נקודה קריטית:</strong> משתני סביבה (Environment Variables) נועדו להחיל ערכים שונים לפי הסביבה. לאחר הייבוא <strong>חובה לוודא</strong> שהערכים מוגדרים נכון לסביבת היעד — הם <strong>לא</strong> מועברים אוטומטית עם הסולושן.
+                            </div>
+                            <ol>
+                                <li>פתח את הסולושן המיובא בסביבת היעד</li>
+                                <li>נווט אל <strong>Environment Variables</strong> בתפריט הסולושן</li>
+                                <li>לכל משתנה — לחץ עליו ובדוק שה-<strong>Current Value</strong> (ערך נוכחי) מוגדר ומתאים לסביבת היעד</li>
+                                <li>שים לב במיוחד למשתנים מסוג: URL, שם SharePoint Site, מזהי רשימות, כתובות מייל, ושמות תיקיות</li>
+                                <li>אם יש משתנה ללא ערך נוכחי — הגדר אותו בהתאם לסביבת היעד לפני המשך</li>
+                            </ol>
+                            <div class="note" style="background-color:#eff6ff;border-color:#bfdbfe;color:#1e40af;margin-top:0.5rem;">
+                                <strong>💡 טיפ:</strong> רשום מראש את כל ה-Environment Variables הקיימים בסולושן ואת הערכים הנדרשים לכל סביבה — כך תוכל לבצע את הבדיקה מהר ובצורה מסודרת.
+                            </div>
+
+                            <!-- Step 6 - Cloud Flows -->
+                            <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#eff6ff);border-right:4px solid #0078D4;border-radius:0 6px 6px 0;">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">6</span>
                                 <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-bolt" style="margin-left:0.4rem;"></i>אימות אוטומציות (Cloud Flows)</span>
                             </div>
                             <div class="note" style="background-color:#dcfce7;border-color:#86efac;color:#14532d;">
-                                <strong>✅ בדיקה חיונית:</strong> לאחר הייבוא, יש לוודא שכל ה-Cloud Flows בסולושן <strong>דלוקות (On)</strong>.
+                                <strong>✅ בדיקה חיונית:</strong> לאחר הייבוא, יש לוודא שכל ה-Cloud Flows בסביבת היעד נמצאות <strong>באותו סטטוס</strong> שהיה להן בסביבת המקור לפני הייצוא.<br>
+                                Flow שהיה פעיל (On) בסביבת המקור — צריך להיות פעיל גם ביעד. Flow שהיה כבוי (Off) — צריך להישאר כבוי.
                             </div>
-                            <ul>
-                                <li>פתח את הסולושן בסביבת היעד ונווט אל <strong>Cloud Flows</strong></li>
-                                <li>ודא שכל Flow בסטטוס <strong>On</strong> (פעיל)</li>
-                                <li>אם יש Flow כבוי — הפעל אותו ידנית</li>
-                            </ul>
+                            <ol>
+                                <li>עוד <strong>לפני הייצוא</strong> — תעד את סטטוס כל ה-Flows בסביבת המקור (On / Off)</li>
+                                <li>לאחר הייבוא — פתח את הסולושן בסביבת היעד ונווט אל <strong>Cloud Flows</strong></li>
+                                <li>השווה את הסטטוס של כל Flow מול הרשימה שתיעדת מסביבת המקור</li>
+                                <li>אם Flow שהיה On הפך ל-Off — הפעל אותו ידנית (לחץ על שלוש הנקודות ← <strong>Turn On</strong>)</li>
+                                <li>אם Flow שהיה Off הוּפעל בטעות — כבה אותו (לחץ על שלוש הנקודות ← <strong>Turn Off</strong>)</li>
+                            </ol>
 
-                            <!-- Step 6 -->
+                            <!-- Step 7 - Data -->
                             <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#eff6ff);border-right:4px solid #0078D4;border-radius:0 6px 6px 0;">
-                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">6</span>
-                                <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-database" style="margin-left:0.4rem;"></i>העברת DATA בין סביבות</span>
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#0078D4,#005A9E);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">7</span>
+                                <span style="font-size:1.05rem;font-weight:700;color:#005A9E;"><i class="fas fa-database" style="margin-left:0.4rem;"></i>בדיקת טבלאות והעברת נתונים</span>
                             </div>
                             <div class="note" style="background-color:#fef3c7;border-color:#fcd34d;color:#92400e;">
-                                <strong>📊 העברת נתונים:</strong> במידה ונדרש להעביר נתונים מטבלאות, יש לבצע זאת <strong>לפני או אחרי</strong> הייבוא בהתאם לסוג הנתונים.
+                                <strong>📊 בדיקה לפני הייצוא:</strong> האם יש בסולושן טבלאות (Dataverse Tables) שמכילות נתוני קונפיגורציה או הגדרות שצריך להעביר יחד עם הקוד? זה שלב שקל לפספס!
                             </div>
+                            <p style="font-weight:600;color:#374151;margin-top:0.75rem;">כיצד לבדוק אם יש נתונים להעביר:</p>
                             <ul>
-                                <li>השתמש בכלי <strong>Configuration Migration Tool</strong> להעברת נתוני קונפיגורציה</li>
-                                <li>לטבלאות קטנות — ייצוא/ייבוא ידני עם Excel</li>
-                                <li>ודא שהנתונים לא ידרסו נתונים קיימים בסביבת היעד</li>
-                                <li>בדוק תקינות הנתונים לאחר ההעברה</li>
+                                <li>בדוק אם הסולושן כולל טבלאות שמשמשות כ"קטלוג" או "הגדרות מערכת" — אלו בדרך כלל צריכות העברת נתונים</li>
+                                <li>טבלאות של רשומות משתמשים, הרשאות מותאמות, או פרמטרים — בדרך כלל נדרשת העברה ידנית</li>
+                                <li>טבלאות עסקיות (נתוני ייצור, רשומות תהליכיות) — בדרך כלל <strong>לא</strong> מועברות בין סביבות</li>
                             </ul>
+                            <p style="font-weight:600;color:#374151;margin-top:0.75rem;">כלים להעברת נתונים:</p>
+                            <ul>
+                                <li><strong>Configuration Migration Tool</strong> — להעברת קונפיגורציה בין סביבות באופן מבוקר</li>
+                                <li><strong>ייצוא/ייבוא Excel</strong> — לטבלאות קטנות (דרך Advanced Find או ישירות מה-Table)</li>
+                                <li><strong>Dataflows</strong> — להעברת נתונים מקבציות גדולים</li>
+                            </ul>
+                            <div class="note" style="background-color:#fef3c7;border-color:#fcd34d;color:#92400e;margin-top:0.75rem;">
+                                <strong>⚠️ זהירות:</strong> לפני ייבוא נתונים לסביבת היעד — ודא שהנתונים החדשים לא ידרסו רשומות קיימות שנוצרו בסביבת היעד. בדוק תקינות הנתונים לאחר ההעברה.
+                            </div>
 
-                            <!-- Step 7 -->
+                            <!-- Step 8 -->
                             <div style="display:flex;align-items:center;gap:0.75rem;margin:1.75rem 0 0.75rem;padding:0.5rem 1rem;background:linear-gradient(to left,transparent,#f0fdf4);border-right:4px solid #10b981;border-radius:0 6px 6px 0;">
-                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">7</span>
+                                <span style="display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;">8</span>
                                 <span style="font-size:1.05rem;font-weight:700;color:#059669;"><i class="fas fa-check-circle" style="margin-left:0.4rem;"></i>סימון במערכת העברת הפתרונות</span>
                             </div>
                             <div class="note" style="background-color:#dcfce7;border-color:#86efac;color:#14532d;">
@@ -4029,13 +4076,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td>1</td><td>ייצוא</td><td>Export Managed מסביבת המקור</td></tr>
-                                    <tr><td>2</td><td>שמירה</td><td>שמירת ZIP בתיקיית G:\ של הפתרון</td></tr>
+                                    <tr><td>1</td><td>ייצוא</td><td>Publish All ← Export Managed מסביבת המקור, תוך עדכון מספר גרסה</td></tr>
+                                    <tr><td>2</td><td>שמירה</td><td>שמירת ZIP בתיקיית G:\תחום פיתוח בסביבות פתוחות\Power Apps\Solutions</td></tr>
                                     <tr><td>3</td><td>ייבוא</td><td>Import + Upgrade עם משתמש אפליקטיבי של סביבת היעד</td></tr>
-                                    <tr><td>4</td><td>Connection References</td><td>וידוא חיבורים על משתמש אפליקטיבי</td></tr>
-                                    <tr><td>5</td><td>אוטומציות</td><td>וידוא שכל ה-Flows דלוקים</td></tr>
-                                    <tr><td>6</td><td>DATA</td><td>העברת נתונים בטבלאות אם נדרש</td></tr>
-                                    <tr><td>7</td><td>סימון</td><td>עדכון בקשה לסטטוס "בוצע" במערכת העברת הפתרונות</td></tr>
+                                    <tr><td>4</td><td>Connection References</td><td>וידוא חיבורים על המשתמש האפליקטיבי הנכון</td></tr>
+                                    <tr><td>5</td><td>Environment Variables</td><td>וידוא שכל משתני הסביבה מוגדרים נכון לסביבת היעד</td></tr>
+                                    <tr><td>6</td><td>Cloud Flows</td><td>וידוא שכל ה-Flows באותו סטטוס (On/Off) כמו בסביבת המקור</td></tr>
+                                    <tr><td>7</td><td>נתונים</td><td>בדיקה והעברת נתוני קונפיגורציה מטבלאות אם נדרש</td></tr>
+                                    <tr><td>8</td><td>סימון</td><td>עדכון בקשה לסטטוס "בוצע" במערכת העברת הפתרונות</td></tr>
                                 </tbody>
                             </table>
                         </div>
