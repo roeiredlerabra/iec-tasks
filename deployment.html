@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>מערכת בקשות העברת גרסאות Power Apps</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        'inter': ['Inter', 'sans-serif'],
+                        'inter': ['Heebo', 'Inter', 'sans-serif'],
+                        'heebo': ['Heebo', 'Inter', 'sans-serif'],
                     },
                     colors: {
                         'iec-blue': '#1e87f0',
@@ -65,7 +67,7 @@
         */
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Heebo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             direction: rtl;
             /* Better mobile scrolling */
             -webkit-overflow-scrolling: touch;
@@ -775,6 +777,165 @@
             color: #6b7280;
         }
         
+        /* ─── Dark mode for custom components ─── */
+        .dark .filter-bar {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .dark .filter-bar-header {
+            background: linear-gradient(135deg, #1e293b 0%, #1f2937 100%);
+            border-color: #374151;
+        }
+        
+        .dark .filter-input {
+            background: #374151;
+            border-color: #4b5563;
+            color: #f1f5f9;
+        }
+        
+        .dark .filter-input:focus {
+            border-color: #818cf8;
+            background: #1f2937;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+        }
+        
+        .dark .filter-input::placeholder {
+            color: #6b7280;
+        }
+        
+        .dark .filter-select {
+            background: #374151;
+            border-color: #4b5563;
+            color: #f1f5f9;
+        }
+        
+        .dark .filter-select:focus {
+            border-color: #818cf8;
+            background: #1f2937;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+        }
+        
+        .dark .pro-table thead th {
+            background: linear-gradient(135deg, #1e293b 0%, #1f2937 100%);
+            border-color: #374151;
+            color: #94a3af;
+        }
+        
+        .dark .pro-table tbody tr {
+            border-color: #1f2937;
+        }
+        
+        .dark .pro-table tbody tr:hover {
+            background-color: #1e293b;
+        }
+        
+        .dark .pro-table tbody td {
+            color: #e2e8f0;
+        }
+        
+        .dark .status-pill-pending {
+            background: linear-gradient(135deg, #422006, #451a03);
+            color: #fbbf24;
+            border-color: #78350f;
+        }
+        
+        .dark .status-pill-approved {
+            background: linear-gradient(135deg, #064e3b, #065f46);
+            color: #6ee7b7;
+            border-color: #047857;
+        }
+        
+        .dark .status-pill-rejected {
+            background: linear-gradient(135deg, #450a0a, #7f1d1d);
+            color: #fca5a5;
+            border-color: #991b1b;
+        }
+        
+        .dark .action-btn-approve {
+            background: #064e3b;
+            color: #6ee7b7;
+            border-color: #065f46;
+        }
+        
+        .dark .action-btn-approve:hover {
+            background: #065f46;
+        }
+        
+        .dark .action-btn-reject {
+            background: #450a0a;
+            color: #fca5a5;
+            border-color: #7f1d1d;
+        }
+        
+        .dark .action-btn-reject:hover {
+            background: #7f1d1d;
+        }
+        
+        .dark .action-btn-assign {
+            background: #1e1b4b;
+            color: #a5b4fc;
+            border-color: #312e81;
+        }
+        
+        .dark .action-btn-assign:hover {
+            background: #312e81;
+        }
+        
+        .dark .action-btn-delete {
+            background: #1f2937;
+            color: #9ca3af;
+            border-color: #374151;
+        }
+        
+        .dark .action-btn-delete:hover {
+            background: #374151;
+        }
+        
+        .dark .expand-toggle {
+            background: #374151;
+            border-color: #4b5563;
+            color: #9ca3af;
+        }
+        
+        .dark .expand-toggle:hover {
+            background: #4b5563;
+            color: #e2e8f0;
+        }
+        
+        .dark .date-group-header {
+            background: linear-gradient(135deg, #1e293b 0%, #1f2937 100%);
+            border-color: #374151;
+        }
+        
+        .dark .request-card {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .dark .request-card:hover {
+            border-color: #4b5563;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .dark .avatar-badge {
+            box-shadow: 0 0 0 2px #1f2937;
+        }
+        
+        .dark .drag-submit-track {
+            background: #374151;
+            border-color: #4b5563;
+        }
+        
+        /* Dark mode body background */
+        .dark .bg-gray-50 {
+            background-color: #111827;
+        }
+        
+        .dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]) {
+            border-color: #1f2937;
+        }
+
         #dark-mode-toggle {
             transition: all 0.3s ease;
         }
@@ -1254,37 +1415,416 @@
         .drag-submit-text.disabled {
             color: #9ca3af;
         }
+        
+        /* Assigned-to avatar badge */
+        .avatar-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            flex-shrink: 0;
+        }
+        
+        .avatar-badge-sm {
+            width: 24px;
+            height: 24px;
+            font-size: 0.6rem;
+        }
+        
+        /* Assign modal overlay */
+        .assign-modal-overlay {
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Glass card effect for header */
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        /* Modern card hover effect */
+        .card-modern {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-modern:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Pulse animation for unassigned badge */
+        .pulse-dot {
+            position: relative;
+        }
+        
+        .pulse-dot::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f59e0b;
+            animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        /* Gradient text effect */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ─── Enhanced Table Styles ─── */
+        .pro-table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .pro-table thead th {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #475569;
+            padding: 14px 12px;
+        }
+        
+        .pro-table tbody tr {
+            transition: all 0.15s ease;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .pro-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .pro-table tbody td {
+            padding: 12px;
+            font-size: 0.875rem;
+        }
+
+        /* ─── Status Pills ─── */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        
+        .status-pill-pending {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+        
+        .status-pill-approved {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+        
+        .status-pill-rejected {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        /* ─── Urgency Indicators ─── */
+        .urgency-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* ─── Action Buttons ─── */
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        .action-btn span {
+            display: none;
+        }
+
+        @media (min-width: 1280px) {
+            .action-btn span {
+                display: inline;
+            }
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .action-btn-approve {
+            background: #ecfdf5;
+            color: #059669;
+            border-color: #a7f3d0;
+        }
+        
+        .action-btn-approve:hover {
+            background: #d1fae5;
+        }
+        
+        .action-btn-reject {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+        
+        .action-btn-reject:hover {
+            background: #fee2e2;
+        }
+        
+        .action-btn-assign {
+            background: #eef2ff;
+            color: #4f46e5;
+            border-color: #c7d2fe;
+        }
+        
+        .action-btn-assign:hover {
+            background: #e0e7ff;
+        }
+        
+        .action-btn-delete {
+            background: #f9fafb;
+            color: #6b7280;
+            border-color: #e5e7eb;
+        }
+        
+        .action-btn-delete:hover {
+            background: #f3f4f6;
+        }
+
+        /* ─── Modern Card ─── */
+        .request-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .request-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-color: #cbd5e1;
+        }
+        
+        .request-card-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* ─── Filter Bar ─── */
+        .filter-bar {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .filter-bar-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 16px 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .filter-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: #f8fafc;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+            background: white;
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: #f8fafc;
+            cursor: pointer;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+            background: white;
+        }
+
+        /* ─── Date Group Headers ─── */
+        .date-group-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ─── Expand Button ─── */
+        .expand-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        
+        .expand-toggle:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        /* ─── Bulk Select Checkbox ─── */
+        .bulk-select-row,
+        .bulk-select-all {
+            accent-color: #6366f1;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+        .bulk-select-row:hover,
+        .bulk-select-all:hover {
+            transform: scale(1.15);
+        }
+
+        /* ─── FAB Button ─── */
+        .fab-btn {
+            position: fixed;
+            z-index: 50;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .fab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+        
+        .fab-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ─── Scrollbar ─── */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* ─── Skeleton loading ─── */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s ease-in-out infinite;
+            border-radius: 6px;
+        }
     </style>
 </head>
-<body class="bg-gray-50 font-inter">
+<body class="bg-gray-50 dark:bg-gray-900 font-inter transition-colors duration-300">
     <div class="min-h-screen">
         <!-- Main Header -->
-        <header class="bg-white shadow-sm border-b border-gray-200">
-            <div class="mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col sm:flex-row items-center justify-between py-4 space-y-4 sm:space-y-0">
+        <header class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 shadow-xl">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgMGg2MHY2MEgweiIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjEuNSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNnKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==')] opacity-40"></div>
+            <div class="relative mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row items-center justify-between py-5 space-y-4 sm:space-y-0">
                     <div class="flex items-center space-x-4 rtl:space-x-reverse">
                         <div class="flex-shrink-0">
-                            <div class="w-20 h-20 rounded-lg flex items-center justify-center">
-                                <img src="https://www.emojiall.com/images/240/microsoft-teams/1f680.png" alt="🚀" class="w-12 h-12">
+                            <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/20 shadow-lg">
+                                <img src="https://www.emojiall.com/images/240/microsoft-teams/1f680.png" alt="🚀" class="w-9 h-9">
                             </div>
                         </div>
                         <div class="text-center sm:text-right">
-                            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">מערכת בקשות Power Apps</h1>
-                            <p class="text-sm text-gray-600">ניהול העברת גרסאות בין סביבות</p>
+                            <h1 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">מערכת בקשות Power Apps</h1>
+                            <p class="text-sm text-blue-200/80 font-light mt-0.5">ניהול העברת גרסאות בין סביבות</p>
                         </div>
                     </div>
                     
                     <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
-                        <div id="user-info" class="hidden text-sm font-medium text-gray-700"></div>
-                        <button id="dark-mode-toggle" class="uk-button uk-button-default flex items-center space-x-2 rtl:space-x-reverse px-3 py-2 text-sm" onclick="toggleDarkMode()" title="החלף מצב תצוגה">
-                            <i id="dark-mode-icon" class="fas fa-moon"></i>
+                        <div id="user-info" class="hidden text-sm font-medium text-blue-100"></div>
+                        <button id="dark-mode-toggle" class="flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-white transition-all duration-200 backdrop-blur-sm" onclick="toggleDarkMode()" title="החלף מצב תצוגה">
+                            <i id="dark-mode-icon" class="fas fa-moon text-sm"></i>
                         </button>
-                        <button id="admin-login-btn" class="uk-button uk-button-default flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 text-sm" onclick="showAdminLogin()">
-                            <i class="fas fa-user"></i>
+                        <button id="admin-login-btn" class="flex items-center space-x-2 rtl:space-x-reverse px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-medium transition-all duration-200 backdrop-blur-sm" onclick="showAdminLogin()">
+                            <i class="fas fa-shield-halved text-blue-300"></i>
                             <span>התחברות מנהל</span>
                         </button>
-                        <button id="admin-logout-btn" class="uk-button uk-button-danger hidden flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 text-sm" onclick="adminLogout()">
-                            <i class="fas fa-sign-out-alt"></i>
+                        <button id="admin-logout-btn" class="hidden flex items-center space-x-2 rtl:space-x-reverse px-5 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-400/30 text-red-200 text-sm font-medium transition-all duration-200 backdrop-blur-sm" onclick="adminLogout()">
+                            <i class="fas fa-arrow-right-from-bracket"></i>
                             <span>התנתק</span>
                         </button>
                     </div>
@@ -1293,68 +1833,202 @@
         </header>
 
         <!-- Main Content -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <!-- Filter and Search Section -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
-                <div class="px-4 sm:px-6 py-4 border-b border-gray-200">
-                    <h2 class="text-lg sm:text-xl font-semibold text-gray-900 flex items-center">
-                        <i class="fas fa-list-alt ml-2 text-iec-blue"></i>
-                        כל הבקשות
-                    </h2>
-                    <p class="text-sm text-gray-600 mt-1">צפייה בכל בקשות העברת הגרסאות והסטטוס שלהן</p>
-                </div>
-                <div class="px-4 sm:px-6 py-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-6">
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700">חיפוש</label>
-                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue text-sm" id="searchInput" placeholder="חפש לפי מזהה, אפליקציה או מבקש..." onkeyup="filterRequests()">
+            <div class="filter-bar shadow-sm mb-6">
+                <div class="filter-bar-header">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-table-list text-indigo-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">כל הבקשות</h2>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">צפייה בכל בקשות העברת הגרסאות והסטטוס שלהן</p>
+                            </div>
                         </div>
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700">סינון לפי סטטוס</label>
-                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue text-sm" id="statusFilter" onchange="loadAllRequests(); filterRequests();">
+                        <button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm transition-all duration-200 text-sm font-medium" onclick="loadAllRequests(); loadPendingProductionDeployments();">
+                            <i class="fas fa-arrows-rotate text-gray-400"></i>
+                            <span class="hidden sm:inline">רענן</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="px-5 sm:px-6 py-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                <i class="fas fa-magnifying-glass text-gray-400 ml-1 text-[10px]"></i>
+                                חיפוש
+                            </label>
+                            <input type="text" class="filter-input" id="searchInput" placeholder="מזהה, אפליקציה, מבקש..." onkeyup="filterRequests()">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                <i class="fas fa-circle-half-stroke text-gray-400 ml-1 text-[10px]"></i>
+                                סטטוס
+                            </label>
+                            <select class="filter-select" id="statusFilter" onchange="loadAllRequests(); filterRequests();">
                                 <option value="">כל הסטטוסים</option>
                                 <option value="pending" selected>ממתין לביצוע</option>
                                 <option value="approved">בוצע</option>
                                 <option value="rejected">נדחה</option>
                             </select>
                         </div>
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700">סינון לפי תאריך</label>
-                            <div class="flex gap-2">
-                                <button class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md transition-colors duration-200 focus:ring-iec-blue focus:border-iec-blue" 
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                <i class="fas fa-user-tag text-gray-400 ml-1 text-[10px]"></i>
+                                מוקצה ל
+                            </label>
+                            <select class="filter-select" id="assignedFilter" onchange="filterRequests()">
+                                <option value="">כל המשתמשים</option>
+                                <option value="unassigned">לא מוקצה</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                <i class="fas fa-calendar-days text-gray-400 ml-1 text-[10px]"></i>
+                                תאריך
+                            </label>
+                            <div class="flex gap-1.5">
+                                <button class="flex-1 px-3 py-2.5 text-xs font-semibold rounded-lg transition-all duration-200" 
                                         id="todayFilterBtn" 
                                         onclick="toggleDateFilter(true)"
-                                        style="background-color: #3B82F6; color: white; border-color: #3B82F6;">
-                                    רק היום
+                                        style="background: linear-gradient(135deg, #4f46e5, #6366f1); color: white; border: none; box-shadow: 0 2px 8px rgba(79,70,229,0.3);">
+                                    <i class="fas fa-calendar-day ml-1"></i>
+                                    היום
                                 </button>
-                                <button class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md transition-colors duration-200 focus:ring-iec-blue focus:border-iec-blue" 
+                                <button class="flex-1 px-3 py-2.5 text-xs font-semibold rounded-lg border border-gray-200 transition-all duration-200 hover:bg-gray-50" 
                                         id="allDatesBtn" 
                                         onclick="toggleDateFilter(false)"
-                                        style="background-color: #F3F4F6; color: #374151;">
-                                    כל התאריכים
+                                        style="background-color: #f8fafc; color: #64748b;">
+                                    <i class="fas fa-calendar ml-1"></i>
+                                    הכל
                                 </button>
                             </div>
                         </div>
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 sm:hidden">&nbsp;</label>
-                            <button class="w-full sm:w-auto px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md shadow-sm transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm" onclick="loadAllRequests(); loadPendingProductionDeployments();">
-                                <i class="fas fa-sync-alt"></i>
-                                <span>רענן רשימה</span>
-                            </button>
-                        </div>
                     </div>
-                    <div id="allRequests" class="overflow-x-auto"></div>
+                    <div id="allRequests" class="overflow-x-auto mt-5"></div>
                 </div>
             </div>
             
+            <!-- Bulk Actions Toolbar (shown when rows selected) -->
+            <div id="bulkActionsBar" class="fixed bottom-0 left-0 right-0 z-40 hidden transform translate-y-full transition-all duration-300 ease-out">
+                <div class="max-w-5xl mx-auto px-4 pb-4">
+                    <div class="bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 dark:from-gray-800 dark:via-indigo-900 dark:to-gray-800 rounded-2xl shadow-2xl border border-white/10 px-5 py-3.5 flex items-center justify-between gap-4 backdrop-blur-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
+                                <i class="fas fa-check-double text-indigo-300"></i>
+                            </div>
+                            <div>
+                                <span class="text-white font-bold text-sm" id="bulkSelectedCount">0</span>
+                                <span class="text-indigo-200/80 text-sm mr-1">בקשות נבחרו</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="bulkApprove()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 hover:text-emerald-200 border border-emerald-400/30 rounded-xl text-sm font-semibold transition-all duration-200" title="אשר נבחרים">
+                                <i class="fas fa-check-double text-xs"></i>
+                                <span>אשר הכל</span>
+                            </button>
+                            <button onclick="bulkReject()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 border border-red-400/30 rounded-xl text-sm font-semibold transition-all duration-200" title="דחה נבחרים">
+                                <i class="fas fa-xmark text-xs"></i>
+                                <span>דחה הכל</span>
+                            </button>
+                            <button onclick="bulkAssign()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 hover:text-indigo-200 border border-indigo-400/30 rounded-xl text-sm font-semibold transition-all duration-200" title="הקצה נבחרים">
+                                <i class="fas fa-user-tag text-xs"></i>
+                                <span>הקצה הכל</span>
+                            </button>
+                            <div class="w-px h-8 bg-white/10 mx-1"></div>
+                            <button onclick="clearAllSelections()" class="inline-flex items-center gap-1.5 px-3 py-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-xl text-sm transition-all duration-200" title="נקה בחירה">
+                                <i class="fas fa-xmark text-xs"></i>
+                                <span>נקה</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulk Reject Modal -->
+            <div id="bulkRejectModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg relative overflow-hidden transform transition-all duration-300 border border-gray-100 dark:border-gray-700">
+                    <div class="bg-gradient-to-r from-red-500 to-rose-600 px-6 py-5">
+                        <h2 class="text-lg font-bold text-white flex items-center">
+                            <i class="fas fa-circle-xmark ml-2"></i>
+                            דחיית בקשות נבחרות
+                        </h2>
+                        <p class="text-red-100/80 text-sm mt-1">
+                            <span id="bulkRejectCount">0</span> בקשות ידחו
+                        </p>
+                    </div>
+                    <div class="p-6">
+                        <form id="bulkRejectForm" onsubmit="confirmBulkReject(event)">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" for="bulkRejectionReason">
+                                    <i class="fas fa-message text-gray-400 ml-1 text-[10px]"></i>
+                                    סיבת הדחייה * (תחול על כל הבקשות הנבחרות)
+                                </label>
+                                <textarea class="filter-input !h-auto" id="bulkRejectionReason" rows="4" required placeholder="הסבר את הסיבה לדחיית הבקשות"></textarea>
+                            </div>
+                            <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse pt-4">
+                                <button class="px-5 py-2.5 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="button" onclick="closeBulkRejectModal()">
+                                    <i class="fas fa-xmark"></i>
+                                    <span>ביטול</span>
+                                </button>
+                                <button class="px-6 py-2.5 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white rounded-xl transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="submit">
+                                    <i class="fas fa-circle-xmark"></i>
+                                    <span>דחה בקשות</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulk Assign Modal -->
+            <div id="bulkAssignModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden transform transition-all duration-300 border border-gray-100 dark:border-gray-700">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-5">
+                        <h2 class="text-lg font-bold text-white flex items-center">
+                            <i class="fas fa-user-tag ml-2"></i>
+                            הקצאה מרוכזת
+                        </h2>
+                        <p class="text-indigo-100/80 text-sm mt-1">
+                            <span id="bulkAssignCount">0</span> בקשות יוקצו
+                        </p>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" for="bulkAssignUserSelect">
+                                    <i class="fas fa-user text-gray-400 ml-1 text-[10px]"></i>
+                                    בחר משתמש
+                                </label>
+                                <select class="filter-select" id="bulkAssignUserSelect">
+                                    <option value="">לא מוקצה</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse pt-2">
+                                <button class="px-5 py-2.5 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="button" onclick="closeBulkAssignModal()">
+                                    <i class="fas fa-xmark"></i>
+                                    <span>ביטול</span>
+                                </button>
+                                <button class="px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="button" onclick="confirmBulkAssign()">
+                                    <i class="fas fa-user-tag"></i>
+                                    <span>הקצה לכולם</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Floating Action Button -->
-            <button class="fixed bottom-6 right-6 w-14 h-14 bg-iec-blue hover:bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 md:w-16 md:h-16" onclick="showNewRequestModal()" title="הגשת בקשה חדשה">
-                <span class="icon-material text-xl md:text-2xl">add</span>
+            <button class="fab-btn bottom-6 right-6 w-14 h-14 md:w-[60px] md:h-[60px] bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white" onclick="showNewRequestModal()" title="הגשת בקשה חדשה">
+                <i class="fas fa-plus text-xl"></i>
             </button>
 
             <!-- Pending Production Sidebar Toggle Button -->
-            <button id="pendingProdSidebarToggle" class="fixed bottom-24 right-6 w-14 h-14 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 md:w-16 md:h-16 hidden" onclick="togglePendingProdSidebar()" title="ממתינים להעברה לייצור">
-                <i class="fas fa-exclamation-triangle text-xl md:text-2xl"></i>
+            <button id="pendingProdSidebarToggle" class="fab-btn bottom-24 right-6 w-14 h-14 md:w-[60px] md:h-[60px] bg-gradient-to-br from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white hidden" onclick="togglePendingProdSidebar()" title="ממתינים להעברה לייצור">
+                <i class="fas fa-triangle-exclamation text-lg"></i>
                 <span id="pendingProdBadge" class="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center hidden">0</span>
             </button>
         </div>
@@ -1390,39 +2064,66 @@
         <div id="message" class="fixed top-20 right-4 left-4 z-40 max-w-md mx-auto"></div>
 
         <!-- New Request Modal -->
-        <div id="newRequestModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center p-4">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-4xl max-h-screen overflow-y-auto relative">
-                <button class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 transition-colors" type="button" onclick="closeNewRequestModal()">
-                    <i class="fas fa-times text-xl"></i>
+        <div id="newRequestModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-start justify-center px-2 sm:p-4 overflow-y-auto">
+            <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-6xl my-2 sm:my-4 relative border border-gray-100 dark:border-gray-700">
+                <button class="absolute top-3 left-3 sm:top-4 sm:left-4 w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 hover:text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300 transition-all z-10" type="button" onclick="closeNewRequestModal()">
+                    <i class="fas fa-xmark text-sm"></i>
                 </button>
-                <div class="p-6">
-                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <i class="fas fa-plus-circle text-iec-blue ml-2"></i>
-                        הגשת בקשה חדשה
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">הגש בקשה להעברת Power Apps בין סביבות</p>
+                <div class="p-4 sm:p-6 lg:p-8">
+                    <div class="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
+                        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg flex-shrink-0">
+                            <i class="fas fa-rocket text-white text-sm sm:text-lg"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h2 class="text-lg sm:text-2xl font-extrabold text-gray-900 dark:text-white truncate">הגשת בקשה חדשה</h2>
+                            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">העברת Power Apps בין סביבות</p>
+                        </div>
+                    </div>
                     
-                    <form id="submitForm" class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="requesterName">שם המבקש *</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="requesterName" required onchange="updateRequesterEmail()">
+                    <form id="submitForm" class="space-y-5">
+                        <!-- Top row: 3 columns on desktop -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" for="requesterName">
+                                    <i class="fas fa-user text-gray-400 ml-1 text-[10px]"></i>
+                                    שם המבקש *
+                                </label>
+                                <select class="filter-select" id="requesterName" required onchange="updateRequesterEmail()">
                                     <option value="">בחר משתמש</option>
                                 </select>
                             </div>
-                            <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="requesterEmail">אימייל המבקש *</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="requesterEmail" required onchange="updateRequesterName()">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" for="requesterEmail">
+                                    <i class="fas fa-envelope text-gray-400 ml-1 text-[10px]"></i>
+                                    אימייל המבקש *
+                                </label>
+                                <select class="filter-select" id="requesterEmail" required onchange="updateRequesterName()">
                                     <option value="">בחר אימייל</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" for="urgency">
+                                    <i class="fas fa-bolt text-gray-400 ml-1 text-[10px]"></i>
+                                    דחיפות *
+                                </label>
+                                <select class="filter-select" id="urgency" required>
+                                    <option value="low">נמוכה</option>
+                                    <option value="medium" selected>בינונית</option>
+                                    <option value="high">גבוהה</option>
+                                    <option value="critical">קריטית</option>
                                 </select>
                             </div>
                         </div>
 
+                        <!-- Second row: App ID + Assigned To -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="appId">מזהה האפליקציה (App ID) *</label>
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" for="appId">
+                                    <i class="fas fa-fingerprint text-gray-400 ml-1 text-[10px]"></i>
+                                    מזהה האפליקציה (App ID) *
+                                </label>
                                 <div class="relative">
-                                    <input class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" 
+                                    <input class="filter-input pr-10" 
                                            type="text" 
                                            id="appId" 
                                            required 
@@ -1442,102 +2143,103 @@
                                 </div>
                                 <p id="appIdHint" class="text-xs text-gray-500 dark:text-gray-400 hidden"></p>
                             </div>
-                            <div class="space-y-2">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="urgency">דחיפות *</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="urgency" required>
-                                    <option value="low">נמוכה</option>
-                                    <option value="medium" selected>בינונית</option>
-                                    <option value="high">גבוהה</option>
-                                    <option value="critical">קריטית</option>
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" for="assignedTo">
+                                    <i class="fas fa-user-tag text-gray-400 ml-1 text-[10px]"></i>
+                                    מוקצה ל
+                                </label>
+                                <select class="filter-select" id="assignedTo">
+                                    <option value="">לא מוקצה</option>
                                 </select>
+                                <p class="text-xs text-gray-400 mt-1">אופציונלי</p>
                             </div>
                         </div>
 
                         <!-- Environment Selection with Visual Feedback -->
-                        <div class="space-y-4">
-                            <div class="text-center mb-4">
-                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">בחירת סביבות העברה</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">בחר את סביבת המקור והיעד להעברת האפליקציה</p>
+                        <div class="space-y-3">
+                            <div class="text-center">
+                                <h3 class="text-base font-bold text-gray-800 dark:text-white mb-1">בחירת סביבות העברה</h3>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">בחר את סביבת המקור והיעד להעברת האפליקציה</p>
                             </div>
                             
                             <!-- Environment Visual Flow -->
-                            <div id="environmentFlow" class="bg-gradient-to-r from-blue-50 to-green-50 border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4">
-                                <div class="flex items-center justify-center space-x-8 rtl:space-x-reverse">
+                            <div id="environmentFlow" class="bg-gradient-to-r from-slate-50 via-blue-50/50 to-emerald-50/50 dark:from-gray-700/50 dark:via-gray-700/30 dark:to-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl sm:rounded-2xl p-3 sm:p-4 mb-3">
+                                <div class="flex items-center justify-center space-x-4 sm:space-x-8 rtl:space-x-reverse">
                                     <!-- Dev Environment -->
-                                    <div id="env-dev" class="flex flex-col items-center space-y-2 transition-all duration-300 opacity-50">
-                                        <div class="w-16 h-16 bg-gray-100 border-2 border-gray-300 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-code text-gray-600 text-xl"></i>
+                                    <div id="env-dev" class="flex flex-col items-center space-y-1 sm:space-y-2 transition-all duration-300 opacity-40">
+                                        <div class="w-11 h-11 sm:w-16 sm:h-16 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-sm">
+                                            <i class="fas fa-code text-gray-500 text-base sm:text-xl"></i>
                                         </div>
-                                        <span class="text-sm font-medium text-gray-700">פיתוח</span>
-                                        <span class="text-xs text-gray-500">Dev</span>
+                                        <span class="text-xs sm:text-sm font-semibold text-gray-600">פיתוח</span>
+                                        <span class="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wider">Dev</span>
                                     </div>
                                     
                                     <!-- Arrow 1 -->
-                                    <div id="arrow-1" class="text-gray-400 text-2xl transition-all duration-300">
+                                    <div id="arrow-1" class="text-gray-300 text-base sm:text-xl transition-all duration-300">
                                         <i class="fas fa-arrow-left"></i>
                                     </div>
                                     
                                     <!-- Test Environment -->
-                                    <div id="env-test" class="flex flex-col items-center space-y-2 transition-all duration-300 opacity-50">
-                                        <div class="w-16 h-16 bg-gray-100 border-2 border-gray-300 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-flask text-gray-600 text-xl"></i>
+                                    <div id="env-test" class="flex flex-col items-center space-y-1 sm:space-y-2 transition-all duration-300 opacity-40">
+                                        <div class="w-11 h-11 sm:w-16 sm:h-16 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-sm">
+                                            <i class="fas fa-flask text-gray-500 text-base sm:text-xl"></i>
                                         </div>
-                                        <span class="text-sm font-medium text-gray-700">בדיקות</span>
-                                        <span class="text-xs text-gray-500">Test</span>
+                                        <span class="text-xs sm:text-sm font-semibold text-gray-600">בדיקות</span>
+                                        <span class="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wider">Test</span>
                                     </div>
                                     
                                     <!-- Arrow 2 -->
-                                    <div id="arrow-2" class="text-gray-400 text-2xl transition-all duration-300">
+                                    <div id="arrow-2" class="text-gray-300 text-base sm:text-xl transition-all duration-300">
                                         <i class="fas fa-arrow-left"></i>
                                     </div>
                                     
                                     <!-- Prod Environment -->
-                                    <div id="env-prod" class="flex flex-col items-center space-y-2 transition-all duration-300 opacity-50">
-                                        <div class="w-16 h-16 bg-gray-100 border-2 border-gray-300 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-globe text-gray-600 text-xl"></i>
+                                    <div id="env-prod" class="flex flex-col items-center space-y-1 sm:space-y-2 transition-all duration-300 opacity-40">
+                                        <div class="w-11 h-11 sm:w-16 sm:h-16 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-sm">
+                                            <i class="fas fa-globe text-gray-500 text-base sm:text-xl"></i>
                                         </div>
-                                        <span class="text-sm font-medium text-gray-700">ייצור</span>
-                                        <span class="text-xs text-gray-500">Prod</span>
+                                        <span class="text-xs sm:text-sm font-semibold text-gray-600">ייצור</span>
+                                        <span class="text-[9px] sm:text-[10px] text-gray-400 font-medium uppercase tracking-wider">Prod</span>
                                     </div>
                                 </div>
                                 
                                 <!-- Dynamic Status Message -->
                                 <div id="flowStatus" class="text-center mt-4 hidden">
-                                    <div class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-full shadow-sm">
-                                        <i class="fas fa-route text-blue-500 ml-2"></i>
+                                    <div class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm">
+                                        <i class="fas fa-route text-indigo-500 ml-2"></i>
                                         <span id="flowStatusText" class="text-sm font-medium text-gray-700"></span>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="space-y-2">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="sourceEnv">
-                                        <i class="fas fa-upload text-gray-400 ml-1"></i>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider" for="sourceEnv">
+                                        <i class="fas fa-arrow-up-from-bracket text-gray-400 ml-1 text-[10px]"></i>
                                         סביבת מקור *
                                     </label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue transition-all duration-200" id="sourceEnv" required>
+                                    <select class="filter-select" id="sourceEnv" required>
                                         <option value="">בחר סביבת מקור</option>
                                         <option value="dev">🧑‍💻 פיתוח (Development)</option>
                                         <option value="test">🧪 בדיקות (Test)</option>
                                     </select>
-                                    <div id="sourceEnvHelp" class="text-xs text-gray-500 hidden">
-                                        <i class="fas fa-info-circle ml-1"></i>
+                                    <div id="sourceEnvHelp" class="text-xs text-gray-400 hidden mt-1">
+                                        <i class="fas fa-circle-info ml-1 text-[10px]"></i>
                                         <span>זוהי הסביבה בה האפליקציה נמצאת כעת</span>
                                     </div>
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="targetEnv">
-                                        <i class="fas fa-download text-gray-400 ml-1"></i>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider" for="targetEnv">
+                                        <i class="fas fa-bullseye text-gray-400 ml-1 text-[10px]"></i>
                                         סביבת יעד *
                                     </label>
-                                    <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue transition-all duration-200" id="targetEnv" required>
+                                    <select class="filter-select" id="targetEnv" required>
                                         <option value="">בחר סביבת יעד</option>
                                         <option value="test">🧪 בדיקות (Test)</option>
                                         <option value="prod">🌐 ייצור (Production)</option>
                                     </select>
-                                    <div id="targetEnvHelp" class="text-xs text-gray-500 hidden">
-                                        <i class="fas fa-info-circle ml-1"></i>
+                                    <div id="targetEnvHelp" class="text-xs text-gray-400 hidden mt-1">
+                                        <i class="fas fa-circle-info ml-1 text-[10px]"></i>
                                         <span>זוהי הסביבה אליה תועבר האפליקציה</span>
                                     </div>
                                 </div>
@@ -1546,10 +2248,10 @@
                             <!-- Validation Messages -->
                             <div id="environmentValidation" class="hidden">
                                 <!-- Success Message -->
-                                <div id="validCombination" class="bg-green-50 border border-green-200 rounded-md p-3 hidden">
+                                <div id="validCombination" class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 hidden">
                                     <div class="flex items-start">
-                                        <i class="fas fa-check-circle text-green-500 mt-0.5 ml-2"></i>
-                                        <div class="text-sm text-green-800">
+                                        <i class="fas fa-circle-check text-emerald-500 mt-0.5 ml-2"></i>
+                                        <div class="text-sm text-emerald-800">
                                             <div class="font-semibold">✅ בחירה תקינה!</div>
                                             <div id="validCombinationText" class="mt-1"></div>
                                         </div>
@@ -1580,43 +2282,45 @@
                             </div>
                         </div>
 
-                        <div class="space-y-2">
+                        <div class="space-y-1.5">
                             <div class="flex items-center justify-between">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="description">תיאור השינויים *</label>
+                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider" for="description">
+                                    <i class="fas fa-align-right text-gray-400 ml-1 text-[10px]"></i>
+                                    תיאור השינויים *
+                                </label>
                                 <button type="button" 
                                         onclick="expandDescriptionWithAI()" 
                                         id="aiExpandBtn"
-                                        class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-md transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                                        class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                                         title="הרחב את התיאור עם AI">
-                                    <i class="fas fa-magic mr-1.5"></i>
-                                    <span id="aiExpandBtnText">הרחב עם AI</span>
+                                    <i class="fas fa-wand-magic-sparkles mr-1.5"></i>
+                                    <span id="aiExpandBtnText">AI הרחב עם</span>
                                     <i class="fas fa-spinner fa-spin mr-1.5 hidden" id="aiExpandSpinner"></i>
                                 </button>
                             </div>
-                            <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" id="description" rows="4" required placeholder="תאר את השינויים או הסיבה להעברה"></textarea>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">טיפ: כתוב תיאור קצר ולחץ "הרחב עם AI" לקבלת תיאור מפורט יותר</p>
+                            <textarea class="filter-input !h-auto" id="description" rows="3" required placeholder="תאר את השינויים או הסיבה להעברה"></textarea>
                         </div>
 
-                        <div class="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
+                        <div class="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse pt-2">
                             <!-- Drag to Submit Button -->
-                            <div class="drag-submit-container relative">
-                                <div class="drag-submit-track bg-gray-200 rounded-full h-12 flex items-center justify-between px-2 min-w-[200px]">
-                                    <div class="drag-submit-button bg-iec-blue rounded-full w-10 h-10 flex items-center justify-center cursor-grab active:cursor-grabbing transition-all duration-200 shadow-md">
+                            <div class="drag-submit-container relative w-full sm:w-auto">
+                                <div class="drag-submit-track bg-gray-100 rounded-2xl h-12 sm:h-14 flex items-center justify-between px-2 min-w-0 sm:min-w-[240px] border border-gray-200">
+                                    <div class="drag-submit-button bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl w-11 h-11 flex items-center justify-center cursor-grab active:cursor-grabbing transition-all duration-200 shadow-md">
                                         <i class="fas fa-paper-plane text-white text-sm"></i>
                                     </div>
-                                    <span class="drag-submit-text text-gray-600 text-sm font-medium ml-4">גרור לשליחה</span>
-                                    <span class="drag-submit-text-disabled hidden text-gray-500 text-sm font-medium ml-4">השלם את השדות הנדרשים</span>
+                                    <span class="drag-submit-text text-gray-500 text-sm font-semibold ml-4">גרור לשליחה</span>
+                                    <span class="drag-submit-text-disabled hidden text-gray-400 text-sm font-medium ml-4">השלם את השדות הנדרשים</span>
                                 </div>
-                                <div class="drag-submit-success hidden bg-green-500 rounded-full h-12 flex items-center justify-center min-w-[200px]">
-                                    <span class="text-white font-medium flex items-center space-x-2 rtl:space-x-reverse">
-                                        <i class="fas fa-check"></i>
-                                        <span>נשלח!</span>
+                                <div class="drag-submit-success hidden bg-gradient-to-r from-emerald-500 to-green-600 rounded-2xl h-14 flex items-center justify-center min-w-[240px]">
+                                    <span class="text-white font-semibold flex items-center space-x-2 rtl:space-x-reverse">
+                                        <i class="fas fa-circle-check"></i>
+                                        <span>נשלח בהצלחה!</span>
                                     </span>
                                 </div>
                             </div>
 
-                            <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse" type="button" onclick="closeNewRequestModal()">
-                                <i class="fas fa-times"></i>
+                            <button class="px-5 py-2.5 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="button" onclick="closeNewRequestModal()">
+                                <i class="fas fa-xmark"></i>
                                 <span>ביטול</span>
                             </button>
                         </div>
@@ -1627,34 +2331,37 @@
 
         <!-- Admin Login Modal -->
         <div id="adminLoginModal" class="uk-modal" uk-modal>
-            <div class="uk-modal-dialog uk-modal-body max-w-md mx-4 sm:mx-auto">
-                <div class="p-6">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                        <i class="fas fa-shield-alt text-iec-blue ml-2"></i>
+            <div class="uk-modal-dialog uk-modal-body max-w-md mx-4 sm:mx-auto rounded-2xl overflow-hidden p-0">
+                <div class="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 px-6 py-5">
+                    <h2 class="text-lg font-bold text-white flex items-center">
+                        <i class="fas fa-shield-halved text-blue-300 ml-2"></i>
                         התחברות מנהל
                     </h2>
+                    <p class="text-blue-200/70 text-sm mt-1">הזן את פרטי ההתחברות שלך</p>
+                </div>
+                <div class="p-6">
                     <form id="adminLoginForm" class="space-y-4">
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 flex items-center" for="adminEmail">
-                                <i class="fas fa-envelope text-gray-400 ml-2"></i>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider" for="adminEmail">
+                                <i class="fas fa-envelope text-gray-400 ml-1 text-[10px]"></i>
                                 אימייל
                             </label>
-                            <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="email" id="adminEmail" required>
+                            <input class="filter-input" type="email" id="adminEmail" required placeholder="name@company.com">
                         </div>
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 flex items-center" for="adminPassword">
-                                <i class="fas fa-lock text-gray-400 ml-2"></i>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider" for="adminPassword">
+                                <i class="fas fa-lock text-gray-400 ml-1 text-[10px]"></i>
                                 סיסמה
                             </label>
-                            <input class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue" type="password" id="adminPassword" required>
+                            <input class="filter-input" type="password" id="adminPassword" required>
                         </div>
                         <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse pt-4">
-                            <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200 uk-modal-close flex items-center justify-center space-x-2 rtl:space-x-reverse" type="button">
-                                <i class="fas fa-times"></i>
+                            <button class="px-5 py-2.5 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 uk-modal-close flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="button">
+                                <i class="fas fa-xmark"></i>
                                 <span>ביטול</span>
                             </button>
-                            <button class="px-6 py-2 bg-iec-blue hover:bg-blue-600 text-white rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse" type="submit">
-                                <i class="fas fa-sign-in-alt"></i>
+                            <button class="px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white rounded-xl transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="submit">
+                                <i class="fas fa-arrow-right-to-bracket"></i>
                                 <span>התחבר</span>
                             </button>
                         </div>
@@ -1665,27 +2372,30 @@
 
         <!-- Reject Request Modal -->
         <div id="rejectModal" class="uk-modal" uk-modal>
-            <div class="uk-modal-dialog uk-modal-body max-w-lg mx-4 sm:mx-auto">
-                <div class="p-6">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                        <i class="fas fa-ban text-iec-red ml-2"></i>
+            <div class="uk-modal-dialog uk-modal-body max-w-lg mx-4 sm:mx-auto rounded-2xl overflow-hidden p-0">
+                <div class="bg-gradient-to-r from-red-500 to-rose-600 px-6 py-5">
+                    <h2 class="text-lg font-bold text-white flex items-center">
+                        <i class="fas fa-circle-xmark ml-2"></i>
                         דחיית בקשה
                     </h2>
+                    <p class="text-red-100/80 text-sm mt-1">הסבר את הסיבה לדחיית הבקשה</p>
+                </div>
+                <div class="p-6">
                     <form id="rejectForm" class="space-y-4">
-                        <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 flex items-center" for="rejectionReason">
-                                <i class="fas fa-comment-dots text-gray-400 ml-2"></i>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider" for="rejectionReason">
+                                <i class="fas fa-message text-gray-400 ml-1 text-[10px]"></i>
                                 סיבת הדחייה *
                             </label>
-                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-iec-blue focus:border-iec-blue resize-none" id="rejectionReason" rows="4" required placeholder="הסבר את הסיבה לדחיית הבקשה"></textarea>
+                            <textarea class="filter-input !h-auto" id="rejectionReason" rows="4" required placeholder="הסבר את הסיבה לדחיית הבקשה"></textarea>
                         </div>
                         <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse pt-4">
-                            <button class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200 uk-modal-close flex items-center justify-center space-x-2 rtl:space-x-reverse" type="button">
-                                <i class="fas fa-times"></i>
+                            <button class="px-5 py-2.5 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 uk-modal-close flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="button">
+                                <i class="fas fa-xmark"></i>
                                 <span>ביטול</span>
                             </button>
-                            <button class="px-6 py-2 bg-iec-red hover:bg-red-600 text-white rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse" type="submit">
-                                <i class="fas fa-ban"></i>
+                            <button class="px-6 py-2.5 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white rounded-xl transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="submit">
+                                <i class="fas fa-circle-xmark"></i>
                                 <span>דחה בקשה</span>
                             </button>
                         </div>
@@ -1693,7 +2403,41 @@
                 </div>
             </div>
         </div>
-                </form>
+
+        <!-- Assign Request Modal -->
+        <div id="assignModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden transform transition-all duration-300 border border-gray-100">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-5">
+                    <h2 class="text-lg font-bold text-white flex items-center">
+                        <i class="fas fa-user-tag ml-2"></i>
+                        הקצאת בקשה למשתמש
+                    </h2>
+                    <p class="text-indigo-100/80 text-sm mt-1">בחר את המשתמש שיטפל בבקשה</p>
+                </div>
+                <div class="p-6">
+                    <input type="hidden" id="assignRequestId">
+                    <div class="space-y-4">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider" for="assignUserSelect">
+                                <i class="fas fa-user text-gray-400 ml-1 text-[10px]"></i>
+                                בחר משתמש
+                            </label>
+                            <select class="filter-select" id="assignUserSelect">
+                                <option value="">לא מוקצה</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-3 rtl:space-x-reverse mt-6">
+                        <button class="px-5 py-2.5 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium" type="button" onclick="closeAssignModal()">
+                            <i class="fas fa-xmark"></i>
+                            <span>ביטול</span>
+                        </button>
+                        <button class="px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium" onclick="confirmAssignment()">
+                            <i class="fas fa-check"></i>
+                            <span>הקצה</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1720,6 +2464,7 @@
         let devToProdPopupShown = false; // Track if dev->prod popup was already shown
         let existingAppIds = []; // Store all unique app IDs from database
         let currentRequests = []; // Store current requests for delta comparison
+        let selectedRequestIds = new Set(); // Multi-select tracking
 
         // Users array for dropdown selection
         const users = [
@@ -1989,6 +2734,10 @@ ${currentDescription}
             if (appIdDropdown) appIdDropdown.classList.add('hidden');
             if (aiBtn) aiBtn.style.display = ''; // Reset AI button visibility
             
+            // Reset assigned-to dropdown
+            const assignedToSelect = document.getElementById('assignedTo');
+            if (assignedToSelect) assignedToSelect.value = '';
+            
             // Reset the drag interface when modal closes
             setTimeout(() => {
                 resetDragInterface();
@@ -2040,12 +2789,16 @@ ${currentDescription}
         function populateUserDropdowns() {
             const nameSelect = document.getElementById('requesterName');
             const emailSelect = document.getElementById('requesterEmail');
+            const assignedToSelect = document.getElementById('assignedTo');
+            const assignUserSelect = document.getElementById('assignUserSelect');
             
             // Clear existing options (except the first placeholder)
             nameSelect.innerHTML = '<option value="">בחר משתמש</option>';
             emailSelect.innerHTML = '<option value="">בחר אימייל</option>';
+            if (assignedToSelect) assignedToSelect.innerHTML = '<option value="">לא מוקצה</option>';
+            if (assignUserSelect) assignUserSelect.innerHTML = '<option value="">לא מוקצה</option>';
             
-            // Populate name dropdown
+            // Populate dropdowns
             users.forEach(user => {
                 const nameOption = document.createElement('option');
                 nameOption.value = user.name;
@@ -2056,6 +2809,31 @@ ${currentDescription}
                 emailOption.value = user.email;
                 emailOption.textContent = user.email;
                 emailSelect.appendChild(emailOption);
+                
+                // Assigned-to dropdown (in new request form)
+                if (assignedToSelect) {
+                    const assignOption = document.createElement('option');
+                    assignOption.value = user.email;
+                    assignOption.textContent = user.name;
+                    assignedToSelect.appendChild(assignOption);
+                }
+                
+                // Assign modal dropdown
+                if (assignUserSelect) {
+                    const modalOption = document.createElement('option');
+                    modalOption.value = user.email;
+                    modalOption.textContent = user.name;
+                    assignUserSelect.appendChild(modalOption);
+                }
+                
+                // Assigned filter dropdown (in filter section)
+                const assignedFilterSelect = document.getElementById('assignedFilter');
+                if (assignedFilterSelect && !assignedFilterSelect.querySelector(`option[value="${user.email}"]`)) {
+                    const filterOption = document.createElement('option');
+                    filterOption.value = user.email;
+                    filterOption.textContent = user.name;
+                    assignedFilterSelect.appendChild(filterOption);
+                }
             });
         }
 
@@ -2511,7 +3289,8 @@ ${currentDescription}
                     urgency: document.getElementById('urgency')?.value || '',
                     sourceEnv: document.getElementById('sourceEnv')?.value || '',
                     targetEnv: document.getElementById('targetEnv')?.value || '',
-                    description: document.getElementById('description')?.value || ''
+                    description: document.getElementById('description')?.value || '',
+                    assignedTo: document.getElementById('assignedTo')?.value || ''
                 };
                 
                 console.log('=== DRAG COMPLETION DEBUG ===');
@@ -2722,7 +3501,7 @@ ${currentDescription}
                     currentUser = session.user;
                     isAdmin = true; // Any logged-in user is automatically an admin
                     updateUI();
-                    loadAllRequests();
+                    loadAllRequests(false, true);
                     startAutoRefresh();
                 }
             } catch (error) {
@@ -2769,7 +3548,7 @@ ${currentDescription}
                 UIkit.modal('#adminLoginModal').hide();
                 
                 showMessage('התחברת בהצלחה כמנהל!', 'success');
-                loadAllRequests();
+                loadAllRequests(false, true);
                 startAutoRefresh();
                 
             } catch (error) {
@@ -2783,8 +3562,10 @@ ${currentDescription}
                 await supabaseClient.auth.signOut();
                 currentUser = null;
                 isAdmin = false;
+                clearAllSelections();
                 stopAutoRefresh();
                 updateUI();
+                loadAllRequests(false, true);
                 showMessage('התנתקת בהצלחה', 'success');
                 
             } catch (error) {
@@ -3003,10 +3784,13 @@ ${currentDescription}
             // Reset all environment circles to gray
             ['dev', 'test', 'prod'].forEach(env => {
                 const envEl = document.getElementById(`env-${env}`);
+                if (!envEl) return;
                 envEl.classList.remove('opacity-100', 'opacity-75');
-                envEl.classList.add('opacity-50');
-                const border = envEl.querySelector('.border-2');
-                border.classList.remove('border-4', 'shadow-lg', 'ring-2', 'ring-blue-300', 'ring-green-300', 'border-dashed', 'border-orange-300', 'warning-flow-test');
+                envEl.classList.add('opacity-40');
+                const border = envEl.querySelector('div[class*="border-2"]') || envEl.querySelector('div[class*="border-4"]');
+                if (border) {
+                    border.classList.remove('border-4', 'shadow-lg', 'ring-2', 'ring-blue-300', 'ring-green-300', 'border-dashed', 'border-orange-300', 'warning-flow-test');
+                }
                 
                 // Reset to gray colors
                 resetEnvironmentToGray(env);
@@ -3015,44 +3799,48 @@ ${currentDescription}
             // Reset arrows
             [1, 2].forEach(num => {
                 const arrow = document.getElementById(`arrow-${num}`);
+                if (!arrow) return;
                 arrow.classList.remove('text-blue-500', 'text-orange-500', 'warning-flow-arrow', 'animate-pulse', 'animate-bounce', 'animate-bounce-warning');
-                arrow.classList.add('text-gray-400');
+                arrow.classList.add('text-gray-300');
                 arrow.style.transform = 'scale(1)';
             });
             
             // Hide flow status
-            document.getElementById('flowStatus').classList.add('hidden');
+            const flowStatus = document.getElementById('flowStatus');
+            if (flowStatus) flowStatus.classList.add('hidden');
         }
         
         function resetEnvironmentToGray(env) {
             const envEl = document.getElementById(`env-${env}`);
             if (!envEl) return;
             
-            const circle = envEl.querySelector('.w-16.h-16');
+            const circle = envEl.querySelector('div[class*="border-2"]');
+            if (!circle) return;
             const icon = circle.querySelector('i');
-            const label = envEl.querySelector('.text-sm.font-medium');
+            const label = envEl.querySelector('span.font-semibold');
             
-            // Reset to gray styling
-            circle.className = 'w-16 h-16 bg-gray-100 border-2 border-gray-300 rounded-full flex items-center justify-center';
-            icon.className = `fas ${getEnvironmentIcon(env)} text-gray-600 text-xl`;
-            label.className = 'text-sm font-medium text-gray-700';
+            // Reset to gray styling (matches updated HTML with responsive sizes)
+            circle.className = 'w-11 h-11 sm:w-16 sm:h-16 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-sm';
+            if (icon) icon.className = `fas ${getEnvironmentIcon(env)} text-gray-500 text-base sm:text-xl`;
+            if (label) label.className = 'text-xs sm:text-sm font-semibold text-gray-600';
         }
         
         function applyEnvironmentColor(env, type = 'source') {
             const envEl = document.getElementById(`env-${env}`);
             if (!envEl) return;
             
-            const circle = envEl.querySelector('.w-16.h-16');
+            const circle = envEl.querySelector('div[class*="border-2"]') || envEl.querySelector('div[class*="border-4"]');
+            if (!circle) return;
             const icon = circle.querySelector('i');
-            const label = envEl.querySelector('.text-sm.font-medium');
+            const label = envEl.querySelector('span.font-semibold');
             
             const colors = getEnvironmentColors(env);
             const ringColor = type === 'source' ? 'ring-blue-300' : 'ring-green-300';
             
-            // Apply environment-specific colors
-            circle.className = `w-16 h-16 ${colors.bg} border-2 ${colors.border} rounded-full flex items-center justify-center`;
-            icon.className = `fas ${getEnvironmentIcon(env)} ${colors.text} text-xl`;
-            label.className = `text-sm font-medium ${colors.labelText}`;
+            // Apply environment-specific colors (matches updated HTML with responsive sizes)
+            circle.className = `w-11 h-11 sm:w-16 sm:h-16 ${colors.bg} border-2 ${colors.border} rounded-xl sm:rounded-2xl flex items-center justify-center shadow-sm`;
+            if (icon) icon.className = `fas ${getEnvironmentIcon(env)} ${colors.text} text-base sm:text-xl`;
+            if (label) label.className = `text-xs sm:text-sm font-semibold ${colors.labelText}`;
             
             // Add ring effect
             circle.classList.add('border-4', 'shadow-lg', 'ring-2', ringColor);
@@ -3268,277 +4056,94 @@ ${currentDescription}
             return { added, deleted, updated };
         }
 
-        // Apply delta updates to the DOM
+        // Apply delta updates to the DOM (quiet refresh)
         function applyDeltaUpdates(oldRequests, newRequests) {
-            // Safety checks
             if (!oldRequests) oldRequests = [];
             if (!newRequests) newRequests = [];
             
             const delta = calculateDelta(oldRequests, newRequests);
             
-            // Handle deleted items
-            delta.deleted.forEach(request => {
-                const rowElement = document.querySelector(`tr[data-request-id="${request.id}"]`);
-                const cardElement = document.querySelector(`.request-card[data-request-id="${request.id}"]`);
-                
-                if (rowElement) {
-                    rowElement.style.transition = 'opacity 0.3s ease-out';
-                    rowElement.style.opacity = '0';
-                    setTimeout(() => rowElement.remove(), 300);
-                }
-                if (cardElement) {
-                    cardElement.style.transition = 'opacity 0.3s ease-out';
-                    cardElement.style.opacity = '0';
-                    setTimeout(() => cardElement.remove(), 300);
-                }
-            });
+            if (delta.added.length === 0 && delta.deleted.length === 0 && delta.updated.length === 0) {
+                console.log('Quiet refresh: no changes detected');
+                return;
+            }
             
-            // Handle updated items
+            console.log(`Quiet refresh: +${delta.added.length} added, ~${delta.updated.length} updated, -${delta.deleted.length} deleted`);
+            
+            // If there are structural changes (adds/deletes), do a quiet full re-render
+            if (delta.added.length > 0 || delta.deleted.length > 0) {
+                quietReRender(newRequests);
+                return;
+            }
+            
+            // Only updates — patch in place
             delta.updated.forEach(request => {
-                updateRequestInDOM(request);
+                updateRequestRowInPlace(request);
             });
-            
-            // Handle added items
-            if (delta.added.length > 0) {
-                // Re-render to insert new items in correct position
-                displayPublicRequests(newRequests);
-            }
-            
-            // If there were only updates/deletes and no adds, we're done
-            if (delta.added.length === 0 && (delta.updated.length > 0 || delta.deleted.length > 0)) {
-                console.log(`Quiet update: ${delta.updated.length} updated, ${delta.deleted.length} deleted`);
-            }
         }
 
-        // Update a single request in the DOM
-        function updateRequestInDOM(request) {
-            // Update table row status
-            const rowElement = document.querySelector(`tr[data-request-id="${request.id}"]`);
-            if (rowElement) {
-                // Update status cell using data-cell-type attribute
-                const statusCell = rowElement.querySelector('td[data-cell-type="status"]');
+        // Quiet full re-render: replaces table/card content without skeleton or flash
+        function quietReRender(requests) {
+            window.currentRequestsData = requests;
+            filteredRequests = [...requests];
+            
+            const sorted = sortRequestsData(filteredRequests, currentSortColumn, currentSortDirection);
+            filteredRequests = sorted;
+            
+            const grouped = groupRequestsByDate(sorted);
+            
+            // Ensure containers exist
+            const desktopContainer = document.getElementById('desktopTableContainer');
+            const mobileContainer = document.getElementById('mobileCardsContainer');
+            
+            if (!desktopContainer || !mobileContainer) {
+                // Containers not yet created, do full display
+                displayPublicRequests(requests);
+                return;
+            }
+            
+            renderRequestsTableGrouped(grouped);
+            renderMobileCardsGrouped(grouped);
+        }
+
+        // Patch a single row's cells in-place (for status, assigned, actions changes)
+        function updateRequestRowInPlace(request) {
+            const row = document.querySelector(`tr[data-request-id="${request.id}"]`);
+            if (row) {
+                // Update status pill
+                const statusCell = row.querySelector('.status-pill');
                 if (statusCell) {
-                    statusCell.innerHTML = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusClass(request.status)}">${getStatusText(request.status)}</span>`;
+                    statusCell.className = `status-pill status-pill-${request.status}`;
+                    statusCell.innerHTML = getStatusText(request.status);
                 }
                 
-                // Update action buttons cell if admin (using data-cell-type)
-                if (isAdmin) {
-                    const actionsCell = rowElement.querySelector('td[data-cell-type="actions"]');
-                    if (actionsCell) {
-                        if (request.status === 'pending') {
-                            // Show action buttons for pending requests
-                            actionsCell.innerHTML = `
-                                <div class="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rtl:space-x-reverse">
-                                    <button class="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
-                                            onclick="testApprove(${request.id})" 
-                                            title="אשר בקשה">
-                                        <i class="fas fa-check"></i>
-                                        <span>אשר</span>
-                                    </button>
-                                    <button class="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
-                                            onclick="testReject(${request.id})" 
-                                            title="דחה בקשה">
-                                        <i class="fas fa-times"></i>
-                                        <span>דחה</span>
-                                    </button>
-                                    <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
-                                            onclick="testDelete(${request.id})" 
-                                            title="מחק בקשה">
-                                        <i class="fas fa-trash"></i>
-                                        <span>מחק</span>
-                                    </button>
-                                </div>
-                            `;
-                        } else {
-                            // Show dash for approved/rejected requests
-                            actionsCell.innerHTML = '<span class="text-gray-400 text-sm">-</span>';
-                        }
+                // Update assigned-to cell (the td after the status td)
+                const cells = row.querySelectorAll('td');
+                // Find the assigned cell by looking for avatar-badge or "לא מוקצה"
+                cells.forEach(td => {
+                    const assignedDisplay = td.querySelector('.avatar-badge') || td.querySelector('.text-gray-400.italic');
+                    if (assignedDisplay) {
+                        td.innerHTML = getAssignedToDisplay(request);
                     }
-                }
+                });
                 
-                // Flash animation to indicate update
-                rowElement.style.transition = 'background-color 0.5s ease';
-                const originalBg = rowElement.style.backgroundColor;
-                rowElement.style.backgroundColor = '#fef3c7';
-                setTimeout(() => {
-                    rowElement.style.backgroundColor = originalBg;
-                }, 500);
-                
-                // Update expanded details row if it exists
-                const detailsRow = document.getElementById(`details-${request.id}`);
-                if (detailsRow) {
-                    updateDetailsRow(detailsRow, request);
-                }
+                // Flash highlight
+                row.style.transition = 'background-color 0.6s ease';
+                row.style.backgroundColor = 'rgba(99,102,241,0.08)';
+                setTimeout(() => { row.style.backgroundColor = ''; }, 800);
             }
             
             // Update mobile card
-            const cardElement = document.querySelector(`.request-card[data-request-id="${request.id}"]`);
-            if (cardElement) {
-                // Update status badge
-                const statusElement = cardElement.querySelector('.status-badge');
-                if (statusElement) {
-                    statusElement.className = `status-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusClass(request.status)}`;
-                    statusElement.textContent = getStatusText(request.status);
+            const card = document.querySelector(`.request-card[data-request-id="${request.id}"]`);
+            if (card) {
+                const statusPill = card.querySelector('.status-pill');
+                if (statusPill) {
+                    statusPill.className = `status-pill status-pill-${request.status}`;
+                    statusPill.innerHTML = getStatusText(request.status);
                 }
-                
-                // Update or remove admin action buttons
-                updateMobileCardActions(cardElement, request);
-                
-                // Update expanded details if visible
-                const mobileDetailsSection = cardElement.querySelector(`#mobile-card-${request.id}`);
-                if (mobileDetailsSection) {
-                    updateMobileCardDetails(mobileDetailsSection, request);
-                }
-                
-                // Flash animation
-                cardElement.style.transition = 'background-color 0.5s ease';
-                const originalBg = cardElement.style.backgroundColor;
-                cardElement.style.backgroundColor = '#fef3c7';
-                setTimeout(() => {
-                    cardElement.style.backgroundColor = originalBg;
-                }, 500);
-            }
-        }
-        
-        // Update the details row content (admin buttons, approved/rejected info)
-        function updateDetailsRow(detailsRow, request) {
-            const detailsCell = detailsRow.querySelector('td');
-            if (!detailsCell) return;
-            
-            const detailsContent = detailsCell.querySelector('.bg-white.rounded-lg');
-            if (!detailsContent) return;
-            
-            // Find and update/remove the admin actions section
-            const existingActionsDiv = detailsContent.querySelector('.mt-6.pt-4.border-t');
-            
-            if (request.status === 'pending' && isAdmin) {
-                // Status is still pending, actions should remain
-                if (!existingActionsDiv) {
-                    // Add actions if they don't exist
-                    const actionsHTML = `
-                        <div class="mt-6 pt-4 border-t border-gray-200">
-                            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
-                                <button class="px-4 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testApprove(${request.id})">
-                                    <i class="fas fa-check"></i>
-                                    <span>אשר בקשה</span>
-                                </button>
-                                <button class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testReject(${request.id})">
-                                    <i class="fas fa-times"></i>
-                                    <span>דחה בקשה</span>
-                                </button>
-                                <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testDelete(${request.id})">
-                                    <i class="fas fa-trash"></i>
-                                    <span>מחק בקשה</span>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    detailsContent.insertAdjacentHTML('beforeend', actionsHTML);
-                }
-            } else {
-                // Status is approved/rejected, remove action buttons
-                if (existingActionsDiv) {
-                    existingActionsDiv.remove();
-                }
-                
-                // Add approved/rejected info if needed
-                updateApprovalRejectionInfo(detailsContent, request);
-            }
-        }
-        
-        // Update approval/rejection information in details
-        function updateApprovalRejectionInfo(container, request) {
-            const statusInfoDiv = container.querySelector('.space-y-3');
-            if (!statusInfoDiv) return;
-            
-            // Remove old approval/rejection info
-            const oldApprovedBy = statusInfoDiv.querySelector('[class*="text-green-700"]')?.parentElement;
-            const oldRejectedBy = statusInfoDiv.querySelector('[class*="text-red-700"]')?.parentElement;
-            if (oldApprovedBy) oldApprovedBy.remove();
-            if (oldRejectedBy) oldRejectedBy.remove();
-            
-            // Add new info based on status
-            if (request.status === 'approved' && request.approved_by) {
-                const approvedInfoHTML = `
-                    <div>
-                        <span class="block text-sm font-medium text-green-700">בוצע על ידי:</span>
-                        <span class="text-sm text-green-900">${request.approved_by}</span>
-                    </div>
-                    ${request.approved_at ? `
-                        <div>
-                            <span class="block text-sm font-medium text-green-700">תאריך ביצוע:</span>
-                            <span class="text-sm text-green-900">${new Date(request.approved_at).toLocaleString('he-IL')}</span>
-                        </div>
-                    ` : ''}
-                `;
-                statusInfoDiv.insertAdjacentHTML('beforeend', approvedInfoHTML);
-            } else if (request.status === 'rejected' && request.rejected_by) {
-                const rejectedInfoHTML = `
-                    <div>
-                        <span class="block text-sm font-medium text-red-700">נדחה על ידי:</span>
-                        <span class="text-sm text-red-900">${request.rejected_by}</span>
-                    </div>
-                    ${request.rejected_at ? `
-                        <div>
-                            <span class="block text-sm font-medium text-red-700">תאריך דחייה:</span>
-                            <span class="text-sm text-red-900">${new Date(request.rejected_at).toLocaleString('he-IL')}</span>
-                        </div>
-                    ` : ''}
-                `;
-                statusInfoDiv.insertAdjacentHTML('beforeend', rejectedInfoHTML);
-            }
-        }
-        
-        // Update mobile card action buttons
-        function updateMobileCardActions(cardElement, request) {
-            // Find existing action buttons container
-            const existingActions = cardElement.querySelector('.grid.grid-cols-3.gap-2');
-            
-            if (request.status === 'pending' && isAdmin) {
-                // Ensure buttons exist for pending requests
-                if (!existingActions) {
-                    const actionsHTML = `
-                        <div class="grid grid-cols-3 gap-2 mb-3">
-                            <button class="px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                    onclick="testApprove(${request.id})" 
-                                    title="אשר בקשה">
-                                <i class="fas fa-check"></i>
-                                <span>אשר</span>
-                            </button>
-                            <button class="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                    onclick="testReject(${request.id})" 
-                                    title="דחה בקשה">
-                                <i class="fas fa-times"></i>
-                                <span>דחה</span>
-                            </button>
-                            <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                    onclick="testDelete(${request.id})" 
-                                    title="מחק בקשה">
-                                <i class="fas fa-trash"></i>
-                                <span>מחק</span>
-                            </button>
-                        </div>
-                    `;
-                    // Insert before the collapsible section
-                    const collapsibleDiv = cardElement.querySelector(`#mobile-card-${request.id}`);
-                    if (collapsibleDiv) {
-                        collapsibleDiv.insertAdjacentHTML('beforebegin', actionsHTML);
-                    }
-                }
-            } else {
-                // Remove action buttons for non-pending requests
-                if (existingActions) {
-                    existingActions.remove();
-                }
-            }
-        }
-        
-        // Update mobile card details section
-        function updateMobileCardDetails(detailsSection, request) {
-            // Update approval/rejection info in mobile details
-            if (request.status === 'approved' || request.status === 'rejected') {
-                // This would require similar logic as updateApprovalRejectionInfo
-                // For now, the main status badge update is sufficient
+                card.style.transition = 'background-color 0.6s ease';
+                card.style.backgroundColor = 'rgba(99,102,241,0.08)';
+                setTimeout(() => { card.style.backgroundColor = ''; }, 800);
             }
         }
 
@@ -3557,6 +4162,7 @@ ${currentDescription}
         function filterRequests() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const statusFilter = document.getElementById('statusFilter').value;
+            const assignedFilter = document.getElementById('assignedFilter')?.value || '';
             
             if (!window.currentRequestsData) return;
             
@@ -3566,11 +4172,19 @@ ${currentDescription}
                     request.app_id.toLowerCase().includes(searchTerm) ||
                     request.requester_name.toLowerCase().includes(searchTerm) ||
                     request.requester_email.toLowerCase().includes(searchTerm) ||
-                    (request.description && request.description.toLowerCase().includes(searchTerm));
+                    (request.description && request.description.toLowerCase().includes(searchTerm)) ||
+                    (request.assigned_to_name && request.assigned_to_name.toLowerCase().includes(searchTerm));
                 
                 const matchesStatus = statusFilter === '' || request.status === statusFilter;
                 
-                return matchesSearch && matchesStatus;
+                let matchesAssigned = true;
+                if (assignedFilter === 'unassigned') {
+                    matchesAssigned = !request.assigned_to_email;
+                } else if (assignedFilter !== '') {
+                    matchesAssigned = request.assigned_to_email === assignedFilter;
+                }
+                
+                return matchesSearch && matchesStatus && matchesAssigned;
             });
             
             // Apply current sorting
@@ -3738,6 +4352,9 @@ ${currentDescription}
                                 ${getStatusText(request.status)}
                             </span>
                         </td>
+                        <td class="px-3 py-4 whitespace-nowrap text-center" data-cell-type="assigned-to">
+                            ${getAssignedToDisplay(request)}
+                        </td>
                         <td class="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-500 hidden sm:table-cell" data-cell-type="date">
                             ${new Date(request.created_at).toLocaleDateString('he-IL')}
                         </td>
@@ -3757,6 +4374,12 @@ ${currentDescription}
                                             <i class="fas fa-times"></i>
                                             <span>דחה</span>
                                         </button>
+                                        <button class="px-3 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                                onclick="showAssignModal(${request.id})" 
+                                                title="הקצה למשתמש">
+                                            <i class="fas fa-user-tag"></i>
+                                            <span>הקצה</span>
+                                        </button>
                                         <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
                                                 onclick="testDelete(${request.id})" 
                                                 title="מחק בקשה">
@@ -3769,7 +4392,7 @@ ${currentDescription}
                         ` : ''}
                     </tr>
                     <tr class="hidden bg-gray-50" id="details-${request.id}">
-                        <td colspan="${isAdmin ? '9' : '8'}" class="px-6 py-4">
+                        <td colspan="${isAdmin ? '10' : '9'}" class="px-6 py-4">
                             <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
                                 <h5 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                                     <i class="fas fa-info-circle text-blue-500 ml-2"></i>
@@ -3891,6 +4514,7 @@ ${currentDescription}
                 }
                 
                 // Create request object from captured data
+                const assignedUser = formData.assignedTo ? users.find(u => u.email === formData.assignedTo) : null;
                 const request = {
                     requester_name: formData.requesterName.trim(),
                     requester_email: formData.requesterEmail.trim(),
@@ -3899,7 +4523,9 @@ ${currentDescription}
                     source_env: formData.sourceEnv,
                     target_env: formData.targetEnv,
                     description: formData.description.trim(),
-                    status: 'pending'
+                    status: 'pending',
+                    assigned_to_name: assignedUser ? assignedUser.name : null,
+                    assigned_to_email: assignedUser ? assignedUser.email : null
                     // created_at will be set automatically by the database default
                 };
                 
@@ -4069,6 +4695,8 @@ ${currentDescription}
             const appIdValue = document.getElementById('appId').value;
             const descriptionValue = document.getElementById('description').value;
             const urgencyValue = document.getElementById('urgency').value;
+            const assignedToValue = document.getElementById('assignedTo')?.value || '';
+            const assignedUser = assignedToValue ? users.find(u => u.email === assignedToValue) : null;
             
             // Debug logging
             console.log('=== CAPTURED VALUES ===');
@@ -4076,6 +4704,7 @@ ${currentDescription}
             console.log('Target Env Value:', targetEnvValue);
             console.log('Requester Name:', requesterNameValue);
             console.log('App ID:', appIdValue);
+            console.log('Assigned To:', assignedToValue);
             console.log('========================');
             
             // Check if this is a drag-initiated submission
@@ -4101,6 +4730,8 @@ ${currentDescription}
                 description: descriptionValue.trim(),
                 urgency: urgencyValue,
                 status: 'pending',
+                assigned_to_name: assignedUser ? assignedUser.name : null,
+                assigned_to_email: assignedUser ? assignedUser.email : null,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             };
@@ -4373,13 +5004,19 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             }
         }
 
-        async function loadAllRequests(quietMode = false) {
+        async function loadAllRequests(quietMode = false, forceReRender = false) {
             const statusFilter = document.getElementById('statusFilter')?.value || '';
             const statusFilterElement = document.getElementById('statusFilter');
             
+            // Auto-detect quiet mode: if data is already on screen, refresh quietly
+            const hasExistingData = currentRequests && currentRequests.length > 0 && document.getElementById('desktopTableContainer');
+            if (hasExistingData && !quietMode) {
+                quietMode = true;
+            }
+            
             console.log('loadAllRequests called - quietMode:', quietMode, 'statusFilter:', statusFilter, 'showTodayOnly:', showTodayOnly);
             
-            // Show skeleton loading only if not in quiet mode
+            // Show skeleton loading only on first load (no existing data)
             if (!quietMode) {
                 showSkeletonLoading();
             }
@@ -4414,9 +5051,9 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 
                 console.log('Query completed - found', safeData.length, 'requests');
                 
-                // Ensure minimum 2 second loading time for better UX
+                // Only delay for skeleton animation on first load; skip delay in quiet mode
                 const elapsedTime = Date.now() - startTime;
-                const remainingTime = Math.max(0, 1200 - elapsedTime);
+                const remainingTime = quietMode ? 0 : Math.max(0, 1200 - elapsedTime);
                 
                 setTimeout(() => {
                     console.log('Processing results - safeData length:', safeData.length, 'statusFilter:', statusFilter);
@@ -4446,9 +5083,13 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                             // Sort the fallback data
                             const sortedAllData = sortRequestsData(allData || [], currentSortColumn, currentSortDirection);
                             filteredRequests = sortedAllData;
-                            currentRequests = sortedAllData;
                             
-                            displayPublicRequestsWithTransition(sortedAllData);
+                            if (quietMode) {
+                                applyDeltaUpdates(currentRequests, sortedAllData);
+                            } else {
+                                displayPublicRequestsWithTransition(sortedAllData);
+                            }
+                            currentRequests = sortedAllData;
                             
                             // Show informative message
                             const timeFilter = showTodayOnly ? ' מהיום' : '';
@@ -4459,14 +5100,19 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                         const sortedRequests = sortRequestsData(safeData, currentSortColumn, currentSortDirection);
                         
                         // Store filtered requests globally
+                        window.currentRequestsData = safeData;
                         filteredRequests = sortedRequests;
                         
                         if (quietMode) {
                             // Quiet mode: calculate and apply delta updates
-                            applyDeltaUpdates(currentRequests, sortedRequests);
+                            if (forceReRender) {
+                                quietReRender(sortedRequests);
+                            } else {
+                                applyDeltaUpdates(currentRequests, sortedRequests);
+                            }
                             currentRequests = sortedRequests;
                         } else {
-                            // Normal mode: show with transition
+                            // First load: show with transition
                             displayPublicRequestsWithTransition(sortedRequests);
                             currentRequests = sortedRequests;
                             
@@ -4992,37 +5638,44 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             groupedRequests.forEach((group, groupIndex) => {
                 // Date header (collapsible)
                 html += `
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 px-4 py-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:from-blue-100 hover:to-indigo-100 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-colors" 
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200/80 dark:border-gray-700 overflow-hidden mb-4">
+                        <div class="date-group-header cursor-pointer hover:bg-gray-100/50 transition-all" 
                              onclick="toggleDateGroup('date-group-desktop-${groupIndex}')">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                                    <i class="fas fa-calendar-day text-blue-600 dark:text-blue-400 text-lg"></i>
-                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">${group.dateKey}</h3>
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            <div class="flex items-center justify-between w-full">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+                                        <i class="fas fa-calendar-day text-indigo-600 text-sm"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-gray-900 dark:text-white">${group.dateKey}</h3>
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200 border border-indigo-100">
                                         ${group.requests.length} בקשות
                                     </span>
                                 </div>
-                                <i class="fas fa-chevron-up text-gray-400 dark:text-gray-300 transition-transform" id="date-group-desktop-${groupIndex}-icon"></i>
+                                <i class="fas fa-chevron-up text-gray-400 dark:text-gray-300 transition-transform text-xs" id="date-group-desktop-${groupIndex}-icon"></i>
                             </div>
                         </div>
                         <div id="date-group-desktop-${groupIndex}" class="">
                             <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
+                                <table class="pro-table min-w-full">
+                                    <thead>
                                         <tr>
-                                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-16">פרטים</th>
-                                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">מזהה בקשה</th>
-                                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">מזהה אפליקציה</th>
-                                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">מבקש</th>
-                                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">העברה</th>
-                                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">דחיפות</th>
-                                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">סטטוס</th>
-                                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">שעה</th>
-                                            ${isAdmin ? '<th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">פעולות</th>' : ''}
+                                            ${isAdmin ? `<th class="px-2 py-3 text-center w-10">
+                                                <input type="checkbox" class="bulk-select-all w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer" 
+                                                       onchange="toggleSelectAllInGroup(this, 'date-group-desktop-${groupIndex}')" title="בחר הכל">
+                                            </th>` : ''}
+                                            <th class="px-3 py-3 text-center w-12"></th>
+                                            <th class="px-3 py-3 text-center">#</th>
+                                            <th class="px-3 py-3 text-center">App ID</th>
+                                            <th class="px-3 py-3 text-center">מבקש</th>
+                                            <th class="px-3 py-3 text-center">העברה</th>
+                                            <th class="px-3 py-3 text-center">דחיפות</th>
+                                            <th class="px-3 py-3 text-center">סטטוס</th>
+                                            <th class="px-3 py-3 text-center">מוקצה ל</th>
+                                            <th class="px-3 py-3 text-center hidden sm:table-cell">שעה</th>
+                                            ${isAdmin ? '<th class="px-3 py-3 text-center hidden md:table-cell">פעולות</th>' : ''}
                                         </tr>
                                     </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
+                                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
                 `;
                 
                 // Render requests for this date
@@ -5042,96 +5695,140 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                     const timeString = new Date(request.created_at).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
                     
                     html += `
-                        <tr class="hover:bg-gray-50 transition-colors duration-150 ${urgencyBorderClass}" data-request-id="${request.id}">
-                            <td class="px-3 py-4 whitespace-nowrap text-center">
-                                <button class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors duration-150" 
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-gray-700/50 transition-colors duration-150 ${urgencyBorderClass}" data-request-id="${request.id}">
+                            ${isAdmin ? `<td class="px-2 py-3 whitespace-nowrap text-center">
+                                <input type="checkbox" class="bulk-select-row w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer" 
+                                       value="${request.id}" data-status="${request.status}"
+                                       onchange="toggleRowSelection(${request.id}, this.checked)" 
+                                       ${selectedRequestIds.has(request.id) ? 'checked' : ''}>
+                            </td>` : ''}
+                            <td class="px-2 py-3 whitespace-nowrap text-center">
+                                <button class="expand-toggle" 
                                         onclick="toggleRequestDetails(${request.id})" 
                                         title="לחץ להרחבת פרטים">
-                                    <i class="fas fa-plus text-sm"></i>
+                                    <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
                             </td>
-                            <td class="px-3 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">#${request.id}</td>
-                            <td class="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-900 hidden sm:table-cell">${request.app_id}</td>
-                            <td class="px-3 py-4 whitespace-nowrap text-center hidden md:table-cell">
+                            <td class="px-3 py-3 whitespace-nowrap text-center">
+                                <span class="text-sm font-bold text-gray-900 dark:text-white">#${request.id}</span>
+                            </td>
+                            <td class="px-3 py-3 whitespace-nowrap text-center text-sm text-gray-700 dark:text-gray-300 hidden sm:table-cell font-mono text-xs">${request.app_id}</td>
+                            <td class="px-3 py-3 whitespace-nowrap text-center hidden md:table-cell">
                                 <div class="text-sm">
-                                    <div class="font-medium text-gray-900">${request.requester_name}</div>
-                                    <div class="text-gray-500">${request.requester_email}</div>
+                                    <div class="font-semibold text-gray-900 dark:text-white">${request.requester_name}</div>
+                                    <div class="text-gray-400 dark:text-gray-500 text-xs">${request.requester_email}</div>
                                 </div>
                             </td>
-                            <td class="px-3 py-4 whitespace-nowrap text-center hidden lg:table-cell">
-                                <div class="flex items-center justify-center space-x-2 rtl:space-x-reverse">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${getEnvironmentStyle(request.source_env).color}">
-                                        <i class="${getEnvironmentStyle(request.source_env).icon} ml-1"></i>
+                            <td class="px-3 py-3 whitespace-nowrap text-center hidden lg:table-cell">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold ${getEnvironmentStyle(request.source_env).color}">
+                                        <i class="${getEnvironmentStyle(request.source_env).icon} ml-1 text-[10px]"></i>
                                         ${request.source_env}
                                     </span>
-                                    <i class="fas fa-arrow-left text-gray-400 text-xs"></i>
-                                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${getEnvironmentStyle(request.target_env).color}">
-                                        <i class="${getEnvironmentStyle(request.target_env).icon} ml-1"></i>
+                                    <i class="fas fa-arrow-left text-gray-300 text-[10px]"></i>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold ${getEnvironmentStyle(request.target_env).color}">
+                                        <i class="${getEnvironmentStyle(request.target_env).icon} ml-1 text-[10px]"></i>
                                         ${request.target_env}
                                     </span>
                                 </div>
                             </td>
-                            <td class="px-3 py-4 whitespace-nowrap text-center text-sm ${urgencyTextClass} hidden md:table-cell">
-                                ${getUrgencyText(request.urgency)}
+                            <td class="px-3 py-3 whitespace-nowrap text-center text-sm hidden md:table-cell">
+                                <span class="urgency-indicator ${urgencyTextClass}">
+                                    ${getUrgencyText(request.urgency)}
+                                </span>
                             </td>
-                            <td class="px-3 py-4 whitespace-nowrap text-center">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${statusBadgeClass}">
+                            <td class="px-3 py-3 whitespace-nowrap text-center">
+                                <span class="status-pill status-pill-${request.status}">
                                     ${getStatusText(request.status)}
                                 </span>
                             </td>
-                            <td class="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-500 hidden sm:table-cell">
+                            <td class="px-3 py-3 whitespace-nowrap text-center">
+                                ${getAssignedToDisplay(request)}
+                            </td>
+                            <td class="px-3 py-3 whitespace-nowrap text-center text-xs text-gray-400 hidden sm:table-cell">
                                 ${timeString}
                             </td>
                             ${isAdmin ? `
-                                <td class="px-3 py-4 whitespace-nowrap text-center hidden lg:table-cell">
+                                <td class="px-3 py-3 whitespace-nowrap text-center hidden md:table-cell">
                                     ${request.status === 'pending' ? `
-                                        <div class="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rtl:space-x-reverse">
-                                            <button class="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                        <div class="flex items-center justify-center gap-1.5">
+                                            <button class="action-btn action-btn-approve" 
                                                     onclick="testApprove(${request.id})" 
                                                     title="אשר בקשה">
                                                 <i class="fas fa-check"></i>
                                                 <span>אשר</span>
                                             </button>
-                                            <button class="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                            <button class="action-btn action-btn-reject" 
                                                     onclick="testReject(${request.id})" 
                                                     title="דחה בקשה">
-                                                <i class="fas fa-times"></i>
+                                                <i class="fas fa-xmark"></i>
                                                 <span>דחה</span>
                                             </button>
-                                            <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
+                                            <button class="action-btn action-btn-assign" 
+                                                    onclick="showAssignModal(${request.id})" 
+                                                    title="הקצה למשתמש">
+                                                <i class="fas fa-user-tag"></i>
+                                            </button>
+                                            <button class="action-btn action-btn-delete" 
                                                     onclick="testDelete(${request.id})" 
                                                     title="מחק בקשה">
-                                                <i class="fas fa-trash"></i>
-                                                <span>מחק</span>
+                                                <i class="fas fa-trash-can"></i>
                                             </button>
                                         </div>
-                                    ` : '<span class="text-gray-400 text-sm">-</span>'}
+                                    ` : `
+                                        ${request.status !== 'approved' ? `
+                                            <button class="action-btn action-btn-assign" 
+                                                    onclick="showAssignModal(${request.id})" 
+                                                    title="הקצה מחדש">
+                                                <i class="fas fa-user-tag"></i>
+                                                <span>הקצה</span>
+                                            </button>
+                                        ` : '<span class="text-gray-400 text-sm">-</span>'}
+                                    `}
                                 </td>
                             ` : ''}
                         </tr>
-                        <tr class="hidden bg-gray-50" id="details-${request.id}">
-                            <td colspan="${isAdmin ? '9' : '8'}" class="px-6 py-4">
-                                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                                    <h5 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                                        <i class="fas fa-info-circle text-blue-500 ml-2"></i>
+                        <tr class="hidden" id="details-${request.id}">
+                            <td colspan="${isAdmin ? '11' : '9'}" class="px-4 py-4 bg-slate-50/50 dark:bg-gray-800/50">
+                                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <h5 class="text-base font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                                        <div class="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                                            <i class="fas fa-circle-info text-blue-600 dark:text-blue-400 text-xs"></i>
+                                        </div>
                                         פרטי הבקשה
                                     </h5>
                                     
                                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                         <div class="space-y-4">
                                             <div>
-                                                <span class="block text-sm font-medium text-gray-700 mb-1">תיאור השינוי:</span>
-                                                <p class="text-sm text-gray-900 bg-gray-50 p-3 rounded-md">${request.description}</p>
+                                                <span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">תיאור השינוי:</span>
+                                                <p class="text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 p-3 rounded-md">${request.description}</p>
+                                            </div>
+                                            <div>
+                                                <span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                    <i class="fas fa-user-tag text-indigo-400 ml-1"></i>
+                                                    מוקצה ל:
+                                                </span>
+                                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                    ${getAssignedToDisplayCompact(request)}
+                                                    ${isAdmin && request.status !== 'approved' ? `
+                                                        <button class="px-2 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse mr-2" 
+                                                                onclick="showAssignModal(${request.id})">
+                                                            <i class="fas fa-edit text-xs"></i>
+                                                            <span>שנה</span>
+                                                        </button>
+                                                    ` : ''}
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="space-y-3">
                                             <div>
-                                                <span class="block text-sm font-medium text-gray-700">תאריך יצירה:</span>
-                                                <span class="text-sm text-gray-900">${new Date(request.created_at).toLocaleString('he-IL')}</span>
+                                                <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">תאריך יצירה:</span>
+                                                <span class="text-sm text-gray-900 dark:text-gray-100">${new Date(request.created_at).toLocaleString('he-IL')}</span>
                                             </div>
                                             <div>
-                                                <span class="block text-sm font-medium text-gray-700">תאריך עדכון:</span>
-                                                <span class="text-sm text-gray-900">${new Date(request.updated_at).toLocaleString('he-IL')}</span>
+                                                <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">תאריך עדכון:</span>
+                                                <span class="text-sm text-gray-900 dark:text-gray-100">${new Date(request.updated_at).toLocaleString('he-IL')}</span>
                                             </div>
                                             ${request.status === 'approved' && request.approved_by ? `
                                                 <div>
@@ -5171,18 +5868,22 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                     ` : ''}
                                     
                                     ${isAdmin && request.status === 'pending' ? `
-                                        <div class="mt-6 pt-4 border-t border-gray-200">
-                                            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
-                                                <button class="px-4 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testApprove(${request.id})">
+                                        <div class="mt-6 pt-4 border-t border-gray-100">
+                                            <div class="flex flex-wrap gap-2">
+                                                <button class="action-btn action-btn-approve text-sm" onclick="testApprove(${request.id})">
                                                     <i class="fas fa-check"></i>
                                                     <span>אשר בקשה</span>
                                                 </button>
-                                                <button class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testReject(${request.id})">
-                                                    <i class="fas fa-times"></i>
+                                                <button class="action-btn action-btn-reject text-sm" onclick="testReject(${request.id})">
+                                                    <i class="fas fa-xmark"></i>
                                                     <span>דחה בקשה</span>
                                                 </button>
-                                                <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testDelete(${request.id})">
-                                                    <i class="fas fa-trash"></i>
+                                                <button class="action-btn action-btn-assign text-sm" onclick="showAssignModal(${request.id})">
+                                                    <i class="fas fa-user-tag"></i>
+                                                    <span>הקצה למשתמש</span>
+                                                </button>
+                                                <button class="action-btn action-btn-delete text-sm" onclick="testDelete(${request.id})">
+                                                    <i class="fas fa-trash-can"></i>
                                                     <span>מחק בקשה</span>
                                                 </button>
                                             </div>
@@ -5298,6 +5999,10 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                     <span class="text-sm font-medium ${urgencyTextClass}">${getUrgencyText(request.urgency)}</span>
                                 </div>
                                 <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-500">מוקצה ל:</span>
+                                    ${getAssignedToDisplayCompact(request)}
+                                </div>
+                                <div class="flex items-center justify-between">
                                     <span class="text-sm text-gray-500">שעה:</span>
                                     <span class="text-sm text-gray-900">${timeString}</span>
                                 </div>
@@ -5305,7 +6010,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                             
                             <!-- Admin actions for pending requests -->
                             ${isAdmin && request.status === 'pending' ? `
-                                <div class="grid grid-cols-3 gap-2 mb-3">
+                                <div class="grid grid-cols-4 gap-2 mb-3">
                                     <button class="px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
                                             onclick="testApprove(${request.id})" 
                                             title="אשר בקשה">
@@ -5317,6 +6022,12 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                             title="דחה בקשה">
                                         <i class="fas fa-times"></i>
                                         <span>דחה</span>
+                                    </button>
+                                    <button class="px-3 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
+                                            onclick="showAssignModal(${request.id})" 
+                                            title="הקצה למשתמש">
+                                        <i class="fas fa-user-tag"></i>
+                                        <span>הקצה</span>
                                     </button>
                                     <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
                                             onclick="testDelete(${request.id})" 
@@ -5471,6 +6182,10 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                 <span class="text-sm font-medium ${urgencyTextClass}">${getUrgencyText(request.urgency)}</span>
                             </div>
                             <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">מוקצה ל:</span>
+                                ${getAssignedToDisplayCompact(request)}
+                            </div>
+                            <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-500">תאריך:</span>
                                 <span class="text-sm text-gray-900">${new Date(request.created_at).toLocaleDateString('he-IL')}</span>
                             </div>
@@ -5478,7 +6193,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                         
                         <!-- Admin actions for pending requests -->
                         ${isAdmin && request.status === 'pending' ? `
-                            <div class="grid grid-cols-3 gap-2 mb-3">
+                            <div class="grid grid-cols-4 gap-2 mb-3">
                                 <button class="px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
                                         onclick="testApprove(${request.id})" 
                                         title="אשר בקשה">
@@ -5490,6 +6205,12 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                         title="דחה בקשה">
                                     <i class="fas fa-times"></i>
                                     <span>דחה</span>
+                                </button>
+                                <button class="px-3 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
+                                        onclick="showAssignModal(${request.id})" 
+                                        title="הקצה למשתמש">
+                                    <i class="fas fa-user-tag"></i>
+                                    <span>הקצה</span>
                                 </button>
                                 <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
                                         onclick="testDelete(${request.id})" 
@@ -5793,6 +6514,384 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             } catch (error) {
                 console.error('Error rejecting request:', error);
                 showMessage('שגיאה בדחיית הבקשה: ' + error.message, 'error');
+            }
+        }
+
+        // Helper: get assigned-to display HTML
+        function getAssignedToDisplay(request) {
+            if (!request.assigned_to_name) {
+                return '<span class="text-gray-400 text-xs italic">לא מוקצה</span>';
+            }
+            const initials = request.assigned_to_name.split(' ').map(n => n.charAt(0)).join('');
+            const colors = ['bg-indigo-100 text-indigo-700', 'bg-emerald-100 text-emerald-700', 'bg-amber-100 text-amber-700', 'bg-rose-100 text-rose-700', 'bg-cyan-100 text-cyan-700', 'bg-violet-100 text-violet-700'];
+            const colorIndex = request.assigned_to_name.length % colors.length;
+            const colorClass = colors[colorIndex];
+            return `
+                <div class="flex items-center justify-center space-x-2 rtl:space-x-reverse">
+                    <div class="avatar-badge ${colorClass}">${initials}</div>
+                    <span class="text-sm text-gray-900 dark:text-gray-100 font-medium">${request.assigned_to_name}</span>
+                </div>
+            `;
+        }
+
+        // Helper: get assigned-to display for mobile cards
+        function getAssignedToDisplayCompact(request) {
+            if (!request.assigned_to_name) {
+                return '<span class="text-gray-400 text-xs italic">לא מוקצה</span>';
+            }
+            const initials = request.assigned_to_name.split(' ').map(n => n.charAt(0)).join('');
+            const colors = ['bg-indigo-100 text-indigo-700', 'bg-emerald-100 text-emerald-700', 'bg-amber-100 text-amber-700', 'bg-rose-100 text-rose-700', 'bg-cyan-100 text-cyan-700', 'bg-violet-100 text-violet-700'];
+            const colorIndex = request.assigned_to_name.length % colors.length;
+            const colorClass = colors[colorIndex];
+            return `
+                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                    <div class="avatar-badge avatar-badge-sm ${colorClass}">${initials}</div>
+                    <span class="text-sm text-gray-900">${request.assigned_to_name}</span>
+                </div>
+            `;
+        }
+
+        // Show assign modal
+        function showAssignModal(requestId) {
+            document.getElementById('assignRequestId').value = requestId;
+            
+            // Try to pre-select current assignment
+            const request = (window.currentRequestsData || []).find(r => r.id === requestId);
+            const assignSelect = document.getElementById('assignUserSelect');
+            if (request && request.assigned_to_email && assignSelect) {
+                assignSelect.value = request.assigned_to_email;
+            } else if (assignSelect) {
+                assignSelect.value = '';
+            }
+            
+            document.getElementById('assignModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close assign modal
+        function closeAssignModal() {
+            document.getElementById('assignModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Confirm assignment
+        async function confirmAssignment() {
+            const requestId = parseInt(document.getElementById('assignRequestId').value);
+            const selectedEmail = document.getElementById('assignUserSelect').value;
+            const selectedUser = selectedEmail ? users.find(u => u.email === selectedEmail) : null;
+            
+            try {
+                const updateData = {
+                    assigned_to_name: selectedUser ? selectedUser.name : null,
+                    assigned_to_email: selectedUser ? selectedUser.email : null,
+                    updated_at: new Date().toISOString()
+                };
+                
+                const { error } = await supabaseClient
+                    .from('version_requests')
+                    .update(updateData)
+                    .eq('id', requestId);
+                
+                if (error) throw error;
+                
+                closeAssignModal();
+                showMessage(selectedUser ? `הבקשה הוקצתה ל${selectedUser.name} בהצלחה!` : 'ההקצאה הוסרה בהצלחה!', 'success');
+                loadAllRequests();
+                
+            } catch (error) {
+                console.error('Error assigning request:', error);
+                showMessage('שגיאה בהקצאת הבקשה: ' + error.message, 'error');
+            }
+        }
+
+        // ─── Multi-select / Bulk Actions ───
+
+        function toggleRowSelection(requestId, checked) {
+            if (!isAdmin) return;
+            if (checked) {
+                selectedRequestIds.add(requestId);
+            } else {
+                selectedRequestIds.delete(requestId);
+            }
+            updateBulkActionsBar();
+            // Update select-all checkbox state for this group
+            updateSelectAllCheckboxes();
+        }
+
+        function toggleSelectAllInGroup(checkbox, groupId) {
+            if (!isAdmin) return;
+            const groupEl = document.getElementById(groupId);
+            if (!groupEl) return;
+            const rowCheckboxes = groupEl.querySelectorAll('.bulk-select-row');
+            rowCheckboxes.forEach(cb => {
+                cb.checked = checkbox.checked;
+                const id = parseInt(cb.value);
+                if (checkbox.checked) {
+                    selectedRequestIds.add(id);
+                } else {
+                    selectedRequestIds.delete(id);
+                }
+            });
+            updateBulkActionsBar();
+        }
+
+        function updateSelectAllCheckboxes() {
+            document.querySelectorAll('.bulk-select-all').forEach(selectAllCb => {
+                const groupEl = selectAllCb.closest('table')?.querySelector('tbody');
+                if (!groupEl) return;
+                const rowCbs = groupEl.querySelectorAll('.bulk-select-row');
+                const checkedCbs = groupEl.querySelectorAll('.bulk-select-row:checked');
+                selectAllCb.checked = rowCbs.length > 0 && rowCbs.length === checkedCbs.length;
+                selectAllCb.indeterminate = checkedCbs.length > 0 && checkedCbs.length < rowCbs.length;
+            });
+        }
+
+        function clearAllSelections() {
+            selectedRequestIds.clear();
+            document.querySelectorAll('.bulk-select-row').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.bulk-select-all').forEach(cb => { cb.checked = false; cb.indeterminate = false; });
+            updateBulkActionsBar();
+        }
+
+        function updateBulkActionsBar() {
+            const bar = document.getElementById('bulkActionsBar');
+            if (!isAdmin) {
+                selectedRequestIds.clear();
+                bar.classList.add('hidden');
+                return;
+            }
+            const count = selectedRequestIds.size;
+            document.getElementById('bulkSelectedCount').textContent = count;
+            if (count > 0) {
+                bar.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    bar.classList.remove('translate-y-full');
+                    bar.classList.add('translate-y-0');
+                });
+            } else {
+                bar.classList.add('translate-y-full');
+                bar.classList.remove('translate-y-0');
+                setTimeout(() => bar.classList.add('hidden'), 300);
+            }
+        }
+
+        // Bulk Approve
+        async function bulkApprove() {
+            if (!isAdmin) return;
+            const allIds = Array.from(selectedRequestIds);
+            if (allIds.length === 0) return;
+
+            // Filter out already approved requests
+            const allRequests = window.currentRequestsData || [];
+            const ids = allIds.filter(id => {
+                const req = allRequests.find(r => r.id === id);
+                return req && req.status === 'pending';
+            });
+            const skipped = allIds.length - ids.length;
+
+            if (ids.length === 0) {
+                showMessage('כל הבקשות שנבחרו כבר אושרו או נדחו', 'warning');
+                clearAllSelections();
+                return;
+            }
+
+            const result = await Swal.fire({
+                title: `אישור ${ids.length} בקשות`,
+                text: `${ids.length} בקשות ממתינות יאושרו` + (skipped > 0 ? ` (${skipped} כבר טופלו ויידלגו)` : ''),
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'אשר הכל',
+                cancelButtonText: 'ביטול',
+                confirmButtonColor: '#10b981',
+                reverseButtons: true
+            });
+            if (!result.isConfirmed) return;
+
+            try {
+                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+                if (userError) throw userError;
+                if (!user) { showMessage('שגיאה: יש להתחבר כדי לאשר בקשות', 'error'); return; }
+
+                let successCount = 0;
+                let failCount = 0;
+
+                for (const id of ids) {
+                    try {
+                        const { data: requestData } = await supabaseClient
+                            .from('version_requests').select('*').eq('id', id).single();
+                        
+                        const { error } = await supabaseClient
+                            .from('version_requests')
+                            .update({
+                                status: 'approved',
+                                updated_at: new Date().toISOString(),
+                                approved_by: user.email,
+                                approved_at: new Date().toISOString()
+                            })
+                            .eq('id', id);
+
+                        if (error) throw error;
+                        if (requestData) await sendStatusNotification(requestData, 'approved', user.email);
+                        successCount++;
+                    } catch (e) {
+                        console.error(`Error approving request ${id}:`, e);
+                        failCount++;
+                    }
+                }
+
+                clearAllSelections();
+                loadAllRequests();
+                loadPendingProductionDeployments();
+                showMessage(`${successCount} בקשות אושרו בהצלחה${failCount > 0 ? `, ${failCount} נכשלו` : ''}`, failCount > 0 ? 'warning' : 'success');
+            } catch (error) {
+                console.error('Bulk approve error:', error);
+                showMessage('שגיאה באישור מרוכז: ' + error.message, 'error');
+            }
+        }
+
+        // Bulk Reject - opens modal for reason
+        function bulkReject() {
+            if (!isAdmin) return;
+            const allIds = Array.from(selectedRequestIds);
+            if (allIds.length === 0) return;
+
+            // Filter out already rejected/approved requests
+            const allRequests = window.currentRequestsData || [];
+            const pendingIds = allIds.filter(id => {
+                const req = allRequests.find(r => r.id === id);
+                return req && req.status === 'pending';
+            });
+
+            if (pendingIds.length === 0) {
+                showMessage('כל הבקשות שנבחרו כבר אושרו או נדחו', 'warning');
+                clearAllSelections();
+                return;
+            }
+
+            // Store filtered ids for the confirm handler
+            window._bulkRejectPendingIds = pendingIds;
+            const skipped = allIds.length - pendingIds.length;
+            document.getElementById('bulkRejectCount').textContent = pendingIds.length + (skipped > 0 ? ` (${skipped} כבר טופלו ויידלגו)` : '');
+            document.getElementById('bulkRejectionReason').value = '';
+            document.getElementById('bulkRejectModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBulkRejectModal() {
+            document.getElementById('bulkRejectModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        async function confirmBulkReject(event) {
+            event.preventDefault();
+            const reason = document.getElementById('bulkRejectionReason').value.trim();
+            if (!reason) { showMessage('יש להזין סיבת דחייה', 'error'); return; }
+
+            const ids = window._bulkRejectPendingIds || Array.from(selectedRequestIds);
+            closeBulkRejectModal();
+
+            try {
+                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+                if (userError) throw userError;
+                if (!user) { showMessage('שגיאה: יש להתחבר כדי לדחות בקשות', 'error'); return; }
+
+                let successCount = 0;
+                let failCount = 0;
+
+                for (const id of ids) {
+                    try {
+                        const { data: requestData } = await supabaseClient
+                            .from('version_requests').select('*').eq('id', id).single();
+
+                        const { error } = await supabaseClient
+                            .from('version_requests')
+                            .update({
+                                status: 'rejected',
+                                rejection_reason: reason,
+                                updated_at: new Date().toISOString(),
+                                rejected_by: user.email,
+                                rejected_at: new Date().toISOString()
+                            })
+                            .eq('id', id);
+
+                        if (error) throw error;
+                        if (requestData) await sendStatusNotification(requestData, 'rejected', user.email, reason);
+                        successCount++;
+                    } catch (e) {
+                        console.error(`Error rejecting request ${id}:`, e);
+                        failCount++;
+                    }
+                }
+
+                clearAllSelections();
+                loadAllRequests();
+                loadPendingProductionDeployments();
+                showMessage(`${successCount} בקשות נדחו בהצלחה${failCount > 0 ? `, ${failCount} נכשלו` : ''}`, failCount > 0 ? 'warning' : 'success');
+            } catch (error) {
+                console.error('Bulk reject error:', error);
+                showMessage('שגיאה בדחייה מרוכזת: ' + error.message, 'error');
+            }
+        }
+
+        // Bulk Assign - opens modal for user selection
+        function bulkAssign() {
+            if (!isAdmin) return;
+            const ids = Array.from(selectedRequestIds);
+            if (ids.length === 0) return;
+            document.getElementById('bulkAssignCount').textContent = ids.length;
+            // Populate user select
+            const select = document.getElementById('bulkAssignUserSelect');
+            select.innerHTML = '<option value="">לא מוקצה</option>';
+            users.forEach(u => {
+                select.innerHTML += `<option value="${u.email}">${u.name}</option>`;
+            });
+            document.getElementById('bulkAssignModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBulkAssignModal() {
+            document.getElementById('bulkAssignModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        async function confirmBulkAssign() {
+            const selectedEmail = document.getElementById('bulkAssignUserSelect').value;
+            const selectedUser = selectedEmail ? users.find(u => u.email === selectedEmail) : null;
+            const ids = Array.from(selectedRequestIds);
+            closeBulkAssignModal();
+
+            try {
+                let successCount = 0;
+                let failCount = 0;
+
+                for (const id of ids) {
+                    try {
+                        const { error } = await supabaseClient
+                            .from('version_requests')
+                            .update({
+                                assigned_to_name: selectedUser ? selectedUser.name : null,
+                                assigned_to_email: selectedUser ? selectedUser.email : null,
+                                updated_at: new Date().toISOString()
+                            })
+                            .eq('id', id);
+
+                        if (error) throw error;
+                        successCount++;
+                    } catch (e) {
+                        console.error(`Error assigning request ${id}:`, e);
+                        failCount++;
+                    }
+                }
+
+                clearAllSelections();
+                loadAllRequests();
+                const msg = selectedUser 
+                    ? `${successCount} בקשות הוקצו ל${selectedUser.name} בהצלחה` 
+                    : `ההקצאה הוסרה מ-${successCount} בקשות`;
+                showMessage(`${msg}${failCount > 0 ? `, ${failCount} נכשלו` : ''}`, failCount > 0 ? 'warning' : 'success');
+            } catch (error) {
+                console.error('Bulk assign error:', error);
+                showMessage('שגיאה בהקצאה מרוכזת: ' + error.message, 'error');
             }
         }
 
