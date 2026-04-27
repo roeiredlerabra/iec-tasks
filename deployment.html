@@ -4108,6 +4108,7 @@ ${currentDescription}
 
         // Patch a single row's cells in-place (for status, assigned, actions changes)
         function updateRequestRowInPlace(request) {
+            // ── Desktop table row ──
             const row = document.querySelector(`tr[data-request-id="${request.id}"]`);
             if (row) {
                 // Update status pill
@@ -4116,31 +4117,94 @@ ${currentDescription}
                     statusCell.className = `status-pill status-pill-${request.status}`;
                     statusCell.innerHTML = getStatusText(request.status);
                 }
-                
-                // Update assigned-to cell (the td after the status td)
-                const cells = row.querySelectorAll('td');
-                // Find the assigned cell by looking for avatar-badge or "לא מוקצה"
-                cells.forEach(td => {
-                    const assignedDisplay = td.querySelector('.avatar-badge') || td.querySelector('.text-gray-400.italic');
-                    if (assignedDisplay) {
+
+                // Update assigned-to cell
+                row.querySelectorAll('td').forEach(td => {
+                    if (td.querySelector('.avatar-badge') || td.querySelector('.text-gray-400.italic')) {
                         td.innerHTML = getAssignedToDisplay(request);
                     }
                 });
-                
+
+                // Update actions cell
+                const actionsTd = row.querySelector('td[data-cell-type="actions"]');
+                if (actionsTd) {
+                    if (request.status === 'pending') {
+                        actionsTd.innerHTML = `
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button class="action-btn action-btn-approve" onclick="testApprove(${request.id})" title="אשר בקשה">
+                                    <i class="fas fa-check"></i><span>אשר</span>
+                                </button>
+                                <button class="action-btn action-btn-reject" onclick="testReject(${request.id})" title="דחה בקשה">
+                                    <i class="fas fa-xmark"></i><span>דחה</span>
+                                </button>
+                                <button class="action-btn action-btn-assign" onclick="showAssignModal(${request.id})" title="הקצה למשתמש">
+                                    <i class="fas fa-user-tag"></i>
+                                </button>
+                                <button class="action-btn action-btn-delete" onclick="testDelete(${request.id})" title="מחק בקשה">
+                                    <i class="fas fa-trash-can"></i>
+                                </button>
+                            </div>`;
+                    } else if (request.status !== 'approved') {
+                        actionsTd.innerHTML = `
+                            <button class="action-btn action-btn-assign" onclick="showAssignModal(${request.id})" title="הקצה מחדש">
+                                <i class="fas fa-user-tag"></i><span>הקצה</span>
+                            </button>`;
+                    } else {
+                        actionsTd.innerHTML = '<span class="text-gray-400 text-sm">-</span>';
+                    }
+                }
+
+                // Uncheck & deselect if no longer pending
+                const checkbox = row.querySelector('.bulk-select-row');
+                if (checkbox) {
+                    checkbox.dataset.status = request.status;
+                    if (request.status !== 'pending' && checkbox.checked) {
+                        checkbox.checked = false;
+                        selectedRequestIds.delete(request.id);
+                        updateBulkActionsBar();
+                        updateSelectAllCheckboxes();
+                    }
+                }
+
+                // Collapse expanded details row (contains stale buttons/info)
+                const detailsRow = document.getElementById(`details-${request.id}`);
+                if (detailsRow && !detailsRow.classList.contains('hidden')) {
+                    detailsRow.classList.add('hidden');
+                    const expandIcon = row.querySelector('.expand-toggle i');
+                    if (expandIcon) {
+                        expandIcon.classList.remove('fa-chevron-up');
+                        expandIcon.classList.add('fa-chevron-down');
+                    }
+                }
+
                 // Flash highlight
                 row.style.transition = 'background-color 0.6s ease';
                 row.style.backgroundColor = 'rgba(99,102,241,0.08)';
                 setTimeout(() => { row.style.backgroundColor = ''; }, 800);
             }
-            
-            // Update mobile card
+
+            // ── Mobile card ──
             const card = document.querySelector(`.request-card[data-request-id="${request.id}"]`);
             if (card) {
+                // Update status pill
                 const statusPill = card.querySelector('.status-pill');
                 if (statusPill) {
                     statusPill.className = `status-pill status-pill-${request.status}`;
                     statusPill.innerHTML = getStatusText(request.status);
                 }
+
+                // Remove admin action buttons if no longer pending
+                const adminActionsDiv = card.querySelector('[data-admin-actions]');
+                if (adminActionsDiv && request.status !== 'pending') {
+                    adminActionsDiv.remove();
+                }
+
+                // Collapse expanded mobile card details (contains stale data)
+                const mobileDetails = document.getElementById(`mobile-card-${request.id}`);
+                if (mobileDetails && !mobileDetails.classList.contains('hidden')) {
+                    mobileDetails.classList.add('hidden');
+                }
+
                 card.style.transition = 'background-color 0.6s ease';
                 card.style.backgroundColor = 'rgba(99,102,241,0.08)';
                 setTimeout(() => { card.style.backgroundColor = ''; }, 800);
@@ -5749,7 +5813,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                 ${timeString}
                             </td>
                             ${isAdmin ? `
-                                <td class="px-3 py-3 whitespace-nowrap text-center hidden md:table-cell">
+                                <td class="px-3 py-3 whitespace-nowrap text-center hidden md:table-cell" data-cell-type="actions">
                                     ${request.status === 'pending' ? `
                                         <div class="flex items-center justify-center gap-1.5">
                                             <button class="action-btn action-btn-approve" 
@@ -6010,7 +6074,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                             
                             <!-- Admin actions for pending requests -->
                             ${isAdmin && request.status === 'pending' ? `
-                                <div class="grid grid-cols-4 gap-2 mb-3">
+                                <div class="grid grid-cols-4 gap-2 mb-3" data-admin-actions>
                                     <button class="px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
                                             onclick="testApprove(${request.id})" 
                                             title="אשר בקשה">
