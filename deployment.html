@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -3414,9 +3414,6 @@ ${currentDescription}
             // Always reset visuals first
             resetEnvironmentVisuals();
             
-            // Disable same environment options
-            updateEnvironmentOptions(sourceValue, targetValue);
-            
             // Check current state and update visuals accordingly
             if (sourceValue && targetValue) {
                 console.log(`✅ Both selected: ${sourceValue} -> ${targetValue}`);
@@ -3431,6 +3428,11 @@ ${currentDescription}
                 console.log('❌ Neither selected');
                 hideEnvironmentFeedback();
             }
+
+            // Update disabled options AFTER auto-suggestion so they reflect the final state
+            const finalSource = document.getElementById('sourceEnv').value;
+            const finalTarget = document.getElementById('targetEnv').value;
+            updateEnvironmentOptions(finalSource, finalTarget);
         }
 
         // Handle when both environments are selected
@@ -3528,14 +3530,13 @@ ${currentDescription}
             const sourceEnv = document.getElementById('sourceEnv');
             const targetEnv = document.getElementById('targetEnv');
             
-            // Disable same environment in target options
+            // Re-enable all options first, then disable only the matching one
             for (let option of targetEnv.options) {
-                option.disabled = option.value === sourceValue;
+                option.disabled = option.value !== '' && option.value === sourceValue;
             }
             
-            // Disable same environment in source options
             for (let option of sourceEnv.options) {
-                option.disabled = option.value === targetValue;
+                option.disabled = option.value !== '' && option.value === targetValue;
             }
         }
 
