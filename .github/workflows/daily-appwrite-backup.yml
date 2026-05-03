@@ -1,0 +1,182 @@
+name: Daily Appwrite Backup
+
+on:
+  schedule:
+    # Run daily at 2:00 AM UTC (4:00 AM Israel time)
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    env:
+      APPWRITE_ENDPOINT: https://cloud.appwrite.io/v1
+      APPWRITE_PROJECT_ID: 69f6e5f7002432469f12
+      APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
+      APPWRITE_DATABASE_ID: 69f6e611000c64a52e3c
+
+    steps:
+      - name: Create backup directory
+        run: mkdir -p backup
+
+      - name: Backup database schema (collections & attributes)
+        run: |
+          echo "Fetching collections..."
+          collections=$(curl -s -X GET \
+            "${APPWRITE_ENDPOINT}/databases/${APPWRITE_DATABASE_ID}/collections" \
+            -H "X-Appwrite-Project: ${APPWRITE_PROJECT_ID}" \
+            -H "X-Appwrite-Key: ${APPWRITE_API_KEY}" \
+            -H "Content-Type: application/json")
+
+          echo "$collections" | jq '.' > backup/collections.json
+          total=$(echo "$collections" | jq '.total')
+          echo "Found $total collection(s)"
+
+          # For each collection, backup attributes and indexes
+          echo "$collections" | jq -r '.collections[].$id' | while read -r col_id; do
+            col_name=$(echo "$collections" | jq -r --arg id "$col_id" '.collections[] | select(.$id == $id) | .name')
+            echo "Backing up schema for collection: $col_name ($col_id)"
+
+            # Attributes
+            curl -s -X GET \
+              "${APPWRITE_ENDPOINT}/databases/${APPWRITE_DATABASE_ID}/collections/${col_id}/attributes" \
+              -H "X-Appwrite-Project: ${APPWRITE_PROJECT_ID}" \
+              -H "X-Appwrite-Key: ${APPWRITE_API_KEY}" \
+              -H "Content-Type: application/json" | jq '.' > "backup/schema_${col_id}_attributes.json"
+
+            # Indexes
+            curl -s -X GET \
+              "${APPWRITE_ENDPOINT}/databases/${APPWRITE_DATABASE_ID}/collections/${col_id}/indexes" \
+              -H "X-Appwrite-Project: ${APPWRITE_PROJECT_ID}" \
+              -H "X-Appwrite-Key: ${APPWRITE_API_KEY}" \
+              -H "Content-Type: application/json" | jq '.' > "backup/schema_${col_id}_indexes.json"
+          done
+
+      - name: Backup all documents (paginated)
+        run: |
+          echo "Fetching collections for data backup..."
+          collections=$(curl -s -X GET \
+            "${APPWRITE_ENDPOINT}/databases/${APPWRITE_DATABASE_ID}/collections" \
+            -H "X-Appwrite-Project: ${APPWRITE_PROJECT_ID}" \
+            -H "X-Appwrite-Key: ${APPWRITE_API_KEY}" \
+            -H "Content-Type: application/json")
+
+          echo "$collections" | jq -r '.collections[].$id' | while read -r col_id; do
+            col_name=$(echo "$collections" | jq -r --arg id "$col_id" '.collections[] | select(.$id == $id) | .name')
+            echo "Backing up data for: $col_name ($col_id)"
+
+            all_docs="[]"
+            offset=0
+            limit=100
+
+            while true; do
+              # URL-encode the queries
+              queries=$(python3 -c "import urllib.parse, json; print(urllib.parse.quote(json.dumps({'method':'limit','values':[$limit]})))")
+              offset_q=$(python3 -c "import urllib.parse, json; print(urllib.parse.quote(json.dumps({'method':'offset','values':[$offset]})))")
+
+              response=$(curl -s -X GET \
+                "${APPWRITE_ENDPOINT}/databases/${APPWRITE_DATABASE_ID}/collections/${col_id}/documents?queries[]=${queries}&queries[]=${offset_q}" \
+                -H "X-Appwrite-Project: ${APPWRITE_PROJECT_ID}" \
+                -H "X-Appwrite-Key: ${APPWRITE_API_KEY}" \
+                -H "Content-Type: application/json")
+
+              docs=$(echo "$response" | jq '.documents')
+              count=$(echo "$docs" | jq 'length')
+
+              if [ "$count" -eq 0 ] || [ "$count" = "null" ]; then
+                break
+              fi
+
+              all_docs=$(echo "$all_docs" "$docs" | jq -s '.[0] + .[1]')
+              offset=$((offset + limit))
+
+              echo "  Fetched $offset documents so far..."
+
+              if [ "$count" -lt "$limit" ]; then
+                break
+              fi
+            done
+
+            total=$(echo "$all_docs" | jq 'length')
+            echo "  Total documents in $col_name: $total"
+            echo "$all_docs" | jq '.' > "backup/data_${col_id}.json"
+          done
+
+      - name: Backup users
+        run: |
+          echo "Fetching users..."
+          all_users="[]"
+          offset=0
+          limit=100
+
+          while true; do
+            queries=$(python3 -c "import urllib.parse, json; print(urllib.parse.quote(json.dumps({'method':'limit','values':[$limit]})))")
+            offset_q=$(python3 -c "import urllib.parse, json; print(urllib.parse.quote(json.dumps({'method':'offset','values':[$offset]})))")
+
+            response=$(curl -s -X GET \
+              "${APPWRITE_ENDPOINT}/users?queries[]=${queries}&queries[]=${offset_q}" \
+              -H "X-Appwrite-Project: ${APPWRITE_PROJECT_ID}" \
+              -H "X-Appwrite-Key: ${APPWRITE_API_KEY}" \
+              -H "Content-Type: application/json")
+
+            users=$(echo "$response" | jq '.users')
+            count=$(echo "$users" | jq 'length')
+
+            if [ "$count" -eq 0 ] || [ "$count" = "null" ]; then
+              break
+            fi
+
+            all_users=$(echo "$all_users" "$users" | jq -s '.[0] + .[1]')
+            offset=$((offset + limit))
+
+            if [ "$count" -lt "$limit" ]; then
+              break
+            fi
+          done
+
+          total=$(echo "$all_users" | jq 'length')
+          echo "Total users: $total"
+          echo "$all_users" | jq '.' > backup/users.json
+
+      - name: Create backup summary
+        run: |
+          DATE=$(date -u +"%Y-%m-%d")
+          echo "{" > backup/manifest.json
+          echo "  \"date\": \"$DATE\"," >> backup/manifest.json
+          echo "  \"project_id\": \"${APPWRITE_PROJECT_ID}\"," >> backup/manifest.json
+          echo "  \"database_id\": \"${APPWRITE_DATABASE_ID}\"," >> backup/manifest.json
+          echo "  \"files\": [" >> backup/manifest.json
+          first=true
+          for f in backup/*.json; do
+            fname=$(basename "$f")
+            [ "$fname" = "manifest.json" ] && continue
+            size=$(stat -c%s "$f")
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo "," >> backup/manifest.json
+            fi
+            printf "    {\"file\": \"%s\", \"size_bytes\": %s}" "$fname" "$size" >> backup/manifest.json
+          done
+          echo "" >> backup/manifest.json
+          echo "  ]" >> backup/manifest.json
+          echo "}" >> backup/manifest.json
+          echo "Backup manifest:"
+          cat backup/manifest.json | jq '.'
+
+      - name: Upload backup as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: appwrite-backup-${{ github.run_number }}-${{ github.run_id }}
+          path: backup/
+          retention-days: 90
+          compression-level: 9
+
+      - name: Send notification
+        if: success()
+        run: |
+          DATE=$(date -u +"%Y-%m-%d")
+          file_count=$(ls backup/*.json | wc -l)
+          total_size=$(du -sh backup/ | cut -f1)
+          echo "Backup completed: $file_count files, $total_size total"
