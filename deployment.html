@@ -39,7 +39,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.3/dist/css/uikit.min.css">
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@16/dist/iife/sdk.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.3/dist/js/uikit.min.js"></script>
     
     <!-- SweetAlert2 -->
@@ -2470,9 +2470,11 @@
     <script>
         // Configuration
         const CONFIG = {
-            SUPABASE_URL: 'https://gxjgomnjtjtughcxawoz.supabase.co',
-            SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4amdvbW5qdGp0dWdoY3hhd296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNjg1OTEsImV4cCI6MjA3MTk0NDU5MX0.PI1gvtRk5BKYr97Eu9lFSpUyfYJindWAwfCBsrjB_bA',
-            
+            APPWRITE_ENDPOINT:     'https://cloud.appwrite.io/v1',
+            APPWRITE_PROJECT_ID:   '69f6e5f7002432469f12',
+            APPWRITE_DATABASE_ID:  '69f6e611000c64a52e3c',
+            APPWRITE_COLLECTION_ID:'version_requests',
+
             NTFY_ADMIN_TOPIC: 'request-admin-iec',
             NTFY_STATUS_TOPIC: 'iec-deployment-status',
             GEMINI_API_KEY_PART1: 'AIzaSyD0UQ0t42Lmqbn',
@@ -2480,7 +2482,9 @@
         };
 
         // Global variables
-        let supabaseClient;
+        let appwriteClient;
+        let databases;
+        let account;
         let currentUser = null;
         let isAdmin = false;
         let autoRefreshInterval = null;
@@ -2788,7 +2792,7 @@ ${currentDescription}
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             initDarkMode(); // Initialize dark mode first
-            initSupabase();
+            initAppwrite();
             setupEventListeners();
             populateUserDropdowns();
             
@@ -2865,13 +2869,14 @@ ${currentDescription}
         // Load all unique app IDs from database
         async function loadExistingAppIds() {
             try {
-                const { data, error } = await supabaseClient
-                    .from('version_requests')
-                    .select('app_id')
-                    .order('app_id', { ascending: true });
-                
-                if (error) throw error;
-                
+                const { Query } = Appwrite;
+                const response = await databases.listDocuments(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    [Query.select(['app_id']), Query.limit(5000)]
+                );
+                const data = response?.documents || [];
+
                 // Get unique app IDs
                 const uniqueIds = [...new Set(data.map(item => item.app_id))].filter(id => id);
                 
@@ -3065,14 +3070,29 @@ ${currentDescription}
             }
         }
 
-        function initSupabase() {
+        function initAppwrite() {
             try {
-                supabaseClient = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
-                console.log('Supabase initialized successfully');
+                const { Client, Account, Databases } = Appwrite;
+                appwriteClient = new Client()
+                    .setEndpoint(CONFIG.APPWRITE_ENDPOINT)
+                    .setProject(CONFIG.APPWRITE_PROJECT_ID);
+                account   = new Account(appwriteClient);
+                databases = new Databases(appwriteClient);
+                console.log('Appwrite initialized successfully');
             } catch (error) {
-                console.error('Error initializing Supabase:', error);
-                showMessage('שגיאה באתחול המערכת. בדוק את הגדרות Supabase.', 'error');
+                console.error('Error initializing Appwrite:', error);
+                showMessage('שגיאה באתחול המערכת.', 'error');
             }
+        }
+
+        // Normalise an Appwrite document to the shape the rest of the code expects
+        function normalizeDoc(doc) {
+            return {
+                ...doc,
+                id:         doc.$id,
+                created_at: doc.$createdAt,
+                updated_at: doc.$updatedAt,
+            };
         }
 
         function setupEventListeners() {
@@ -3521,16 +3541,14 @@ ${currentDescription}
 
         async function checkAuthState() {
             try {
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session) {
-                    currentUser = session.user;
-                    isAdmin = true; // Any logged-in user is automatically an admin
-                    updateUI();
-                    loadAllRequests(false, true);
-                    startAutoRefresh();
-                }
+                const user = await account.get();
+                currentUser = { email: user.email, id: user.$id };
+                isAdmin = true;
+                updateUI();
+                loadAllRequests(false, true);
+                startAutoRefresh();
             } catch (error) {
-                console.error('Error checking auth state:', error);
+                // User not logged in — expected for public visitors
             }
         }
 
@@ -3558,14 +3576,10 @@ ${currentDescription}
             const password = document.getElementById('adminPassword').value;
             
             try {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-                
-                if (error) throw error;
-                
-                currentUser = data.user;
+                const session = await account.createEmailPasswordSession(email, password);
+                const loggedUser = await account.get();
+
+                currentUser = { email: loggedUser.email, id: loggedUser.$id };
                 isAdmin = true; // Any logged-in user is automatically an admin
                 updateUI();
                 
@@ -3584,7 +3598,7 @@ ${currentDescription}
 
         async function adminLogout() {
             try {
-                await supabaseClient.auth.signOut();
+                await account.deleteSession('current');
                 currentUser = null;
                 isAdmin = false;
                 clearAllSelections();
@@ -4329,8 +4343,9 @@ ${currentDescription}
                     aVal = new Date(aVal);
                     bVal = new Date(bVal);
                 } else if (column === 'id') {
-                    aVal = parseInt(aVal);
-                    bVal = parseInt(bVal);
+                    // String IDs from Appwrite — compare as strings
+                    aVal = String(aVal || '');
+                    bVal = String(bVal || '');
                 } else if (typeof aVal === 'string') {
                     aVal = aVal.toLowerCase();
                     bVal = bVal.toLowerCase();
@@ -4618,7 +4633,7 @@ ${currentDescription}
                     // created_at will be set automatically by the database default
                 };
                 
-                console.log('Submitting to Supabase:', request);
+                console.log('Submitting to Appwrite:', request);
                 
                 // Check if this is a dev->prod deployment (requires two requests)
                 if (formData.sourceEnv === 'dev' && formData.targetEnv === 'prod') {
@@ -4630,18 +4645,15 @@ ${currentDescription}
                         description: `[1/2] ${request.description}\n\n(בקשה אוטומטית - חלק ראשון מתהליך העברה מפיתוח לייצור)`
                     };
                     
-                    const { data: data1, error: error1 } = await supabaseClient
-                        .from('version_requests')
-                        .insert([firstRequest])
-                        .select();
-                    
-                    if (error1) {
-                        console.error('Supabase error (first request):', error1);
-                        throw error1;
-                    }
-                    
-                    const requestId1 = data1[0].id;
-                    console.log('Successfully submitted first request:', data1);
+                    const { ID } = Appwrite;
+                    const doc1 = await databases.createDocument(
+                        CONFIG.APPWRITE_DATABASE_ID,
+                        CONFIG.APPWRITE_COLLECTION_ID,
+                        ID.unique(),
+                        firstRequest
+                    );
+                    const requestId1 = doc1.$id;
+                    console.log('Successfully submitted first request:', doc1);
                     
                     // Create second request: test -> prod
                     const secondRequest = {
@@ -4651,18 +4663,14 @@ ${currentDescription}
                         description: `[2/2] ${request.description}\n\n(בקשה אוטומטית - חלק שני מתהליך העברה מפיתוח לייצור)`
                     };
                     
-                    const { data: data2, error: error2 } = await supabaseClient
-                        .from('version_requests')
-                        .insert([secondRequest])
-                        .select();
-                    
-                    if (error2) {
-                        console.error('Supabase error (second request):', error2);
-                        throw error2;
-                    }
-                    
-                    const requestId2 = data2[0].id;
-                    console.log('Successfully submitted second request:', data2);
+                    const doc2 = await databases.createDocument(
+                        CONFIG.APPWRITE_DATABASE_ID,
+                        CONFIG.APPWRITE_COLLECTION_ID,
+                        ID.unique(),
+                        secondRequest
+                    );
+                    const requestId2 = doc2.$id;
+                    console.log('Successfully submitted second request:', doc2);
                     
                     // Send notifications for both requests
                     await sendAdminNotification({...formData, sourceEnv: 'dev', targetEnv: 'test'}, requestId1);
@@ -4672,20 +4680,17 @@ ${currentDescription}
                     
                 } else {
                     // Single request for all other cases
-                    const { data, error } = await supabaseClient
-                        .from('version_requests')
-                        .insert([request])
-                        .select();
-                    
-                    if (error) {
-                        console.error('Supabase error:', error);
-                        throw error;
-                    }
-                    
-                    console.log('Successfully submitted:', data);
+                    const { ID } = Appwrite;
+                    const doc = await databases.createDocument(
+                        CONFIG.APPWRITE_DATABASE_ID,
+                        CONFIG.APPWRITE_COLLECTION_ID,
+                        ID.unique(),
+                        request
+                    );
+                    console.log('Successfully submitted:', doc);
                     
                     // Get the request ID and send notification
-                    const requestId = data[0].id;
+                    const requestId = doc.$id;
                     await sendAdminNotification(formData, requestId);
                     
                     showMessage(`הבקשה נשלחה בהצלחה! מזהה בקשה: ${requestId}`, 'success');
@@ -4820,9 +4825,7 @@ ${currentDescription}
                 urgency: urgencyValue,
                 status: 'pending',
                 assigned_to_name: assignedUser ? assignedUser.name : null,
-                assigned_to_email: assignedUser ? assignedUser.email : null,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
+                assigned_to_email: assignedUser ? assignedUser.email : null
             };
             
             // Validate required fields
@@ -4866,13 +4869,14 @@ ${currentDescription}
                         description: `[1/2] ${formData.description}\n\n(בקשה אוטומטית - חלק ראשון מתהליך העברה מפיתוח לייצור)`
                     };
                     
-                    const { data: data1, error: error1 } = await supabaseClient
-                        .from('version_requests')
-                        .insert([firstRequest])
-                        .select();
-                    
-                    if (error1) throw error1;
-                    const requestId1 = data1[0].id;
+                    const { ID } = Appwrite;
+                    const doc1 = await databases.createDocument(
+                        CONFIG.APPWRITE_DATABASE_ID,
+                        CONFIG.APPWRITE_COLLECTION_ID,
+                        ID.unique(),
+                        firstRequest
+                    );
+                    const requestId1 = doc1.$id;
                     
                     // Create second request: test -> prod
                     const secondRequest = {
@@ -4882,13 +4886,13 @@ ${currentDescription}
                         description: `[2/2] ${formData.description}\n\n(בקשה אוטומטית - חלק שני מתהליך העברה מפיתוח לייצור)`
                     };
                     
-                    const { data: data2, error: error2 } = await supabaseClient
-                        .from('version_requests')
-                        .insert([secondRequest])
-                        .select();
-                    
-                    if (error2) throw error2;
-                    const requestId2 = data2[0].id;
+                    const doc2 = await databases.createDocument(
+                        CONFIG.APPWRITE_DATABASE_ID,
+                        CONFIG.APPWRITE_COLLECTION_ID,
+                        ID.unique(),
+                        secondRequest
+                    );
+                    const requestId2 = doc2.$id;
                     
                     // Send notifications for both requests
                     await sendAdminNotification(firstRequest, requestId1);
@@ -4898,14 +4902,15 @@ ${currentDescription}
                     
                 } else {
                     // Single request for all other cases
-                    const { data, error } = await supabaseClient
-                        .from('version_requests')
-                        .insert([formData])
-                        .select();
+                    const { ID } = Appwrite;
+                    const doc = await databases.createDocument(
+                        CONFIG.APPWRITE_DATABASE_ID,
+                        CONFIG.APPWRITE_COLLECTION_ID,
+                        ID.unique(),
+                        formData
+                    );
                     
-                    if (error) throw error;
-                    
-                    const requestId = data[0].id;
+                    const requestId = doc.$id;
                     
                     // Send notification
                     await sendAdminNotification(formData, requestId);
@@ -4995,13 +5000,7 @@ ${currentDescription}
         }
 
         async function createTableIfNotExists() {
-            // This function attempts to create the table if it doesn't exist
-            // Using raw SQL through Supabase RPC function
-            const { error } = await supabaseClient.rpc('create_version_requests_table', {});
-            
-            if (error && !error.message.includes('already exists')) {
-                console.warn('Could not create table automatically:', error);
-            }
+            // Collection is pre-configured in Appwrite — nothing to do at runtime
         }
 
         async function sendAdminNotification(requestData, requestId) {
@@ -5112,14 +5111,12 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             const startTime = Date.now();
             
             try {
-                let query = supabaseClient
-                    .from('version_requests')
-                    .select('*')
-                    .order('created_at', { ascending: false });
+                const { Query } = Appwrite;
+                const queries = [Query.orderDesc('$createdAt'), Query.limit(5000)];
                 
                 // Apply status filter if selected
                 if (statusFilter) {
-                    query = query.eq('status', statusFilter);
+                    queries.push(Query.equal('status', statusFilter));
                 }
                 
                 // Apply date filter if showing today only
@@ -5128,12 +5125,17 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                     const startOfDay = new Date(today.setHours(0, 0, 0, 0)).toISOString();
                     const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString();
                     
-                    query = query.gte('created_at', startOfDay).lte('created_at', endOfDay);
+                    queries.push(Query.greaterThanEqual('$createdAt', startOfDay));
+                    queries.push(Query.lessThanEqual('$createdAt', endOfDay));
                 }
                 
-                const { data, error } = await query;
-                
-                if (error) throw error;
+                const response = await databases.listDocuments(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    queries
+                );
+                const data = (response?.documents || []).map(normalizeDoc);
+                const error = null;
                 
                 // Safety check for data
                 const safeData = data || [];
@@ -5152,10 +5154,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                         statusFilterElement.value = '';
                         
                         // Reload with all statuses but keep the date filter
-                        let allQuery = supabaseClient
-                            .from('version_requests')
-                            .select('*')
-                            .order('created_at', { ascending: false });
+                        const allQueries = [Query.orderDesc('$createdAt'), Query.limit(5000)];
                         
                         // Apply date filter to the "all statuses" query too
                         if (showTodayOnly) {
@@ -5163,10 +5162,17 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                             const startOfDay = new Date(today.setHours(0, 0, 0, 0)).toISOString();
                             const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString();
                             
-                            allQuery = allQuery.gte('created_at', startOfDay).lte('created_at', endOfDay);
+                            allQueries.push(Query.greaterThanEqual('$createdAt', startOfDay));
+                            allQueries.push(Query.lessThanEqual('$createdAt', endOfDay));
                         }
                         
-                        allQuery.then(({ data: allData, error: allError }) => {
+                        databases.listDocuments(
+                            CONFIG.APPWRITE_DATABASE_ID,
+                            CONFIG.APPWRITE_COLLECTION_ID,
+                            allQueries
+                        ).then((allResponse) => {
+                            const allData = (allResponse?.documents || []).map(normalizeDoc);
+                            const allError = null;
                             if (allError) throw allError;
                             
                             // Sort the fallback data
@@ -5535,26 +5541,33 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             
             try {
                 // Get all completed dev->test requests
-                const { data: devToTestRequests, error: error1 } = await supabaseClient
-                    .from('version_requests')
-                    .select('*')
-                    .eq('source_env', 'dev')
-                    .eq('target_env', 'test')
-                    .eq('status', 'approved')
-                    .order('created_at', { ascending: false });
-                
-                if (error1) throw error1;
+                const { Query } = Appwrite;
+                const devToTestResponse = await databases.listDocuments(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    [
+                        Query.equal('source_env', 'dev'),
+                        Query.equal('target_env', 'test'),
+                        Query.equal('status', 'approved'),
+                        Query.orderDesc('$createdAt'),
+                        Query.limit(5000)
+                    ]
+                );
+                const devToTestRequests = (devToTestResponse?.documents || []).map(normalizeDoc);
                 
                 // Get all completed test->prod requests
-                const { data: testToProdRequests, error: error2 } = await supabaseClient
-                    .from('version_requests')
-                    .select('*')
-                    .eq('source_env', 'test')
-                    .eq('target_env', 'prod')
-                    .eq('status', 'approved')
-                    .order('created_at', { ascending: false });
-                
-                if (error2) throw error2;
+                const testToProdResponse = await databases.listDocuments(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    [
+                        Query.equal('source_env', 'test'),
+                        Query.equal('target_env', 'prod'),
+                        Query.equal('status', 'approved'),
+                        Query.orderDesc('$createdAt'),
+                        Query.limit(5000)
+                    ]
+                );
+                const testToProdRequests = (testToProdResponse?.documents || []).map(normalizeDoc);
                 
                 // Find apps that have completed dev->test but NOT completed test->prod after that
                 const pendingProdApps = [];
@@ -6440,23 +6453,18 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             }
             
             try {
-                // Get current user
-                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-                if (userError) throw userError;
-                
-                if (!user) {
+                if (!currentUser) {
                     showMessage('שגיאה: יש להתחבר כדי למחוק בקשות', 'error');
                     return;
                 }
 
-                // First get the request data for logging/notification
-                const { data: requestData, error: fetchError } = await supabaseClient
-                    .from('version_requests')
-                    .select('*')
-                    .eq('id', requestId)
-                    .single();
-
-                if (fetchError) throw fetchError;
+                // First get the request data
+                const requestDoc = await databases.getDocument(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    String(requestId)
+                );
+                const requestData = normalizeDoc(requestDoc);
 
                 // Check if request is still pending
                 if (requestData.status !== 'pending') {
@@ -6465,12 +6473,11 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                 }
                 
                 // Delete the request
-                const { error } = await supabaseClient
-                    .from('version_requests')
-                    .delete()
-                    .eq('id', requestId);
-                
-                if (error) throw error;
+                await databases.deleteDocument(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    String(requestId)
+                );
                 
                 showMessage(`הבקשה מספר ${requestId} נמחקה בהצלחה!`, 'success');
                 loadAllRequests(); // Refresh view
@@ -6506,39 +6513,32 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             }
             
             try {
-                // Get current user
-                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-                if (userError) throw userError;
-                
-                if (!user) {
+                if (!currentUser) {
                     showMessage('שגיאה: יש להתחבר כדי לאשר בקשות', 'error');
                     return;
                 }
 
                 // First get the request data before updating
-                const { data: requestData, error: fetchError } = await supabaseClient
-                    .from('version_requests')
-                    .select('*')
-                    .eq('id', requestId)
-                    .single();
-
-                if (fetchError) throw fetchError;
+                const approveDoc = await databases.getDocument(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    String(requestId)
+                );
+                const requestData = normalizeDoc(approveDoc);
                 
-                const { data, error } = await supabaseClient
-                    .from('version_requests')
-                    .update({ 
-                        status: 'approved', 
-                        updated_at: new Date().toISOString(),
-                        approved_by: user.email,
+                await databases.updateDocument(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    String(requestId),
+                    {
+                        status: 'approved',
+                        approved_by: currentUser.email,
                         approved_at: new Date().toISOString()
-                    })
-                    .eq('id', requestId)
-                    .select();
-                
-                if (error) throw error;
+                    }
+                );
                 
                 // Send status notification
-                await sendStatusNotification(requestData, 'approved', user.email);
+                await sendStatusNotification(requestData, 'approved', currentUser.email);
                 
                 showMessage('הבקשה בוצעה בהצלחה!', 'success');
                 loadAllRequests(); // Refresh view
@@ -6556,39 +6556,33 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             const reason = document.getElementById('rejectionReason').value;
             
             try {
-                // Get current user
-                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-                if (userError) throw userError;
-                
-                if (!user) {
+                if (!currentUser) {
                     showMessage('שגיאה: יש להתחבר כדי לדחות בקשות', 'error');
                     return;
                 }
 
                 // First get the request data before updating
-                const { data: requestData, error: fetchError } = await supabaseClient
-                    .from('version_requests')
-                    .select('*')
-                    .eq('id', currentRejectRequestId)
-                    .single();
-
-                if (fetchError) throw fetchError;
+                const rejectDoc = await databases.getDocument(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    String(currentRejectRequestId)
+                );
+                const requestData = normalizeDoc(rejectDoc);
                 
-                const { error } = await supabaseClient
-                    .from('version_requests')
-                    .update({ 
-                        status: 'rejected', 
+                await databases.updateDocument(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    String(currentRejectRequestId),
+                    {
+                        status: 'rejected',
                         rejection_reason: reason,
-                        updated_at: new Date().toISOString(),
-                        rejected_by: user.email,
+                        rejected_by: currentUser.email,
                         rejected_at: new Date().toISOString()
-                    })
-                    .eq('id', currentRejectRequestId);
-                
-                if (error) throw error;
+                    }
+                );
                 
                 // Send status notification with rejection reason
-                await sendStatusNotification(requestData, 'rejected', user.email, reason);
+                await sendStatusNotification(requestData, 'rejected', currentUser.email, reason);
                 
                 showMessage('הבקשה נדחתה בהצלחה!', 'success');
                 
@@ -6665,23 +6659,22 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
 
         // Confirm assignment
         async function confirmAssignment() {
-            const requestId = parseInt(document.getElementById('assignRequestId').value);
+            const requestId = document.getElementById('assignRequestId').value;
             const selectedEmail = document.getElementById('assignUserSelect').value;
             const selectedUser = selectedEmail ? users.find(u => u.email === selectedEmail) : null;
             
             try {
                 const updateData = {
-                    assigned_to_name: selectedUser ? selectedUser.name : null,
+                    assigned_to_name:  selectedUser ? selectedUser.name  : null,
                     assigned_to_email: selectedUser ? selectedUser.email : null,
-                    updated_at: new Date().toISOString()
                 };
                 
-                const { error } = await supabaseClient
-                    .from('version_requests')
-                    .update(updateData)
-                    .eq('id', requestId);
-                
-                if (error) throw error;
+                await databases.updateDocument(
+                    CONFIG.APPWRITE_DATABASE_ID,
+                    CONFIG.APPWRITE_COLLECTION_ID,
+                    String(requestId),
+                    updateData
+                );
                 
                 closeAssignModal();
                 showMessage(selectedUser ? `הבקשה הוקצתה ל${selectedUser.name} בהצלחה!` : 'ההקצאה הוסרה בהצלחה!', 'success');
@@ -6714,7 +6707,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             const rowCheckboxes = groupEl.querySelectorAll('.bulk-select-row');
             rowCheckboxes.forEach(cb => {
                 cb.checked = checkbox.checked;
-                const id = parseInt(cb.value);
+                const id = cb.value;
                 if (checkbox.checked) {
                     selectedRequestIds.add(id);
                 } else {
@@ -6797,30 +6790,23 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             if (!result.isConfirmed) return;
 
             try {
-                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-                if (userError) throw userError;
-                if (!user) { showMessage('שגיאה: יש להתחבר כדי לאשר בקשות', 'error'); return; }
+                if (!currentUser) { showMessage('שגיאה: יש להתחבר כדי לאשר בקשות', 'error'); return; }
 
                 let successCount = 0;
                 let failCount = 0;
 
                 for (const id of ids) {
                     try {
-                        const { data: requestData } = await supabaseClient
-                            .from('version_requests').select('*').eq('id', id).single();
+                        const doc = await databases.getDocument(
+                            CONFIG.APPWRITE_DATABASE_ID, CONFIG.APPWRITE_COLLECTION_ID, String(id));
+                        const requestData = normalizeDoc(doc);
                         
-                        const { error } = await supabaseClient
-                            .from('version_requests')
-                            .update({
-                                status: 'approved',
-                                updated_at: new Date().toISOString(),
-                                approved_by: user.email,
-                                approved_at: new Date().toISOString()
-                            })
-                            .eq('id', id);
+                        await databases.updateDocument(
+                            CONFIG.APPWRITE_DATABASE_ID, CONFIG.APPWRITE_COLLECTION_ID, String(id),
+                            { status: 'approved', approved_by: currentUser.email, approved_at: new Date().toISOString() }
+                        );
 
-                        if (error) throw error;
-                        if (requestData) await sendStatusNotification(requestData, 'approved', user.email);
+                        await sendStatusNotification(requestData, 'approved', currentUser.email);
                         successCount++;
                     } catch (e) {
                         console.error(`Error approving request ${id}:`, e);
@@ -6880,31 +6866,23 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
             closeBulkRejectModal();
 
             try {
-                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-                if (userError) throw userError;
-                if (!user) { showMessage('שגיאה: יש להתחבר כדי לדחות בקשות', 'error'); return; }
+                if (!currentUser) { showMessage('שגיאה: יש להתחבר כדי לדחות בקשות', 'error'); return; }
 
                 let successCount = 0;
                 let failCount = 0;
 
                 for (const id of ids) {
                     try {
-                        const { data: requestData } = await supabaseClient
-                            .from('version_requests').select('*').eq('id', id).single();
+                        const doc = await databases.getDocument(
+                            CONFIG.APPWRITE_DATABASE_ID, CONFIG.APPWRITE_COLLECTION_ID, String(id));
+                        const requestData = normalizeDoc(doc);
 
-                        const { error } = await supabaseClient
-                            .from('version_requests')
-                            .update({
-                                status: 'rejected',
-                                rejection_reason: reason,
-                                updated_at: new Date().toISOString(),
-                                rejected_by: user.email,
-                                rejected_at: new Date().toISOString()
-                            })
-                            .eq('id', id);
+                        await databases.updateDocument(
+                            CONFIG.APPWRITE_DATABASE_ID, CONFIG.APPWRITE_COLLECTION_ID, String(id),
+                            { status: 'rejected', rejection_reason: reason, rejected_by: currentUser.email, rejected_at: new Date().toISOString() }
+                        );
 
-                        if (error) throw error;
-                        if (requestData) await sendStatusNotification(requestData, 'rejected', user.email, reason);
+                        await sendStatusNotification(requestData, 'rejected', currentUser.email, reason);
                         successCount++;
                     } catch (e) {
                         console.error(`Error rejecting request ${id}:`, e);
@@ -6955,16 +6933,14 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
 
                 for (const id of ids) {
                     try {
-                        const { error } = await supabaseClient
-                            .from('version_requests')
-                            .update({
-                                assigned_to_name: selectedUser ? selectedUser.name : null,
+                        await databases.updateDocument(
+                            CONFIG.APPWRITE_DATABASE_ID, CONFIG.APPWRITE_COLLECTION_ID, String(id),
+                            {
+                                assigned_to_name:  selectedUser ? selectedUser.name  : null,
                                 assigned_to_email: selectedUser ? selectedUser.email : null,
-                                updated_at: new Date().toISOString()
-                            })
-                            .eq('id', id);
+                            }
+                        );
 
-                        if (error) throw error;
                         successCount++;
                     } catch (e) {
                         console.error(`Error assigning request ${id}:`, e);
