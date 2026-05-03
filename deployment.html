@@ -4170,22 +4170,22 @@ ${currentDescription}
                     if (request.status === 'pending') {
                         actionsTd.innerHTML = `
                             <div class="flex items-center justify-center gap-1.5">
-                                <button class="action-btn action-btn-approve" onclick="testApprove(${request.id})" title="אשר בקשה">
+                                <button class="action-btn action-btn-approve" onclick="testApprove('${request.id}')" title="אשר בקשה">
                                     <i class="fas fa-check"></i><span>אשר</span>
                                 </button>
-                                <button class="action-btn action-btn-reject" onclick="testReject(${request.id})" title="דחה בקשה">
+                                <button class="action-btn action-btn-reject" onclick="testReject('${request.id}')" title="דחה בקשה">
                                     <i class="fas fa-xmark"></i><span>דחה</span>
                                 </button>
-                                <button class="action-btn action-btn-assign" onclick="showAssignModal(${request.id})" title="הקצה למשתמש">
+                                <button class="action-btn action-btn-assign" onclick="showAssignModal('${request.id}')" title="הקצה למשתמש">
                                     <i class="fas fa-user-tag"></i>
                                 </button>
-                                <button class="action-btn action-btn-delete" onclick="testDelete(${request.id})" title="מחק בקשה">
+                                <button class="action-btn action-btn-delete" onclick="testDelete('${request.id}')" title="מחק בקשה">
                                     <i class="fas fa-trash-can"></i>
                                 </button>
                             </div>`;
                     } else if (request.status !== 'approved') {
                         actionsTd.innerHTML = `
-                            <button class="action-btn action-btn-assign" onclick="showAssignModal(${request.id})" title="הקצה מחדש">
+                            <button class="action-btn action-btn-assign" onclick="showAssignModal('${request.id}')" title="הקצה מחדש">
                                 <i class="fas fa-user-tag"></i><span>הקצה</span>
                             </button>`;
                     } else {
@@ -4422,7 +4422,7 @@ ${currentDescription}
                     <tr class="hover:bg-gray-50 transition-colors duration-150 ${urgencyBorderClass}" data-request-id="${request.id}">
                         <td class="px-3 py-4 whitespace-nowrap text-center" data-cell-type="expand">
                             <button class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors duration-150" 
-                                    onclick="toggleRequestDetails(${request.id})" 
+                                    onclick="toggleRequestDetails('${request.id}')" 
                                     title="לחץ להרחבת פרטים">
                                 <i class="fas fa-plus text-sm"></i>
                             </button>
@@ -4467,25 +4467,25 @@ ${currentDescription}
                                 ${request.status === 'pending' ? `
                                     <div class="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rtl:space-x-reverse">
                                         <button class="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
-                                                onclick="testApprove(${request.id})" 
+                                                onclick="testApprove('${request.id}')" 
                                                 title="אשר בקשה">
                                             <i class="fas fa-check"></i>
                                             <span>אשר</span>
                                         </button>
                                         <button class="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
-                                                onclick="testReject(${request.id})" 
+                                                onclick="testReject('${request.id}')" 
                                                 title="דחה בקשה">
                                             <i class="fas fa-times"></i>
                                             <span>דחה</span>
                                         </button>
                                         <button class="px-3 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
-                                                onclick="showAssignModal(${request.id})" 
+                                                onclick="showAssignModal('${request.id}')" 
                                                 title="הקצה למשתמש">
                                             <i class="fas fa-user-tag"></i>
                                             <span>הקצה</span>
                                         </button>
                                         <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse" 
-                                                onclick="testDelete(${request.id})" 
+                                                onclick="testDelete('${request.id}')" 
                                                 title="מחק בקשה">
                                             <i class="fas fa-trash"></i>
                                             <span>מחק</span>
@@ -4559,15 +4559,15 @@ ${currentDescription}
                                 ${isAdmin && request.status === 'pending' ? `
                                     <div class="mt-6 pt-4 border-t border-gray-200">
                                         <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse">
-                                            <button class="px-4 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testApprove(${request.id})">
+                                            <button class="px-4 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testApprove('${request.id}')">
                                                 <i class="fas fa-check"></i>
                                                 <span>אשר בקשה</span>
                                             </button>
-                                            <button class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testReject(${request.id})">
+                                            <button class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testReject('${request.id}')">
                                                 <i class="fas fa-times"></i>
                                                 <span>דחה בקשה</span>
                                             </button>
-                                            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testDelete(${request.id})">
+                                            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors duration-150 flex items-center justify-center space-x-2 rtl:space-x-reverse" onclick="testDelete('${request.id}')">
                                                 <i class="fas fa-trash"></i>
                                                 <span>מחק בקשה</span>
                                             </button>
@@ -5806,7 +5806,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                             </td>` : ''}
                             <td class="px-2 py-3 whitespace-nowrap text-center">
                                 <button class="expand-toggle" 
-                                        onclick="toggleRequestDetails(${request.id})" 
+                                        onclick="toggleRequestDetails('${request.id}')" 
                                         title="לחץ להרחבת פרטים">
                                     <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
@@ -5855,24 +5855,24 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                     ${request.status === 'pending' ? `
                                         <div class="flex items-center justify-center gap-1.5">
                                             <button class="action-btn action-btn-approve" 
-                                                    onclick="testApprove(${request.id})" 
+                                                    onclick="testApprove('${request.id}')" 
                                                     title="אשר בקשה">
                                                 <i class="fas fa-check"></i>
                                                 <span>אשר</span>
                                             </button>
                                             <button class="action-btn action-btn-reject" 
-                                                    onclick="testReject(${request.id})" 
+                                                    onclick="testReject('${request.id}')" 
                                                     title="דחה בקשה">
                                                 <i class="fas fa-xmark"></i>
                                                 <span>דחה</span>
                                             </button>
                                             <button class="action-btn action-btn-assign" 
-                                                    onclick="showAssignModal(${request.id})" 
+                                                    onclick="showAssignModal('${request.id}')" 
                                                     title="הקצה למשתמש">
                                                 <i class="fas fa-user-tag"></i>
                                             </button>
                                             <button class="action-btn action-btn-delete" 
-                                                    onclick="testDelete(${request.id})" 
+                                                    onclick="testDelete('${request.id}')" 
                                                     title="מחק בקשה">
                                                 <i class="fas fa-trash-can"></i>
                                             </button>
@@ -5880,7 +5880,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                     ` : `
                                         ${request.status !== 'approved' ? `
                                             <button class="action-btn action-btn-assign" 
-                                                    onclick="showAssignModal(${request.id})" 
+                                                    onclick="showAssignModal('${request.id}')" 
                                                     title="הקצה מחדש">
                                                 <i class="fas fa-user-tag"></i>
                                                 <span>הקצה</span>
@@ -5915,7 +5915,7 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                                     ${getAssignedToDisplayCompact(request)}
                                                     ${isAdmin && request.status !== 'approved' ? `
                                                         <button class="px-2 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded text-xs font-medium transition-colors duration-150 flex items-center space-x-1 rtl:space-x-reverse mr-2" 
-                                                                onclick="showAssignModal(${request.id})">
+                                                                onclick="showAssignModal('${request.id}')">
                                                             <i class="fas fa-edit text-xs"></i>
                                                             <span>שנה</span>
                                                         </button>
@@ -5972,19 +5972,19 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                                     ${isAdmin && request.status === 'pending' ? `
                                         <div class="mt-6 pt-4 border-t border-gray-100">
                                             <div class="flex flex-wrap gap-2">
-                                                <button class="action-btn action-btn-approve text-sm" onclick="testApprove(${request.id})">
+                                                <button class="action-btn action-btn-approve text-sm" onclick="testApprove('${request.id}')">
                                                     <i class="fas fa-check"></i>
                                                     <span>אשר בקשה</span>
                                                 </button>
-                                                <button class="action-btn action-btn-reject text-sm" onclick="testReject(${request.id})">
+                                                <button class="action-btn action-btn-reject text-sm" onclick="testReject('${request.id}')">
                                                     <i class="fas fa-xmark"></i>
                                                     <span>דחה בקשה</span>
                                                 </button>
-                                                <button class="action-btn action-btn-assign text-sm" onclick="showAssignModal(${request.id})">
+                                                <button class="action-btn action-btn-assign text-sm" onclick="showAssignModal('${request.id}')">
                                                     <i class="fas fa-user-tag"></i>
                                                     <span>הקצה למשתמש</span>
                                                 </button>
-                                                <button class="action-btn action-btn-delete text-sm" onclick="testDelete(${request.id})">
+                                                <button class="action-btn action-btn-delete text-sm" onclick="testDelete('${request.id}')">
                                                     <i class="fas fa-trash-can"></i>
                                                     <span>מחק בקשה</span>
                                                 </button>
@@ -6114,25 +6114,25 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                             ${isAdmin && request.status === 'pending' ? `
                                 <div class="grid grid-cols-4 gap-2 mb-3" data-admin-actions>
                                     <button class="px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                            onclick="testApprove(${request.id})" 
+                                            onclick="testApprove('${request.id}')" 
                                             title="אשר בקשה">
                                         <i class="fas fa-check"></i>
                                         <span>אשר</span>
                                     </button>
                                     <button class="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                            onclick="testReject(${request.id})" 
+                                            onclick="testReject('${request.id}')" 
                                             title="דחה בקשה">
                                         <i class="fas fa-times"></i>
                                         <span>דחה</span>
                                     </button>
                                     <button class="px-3 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                            onclick="showAssignModal(${request.id})" 
+                                            onclick="showAssignModal('${request.id}')" 
                                             title="הקצה למשתמש">
                                         <i class="fas fa-user-tag"></i>
                                         <span>הקצה</span>
                                     </button>
                                     <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                            onclick="testDelete(${request.id})" 
+                                            onclick="testDelete('${request.id}')" 
                                             title="מחק בקשה">
                                         <i class="fas fa-trash"></i>
                                         <span>מחק</span>
@@ -6297,25 +6297,25 @@ ${new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })}`;
                         ${isAdmin && request.status === 'pending' ? `
                             <div class="grid grid-cols-4 gap-2 mb-3">
                                 <button class="px-3 py-2 bg-green-100 hover:bg-green-200 text-green-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                        onclick="testApprove(${request.id})" 
+                                        onclick="testApprove('${request.id}')" 
                                         title="אשר בקשה">
                                     <i class="fas fa-check"></i>
                                     <span>אשר</span>
                                 </button>
                                 <button class="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                        onclick="testReject(${request.id})" 
+                                        onclick="testReject('${request.id}')" 
                                         title="דחה בקשה">
                                     <i class="fas fa-times"></i>
                                     <span>דחה</span>
                                 </button>
                                 <button class="px-3 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                        onclick="showAssignModal(${request.id})" 
+                                        onclick="showAssignModal('${request.id}')" 
                                         title="הקצה למשתמש">
                                     <i class="fas fa-user-tag"></i>
                                     <span>הקצה</span>
                                 </button>
                                 <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md text-sm font-medium transition-colors duration-150 flex items-center justify-center space-x-1 rtl:space-x-reverse" 
-                                        onclick="testDelete(${request.id})" 
+                                        onclick="testDelete('${request.id}')" 
                                         title="מחק בקשה">
                                     <i class="fas fa-trash"></i>
                                     <span>מחק</span>
